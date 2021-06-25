@@ -24,5 +24,14 @@ public class AppearanceDay extends AuditingTimeEntity {
 	@Enumerated(value = EnumType.STRING)
 	private DayOfTheWeek day;
 
+	private AppearanceDay(Store store, DayOfTheWeek day) {
+		this.store = store;
+		this.day = day;
+	}
+
+	public static AppearanceDay of(Store store, DayOfTheWeek day) {
+		return new AppearanceDay(store, day);
+	}
+
 }
 

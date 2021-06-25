@@ -23,4 +23,13 @@ public class PaymentMethod extends AuditingTimeEntity {
 	@Enumerated(value = EnumType.STRING)
 	private PaymentMethodType method;
 
+	private PaymentMethod(Store store, PaymentMethodType method) {
+		this.store = store;
+		this.method = method;
+	}
+
+	public static PaymentMethod of(Store store, PaymentMethodType type) {
+		return new PaymentMethod(store, type);
+	}
+
 }

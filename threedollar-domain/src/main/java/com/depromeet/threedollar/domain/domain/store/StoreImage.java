@@ -17,9 +17,28 @@ public class StoreImage extends AuditingTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "store_id", nullable = false) // TODO 실제 테이블에는 image_id여서 마이그레이션이 필요합니다.
-	private Store store;
+	@Column(name = "image_id") // TODO 실제 테이블에는 image_id여서 마이그레이션이 필요합니다.
+	private Long storeId;
+
+	private Long userId;
 
 	private String url;
+
+	private boolean isDeleted;
+
+	private StoreImage(Long storeId, Long userId, String url) {
+		this.storeId = storeId;
+		this.userId = userId;
+		this.url = url;
+		this.isDeleted = false;
+	}
+
+	public static StoreImage newInstance(Long storeId, Long userId, String imageUrl) {
+		return new StoreImage(storeId, userId, imageUrl);
+	}
+
+	public void delete() {
+		this.isDeleted = true;
+	}
+
 }

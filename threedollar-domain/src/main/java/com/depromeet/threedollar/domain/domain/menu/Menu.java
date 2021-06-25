@@ -25,4 +25,15 @@ public class Menu extends AuditingTimeEntity {
 	@Enumerated(EnumType.STRING)
 	private MenuCategoryType category;
 
+	private Menu(Long storeId, String name, String price, MenuCategoryType category) {
+		this.storeId = storeId;
+		this.name = name;
+		this.price = price;
+		this.category = category;
+	}
+
+	public static Menu newInstance(Long storeId, String name, String price, MenuCategoryType category) {
+		return new Menu(storeId, name, price, category);
+	}
+
 }

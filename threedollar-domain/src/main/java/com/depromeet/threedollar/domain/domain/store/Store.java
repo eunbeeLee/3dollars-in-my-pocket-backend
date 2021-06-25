@@ -1,14 +1,16 @@
 package com.depromeet.threedollar.domain.domain.store;
 
 import com.depromeet.threedollar.domain.domain.common.AuditingTimeEntity;
+import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
 import com.depromeet.threedollar.domain.domain.common.Location;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,10 +31,47 @@ public class Store extends AuditingTimeEntity {
 	@Enumerated(EnumType.STRING)
 	private StoreType storeType;
 
-	@Embedded
-	private Rating rating;
+	private Float rating;
 
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-	private final List<StoreImage> images = new ArrayList<>();
+	private final Set<PaymentMethod> paymentMethods = new HashSet<>();
+
+	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+	private final Set<AppearanceDay> appearanceDays = new HashSet<>();
+
+	@Builder
+	private Store(Long userId, Double latitude, Double longitude, String storeName, StoreType storeType) {
+		this.userId = userId;
+		this.location = Location.of(latitude, longitude);
+		this.storeName = storeName;
+		this.storeType = storeType;
+		this.rating = 0f;
+	}
+
+	public static Store newInstance(Long userId, Double latitude, Double longitude, String storeName, StoreType storeType) {
+		return new Store(userId, latitude, longitude, storeName, storeType);
+	}
+
+	private void addPaymentMethod(PaymentMethodType type) {
+		PaymentMethod paymentMethod = PaymentMethod.of(this, type);
+		this.paymentMethods.add(paymentMethod);
+	}
+
+	public void addPaymentMethods(Set<PaymentMethodType> types) {
+		for (PaymentMethodType type : types) {
+			this.addPaymentMethod(type);
+		}
+	}
+
+	private void addAppearanceDay(DayOfTheWeek dayOfTheWeek) {
+		AppearanceDay appearanceDay = AppearanceDay.of(this, dayOfTheWeek);
+		this.appearanceDays.add(appearanceDay);
+	}
+
+	public void addAppearanceDays(Set<DayOfTheWeek> dayOfTheWeeks) {
+		for (DayOfTheWeek dayOfTheWeek : dayOfTheWeeks) {
+			this.addAppearanceDay(dayOfTheWeek);
+		}
+	}
 
 }
