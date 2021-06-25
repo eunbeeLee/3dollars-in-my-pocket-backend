@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * TODO
+ * storeName하고 category가 있는 이유를.. 모르겠음
+ * (마이그레이션 하기 매우 까다로울거 같으니 그냥 일단 가는걸로)
+ */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -20,11 +25,8 @@ public class Review extends AuditingTimeEntity {
 
 	private Long storeId;
 
-	/**
-	 * TODO
-	 * storeName하고 category가 있는 이유를.. 모르겠음
-	 * (마이그레이션 하기 매우 까다로울거 같으니 그냥 일단 가는걸로)
-	 */
+	private Long userId;
+
 	private String storeName;
 
 	@Enumerated(value = EnumType.STRING)

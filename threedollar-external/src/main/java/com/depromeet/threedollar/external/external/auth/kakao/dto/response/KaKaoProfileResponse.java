@@ -12,33 +12,14 @@ import lombok.ToString;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class KaKaoProfileResponse {
 
-    private String id;
-    private KaKaoAccountResponse kakaoAccount;
+	private String id;
 
-    public KaKaoProfileResponse(String id, KaKaoAccountResponse kakaoAccount) {
-        this.id = id;
-        this.kakaoAccount = kakaoAccount;
-    }
+	private KaKaoProfileResponse(String id) {
+		this.id = id;
+	}
 
-    public static KaKaoProfileResponse testInstance(String id, String email) {
-        return new KaKaoProfileResponse(id, new KaKaoAccountResponse(email));
-    }
-
-    public String getEmail() {
-        return this.kakaoAccount.getEmail();
-    }
-
-    @ToString
-    @Getter
-    @NoArgsConstructor
-    private static class KaKaoAccountResponse {
-
-        private String email;
-
-        public KaKaoAccountResponse(String email) {
-            this.email = email;
-        }
-
-    }
+	public static KaKaoProfileResponse testInstance(String socialId) {
+		return new KaKaoProfileResponse(socialId);
+	}
 
 }

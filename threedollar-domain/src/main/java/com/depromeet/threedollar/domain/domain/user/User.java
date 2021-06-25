@@ -24,7 +24,7 @@ public class User extends AuditingTimeEntity {
 	@Enumerated(EnumType.STRING)
 	private UserStatusType status;
 
-	private User(String socialId, UserSocialType socialType, String name) {
+	User(String socialId, UserSocialType socialType, String name) {
 		this.socialInfo = SocialInfo.of(socialId, socialType);
 		this.name = name;
 		this.status = UserStatusType.ACTIVE;
@@ -34,12 +34,16 @@ public class User extends AuditingTimeEntity {
 		return new User(socialId, socialType, name);
 	}
 
-	public UserSocialType getSocialType() {
-		return this.socialInfo.getSocialType();
-	}
-
 	public void update(String name) {
 		this.name = name;
+	}
+
+	public String getSocialId() {
+		return this.socialInfo.getSocialId();
+	}
+
+	public UserSocialType getSocialType() {
+		return this.socialInfo.getSocialType();
 	}
 
 }

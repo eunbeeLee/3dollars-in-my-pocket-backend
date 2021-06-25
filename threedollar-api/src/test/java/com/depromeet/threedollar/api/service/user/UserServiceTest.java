@@ -3,10 +3,7 @@ package com.depromeet.threedollar.api.service.user;
 import com.depromeet.threedollar.api.service.user.dto.request.CreateUserRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
-import com.depromeet.threedollar.domain.domain.user.User;
-import com.depromeet.threedollar.domain.domain.user.UserRepository;
-import com.depromeet.threedollar.domain.domain.user.UserSocialType;
-import com.depromeet.threedollar.domain.domain.user.UserStatusType;
+import com.depromeet.threedollar.domain.domain.user.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +50,7 @@ class UserServiceTest {
 	void 이미_존재하는_닉네임인_경우_에러가_발생한다() {
 		// given
 		String name = "가슴속 삼천원";
-		userRepository.save(User.newInstance("social-id", UserSocialType.KAKAO, name));
+		userRepository.save(UserCreator.create("social-id", UserSocialType.KAKAO, name));
 
 		CreateUserRequest request = CreateUserRequest.testInstance("another-id", UserSocialType.APPLE, name);
 
@@ -66,7 +63,7 @@ class UserServiceTest {
 		// given
 		String socialId = "social-id";
 		UserSocialType type = UserSocialType.KAKAO;
-		userRepository.save(User.newInstance(socialId, type, "기존의 닉네임"));
+		userRepository.save(UserCreator.create(socialId, type, "기존의 닉네임"));
 
 		CreateUserRequest request = CreateUserRequest.testInstance(socialId, type, "새로운 닉네임");
 
@@ -78,7 +75,7 @@ class UserServiceTest {
 	void 소셜ID가_같더라도_제공하는_소셜이_다른경우_회원가입이_정상적으로_처리된다() {
 		// given
 		String socialId = "social-id";
-		userRepository.save(User.newInstance(socialId, UserSocialType.APPLE, "기존의 닉네임"));
+		userRepository.save(UserCreator.create(socialId, UserSocialType.APPLE, "기존의 닉네임"));
 
 		CreateUserRequest request = CreateUserRequest.testInstance(socialId, UserSocialType.KAKAO, "새로운 닉네임");
 
@@ -98,7 +95,7 @@ class UserServiceTest {
 		String socialId = "social-id";
 		UserSocialType type = UserSocialType.KAKAO;
 		String name = "가슴속 삼천원";
-		User user = User.newInstance(socialId, type, name);
+		User user = UserCreator.create(socialId, type, name);
 		userRepository.save(user);
 
 		// when
@@ -124,7 +121,7 @@ class UserServiceTest {
 		String socialId = "social-id";
 		UserSocialType type = UserSocialType.KAKAO;
 		String name = "가슴속 삼천원";
-		User user = User.newInstance(socialId, type, "기존의 닉네임");
+		User user = UserCreator.create(socialId, type, "기존의 닉네임");
 		userRepository.save(user);
 
 		UpdateUserInfoRequest request = UpdateUserInfoRequest.testInstance(name);
