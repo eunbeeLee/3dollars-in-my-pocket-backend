@@ -1,4 +1,5 @@
 rootProject.name = 'threedollar'
 include 'threedollar-domain'
 include 'threedollar-api'
+include 'threedollar-external'
 

@@ -1,48 +1,45 @@
 package com.depromeet.threedollar.api.controller.store;
 
+import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
+import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 
 @RestController
 public class StoreController {
 
-	/**
-	 * 가게 정보를 저장하는 API
-	 * 기존: /api/v1/store/save
-	 */
-	@PostMapping("/api/v1/store")
-	public void addStore() {
+	@Operation(summary = "가게 정보를 추가하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+	@PostMapping("/api/v2/store")
+	public void addStore(@Valid @RequestBody AddStoreRequest request) {
 
 	}
 
-	/**
-	 * 특정 가게 정보를 수정하는 API
-	 */
-	@PutMapping("/api/v1/store")
-	public void updateStoreInfo() {
+	@Operation(summary = "특정 가게 정보를 수정하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+	@PutMapping("/api/v2/store/{storeId}")
+	public void updateStoreInfo(@PathVariable Long storeId, @Valid @RequestBody UpdateStoreRequest request) {
 
 	}
 
-	/**
-	 * 특정 가게 정보를 삭제하는 API
-	 */
-	@DeleteMapping("/api/v1/store")
-	public void deleteStoreInfo() {
+	@Operation(summary = "특정 가게 정보를 삭제하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+	@DeleteMapping("/api/v2/store/{storeId}")
+	public void deleteStoreInfo(@PathVariable Long storeId) {
 
 	}
 
-	/**
-	 * 특정 가게의 이미지를 등록하는 API
-	 */
-	@PostMapping("/api/v1/store/image")
-	public void addStoreImage() {
+	@Operation(summary = "특정 가게의 이미지를 등록하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+	@PostMapping("/api/v2/store/{storeId}/image")
+	public void addStoreImage(@PathVariable Long storeId, @RequestPart(value = "image") MultipartFile multipartFile) {
 
 	}
 
-	/**
-	 * 특정 가게의 이미지를 삭제하는 API
-	 */
-	@DeleteMapping("/api/v1/store/image")
-	public void deleteStoreImage() {
+	@Operation(summary = "특정 가게의 이미지를 삭제하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+	@DeleteMapping("/api/v2/store/{storeId}/image")
+	public void deleteStoreImage(@PathVariable Long storeId) {
 
 	}
 

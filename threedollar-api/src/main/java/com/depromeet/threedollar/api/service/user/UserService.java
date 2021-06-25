@@ -1,5 +1,9 @@
 package com.depromeet.threedollar.api.service.user;
 
+import com.depromeet.threedollar.api.service.user.dto.request.CreateUserRequest;
+import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
+import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
+import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,18 +16,23 @@ public class UserService {
 	private final UserRepository userRepository;
 
 	@Transactional
-	public void createUser() {
-
+	public Long createUser(CreateUserRequest request) {
+		UserServiceUtils.validateNotExistsUser(userRepository, request.getSocialId(), request.getSocialType());
+		UserServiceUtils.validateNotExistsUserName(userRepository, request.getName());
+		return userRepository.save(request.toEntity()).getId();
 	}
 
 	@Transactional(readOnly = true)
-	public void getUserInfo() {
-
+	public UserInfoResponse getUserInfo(Long userId) {
+		User user = UserServiceUtils.findUserById(userRepository, userId);
+		return UserInfoResponse.of(user);
 	}
 
 	@Transactional
-	public void updateUserInfo() {
-
+	public UserInfoResponse updateUserInfo(UpdateUserInfoRequest request, Long userId) {
+		User user = UserServiceUtils.findUserById(userRepository, userId);
+		user.update(request.getNickName());
+		return UserInfoResponse.of(user);
 	}
 
 }

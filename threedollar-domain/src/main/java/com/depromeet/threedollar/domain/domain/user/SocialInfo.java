@@ -16,6 +16,15 @@ public class SocialInfo {
 	private String socialId;
 
 	@Enumerated(EnumType.STRING)
-	private UserProviderType socialType;
+	private UserSocialType socialType;
+
+	private SocialInfo(String socialId, UserSocialType socialType) {
+		this.socialId = socialId;
+		this.socialType = socialType;
+	}
+
+	public static SocialInfo of(String socialId, UserSocialType socialType) {
+		return new SocialInfo(socialId, socialType);
+	}
 
 }

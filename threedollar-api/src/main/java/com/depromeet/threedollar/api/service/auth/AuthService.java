@@ -1,26 +1,14 @@
 package com.depromeet.threedollar.api.service.auth;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.depromeet.threedollar.api.service.auth.dto.request.LoginRequest;
+import com.depromeet.threedollar.api.service.auth.dto.request.SignUpRequest;
 
-@RequiredArgsConstructor
-@Service
-public class AuthService {
+public interface AuthService {
 
-	@Transactional
-	public void signUp() {
+	void signUp(SignUpRequest request);
 
-	}
+	void login(LoginRequest request);
 
-	@Transactional
-	public void login() {
-
-	}
-
-	@Transactional
-	public void signOut() {
-
-	}
+	void signOut();
 
 }

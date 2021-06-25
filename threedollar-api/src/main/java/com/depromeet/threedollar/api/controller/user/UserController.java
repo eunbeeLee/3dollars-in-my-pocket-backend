@@ -1,37 +1,36 @@
 package com.depromeet.threedollar.api.controller.user;
 
+import com.depromeet.threedollar.api.controller.ApiResponse;
+import com.depromeet.threedollar.api.service.user.UserService;
+import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
+import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
 public class UserController {
 
-	/**
-	 * 회원가입 API
-	 */
-	@PostMapping("/api/v1/signup")
-	public void signUp() {
+	private final UserService userService;
 
+	@Operation(summary = "내 정보를 가져오는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+	@GetMapping("/api/v2/user/me")
+	public ApiResponse<UserInfoResponse> getMyUserInfo(Long userId) { // TODO 토큰으로 변경
+		return ApiResponse.success(userService.getUserInfo(userId));
 	}
 
-	/**
-	 * 내 정보를 가져오는 API
-	 */
-	@GetMapping("/api/v1/user/me")
-	public void getMyUserInfo() {
-
-	}
-
-	/**
-	 * 내 정보를 수정하는 API
-	 */
-	@PutMapping("/api/v1/user/me")
-	public void updateMyUserInfo() {
-
+	@Operation(summary = "내 정보를 수정하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+	@PutMapping("/api/v2/user/me")
+	public ApiResponse<UserInfoResponse> updateMyUserInfo(@Valid @RequestBody UpdateUserInfoRequest request, Long userId) {
+		return ApiResponse.success(userService.updateUserInfo(request, userId));
 	}
 
 }

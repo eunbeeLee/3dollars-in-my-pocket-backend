@@ -1,7 +1,11 @@
 dependencies {
     implementation project(':threedollar-domain')
+    implementation project(':threedollar-external')
 
     // Spring MVC
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // swagger
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.4'
 }
 
