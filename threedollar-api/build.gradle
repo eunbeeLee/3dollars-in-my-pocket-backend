@@ -7,5 +7,8 @@ dependencies {
 
     // swagger
     implementation 'org.springdoc:springdoc-openapi-ui:1.5.4'
+
+    // jwt
+    implementation group: 'com.auth0', name: 'java-jwt', version: '3.1.0'
 }
 

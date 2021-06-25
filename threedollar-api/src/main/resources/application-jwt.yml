@@ -1,0 +1,3 @@
+jwt:
+  secret_key: secret_key
+  issuer: depromeet

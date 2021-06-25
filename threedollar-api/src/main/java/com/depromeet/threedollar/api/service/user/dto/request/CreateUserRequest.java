@@ -18,6 +18,10 @@ public class CreateUserRequest {
 
 	private String name;
 
+	public static CreateUserRequest of(String socialId, UserSocialType type, String name) {
+		return new CreateUserRequest(socialId, type, name);
+	}
+
 	public static CreateUserRequest testInstance(String socialId, UserSocialType type, String name) {
 		return new CreateUserRequest(socialId, type, name);
 	}

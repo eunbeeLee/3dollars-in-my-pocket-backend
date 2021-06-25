@@ -5,9 +5,9 @@ import com.depromeet.threedollar.api.service.auth.dto.request.SignUpRequest;
 
 public interface AuthService {
 
-	void signUp(SignUpRequest request);
+	Long signUp(SignUpRequest request);
 
-	void login(LoginRequest request);
+	Long login(LoginRequest request);
 
 	void signOut();
 

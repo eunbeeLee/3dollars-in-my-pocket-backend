@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 public class UpdateUserInfoRequest {
 
 	@NotBlank
-	private String nickName;
+	private String name;
 
 	public static UpdateUserInfoRequest testInstance(String name) {
 		return new UpdateUserInfoRequest(name);

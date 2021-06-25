@@ -6,31 +6,31 @@ import com.depromeet.threedollar.api.service.user.UserService;
 import com.depromeet.threedollar.api.service.user.UserServiceUtils;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
-import com.depromeet.threedollar.external.external.auth.kakao.KaKaoApiCaller;
-import com.depromeet.threedollar.external.external.auth.kakao.dto.response.KaKaoProfileResponse;
+import com.depromeet.threedollar.external.external.auth.apple.AppleTokenDecoder;
+import com.depromeet.threedollar.external.external.auth.apple.dto.response.IdTokenPayload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class KaKaoAuthService implements AuthService {
+public class AppleAuthService implements AuthService {
 
-	private static final UserSocialType socialType = UserSocialType.KAKAO;
+	private static final UserSocialType socialType = UserSocialType.APPLE;
 
-	private final KaKaoApiCaller kaKaoApiCaller;
-	private final UserService userService;
+	private final AppleTokenDecoder appleTokenDecoder;
 	private final UserRepository userRepository;
+	private final UserService userService;
 
 	@Override
 	public Long signUp(SignUpRequest request) {
-		KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo(request.getToken());
-		return userService.createUser(request.toCreateUserRequest(response.getId(), socialType));
+		IdTokenPayload payload = appleTokenDecoder.getUserInfoFromToken(request.getToken());
+		return userService.createUser(request.toCreateUserRequest(payload.getSub(), socialType));
 	}
 
 	@Override
 	public Long login(LoginRequest request) {
-		KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo(request.getToken());
-		return UserServiceUtils.findUserBySocialIdAndSocialType(userRepository, response.getId(), socialType).getId();
+		IdTokenPayload payload = appleTokenDecoder.getUserInfoFromToken(request.getToken());
+		return UserServiceUtils.findUserBySocialIdAndSocialType(userRepository, payload.getSub(), socialType).getId();
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.depromeet.threedollar.api.controller.user;
 
+import com.depromeet.threedollar.api.config.interceptor.Auth;
+import com.depromeet.threedollar.api.config.resolver.UserId;
 import com.depromeet.threedollar.api.controller.ApiResponse;
 import com.depromeet.threedollar.api.service.user.UserService;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
@@ -22,14 +24,16 @@ public class UserController {
 	private final UserService userService;
 
 	@Operation(summary = "내 정보를 가져오는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+	@Auth
 	@GetMapping("/api/v2/user/me")
-	public ApiResponse<UserInfoResponse> getMyUserInfo(Long userId) { // TODO 토큰으로 변경
+	public ApiResponse<UserInfoResponse> getMyUserInfo(@UserId Long userId) {
 		return ApiResponse.success(userService.getUserInfo(userId));
 	}
 
 	@Operation(summary = "내 정보를 수정하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+	@Auth
 	@PutMapping("/api/v2/user/me")
-	public ApiResponse<UserInfoResponse> updateMyUserInfo(@Valid @RequestBody UpdateUserInfoRequest request, Long userId) {
+	public ApiResponse<UserInfoResponse> updateMyUserInfo(@Valid @RequestBody UpdateUserInfoRequest request, @UserId Long userId) {
 		return ApiResponse.success(userService.updateUserInfo(request, userId));
 	}
 

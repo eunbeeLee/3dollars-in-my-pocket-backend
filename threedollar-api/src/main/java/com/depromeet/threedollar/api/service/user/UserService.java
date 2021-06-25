@@ -31,7 +31,7 @@ public class UserService {
 	@Transactional
 	public UserInfoResponse updateUserInfo(UpdateUserInfoRequest request, Long userId) {
 		User user = UserServiceUtils.findUserById(userRepository, userId);
-		user.update(request.getNickName());
+		user.update(request.getName());
 		return UserInfoResponse.of(user);
 	}
 
