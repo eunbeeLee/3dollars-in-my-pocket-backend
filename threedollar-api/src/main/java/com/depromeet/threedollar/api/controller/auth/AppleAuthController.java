@@ -41,6 +41,7 @@ public class AppleAuthController {
 	@Operation(summary = "Apple 계정의 회원탈퇴 요청하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
 	@DeleteMapping("/api/v2/signout/apple")
 	public ApiResponse<String> signOutApple() {
+		// TODO
 		return ApiResponse.SUCCESS;
 	}
 

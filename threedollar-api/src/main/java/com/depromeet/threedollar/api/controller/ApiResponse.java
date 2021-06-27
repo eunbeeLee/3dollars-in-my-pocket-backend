@@ -10,7 +10,7 @@ public class ApiResponse<T> {
 
 	public static final ApiResponse<String> SUCCESS = success("OK");
 
-	private String code;
+	private String resultCode;
 
 	private String message;
 

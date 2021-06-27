@@ -17,8 +17,8 @@ public class Rating {
 		this.rating = rating;
 	}
 
-	public static Rating DEFAULT() {
-		return new Rating(0);
+	public static Rating of(int rating) {
+		return new Rating(rating);
 	}
 
 	// TODO Rating에 대한 Validation이 필요함.

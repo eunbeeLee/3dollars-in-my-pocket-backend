@@ -1,7 +1,6 @@
 package com.depromeet.threedollar.domain.domain.review;
 
 import com.depromeet.threedollar.domain.domain.common.AuditingTimeEntity;
-import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.store.Rating;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,11 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-/**
- * TODO
- * storeName하고 category가 있는 이유를.. 모르겠음
- * (마이그레이션 하기 매우 까다로울거 같으니 그냥 일단 가는걸로)
- */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -27,11 +21,6 @@ public class Review extends AuditingTimeEntity {
 
 	private Long userId;
 
-	private String storeName;
-
-	@Enumerated(value = EnumType.STRING)
-	private MenuCategoryType category;
-
 	private String contents;
 
 	@Embedded
@@ -39,5 +28,26 @@ public class Review extends AuditingTimeEntity {
 
 	@Enumerated(EnumType.STRING)
 	private ReviewStatus status;
+
+	private Review(Long storeId, Long userId, String contents, int rating) {
+		this.storeId = storeId;
+		this.userId = userId;
+		this.contents = contents;
+		this.rating = Rating.of(rating);
+		this.status = ReviewStatus.POSTED;
+	}
+
+	public static Review of(Long storeId, Long userId, String contents, int rating) {
+		return new Review(storeId, userId, contents, rating);
+	}
+
+	public void delete() {
+		this.status = ReviewStatus.DELETED;
+	}
+
+	public void update(String content, int rating) {
+		this.contents = content;
+		this.rating = Rating.of(rating);
+	}
 
 }

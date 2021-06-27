@@ -25,9 +25,8 @@ public class StoreImageRepositoryCustomImpl implements StoreImageRepositoryCusto
 	@Override
 	public List<StoreImage> findStoreImagesByStoreId(Long storeId) {
 		return queryFactory.selectFrom(storeImage)
-				.innerJoin(storeImage.store, store).fetchJoin()
 				.where(
-						storeImage.store.id.eq(storeId)
+						storeImage.storeId.eq(storeId)
 				).fetch();
 	}
 

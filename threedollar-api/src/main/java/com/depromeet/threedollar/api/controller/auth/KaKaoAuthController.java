@@ -41,6 +41,7 @@ public class KaKaoAuthController {
 	@Operation(summary = "카카오 계정의 회원탈퇴 요청하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
 	@DeleteMapping("/api/v2/signout/kakao")
 	public ApiResponse<String> signOutKakao() {
+		// TODO
 		return ApiResponse.SUCCESS;
 	}
 

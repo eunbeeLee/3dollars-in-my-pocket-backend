@@ -16,13 +16,13 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UpdateStoreRequest {
 
+	private Long storeId;
+
 	private Double latitude;
 
 	private Double longitude;
 
 	private String storeName;
-
-	private List<MenuCategoryType> categories;
 
 	private StoreType storeType;
 

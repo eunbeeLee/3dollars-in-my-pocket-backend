@@ -74,4 +74,18 @@ public class Store extends AuditingTimeEntity {
 		}
 	}
 
+	public void update(Double latitude, Double longitude, String storeName, StoreType storeType) {
+		this.location = Location.of(latitude, longitude);
+		this.storeName = storeName;
+		this.storeType = storeType;
+	}
+
+	public Double getLatitude() {
+		return this.location.getLatitude();
+	}
+
+	public Double getLongitude() {
+		return this.location.getLongitude();
+	}
+
 }
