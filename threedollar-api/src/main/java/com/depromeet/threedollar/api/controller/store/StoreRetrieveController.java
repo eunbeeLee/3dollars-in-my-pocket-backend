@@ -23,7 +23,7 @@ public class StoreRetrieveController {
 	private final StoreRetrieveService storeRetrieveService;
 
 	@Operation(summary = "특정 지역 주변의 가게들을 조회하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
-	@GetMapping("/api/v2/store/around")
+	@GetMapping("/api/v2/store")
 	public ApiResponse<List<StoreInfoResponse>> getAroundStores(@Valid RetrieveAroundStoresRequest request) {
 		return ApiResponse.success(storeRetrieveService.getAllStoresLessThanDistance(request));
 	}
@@ -35,7 +35,7 @@ public class StoreRetrieveController {
 	}
 
 	@Operation(summary = "내가 작성한 가게들의 정보를 조회하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
-	@GetMapping("/api/v2/store/me")
+	@GetMapping("/api/v2/store/user")
 	public void getMyStores() {
 		// TODO
 	}

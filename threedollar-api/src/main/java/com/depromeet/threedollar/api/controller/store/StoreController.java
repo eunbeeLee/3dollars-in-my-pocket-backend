@@ -50,16 +50,16 @@ public class StoreController {
 
 	@Operation(summary = "특정 가게의 이미지를 등록하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
 	@Auth
-	@PostMapping("/api/v2/store/{storeId}/image")
+	@PostMapping("/api/v2/store/{storeId}/images")
 	public ApiResponse<StoreImageResponse> addStoreImage(@PathVariable Long storeId, @RequestPart(value = "image") MultipartFile multipartFile, @UserId Long userId) {
 		return ApiResponse.success(storeImageService.addStoreImage(storeId, multipartFile, userId));
 	}
 
 	@Operation(summary = "특정 가게의 이미지를 삭제하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
 	@Auth
-	@DeleteMapping("/api/v2/store/{storeId}/image")
-	public ApiResponse<String> deleteStoreImage(@PathVariable Long storeId) {
-		storeImageService.deleteStoreImage(storeId);
+	@DeleteMapping("/api/v2/store/images/{imageId}")
+	public ApiResponse<String> deleteStoreImage(@PathVariable Long imageId) {
+		storeImageService.deleteStoreImage(imageId);
 		return ApiResponse.SUCCESS;
 	}
 

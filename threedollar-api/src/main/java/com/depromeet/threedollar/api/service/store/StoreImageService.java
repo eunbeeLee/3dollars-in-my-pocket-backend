@@ -31,8 +31,8 @@ public class StoreImageService {
 	}
 
 	@Transactional
-	public void deleteStoreImage(Long storeImageId) {
-		StoreImage storeImage = StoreImageServiceUtils.findStoreImageById(storeImageRepository, storeImageId);
+	public void deleteStoreImage(Long imageId) {
+		StoreImage storeImage = StoreImageServiceUtils.findStoreImageById(storeImageRepository, imageId);
 		storeImage.delete();
 	}
 
