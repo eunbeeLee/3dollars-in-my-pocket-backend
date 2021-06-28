@@ -17,10 +17,13 @@ public class Review extends AuditingTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private Long storeId;
 
+	@Column(nullable = false)
 	private Long userId;
 
+	@Column(length = 300)
 	private String contents;
 
 	@Embedded

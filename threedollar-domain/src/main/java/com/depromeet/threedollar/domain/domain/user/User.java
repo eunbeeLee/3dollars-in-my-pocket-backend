@@ -20,8 +20,10 @@ public class User extends AuditingTimeEntity {
 	@Embedded
 	private SocialInfo socialInfo;
 
+	@Column(length = 50)
 	private String name;
 
+	@Column(nullable = false, length = 30)
 	@Enumerated(EnumType.STRING)
 	private UserStatusType status;
 

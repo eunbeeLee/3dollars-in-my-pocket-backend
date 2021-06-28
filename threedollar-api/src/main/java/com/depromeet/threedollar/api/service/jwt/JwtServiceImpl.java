@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.depromeet.threedollar.api.service.jwt.dto.component.JwtTokenProviderComponent;
+import com.depromeet.threedollar.domain.exception.UnAuthorizedException;
 import com.depromeet.threedollar.domain.exception.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -49,7 +50,7 @@ public class JwtServiceImpl implements JwtService {
 			final DecodedJWT jwt = createJwtVerifier().verify(token);
 			return jwt.getClaim("userId").asDouble().longValue();
 		} catch (RuntimeException e) {
-			throw new ValidationException(String.format("토큰 Decode 에 실패하였습니다 (%s)", token));
+			throw new UnAuthorizedException(String.format("토큰 Decode 에 실패하였습니다 (%s)", token));
 		}
 	}
 

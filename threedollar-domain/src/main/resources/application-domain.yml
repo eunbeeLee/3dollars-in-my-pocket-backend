@@ -32,6 +32,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+  flyway:
+    enabled: false
 ---
 spring:
   profiles: local-will
@@ -43,5 +45,7 @@ spring:
       driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
+  flyway:
+    enabled: true
 ---

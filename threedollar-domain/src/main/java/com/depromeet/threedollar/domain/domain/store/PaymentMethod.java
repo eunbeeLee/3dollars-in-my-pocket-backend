@@ -20,6 +20,7 @@ public class PaymentMethod extends AuditingTimeEntity {
 	@JoinColumn(name = "store_id", nullable = false)
 	private Store store;
 
+	@Column(nullable = false, length = 30)
 	@Enumerated(value = EnumType.STRING)
 	private PaymentMethodType method;
 

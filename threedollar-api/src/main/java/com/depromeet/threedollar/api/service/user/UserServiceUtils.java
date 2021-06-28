@@ -26,13 +26,6 @@ public class UserServiceUtils {
 		return user;
 	}
 
-	public static void validateExistsUser(UserRepository userRepository, Long userId) {
-		User user = userRepository.findUserById(userId);
-		if (user == null) {
-			throw new NotFoundException(String.format("존재하지 않는 유저 (%s) 입니다", userId));
-		}
-	}
-
 	public static User findUserBySocialIdAndSocialType(UserRepository userRepository, String socialId, UserSocialType socialType) {
 		User user = userRepository.findUserBySocialIdAndSocialType(socialId, socialType);
 		if (user == null) {

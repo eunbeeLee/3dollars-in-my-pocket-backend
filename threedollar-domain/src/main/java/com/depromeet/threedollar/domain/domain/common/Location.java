@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -12,16 +13,18 @@ import java.util.Objects;
 @Embeddable
 public class Location {
 
-	private Double latitude;
+	@Column(nullable = false)
+	private double latitude;
 
-	private Double longitude;
+	@Column(nullable = false)
+	private double longitude;
 
-	private Location(Double latitude, Double longitude) {
+	private Location(double latitude, double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
 
-	public static Location of(Double latitude, Double longitude) {
+	public static Location of(double latitude, double longitude) {
 		return new Location(latitude, longitude);
 	}
 

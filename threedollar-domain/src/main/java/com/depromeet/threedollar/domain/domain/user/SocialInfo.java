@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -14,8 +15,10 @@ import java.util.Objects;
 @Embeddable
 public class SocialInfo {
 
+	@Column(nullable = false, length = 200)
 	private String socialId;
 
+	@Column(nullable = false, length = 30)
 	@Enumerated(EnumType.STRING)
 	private UserSocialType socialType;
 

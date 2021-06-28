@@ -26,17 +26,21 @@ public class Store extends AuditingTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private Long userId;
 
 	@Embedded
 	private Location location;
 
+	@Column(nullable = false, length = 300)
 	private String storeName;
 
+	@Column(nullable = false, length = 30)
 	@Enumerated(EnumType.STRING)
 	private StoreType storeType;
 
-	private Double rating;
+	@Column(nullable = false)
+	private double rating;
 
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final Set<PaymentMethod> paymentMethods = new HashSet<>();
@@ -47,6 +51,7 @@ public class Store extends AuditingTimeEntity {
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final List<Menu> menus = new ArrayList<>();
 
+	@Column(nullable = false, length = 30)
 	@Enumerated(EnumType.STRING)
 	private StoreStatus status;
 

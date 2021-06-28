@@ -8,15 +8,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MenuRequest {
 
+	@NotBlank
 	private String name;
 
+	@NotBlank
 	private String price;
 
+	@NotNull
 	private MenuCategoryType category;
 
 	public static MenuRequest of(String name, String price, MenuCategoryType category) {

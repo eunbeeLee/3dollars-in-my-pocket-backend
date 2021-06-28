@@ -17,10 +17,13 @@ public class StoreDeleteRequest extends AuditingTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private Long storeId;
 
+	@Column(nullable = false)
 	private Long userId;
 
+	@Column(nullable = false, length = 30)
 	@Enumerated(value = EnumType.STRING)
 	private DeleteReasonType reason;
 

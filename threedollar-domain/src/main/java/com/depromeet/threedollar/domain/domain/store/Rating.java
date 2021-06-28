@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -16,6 +17,7 @@ public class Rating {
 	private static final int MIN_RATING_VALUE = 1;
 	private static final int MAX_RATING_VALUE = 5;
 
+	@Column(nullable = false)
 	private int rating;
 
 	private Rating(int rating) {
