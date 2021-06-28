@@ -1,106 +1,122 @@
-create table appearance_day
+CREATE TABLE `user`
 (
-    id         bigint      not null auto_increment,
-    created_at datetime(6),
-    updated_at datetime(6),
-    day        varchar(30) not null,
-    store_id   bigint      not null,
-    primary key (id)
+    `id`          BIGINT       NOT NULL AUTO_INCREMENT,
+    `social_id`   VARCHAR(200) NOT NULL,
+    `social_type` VARCHAR(30)  NOT NULL,
+    `name`        VARCHAR(50) DEFAULT NULL,
+    `status`      VARCHAR(30)  NOT NULL,
+    `created_at`  DATETIME(6) DEFAULT NULL,
+    `updated_at`  DATETIME(6) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uni_user_1` (`social_id`, `social_type`),
+    KEY `idx_user_1` (`name`)
+) ENGINE = InnoDB;
+
+
+CREATE TABLE `withdrawal_user`
+(
+    `user_id`         BIGINT       NOT NULL,
+    `name`            VARCHAR(50) DEFAULT NULL,
+    `social_id`       VARCHAR(200) NOT NULL,
+    `social_type`     VARCHAR(30)  NOT NULL,
+    `user_created_at` DATETIME(6) DEFAULT NULL,
+    `created_at`      DATETIME(6) DEFAULT NULL,
+    `updated_at`      DATETIME(6) DEFAULT NULL,
+    PRIMARY KEY (`user_id`)
+) ENGINE = InnoDB;
+
+
+CREATE TABLE `store`
+(
+    `id`         BIGINT           NOT NULL AUTO_INCREMENT,
+    `user_id`    BIGINT           NOT NULL,
+    `latitude`   DOUBLE PRECISION NOT NULL,
+    `longitude`  DOUBLE PRECISION NOT NULL,
+    `store_name` VARCHAR(300)     NOT NULL,
+    `store_type` VARCHAR(30)               DEFAULT NULL,
+    `rating`     DOUBLE PRECISION          DEFAULT 0,
+    `status`     VARCHAR(30)      NOT NULL DEFAULT 'ACTIVE',
+    `created_at` DATETIME(6)               DEFAULT NULL,
+    `updated_at` DATETIME(6)               DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+
+
+CREATE TABLE `store_image`
+(
+    `id`         BIGINT     NOT NULL AUTO_INCREMENT,
+    `store_id`   BIGINT     NOT NULL,
+    `user_id`    BIGINT              DEFAULT NULL,
+    `url`        VARCHAR(255)        DEFAULT NULL,
+    `is_deleted` TINYINT(1) NOT NULL DEFAULT FALSE,
+    `created_at` DATETIME(6)         DEFAULT NULL,
+    `updated_at` DATETIME(6)         DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `idx_store_image_1` (`store_id`)
+) ENGINE = InnoDB;
+
+
+CREATE TABLE `review`
+(
+    `id`         BIGINT  NOT NULL AUTO_INCREMENT,
+    `store_id`   BIGINT  NOT NULL,
+    `user_id`    BIGINT  NOT NULL,
+    `contents`   VARCHAR(300) DEFAULT NULL,
+    `rating`     INTEGER NOT NULL,
+    `status`     VARCHAR(255) DEFAULT NULL,
+    `created_at` DATETIME(6)  DEFAULT NULL,
+    `updated_at` DATETIME(6)  DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `idx_review_1` (`store_id`),
+    KEY `idx_review_2` (`user_id`)
+) ENGINE = InnoDB;
+
+
+CREATE TABLE `appearance_day`
+(
+    `id`         BIGINT      NOT NULL AUTO_INCREMENT,
+    `store_id`   BIGINT      NOT NULL,
+    `day`        VARCHAR(30) NOT NULL,
+    `created_at` DATETIME(6) DEFAULT NULL,
+    `updated_at` DATETIME(6) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `idx_appearance_day_1` (`store_id`)
+) ENGINE = InnoDB;
+
+CREATE TABLE `menu`
+(
+    `id`         BIGINT      NOT NULL AUTO_INCREMENT,
+    `store_id`   BIGINT      NOT NULL,
+    `name`       VARCHAR(50)  DEFAULT NULL,
+    `price`      VARCHAR(100) DEFAULT NULL,
+    `category`   VARCHAR(30) NOT NULL,
+    `created_at` DATETIME(6)  DEFAULT NULL,
+    `updated_at` DATETIME(6)  DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `idx_menu_1` (`store_id`)
 ) engine = InnoDB;
 
-create table menu
+CREATE TABLE `payment_method`
 (
-    id         bigint       not null auto_increment,
-    created_at datetime(6),
-    updated_at datetime(6),
-    category   varchar(30)  not null,
-    name       varchar(50)  DEFAULT NULL,
-    price      varchar(100) DEFAULT NULL,
-    store_id   bigint       not null,
-    primary key (id)
-) engine = InnoDB;
+    `id`         BIGINT      NOT NULL AUTO_INCREMENT,
+    `store_id`   BIGINT      NOT NULL,
+    `method`     VARCHAR(30) NOT NULL,
+    `created_at` DATETIME(6) DEFAULT NULL,
+    `updated_at` DATETIME(6) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `idx_payment_method_1` (`store_id`)
+) ENGINE = InnoDB;
 
-create table payment_method
-(
-    id         bigint      not null auto_increment,
-    created_at datetime(6),
-    updated_at datetime(6),
-    method     varchar(30) not null,
-    store_id   bigint      not null,
-    primary key (id)
-) engine = InnoDB;
 
-create table review
+CREATE TABLE `store_delete_request`
 (
-    id         bigint       not null auto_increment,
-    created_at datetime(6),
-    updated_at datetime(6),
-    contents   varchar(300)  DEFAULT NULL,
-    rating     integer      not null,
-    status     varchar(255),
-    store_id   bigint       not null,
-    user_id    bigint       not null,
-    primary key (id)
-) engine = InnoDB;
+    `id`         BIGINT      NOT NULL AUTO_INCREMENT,
+    `reason`     VARCHAR(30) NOT NULL,
+    `store_id`   BIGINT      NOT NULL,
+    `user_id`    BIGINT      NOT NULL,
+    `created_at` DATETIME(6) DEFAULT NULL,
+    `updated_at` DATETIME(6) DEFAULT NULL,
+    PRIMARY KEY (id),
+    KEY `idx_store_delete_request_1` (`store_id`)
+) ENGINE = InnoDB;
 
-create table store
-(
-    id         bigint           not null auto_increment,
-    created_at datetime(6),
-    updated_at datetime(6),
-    latitude   double precision not null,
-    longitude  double precision not null,
-    rating     double precision DEFAULT 0,
-    status     varchar(30)      NOT NULL  DEFAULT 'ACTIVE',
-    store_name varchar(300)     not null,
-    store_type varchar(30)      DEFAULT NULL,
-    user_id    bigint           not null,
-    primary key (id)
-) engine = InnoDB;
-
-create table store_delete_request
-(
-    id         bigint      not null auto_increment,
-    created_at datetime(6),
-    updated_at datetime(6),
-    reason     varchar(30) not null,
-    store_id   bigint      not null,
-    user_id    bigint      not null,
-    primary key (id)
-) engine = InnoDB;
-
-create table store_image
-(
-    id         bigint not null auto_increment,
-    created_at datetime(6),
-    updated_at datetime(6),
-    is_deleted bit    not null DEFAULT FALSE,
-    store_id   bigint NOT NULL,
-    url        varchar(255),
-    user_id    bigint DEFAULT NULL,
-    primary key (id)
-) engine = InnoDB;
-
-create table user
-(
-    id          bigint       not null auto_increment,
-    created_at  datetime(6),
-    updated_at  datetime(6),
-    name        varchar(50),
-    social_id   varchar(200) not null,
-    social_type varchar(30)  not null,
-    status      varchar(30)  not null,
-    primary key (id)
-) engine = InnoDB;
-
-create table withdrawal_user
-(
-    user_id         bigint       not null,
-    created_at      datetime(6),
-    updated_at      datetime(6),
-    name            varchar(255),
-    social_id       varchar(200) not null,
-    social_type     varchar(30)  not null,
-    user_created_at datetime(6),
-    primary key (user_id)
-) engine = InnoDB;

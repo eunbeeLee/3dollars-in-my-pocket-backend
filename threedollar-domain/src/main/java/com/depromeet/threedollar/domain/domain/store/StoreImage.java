@@ -10,13 +10,16 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(
+		indexes = @Index(name = "idx_store_image_1", columnList = "storeId")
+)
 public class StoreImage extends AuditingTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "store_id", nullable = false)
+	@Column(nullable = false)
 	private Long storeId;
 
 	private Long userId;

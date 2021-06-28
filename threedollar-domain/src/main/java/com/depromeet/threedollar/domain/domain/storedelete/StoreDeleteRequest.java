@@ -10,7 +10,9 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-// TODO 테이블 이름 delete_request -> store_delete_request 마이그레이션 필요
+@Table(
+		indexes = @Index(name = "idx_store_delete_request_1", columnList = "storeId")
+)
 public class StoreDeleteRequest extends AuditingTimeEntity {
 
 	@Id

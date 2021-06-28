@@ -11,6 +11,12 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(
+		uniqueConstraints = {
+				@UniqueConstraint(name = "uni_user_1", columnNames = {"socialId", "socialType"})
+		},
+		indexes = @Index(name = "idx_user_1", columnList = "name")
+)
 public class User extends AuditingTimeEntity {
 
 	@Id

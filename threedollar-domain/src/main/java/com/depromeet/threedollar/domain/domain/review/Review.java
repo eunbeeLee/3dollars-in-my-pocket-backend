@@ -11,6 +11,12 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(
+		indexes = {
+				@Index(name = "idx_review_1", columnList = "storeId"),
+				@Index(name = "idx_review_2", columnList = "userId")
+		}
+)
 public class Review extends AuditingTimeEntity {
 
 	@Id

@@ -18,7 +18,8 @@ public class StoreImageRepositoryCustomImpl implements StoreImageRepositoryCusto
 	public StoreImage findStoreImageById(Long storeImageId) {
 		return queryFactory.selectFrom(storeImage)
 				.where(
-						storeImage.id.eq(storeImageId)
+						storeImage.id.eq(storeImageId),
+						storeImage.isDeleted.isFalse()
 				).fetchOne();
 	}
 
@@ -26,7 +27,8 @@ public class StoreImageRepositoryCustomImpl implements StoreImageRepositoryCusto
 	public List<StoreImage> findStoreImagesByStoreId(Long storeId) {
 		return queryFactory.selectFrom(storeImage)
 				.where(
-						storeImage.storeId.eq(storeId)
+						storeImage.storeId.eq(storeId),
+						storeImage.isDeleted.isFalse()
 				).fetch();
 	}
 
