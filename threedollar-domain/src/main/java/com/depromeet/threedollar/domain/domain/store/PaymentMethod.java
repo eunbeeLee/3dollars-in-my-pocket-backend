@@ -17,7 +17,7 @@ public class PaymentMethod extends AuditingTimeEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "store_id")
+	@JoinColumn(name = "store_id", nullable = false)
 	private Store store;
 
 	@Enumerated(value = EnumType.STRING)

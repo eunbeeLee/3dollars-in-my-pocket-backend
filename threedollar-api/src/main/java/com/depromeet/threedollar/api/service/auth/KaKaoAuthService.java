@@ -34,8 +34,8 @@ public class KaKaoAuthService implements AuthService {
 	}
 
 	@Override
-	public void signOut() {
-
+	public void signOut(Long userId) {
+		userService.signOut(userId);
 	}
 
 }

@@ -36,7 +36,7 @@ public class Store extends AuditingTimeEntity {
 	@Enumerated(EnumType.STRING)
 	private StoreType storeType;
 
-	private Float rating;
+	private Double rating;
 
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final Set<PaymentMethod> paymentMethods = new HashSet<>();
@@ -47,7 +47,8 @@ public class Store extends AuditingTimeEntity {
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final List<Menu> menus = new ArrayList<>();
 
-	private boolean isDeleted;
+	@Enumerated(EnumType.STRING)
+	private StoreStatus status;
 
 	@Builder
 	private Store(Long userId, Double latitude, Double longitude, String storeName, StoreType storeType) {
@@ -55,8 +56,8 @@ public class Store extends AuditingTimeEntity {
 		this.location = Location.of(latitude, longitude);
 		this.storeName = storeName;
 		this.storeType = storeType;
-		this.rating = 0f;
-		this.isDeleted = false;
+		this.rating = 0.0;
+		this.status = StoreStatus.ACTIVE;
 	}
 
 	public static Store newInstance(Long userId, Double latitude, Double longitude, String storeName, StoreType storeType) {
@@ -126,12 +127,12 @@ public class Store extends AuditingTimeEntity {
 	}
 
 	public void delete() {
-		this.isDeleted = true;
+		this.status = StoreStatus.DELETED;
 	}
 
 	public List<MenuCategoryType> getMenuCategories() {
 		return this.menus.stream()
-				.map(Menu::getCategory)
+				.map(Menu::getCategory).distinct()
 				.collect(Collectors.toList());
 	}
 
@@ -147,4 +148,7 @@ public class Store extends AuditingTimeEntity {
 				.collect(Collectors.toSet());
 	}
 
+	public void updateRating(double average) {
+		this.rating = average;
+	}
 }

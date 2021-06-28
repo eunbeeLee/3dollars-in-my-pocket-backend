@@ -1,5 +1,7 @@
 package com.depromeet.threedollar.api.controller.auth;
 
+import com.depromeet.threedollar.api.config.interceptor.Auth;
+import com.depromeet.threedollar.api.config.resolver.UserId;
 import com.depromeet.threedollar.api.controller.ApiResponse;
 import com.depromeet.threedollar.api.service.auth.AuthService;
 import com.depromeet.threedollar.api.service.auth.dto.request.LoginRequest;
@@ -39,9 +41,10 @@ public class AppleAuthController {
 	}
 
 	@Operation(summary = "Apple 계정의 회원탈퇴 요청하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+	@Auth
 	@DeleteMapping("/api/v2/signout/apple")
-	public ApiResponse<String> signOutApple() {
-		// TODO
+	public ApiResponse<String> signOutApple(@UserId Long userId) {
+		appleAuthService.signOut(userId);
 		return ApiResponse.SUCCESS;
 	}
 

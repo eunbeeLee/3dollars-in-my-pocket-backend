@@ -18,7 +18,7 @@ public class Menu extends AuditingTimeEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "store_id")
+	@JoinColumn(name = "store_id", nullable = false)
 	private Store store;
 
 	private String name;

@@ -25,9 +25,13 @@ class UserServiceTest {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private WithdrawalUserRepository withdrawalUserRepository;
+
 	@AfterEach
 	void cleanUp() {
 		userRepository.deleteAll();
+		withdrawalUserRepository.deleteAll();
 	}
 
 	@Test
@@ -53,6 +57,20 @@ class UserServiceTest {
 		// given
 		String name = "가슴속 삼천원";
 		userRepository.save(UserCreator.create("social-id", UserSocialType.KAKAO, name));
+
+		CreateUserRequest request = CreateUserRequest.testInstance("another-id", UserSocialType.APPLE, name);
+
+		// when & then
+		assertThatThrownBy(() -> userService.createUser(request)).isInstanceOf(ConflictException.class);
+	}
+
+	@Test
+	void 회원탈퇴한_유저의_닉네임과_중복될수_없다() {
+		// given
+		String socialId = "social-id";
+		UserSocialType type = UserSocialType.KAKAO;
+		String name = "가슴속 삼천원";
+		userRepository.save(UserCreator.createInactive("social-id", type, name));
 
 		CreateUserRequest request = CreateUserRequest.testInstance("another-id", UserSocialType.APPLE, name);
 
@@ -145,6 +163,33 @@ class UserServiceTest {
 
 		// when & then
 		assertThatThrownBy(() -> userService.updateUserInfo(request, userId)).isInstanceOf(NotFoundException.class);
+	}
+
+	@Test
+	void 회원탈퇴하면_INACTIVE되고_WithdrawlUser_데이터가_하나_생성된다() {
+		// given
+		User user = UserCreator.create("social-id", UserSocialType.APPLE, "기존의 닉네임");
+		userRepository.save(user);
+
+		// then
+		userService.signOut(user.getId());
+
+		// then
+		List<User> users = userRepository.findAll();
+		assertThat(users).hasSize(1);
+		assertThat(users.get(0).getStatus()).isEqualTo(UserStatusType.INACTIVE);
+
+		// then
+		List<WithdrawalUser> withdrawalUsers = withdrawalUserRepository.findAll();
+		assertThat(withdrawalUsers).hasSize(1);
+		assertWithdrawalUser(withdrawalUsers.get(0), user.getId(), user.getName(), user.getSocialId(), user.getSocialType());
+	}
+
+	private void assertWithdrawalUser(WithdrawalUser withdrawalUser, Long userId, String name, String socialId, UserSocialType socialType) {
+		assertThat(withdrawalUser.getUserId()).isEqualTo(userId);
+		assertThat(withdrawalUser.getName()).isEqualTo(name);
+		assertThat(withdrawalUser.getSocialInfo().getSocialId()).isEqualTo(socialId);
+		assertThat(withdrawalUser.getSocialInfo().getSocialType()).isEqualTo(socialType);
 	}
 
 	private void assertUserInfo(User user, String socialId, UserSocialType type, String name, UserStatusType statusType) {

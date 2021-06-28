@@ -5,6 +5,7 @@ import com.depromeet.threedollar.api.service.store.dto.request.DeleteStoreReques
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreCreator;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
+import com.depromeet.threedollar.domain.domain.store.StoreStatus;
 import com.depromeet.threedollar.domain.domain.storedelete.DeleteReasonType;
 import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequest;
 import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequestCreator;
@@ -104,7 +105,7 @@ class StoreDeleteServiceTest extends UserSetUpTest {
 		// then
 		List<Store> stores = storeRepository.findAll();
 		assertThat(stores).hasSize(1);
-		assertThat(stores.get(0).isDeleted()).isTrue();
+		assertThat(stores.get(0).getStatus()).isEqualTo(StoreStatus.DELETED);
 
 		List<StoreDeleteRequest> storeDeleteRequestList = storeDeleteRequestRepository.findAll();
 		assertThat(storeDeleteRequestList).hasSize(3);

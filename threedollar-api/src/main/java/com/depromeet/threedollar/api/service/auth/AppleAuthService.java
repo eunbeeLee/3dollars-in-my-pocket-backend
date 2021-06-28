@@ -10,6 +10,7 @@ import com.depromeet.threedollar.external.external.auth.apple.AppleTokenDecoder;
 import com.depromeet.threedollar.external.external.auth.apple.dto.response.IdTokenPayload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -21,12 +22,14 @@ public class AppleAuthService implements AuthService {
 	private final UserRepository userRepository;
 	private final UserService userService;
 
+	@Transactional
 	@Override
 	public Long signUp(SignUpRequest request) {
 		IdTokenPayload payload = appleTokenDecoder.getUserInfoFromToken(request.getToken());
 		return userService.createUser(request.toCreateUserRequest(payload.getSub(), socialType));
 	}
 
+	@Transactional
 	@Override
 	public Long login(LoginRequest request) {
 		IdTokenPayload payload = appleTokenDecoder.getUserInfoFromToken(request.getToken());
@@ -34,8 +37,8 @@ public class AppleAuthService implements AuthService {
 	}
 
 	@Override
-	public void signOut() {
-
+	public void signOut(Long userId) {
+		userService.signOut(userId);
 	}
 
 }

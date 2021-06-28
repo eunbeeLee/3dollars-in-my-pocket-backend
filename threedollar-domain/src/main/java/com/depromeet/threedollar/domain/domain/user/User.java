@@ -2,6 +2,7 @@ package com.depromeet.threedollar.domain.domain.user;
 
 import com.depromeet.threedollar.domain.domain.common.AuditingTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,14 +25,15 @@ public class User extends AuditingTimeEntity {
 	@Enumerated(EnumType.STRING)
 	private UserStatusType status;
 
-	User(String socialId, UserSocialType socialType, String name) {
+	@Builder
+	User(String socialId, UserSocialType socialType, String name, UserStatusType statusType) {
 		this.socialInfo = SocialInfo.of(socialId, socialType);
 		this.name = name;
-		this.status = UserStatusType.ACTIVE;
+		this.status = statusType;
 	}
 
 	public static User newInstance(String socialId, UserSocialType socialType, String name) {
-		return new User(socialId, socialType, name);
+		return new User(socialId, socialType, name, UserStatusType.ACTIVE);
 	}
 
 	public void update(String name) {
@@ -44,6 +46,31 @@ public class User extends AuditingTimeEntity {
 
 	public UserSocialType getSocialType() {
 		return this.socialInfo.getSocialType();
+	}
+
+	public boolean isInActive() {
+		return this.status.equals(UserStatusType.INACTIVE);
+	}
+
+	public String getName() {
+		if (isInActive()) {
+			return "사라진 제보자";
+		}
+		return this.name;
+	}
+
+	public WithdrawalUser signOut() {
+		this.status = UserStatusType.INACTIVE;
+		return WithdrawalUser.of(this);
+	}
+
+	public void rejoin(String name) {
+		this.status = UserStatusType.ACTIVE;
+		this.name = name;
+	}
+
+	String getOriginName() {
+		return this.name;
 	}
 
 }

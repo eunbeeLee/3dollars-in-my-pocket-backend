@@ -1,6 +1,7 @@
 package com.depromeet.threedollar.domain.domain.store.repository;
 
 import com.depromeet.threedollar.domain.domain.store.Store;
+import com.depromeet.threedollar.domain.domain.store.StoreStatus;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +24,7 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
 				.leftJoin(store.menus, menu)
 				.where(
 						store.id.eq(storeId),
-						store.isDeleted.isFalse()
+						store.status.eq(StoreStatus.ACTIVE)
 				).fetchOne();
 	}
 

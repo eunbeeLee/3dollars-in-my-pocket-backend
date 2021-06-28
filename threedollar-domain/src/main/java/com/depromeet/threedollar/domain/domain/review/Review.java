@@ -50,4 +50,8 @@ public class Review extends AuditingTimeEntity {
 		this.rating = Rating.of(rating);
 	}
 
+	public int getRating() {
+		return this.rating.getRating();
+	}
+
 }

@@ -2,6 +2,7 @@ package com.depromeet.threedollar.domain.domain.user;
 
 import com.depromeet.threedollar.domain.domain.common.AuditingTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,5 +28,22 @@ public class WithdrawalUser extends AuditingTimeEntity {
 	private SocialInfo socialInfo;
 
 	private LocalDateTime userCreatedAt;
+
+	@Builder
+	private WithdrawalUser(Long userId, String name, SocialInfo socialInfo, LocalDateTime userCreatedAt) {
+		this.userId = userId;
+		this.name = name;
+		this.socialInfo = socialInfo;
+		this.userCreatedAt = userCreatedAt;
+	}
+
+	static WithdrawalUser of(User user) {
+		return WithdrawalUser.builder()
+				.userId(user.getId())
+				.name(user.getOriginName())
+				.socialInfo(SocialInfo.of(user.getSocialId(), user.getSocialType()))
+				.userCreatedAt(user.getCreatedAt())
+				.build();
+	}
 
 }

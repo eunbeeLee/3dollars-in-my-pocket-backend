@@ -12,12 +12,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserInfoResponse {
 
+	private Long id;
+
 	private String name;
 
 	private UserSocialType socialType;
 
 	public static UserInfoResponse of(User user) {
-		return new UserInfoResponse(user.getName(), user.getSocialType());
+		return new UserInfoResponse(user.getId(), user.getName(), user.getSocialType());
+	}
+
+	public static UserInfoResponse of(Long userId, String userName, UserSocialType userSocialType) {
+		return new UserInfoResponse(userId, userName, userSocialType);
 	}
 
 }

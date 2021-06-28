@@ -2,6 +2,7 @@ package com.depromeet.threedollar.domain.domain.user.repository;
 
 import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
+import com.depromeet.threedollar.domain.domain.user.UserStatusType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +18,8 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 		return queryFactory.selectFrom(user)
 				.where(
 						user.socialInfo.socialId.eq(socialId),
-						user.socialInfo.socialType.eq(type)
+						user.socialInfo.socialType.eq(type),
+						user.status.eq(UserStatusType.ACTIVE)
 				).fetchOne();
 	}
 
@@ -33,7 +35,8 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 	public User findUserById(Long userId) {
 		return queryFactory.selectFrom(user)
 				.where(
-						user.id.eq(userId)
+						user.id.eq(userId),
+						user.status.eq(UserStatusType.ACTIVE)
 				).fetchOne();
 	}
 

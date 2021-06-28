@@ -1,9 +1,11 @@
 package com.depromeet.threedollar.api.service.store;
 
+import com.depromeet.threedollar.api.service.review.dto.response.ReviewResponse;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveAroundStoresRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreDetailInfoResponse;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
 import com.depromeet.threedollar.api.service.user.UserServiceUtils;
+import com.depromeet.threedollar.domain.domain.review.ReviewRepository;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
@@ -24,6 +26,7 @@ public class StoreRetrieveService {
 	private final StoreRepository storeRepository;
 	private final StoreImageService storeImageService;
 	private final UserRepository userRepository;
+	private final ReviewRepository reviewRepository;
 
 	@Transactional(readOnly = true)
 	public List<StoreInfoResponse> getAllStoresLessThanDistance(RetrieveAroundStoresRequest request) {
@@ -37,7 +40,14 @@ public class StoreRetrieveService {
 	@Transactional(readOnly = true)
 	public StoreDetailInfoResponse getDetailStoreInfo(Long storeId, Double latitude, Double longitude) {
 		Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
-		return StoreDetailInfoResponse.of(store, storeImageService.getStoreImages(storeId), latitude, longitude, UserServiceUtils.findUserById(userRepository, store.getUserId()));
+		return StoreDetailInfoResponse.of(store, storeImageService.getStoreImages(storeId), latitude, longitude,
+				UserServiceUtils.findUserById(userRepository, store.getUserId()), getReviewResponse(storeId));
+	}
+
+	private List<ReviewResponse> getReviewResponse(Long storeId) {
+		return reviewRepository.findAllReviewWithCreatorByStoreId(storeId).stream()
+				.map(ReviewResponse::of)
+				.collect(Collectors.toList());
 	}
 
 }

@@ -20,7 +20,7 @@ public class StoreInfoResponse {
 	private Double latitude;
 	private Double longitude;
 	private String storeName;
-	private Float rating;
+	private Double rating;
 	private Integer distance;
 	private final List<MenuCategoryType> categories = new ArrayList<>();
 
