@@ -1,7 +1,7 @@
 package com.depromeet.threedollar.api.service.store.dto.request;
 
-import com.depromeet.threedollar.api.service.menu.dto.request.MenuRequest;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
+import com.depromeet.threedollar.domain.domain.menu.Menu;
 import com.depromeet.threedollar.domain.domain.store.PaymentMethodType;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreType;
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -55,7 +56,14 @@ public class AddStoreRequest {
 		Store store = Store.newInstance(userId, latitude, longitude, storeName, storeType);
 		store.addPaymentMethods(paymentMethods);
 		store.addAppearanceDays(appearanceDays);
+		store.addMenus(toMenus(store));
 		return store;
+	}
+
+	private List<Menu> toMenus(Store store) {
+		return menu.stream()
+				.map(menu -> menu.toEntity(store))
+				.collect(Collectors.toList());
 	}
 
 }

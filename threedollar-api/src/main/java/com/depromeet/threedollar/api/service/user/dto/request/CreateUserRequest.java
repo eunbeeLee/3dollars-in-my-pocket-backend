@@ -7,15 +7,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CreateUserRequest {
 
+	@NotBlank
 	private String socialId;
 
+	@NotNull
 	private UserSocialType socialType;
 
+	@NotBlank
 	private String name;
 
 	public static CreateUserRequest of(String socialId, UserSocialType type, String name) {

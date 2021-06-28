@@ -7,11 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DeleteStoreRequest {
 
+	@NotNull
 	private DeleteReasonType deleteReasonType;
 
 	public static DeleteStoreRequest testInstance(DeleteReasonType reasonType) {

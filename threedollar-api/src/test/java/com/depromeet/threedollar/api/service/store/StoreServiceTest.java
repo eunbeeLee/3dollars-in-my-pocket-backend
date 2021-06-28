@@ -1,8 +1,8 @@
 package com.depromeet.threedollar.api.service.store;
 
 import com.depromeet.threedollar.api.service.UserSetUpTest;
-import com.depromeet.threedollar.api.service.menu.dto.request.MenuRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
+import com.depromeet.threedollar.api.service.store.dto.request.MenuRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
 import com.depromeet.threedollar.domain.domain.menu.Menu;
@@ -41,8 +41,8 @@ class StoreServiceTest extends UserSetUpTest {
 		super.cleanup();
 		appearanceDayRepository.deleteAllInBatch();
 		paymentMethodRepository.deleteAllInBatch();
+		menuRepository.deleteAllInBatch();
 		storeRepository.deleteAllInBatch();
-		menuRepository.deleteAll();
 	}
 
 	@Test

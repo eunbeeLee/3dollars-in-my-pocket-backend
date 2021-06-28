@@ -3,14 +3,19 @@ package com.depromeet.threedollar.domain.domain.store;
 import com.depromeet.threedollar.domain.domain.common.AuditingTimeEntity;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
 import com.depromeet.threedollar.domain.domain.common.Location;
+import com.depromeet.threedollar.domain.domain.menu.Menu;
+import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -39,6 +44,9 @@ public class Store extends AuditingTimeEntity {
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final Set<AppearanceDay> appearanceDays = new HashSet<>();
 
+	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+	private final List<Menu> menus = new ArrayList<>();
+
 	private boolean isDeleted;
 
 	@Builder
@@ -66,6 +74,11 @@ public class Store extends AuditingTimeEntity {
 		}
 	}
 
+	public void updatePaymentMethods(Set<PaymentMethodType> paymentMethods) {
+		this.paymentMethods.clear();
+		addPaymentMethods(paymentMethods);
+	}
+
 	private void addAppearanceDay(DayOfTheWeek dayOfTheWeek) {
 		AppearanceDay appearanceDay = AppearanceDay.of(this, dayOfTheWeek);
 		this.appearanceDays.add(appearanceDay);
@@ -75,6 +88,26 @@ public class Store extends AuditingTimeEntity {
 		for (DayOfTheWeek dayOfTheWeek : dayOfTheWeeks) {
 			this.addAppearanceDay(dayOfTheWeek);
 		}
+	}
+
+	public void updateAppearanceDays(Set<DayOfTheWeek> dayOfTheWeeks) {
+		this.appearanceDays.clear();
+		addAppearanceDays(dayOfTheWeeks);
+	}
+
+	private void addMenu(Menu menu) {
+		this.menus.add(menu);
+	}
+
+	public void addMenus(List<Menu> menus) {
+		for (Menu menu : menus) {
+			this.addMenu(menu);
+		}
+	}
+
+	public void updateMenu(List<Menu> menus) {
+		this.menus.clear();
+		addMenus(menus);
 	}
 
 	public void update(Double latitude, Double longitude, String storeName, StoreType storeType, Long userId) {
@@ -92,18 +125,26 @@ public class Store extends AuditingTimeEntity {
 		return this.location.getLongitude();
 	}
 
-	public void updatePaymentMethods(Set<PaymentMethodType> paymentMethods) {
-		this.paymentMethods.clear();
-		addPaymentMethods(paymentMethods);
-	}
-
-	public void updateAppearanceDays(Set<DayOfTheWeek> dayOfTheWeeks) {
-		this.appearanceDays.clear();
-		addAppearanceDays(dayOfTheWeeks);
-	}
-
 	public void delete() {
 		this.isDeleted = true;
+	}
+
+	public List<MenuCategoryType> getMenuCategories() {
+		return this.menus.stream()
+				.map(Menu::getCategory)
+				.collect(Collectors.toList());
+	}
+
+	public Set<DayOfTheWeek> getAppearanceDaysType() {
+		return this.appearanceDays.stream()
+				.map(AppearanceDay::getDay)
+				.collect(Collectors.toSet());
+	}
+
+	public Set<PaymentMethodType> getPaymentMethodsType() {
+		return this.paymentMethods.stream()
+				.map(PaymentMethod::getMethod)
+				.collect(Collectors.toSet());
 	}
 
 }

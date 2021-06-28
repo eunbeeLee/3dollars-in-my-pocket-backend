@@ -49,7 +49,7 @@ class StoreDeleteServiceTest extends UserSetUpTest {
 		DeleteReasonType type = DeleteReasonType.NOSTORE;
 
 		// when
-		;
+		storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
 
 		// then
 		List<StoreDeleteRequest> storeDeleteRequestList = storeDeleteRequestRepository.findAll();
@@ -66,7 +66,7 @@ class StoreDeleteServiceTest extends UserSetUpTest {
 		storeDeleteRequestRepository.save(StoreDeleteRequestCreator.create(store.getId(), userId, DeleteReasonType.NOSTORE));
 
 		// when & then
-		assertThatThrownBy(() -> storeDeleteRequestService.delete(store, DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId)).isInstanceOf(ConflictException.class);
+		assertThatThrownBy(() -> storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId)).isInstanceOf(ConflictException.class);
 	}
 
 	@Test
@@ -78,7 +78,7 @@ class StoreDeleteServiceTest extends UserSetUpTest {
 		storeDeleteRequestRepository.save(StoreDeleteRequestCreator.create(store.getId(), 90L, DeleteReasonType.WRONG_CONTENT));
 
 		// when
-		storeDeleteRequestService.delete(store, DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
+		storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
 
 		// then
 		List<StoreDeleteRequest> storeDeleteRequestList = storeDeleteRequestRepository.findAll();
@@ -99,7 +99,7 @@ class StoreDeleteServiceTest extends UserSetUpTest {
 		);
 
 		// when
-		storeDeleteRequestService.delete(store, DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
+		storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
 
 		// then
 		List<Store> stores = storeRepository.findAll();

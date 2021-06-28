@@ -17,7 +17,7 @@ public class StoreImage extends AuditingTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "image_id") // TODO 실제 테이블에는 image_id여서 마이그레이션이 필요합니다.
+	@Column(name = "store_id") // TODO 실제 테이블에는 image_id여서 마이그레이션이 필요합니다.
 	private Long storeId;
 
 	private Long userId;

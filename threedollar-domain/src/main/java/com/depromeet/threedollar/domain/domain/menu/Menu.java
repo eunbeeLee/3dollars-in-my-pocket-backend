@@ -1,6 +1,7 @@
 package com.depromeet.threedollar.domain.domain.menu;
 
 import com.depromeet.threedollar.domain.domain.common.AuditingTimeEntity;
+import com.depromeet.threedollar.domain.domain.store.Store;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,9 @@ public class Menu extends AuditingTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Long storeId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "store_id")
+	private Store store;
 
 	private String name;
 
@@ -25,15 +28,15 @@ public class Menu extends AuditingTimeEntity {
 	@Enumerated(EnumType.STRING)
 	private MenuCategoryType category;
 
-	private Menu(Long storeId, String name, String price, MenuCategoryType category) {
-		this.storeId = storeId;
+	private Menu(Store store, String name, String price, MenuCategoryType category) {
+		this.store = store;
 		this.name = name;
 		this.price = price;
 		this.category = category;
 	}
 
-	public static Menu newInstance(Long storeId, String name, String price, MenuCategoryType category) {
-		return new Menu(storeId, name, price, category);
+	public static Menu of(Store store, String name, String price, MenuCategoryType category) {
+		return new Menu(store, name, price, category);
 	}
 
 }

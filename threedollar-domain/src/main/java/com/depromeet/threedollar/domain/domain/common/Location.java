@@ -24,4 +24,8 @@ public class Location {
 		return new Location(latitude, longitude);
 	}
 
+	public Boolean isEmpty() {
+		return this.latitude == null || this.longitude == null;
+	}
+
 }
