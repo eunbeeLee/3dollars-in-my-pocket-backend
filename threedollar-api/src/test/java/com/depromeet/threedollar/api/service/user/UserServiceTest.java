@@ -4,6 +4,8 @@ import com.depromeet.threedollar.api.service.user.dto.request.CreateUserRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import com.depromeet.threedollar.domain.domain.user.*;
+import com.depromeet.threedollar.domain.exception.ConflictException;
+import com.depromeet.threedollar.domain.exception.NotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +57,7 @@ class UserServiceTest {
 		CreateUserRequest request = CreateUserRequest.testInstance("another-id", UserSocialType.APPLE, name);
 
 		// when & then
-		assertThatThrownBy(() -> userService.createUser(request)).isInstanceOf(IllegalArgumentException.class);
+		assertThatThrownBy(() -> userService.createUser(request)).isInstanceOf(ConflictException.class);
 	}
 
 	@Test
@@ -68,7 +70,7 @@ class UserServiceTest {
 		CreateUserRequest request = CreateUserRequest.testInstance(socialId, type, "새로운 닉네임");
 
 		// when & then
-		assertThatThrownBy(() -> userService.createUser(request)).isInstanceOf(IllegalArgumentException.class);
+		assertThatThrownBy(() -> userService.createUser(request)).isInstanceOf(ConflictException.class);
 	}
 
 	@Test
@@ -112,7 +114,7 @@ class UserServiceTest {
 		Long userId = 999L;
 
 		// when & then
-		assertThatThrownBy(() -> userService.getUserInfo(userId)).isInstanceOf(IllegalArgumentException.class);
+		assertThatThrownBy(() -> userService.getUserInfo(userId)).isInstanceOf(NotFoundException.class);
 	}
 
 	@Test
@@ -142,7 +144,7 @@ class UserServiceTest {
 		UpdateUserInfoRequest request = UpdateUserInfoRequest.testInstance("name");
 
 		// when & then
-		assertThatThrownBy(() -> userService.updateUserInfo(request, userId)).isInstanceOf(IllegalArgumentException.class);
+		assertThatThrownBy(() -> userService.updateUserInfo(request, userId)).isInstanceOf(NotFoundException.class);
 	}
 
 	private void assertUserInfo(User user, String socialId, UserSocialType type, String name, UserStatusType statusType) {

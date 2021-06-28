@@ -1,6 +1,5 @@
-package com.depromeet.threedollar.api;
+package com.depromeet.threedollar.api.controller;
 
-import com.depromeet.threedollar.api.controller.ApiResponse;
 import com.depromeet.threedollar.api.service.jwt.JwtService;
 import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;

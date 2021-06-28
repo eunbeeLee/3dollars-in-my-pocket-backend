@@ -2,6 +2,7 @@ package com.depromeet.threedollar.domain.domain.review.repository;
 
 import com.depromeet.threedollar.domain.domain.review.Review;
 import com.depromeet.threedollar.domain.domain.review.ReviewStatus;
+import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithCreatorResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 

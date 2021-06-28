@@ -1,9 +1,11 @@
 package com.depromeet.threedollar.api.config;
 
+import com.depromeet.threedollar.api.config.resolver.UserId;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springdoc.core.SpringDocUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,6 +20,10 @@ public class SwaggerConfig {
 				.info(new Info()
 						.title("Muyaho API Server")
 						.description("Muyaho API Docs"));
+	}
+
+	static {
+		SpringDocUtils.getConfig().addAnnotationsToIgnore(UserId.class);
 	}
 
 }

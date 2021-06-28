@@ -8,6 +8,7 @@ import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor
 @Service
@@ -31,6 +32,7 @@ public class UserService {
 	@Transactional
 	public UserInfoResponse updateUserInfo(UpdateUserInfoRequest request, Long userId) {
 		User user = UserServiceUtils.findUserById(userRepository, userId);
+		UserServiceUtils.validateNotExistsUserName(userRepository, request.getName()); // TODO 차후 닉네임 공백 적용 여부 고민.
 		user.update(request.getName());
 		return UserInfoResponse.of(user);
 	}

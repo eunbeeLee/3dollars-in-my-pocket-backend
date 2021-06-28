@@ -7,6 +7,10 @@ import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreType;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,19 +18,26 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AddStoreRequest {
 
+	@NotNull
 	private Double latitude;
 
+	@NotNull
 	private Double longitude;
 
+	@NotBlank
 	private String storeName;
 
+	@NotNull
 	private StoreType storeType;
 
-	private Set<DayOfTheWeek> appearanceDays;
+	@NotNull
+	private Set<DayOfTheWeek> appearanceDays = new HashSet<>();
 
-	private Set<PaymentMethodType> paymentMethods;
+	@NotNull
+	private Set<PaymentMethodType> paymentMethods = new HashSet<>();
 
-	private List<MenuRequest> menu;
+	@NotNull
+	private List<MenuRequest> menu = new ArrayList<>();
 
 	@Builder(builderClassName = "TestBuilder", builderMethodName = "testBuilder")
 	public AddStoreRequest(Double latitude, Double longitude, String storeName, StoreType storeType,

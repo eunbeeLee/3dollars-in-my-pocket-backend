@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.api.controller;
 
+import com.depromeet.threedollar.domain.exception.ErrorCode;
 import lombok.*;
 
 @ToString
@@ -18,6 +19,14 @@ public class ApiResponse<T> {
 
 	public static <T> ApiResponse<T> success(T data) {
 		return new ApiResponse<>("", "", data);
+	}
+
+	public static <T> ApiResponse<T> error(ErrorCode errorCode) {
+		return new ApiResponse<>(errorCode.getCode(), errorCode.getMessage(), null);
+	}
+
+	public static <T> ApiResponse<T> error(ErrorCode errorCode, String message) {
+		return new ApiResponse<>(errorCode.getCode(), message, null);
 	}
 
 }

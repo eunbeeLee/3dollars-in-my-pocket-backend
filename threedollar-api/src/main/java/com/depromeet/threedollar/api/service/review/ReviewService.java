@@ -35,4 +35,9 @@ public class ReviewService {
 		review.delete();
 	}
 
+	@Transactional(readOnly = true)
+	public void getReview(Long reviewId) {
+
+	}
+
 }

@@ -23,7 +23,6 @@ public class StoreImageService {
 	private final StoreImageRepository storeImageRepository;
 	private final FileUploadService fileUploadService;
 
-	@Transactional
 	public StoreImageResponse addStoreImage(Long storeId, MultipartFile image, Long userId) {
 		StoreServiceUtils.validateExistsStore(storeRepository, storeId);
 		String imageUrl = fileUploadService.uploadImage(FileUploadRequest.of(ImageType.STORE), image);

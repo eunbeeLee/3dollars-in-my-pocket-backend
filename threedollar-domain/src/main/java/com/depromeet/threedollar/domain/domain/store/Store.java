@@ -39,6 +39,8 @@ public class Store extends AuditingTimeEntity {
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final Set<AppearanceDay> appearanceDays = new HashSet<>();
 
+	private boolean isDeleted;
+
 	@Builder
 	private Store(Long userId, Double latitude, Double longitude, String storeName, StoreType storeType) {
 		this.userId = userId;
@@ -46,6 +48,7 @@ public class Store extends AuditingTimeEntity {
 		this.storeName = storeName;
 		this.storeType = storeType;
 		this.rating = 0f;
+		this.isDeleted = false;
 	}
 
 	public static Store newInstance(Long userId, Double latitude, Double longitude, String storeName, StoreType storeType) {
@@ -74,10 +77,11 @@ public class Store extends AuditingTimeEntity {
 		}
 	}
 
-	public void update(Double latitude, Double longitude, String storeName, StoreType storeType) {
+	public void update(Double latitude, Double longitude, String storeName, StoreType storeType, Long userId) {
 		this.location = Location.of(latitude, longitude);
 		this.storeName = storeName;
 		this.storeType = storeType;
+		this.userId = userId;
 	}
 
 	public Double getLatitude() {
@@ -86,6 +90,20 @@ public class Store extends AuditingTimeEntity {
 
 	public Double getLongitude() {
 		return this.location.getLongitude();
+	}
+
+	public void updatePaymentMethods(Set<PaymentMethodType> paymentMethods) {
+		this.paymentMethods.clear();
+		addPaymentMethods(paymentMethods);
+	}
+
+	public void updateAppearanceDays(Set<DayOfTheWeek> dayOfTheWeeks) {
+		this.appearanceDays.clear();
+		addAppearanceDays(dayOfTheWeeks);
+	}
+
+	public void delete() {
+		this.isDeleted = true;
 	}
 
 }
