@@ -9,3 +9,6 @@ spring:
     enabled: false
   profiles:
     active: local
+jwt:
+  secret_key: secret_key
+  issuer: issuer

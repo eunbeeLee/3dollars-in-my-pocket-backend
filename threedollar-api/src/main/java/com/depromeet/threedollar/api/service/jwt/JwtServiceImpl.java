@@ -35,7 +35,7 @@ public class JwtServiceImpl implements JwtService {
 					.withExpiresAt(Date.from(now.toInstant().plusSeconds(expiresMilliSeconds)))
 					.sign(Algorithm.HMAC512(jwtTokenProviderComponent.getSecretKey().getBytes()));
 		} catch (JWTCreationException e) {
-			throw new ValidationException(String.format("토큰 생성이 실패하였습니다 (%s)", userId));
+			throw new IllegalArgumentException(String.format("토큰 생성이 실패하였습니다 (%s)", userId));
 		}
 	}
 

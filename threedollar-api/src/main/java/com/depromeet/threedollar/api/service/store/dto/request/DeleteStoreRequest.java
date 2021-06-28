@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DeleteStoreRequest {
 
-	@NotNull
+	@NotNull(message = "{store.delete.reason.notnull}")
 	private DeleteReasonType deleteReasonType;
 
 	public static DeleteStoreRequest testInstance(DeleteReasonType reasonType) {

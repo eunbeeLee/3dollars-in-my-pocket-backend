@@ -11,8 +11,8 @@ public class StoreCreator {
 				.userId(userId)
 				.storeName(storeName)
 				.storeType(StoreType.STORE)
-				.latitude(50.0)
-				.longitude(50.0)
+				.latitude(33.0)
+				.longitude(124.0)
 				.build();
 	}
 

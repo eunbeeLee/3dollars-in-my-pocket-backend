@@ -12,10 +12,10 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AddStoreImageRequest {
 
-	@NotNull
+	@NotNull(message = "{store.storeId.notnull}")
 	private Long storeId;
 
-	@NotBlank
+	@NotBlank(message = "{store.imageUrl.notBlank}")
 	private String imageUrl;
 
 	public StoreImage toEntity(Long userId) {

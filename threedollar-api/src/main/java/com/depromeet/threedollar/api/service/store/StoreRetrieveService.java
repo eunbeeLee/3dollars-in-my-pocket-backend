@@ -2,6 +2,7 @@ package com.depromeet.threedollar.api.service.store;
 
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewResponse;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveAroundStoresRequest;
+import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreInfoRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreDetailInfoResponse;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
 import com.depromeet.threedollar.api.service.user.UserServiceUtils;
@@ -23,8 +24,9 @@ public class StoreRetrieveService {
 
 	private static final double LIMIT_DISTANCE = 2.0;
 
-	private final StoreRepository storeRepository;
 	private final StoreImageService storeImageService;
+
+	private final StoreRepository storeRepository;
 	private final UserRepository userRepository;
 	private final ReviewRepository reviewRepository;
 
@@ -38,10 +40,10 @@ public class StoreRetrieveService {
 	}
 
 	@Transactional(readOnly = true)
-	public StoreDetailInfoResponse getDetailStoreInfo(Long storeId, Double latitude, Double longitude) {
-		Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
-		return StoreDetailInfoResponse.of(store, storeImageService.getStoreImages(storeId), latitude, longitude,
-				UserServiceUtils.findUserById(userRepository, store.getUserId()), getReviewResponse(storeId));
+	public StoreDetailInfoResponse getDetailStoreInfo(RetrieveStoreInfoRequest request) {
+		Store store = StoreServiceUtils.findStoreById(storeRepository, request.getStoreId());
+		return StoreDetailInfoResponse.of(store, storeImageService.getStoreImages(request.getStoreId()), request.getLatitude(), request.getLongitude(),
+				UserServiceUtils.findUserById(userRepository, store.getUserId()), getReviewResponse(request.getStoreId()));
 	}
 
 	private List<ReviewResponse> getReviewResponse(Long storeId) {

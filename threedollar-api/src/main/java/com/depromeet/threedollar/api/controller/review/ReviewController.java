@@ -50,6 +50,7 @@ public class ReviewController {
 	@Auth
 	@GetMapping("/api/v2/review/user")
 	public ApiResponse<List<ReviewResponse>> retrieveWrittenReviews(@UserId Long userId) {
+		// TODO 페이지네이션 적용해야합니다.
 		return ApiResponse.success(reviewService.retrieveWrittenReviews(userId));
 	}
 

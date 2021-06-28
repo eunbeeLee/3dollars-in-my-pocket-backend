@@ -56,7 +56,7 @@ public class Store extends AuditingTimeEntity {
 	private StoreStatus status;
 
 	@Builder
-	private Store(Long userId, Double latitude, Double longitude, String storeName, StoreType storeType) {
+	private Store(Long userId, double latitude, double longitude, String storeName, StoreType storeType) {
 		this.userId = userId;
 		this.location = Location.of(latitude, longitude);
 		this.storeName = storeName;
@@ -65,7 +65,7 @@ public class Store extends AuditingTimeEntity {
 		this.status = StoreStatus.ACTIVE;
 	}
 
-	public static Store newInstance(Long userId, Double latitude, Double longitude, String storeName, StoreType storeType) {
+	public static Store newInstance(Long userId, double latitude, double longitude, String storeName, StoreType storeType) {
 		return new Store(userId, latitude, longitude, storeName, storeType);
 	}
 
@@ -116,8 +116,11 @@ public class Store extends AuditingTimeEntity {
 		addMenus(menus);
 	}
 
-	public void update(Double latitude, Double longitude, String storeName, StoreType storeType, Long userId) {
+	public void updateLocation(Double latitude, Double longitude) {
 		this.location = Location.of(latitude, longitude);
+	}
+
+	public void updateInfo(String storeName, StoreType storeType, Long userId) {
 		this.storeName = storeName;
 		this.storeType = storeType;
 		this.userId = userId;
@@ -156,4 +159,5 @@ public class Store extends AuditingTimeEntity {
 	public void updateRating(double average) {
 		this.rating = average;
 	}
+
 }

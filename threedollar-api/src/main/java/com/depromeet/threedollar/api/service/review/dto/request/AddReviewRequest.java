@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 @Getter
@@ -13,9 +15,11 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AddReviewRequest {
 
-	@NotBlank
+	@NotBlank(message = "{review.content.notBlank}")
 	private String content;
 
+	@Min(value = 0, message = "{review.rating.min}")
+	@Max(value = 5, message = "{review.rating.max}")
 	private int rating;
 
 	public static AddReviewRequest testInstance(String content, int rating) {

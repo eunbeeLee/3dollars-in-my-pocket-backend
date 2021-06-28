@@ -11,19 +11,19 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RetrieveAroundStoresRequest {
 
-	@NotNull
+	@NotNull(message = "{store.latitude.notnull}")
 	private Double latitude;
 
-	@NotNull
+	@NotNull(message = "{store.longitude.notnull}")
 	private Double longitude;
 
-	@NotNull
+	@NotNull(message = "{store.mapLatitude.notnull}")
 	private Double mapLatitude;
 
-	@NotNull
+	@NotNull(message = "{store.mapLongitude.notnull}")
 	private Double mapLongitude;
 
-	@NotNull
+	@NotNull(message = "{store.distance.notnull}")
 	private Double distance;
 
 	public Double getDistance() {

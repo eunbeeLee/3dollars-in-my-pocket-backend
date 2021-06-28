@@ -46,10 +46,11 @@ class StoreServiceTest extends UserSetUpTest {
 	}
 
 	@Test
-	void 새로운_가게를_등록한다() {
+	void 새로운_가게를_등록하면_Store_DB_데이터가_추가된다() {
 		// given
-		Double latitude = 10.5;
-		Double longitude = 20.3;
+		Double latitude = 34.0;
+		Double longitude = 130.0;
+
 		String storeName = "붕어빵";
 		StoreType storeType = StoreType.STORE;
 		Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);
@@ -96,8 +97,8 @@ class StoreServiceTest extends UserSetUpTest {
 		Store store = StoreCreator.create(userId, "storeName");
 		storeRepository.save(store);
 
-		Double latitude = 10.5;
-		Double longitude = 20.3;
+		Double latitude = 34.0;
+		Double longitude = 130.0;
 		String storeName = "붕어빵";
 		StoreType storeType = StoreType.STORE;
 		Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);

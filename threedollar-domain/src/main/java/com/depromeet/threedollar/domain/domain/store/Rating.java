@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.domain.domain.store;
 
+import com.depromeet.threedollar.domain.exception.ErrorCode;
 import com.depromeet.threedollar.domain.exception.ValidationException;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class Rating {
 
 	private void validateRating(int rating) {
 		if (rating < MIN_RATING_VALUE || rating > MAX_RATING_VALUE) {
-			throw new ValidationException(String.format("잘못된 Rating 값입니다. (%s)", rating));
+			throw new ValidationException(String.format("잘못된 Rating 값입니다. (%s)", rating), ErrorCode.VALIDATION_RATING_EXCEPTION);
 		}
 	}
 

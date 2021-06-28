@@ -31,4 +31,10 @@ public class StoreInfoResponse {
 		return storeInfoResponse;
 	}
 
+	public static StoreInfoResponse of(Store store) {
+		StoreInfoResponse storeInfoResponse = new StoreInfoResponse(store.getId(), store.getLatitude(), store.getLongitude(), store.getStoreName(), store.getRating(), null);
+		storeInfoResponse.categories.addAll(store.getMenuCategories());
+		return storeInfoResponse;
+	}
+
 }

@@ -1,8 +1,5 @@
-package com.depromeet.threedollar.domain.repository;
+package com.depromeet.threedollar.domain.domain.store;
 
-import com.depromeet.threedollar.domain.domain.store.Store;
-import com.depromeet.threedollar.domain.domain.store.StoreRepository;
-import com.depromeet.threedollar.domain.domain.store.StoreType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +24,7 @@ class StoreRepositoryTest {
 	void 반경_3KM의_Store를_조회한다() {
 		// given
 		storeRepository.save(Store.builder()
+				.userId(100L)
 				.latitude(37.358483)
 				.longitude(126.930947)
 				.storeName("storeName")
@@ -44,6 +42,7 @@ class StoreRepositoryTest {
 	void 반경_3KM의_Store를_조회한다1() {
 		// given
 		storeRepository.save(Store.builder()
+				.userId(100L)
 				.latitude(37.328431)
 				.longitude(126.91674)
 				.storeName("storeName")

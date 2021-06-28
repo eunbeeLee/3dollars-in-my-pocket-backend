@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.validation.ValidationException;
 import java.io.IOException;
 import java.util.Base64;
 
@@ -22,7 +21,8 @@ public class AppleTokenDecoderImpl implements AppleTokenDecoder {
             String decodedPayload = new String(Base64.getDecoder().decode(payload));
             return objectMapper.readValue(decodedPayload, IdTokenPayload.class);
         } catch (IOException | IllegalArgumentException e) {
-            throw new ValidationException(String.format("잘못된 토큰 (%s) 입니다", idToken));
+            // TODO commmon 모듈로 분리후 적용필요.
+            throw new IllegalArgumentException(String.format("잘못된 토큰 (%s) 입니다", idToken));
         }
     }
 

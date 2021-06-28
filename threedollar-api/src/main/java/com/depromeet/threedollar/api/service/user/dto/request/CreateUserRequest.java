@@ -15,13 +15,13 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CreateUserRequest {
 
-	@NotBlank
+	@NotBlank(message = "{member.socialId.notBlank}")
 	private String socialId;
 
-	@NotNull
+	@NotNull(message = "{member.socialType.notnull}")
 	private UserSocialType socialType;
 
-	@NotBlank
+	@NotBlank(message = "{member.name.notBlank}")
 	private String name;
 
 	public static CreateUserRequest of(String socialId, UserSocialType type, String name) {

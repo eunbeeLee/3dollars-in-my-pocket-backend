@@ -21,7 +21,7 @@ public class Menu extends AuditingTimeEntity {
 	@JoinColumn(name = "store_id", nullable = false)
 	private Store store;
 
-	@Column(length = 50)
+	@Column(length = 100)
 	private String name;
 
 	@Column(length = 100)

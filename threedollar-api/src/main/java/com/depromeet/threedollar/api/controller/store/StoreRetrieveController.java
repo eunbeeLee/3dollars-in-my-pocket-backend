@@ -3,6 +3,7 @@ package com.depromeet.threedollar.api.controller.store;
 import com.depromeet.threedollar.api.controller.ApiResponse;
 import com.depromeet.threedollar.api.service.store.StoreRetrieveService;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveAroundStoresRequest;
+import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreInfoRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreDetailInfoResponse;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,8 +31,8 @@ public class StoreRetrieveController {
 
 	@Operation(summary = "특정 가게의 정보를 조회하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
 	@GetMapping("/api/v2/store/detail")
-	public ApiResponse<StoreDetailInfoResponse> getStoreDetailInfo(@RequestParam Long storeId, @RequestParam Double latitude, @RequestParam Double longitude) {
-		return ApiResponse.success(storeRetrieveService.getDetailStoreInfo(storeId, latitude, longitude));
+	public ApiResponse<StoreDetailInfoResponse> getStoreDetailInfo(@Valid RetrieveStoreInfoRequest request) {
+		return ApiResponse.success(storeRetrieveService.getDetailStoreInfo(request));
 	}
 
 	@Operation(summary = "내가 작성한 가게들의 정보를 조회하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))

@@ -23,7 +23,7 @@ public class Review extends AuditingTimeEntity {
 	@Column(nullable = false)
 	private Long userId;
 
-	@Column(length = 300)
+	@Column(length = 200)
 	private String contents;
 
 	@Embedded

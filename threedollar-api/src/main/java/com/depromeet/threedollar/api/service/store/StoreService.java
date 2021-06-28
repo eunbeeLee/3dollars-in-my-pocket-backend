@@ -3,6 +3,7 @@ package com.depromeet.threedollar.api.service.store;
 import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.DeleteStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
+import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,18 +18,20 @@ public class StoreService {
 	private final StoreDeleteService deleteRequestService;
 
 	@Transactional
-	public Long addStore(AddStoreRequest request, Long userId) {
+	public StoreInfoResponse addStore(AddStoreRequest request, Long userId) {
 		Store store = storeRepository.save(request.toStore(userId));
-		return store.getId();
+		return StoreInfoResponse.of(store);
 	}
 
 	@Transactional
-	public void updateStore(Long storeId, UpdateStoreRequest request, Long userId) {
+	public StoreInfoResponse updateStore(Long storeId, UpdateStoreRequest request, Long userId) {
 		Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
-		store.update(request.getLatitude(), request.getLongitude(), request.getStoreName(), store.getStoreType(), userId);
+		store.updateLocation(request.getLatitude(), request.getLongitude());
+		store.updateInfo(request.getStoreName(), store.getStoreType(), userId);
 		store.updatePaymentMethods(request.getPaymentMethods());
 		store.updateAppearanceDays(request.getAppearanceDays());
 		store.updateMenu(request.toMenus(store));
+		return StoreInfoResponse.of(store);
 	}
 
 	@Transactional

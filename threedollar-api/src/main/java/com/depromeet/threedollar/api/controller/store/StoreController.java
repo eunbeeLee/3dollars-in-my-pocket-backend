@@ -9,6 +9,7 @@ import com.depromeet.threedollar.api.service.store.dto.request.DeleteStoreReques
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreImageResponse;
+import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -28,16 +29,15 @@ public class StoreController {
 	@Operation(summary = "가게 정보를 추가하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
 	@Auth
 	@PostMapping("/api/v2/store")
-	public ApiResponse<Long> addStore(@Valid @RequestBody AddStoreRequest request, @UserId Long userId) {
+	public ApiResponse<StoreInfoResponse> addStore(@Valid @RequestBody AddStoreRequest request, @UserId Long userId) {
 		return ApiResponse.success(storeService.addStore(request, userId));
 	}
 
 	@Operation(summary = "특정 가게 정보를 수정하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
 	@Auth
 	@PutMapping("/api/v2/store/{storeId}")
-	public ApiResponse<String> updateStoreInfo(@PathVariable Long storeId, @Valid @RequestBody UpdateStoreRequest request, @UserId Long userId) {
-		storeService.updateStore(storeId, request, userId);
-		return ApiResponse.SUCCESS;
+	public ApiResponse<StoreInfoResponse> updateStoreInfo(@PathVariable Long storeId, @Valid @RequestBody UpdateStoreRequest request, @UserId Long userId) {
+		return ApiResponse.success(storeService.updateStore(storeId, request, userId));
 	}
 
 	@Operation(summary = "특정 가게 정보를 삭제하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))

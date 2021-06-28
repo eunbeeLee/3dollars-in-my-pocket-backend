@@ -22,25 +22,25 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UpdateStoreRequest {
 
-	@NotNull
+	@NotNull(message = "{store.latitude.notnull}")
 	private Double latitude;
 
-	@NotNull
+	@NotNull(message = "{store.longitude.notnull}")
 	private Double longitude;
 
-	@NotBlank
+	@NotBlank(message = "{store.name.notBlank}")
 	private String storeName;
 
-	@NotNull
+	@NotNull(message = "{store.type.notnull}")
 	private StoreType storeType;
 
-	@NotNull
+	@NotNull(message = "{store.appearanceDays.notnull}")
 	private Set<DayOfTheWeek> appearanceDays = new HashSet<>();
 
-	@NotNull
+	@NotNull(message = "{store.paymentMethods.notnull}")
 	private Set<PaymentMethodType> paymentMethods = new HashSet<>();
 
-	@NotNull
+	@NotNull(message = "{store.menu.notnull}")
 	private List<MenuRequest> menu = new ArrayList<>();
 
 	@Builder(builderClassName = "TestBuilder", builderMethodName = "testBuilder")

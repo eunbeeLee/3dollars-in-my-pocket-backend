@@ -30,7 +30,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 		try (InputStream inputStream = file.getInputStream()) {
 			s3Service.uploadFile(inputStream, objectMetadata, fileName);
 		} catch (IOException e) {
-			throw new ValidationException(String.format("파일 (%s) 입력 스트림을 가져오는 중 에러가 발생하였습니다", file.getOriginalFilename()));
+			throw new IllegalArgumentException(String.format("파일 (%s) 입력 스트림을 가져오는 중 에러가 발생하였습니다", file.getOriginalFilename()));
 		}
 		return s3Service.getFileUrl(fileName);
 	}
