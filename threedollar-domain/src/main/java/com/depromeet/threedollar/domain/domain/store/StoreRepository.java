@@ -7,6 +7,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+/**
+ * R-Tree 인덱스를 이용하게 바꾸도록 개선.
+ */
 public interface StoreRepository extends JpaRepository<Store, Long>, StoreRepositoryCustom {
 
 	@Query(value = "SELECT *, (" +

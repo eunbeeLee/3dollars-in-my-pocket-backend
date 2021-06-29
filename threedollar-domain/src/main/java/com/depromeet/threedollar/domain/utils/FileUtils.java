@@ -1,7 +1,8 @@
-package com.depromeet.threedollar.api.utils;
+package com.depromeet.threedollar.domain.utils;
 
 import com.depromeet.threedollar.domain.exception.ErrorCode;
 import com.depromeet.threedollar.domain.exception.ValidationException;
+import com.depromeet.threedollar.domain.utils.type.ImageType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

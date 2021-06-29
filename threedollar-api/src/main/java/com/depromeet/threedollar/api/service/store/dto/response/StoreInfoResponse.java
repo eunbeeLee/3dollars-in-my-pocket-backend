@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.store.dto.response;
 
-import com.depromeet.threedollar.api.utils.LocationDistanceUtils;
+import com.depromeet.threedollar.domain.utils.LocationDistanceUtils;
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import lombok.AccessLevel;
@@ -26,7 +26,7 @@ public class StoreInfoResponse {
 
 	public static StoreInfoResponse of(Store store, Double latitude, Double longitude) {
 		StoreInfoResponse storeInfoResponse = new StoreInfoResponse(store.getId(), store.getLatitude(), store.getLongitude(), store.getStoreName(), store.getRating(),
-				LocationDistanceUtils.getDistance(store.getLongitude(), store.getLatitude(), latitude, longitude));
+				LocationDistanceUtils.getDistance(latitude, longitude, store.getLatitude(), store.getLongitude()));
 		storeInfoResponse.categories.addAll(store.getMenuCategories());
 		return storeInfoResponse;
 	}

@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.upload.dto.request;
 
-import com.depromeet.threedollar.api.utils.ImageType;
+import com.depromeet.threedollar.domain.utils.type.ImageType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

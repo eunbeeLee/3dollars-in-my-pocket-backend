@@ -2,9 +2,12 @@ package com.depromeet.threedollar.api.service.store;
 
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewResponse;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveAroundStoresRequest;
+import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreGroupByCategoryRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreInfoRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreDetailInfoResponse;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
+import com.depromeet.threedollar.api.service.store.dto.response.StoresGroupByDistanceResponse;
+import com.depromeet.threedollar.api.service.store.dto.response.StoresGroupByReviewResponse;
 import com.depromeet.threedollar.api.service.user.UserServiceUtils;
 import com.depromeet.threedollar.domain.domain.review.ReviewRepository;
 import com.depromeet.threedollar.domain.domain.store.Store;
@@ -14,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +54,28 @@ public class StoreRetrieveService {
 		return reviewRepository.findAllReviewWithCreatorByStoreId(storeId).stream()
 				.map(ReviewResponse::of)
 				.collect(Collectors.toList());
+	}
+
+	@Transactional(readOnly = true)
+	public StoresGroupByDistanceResponse retrieveStoresGroupByDistance(RetrieveStoreGroupByCategoryRequest request) {
+		List<StoreInfoResponse> stores = storeRepository.findStoresByLocationLessThanDistance(
+				request.getMapLatitude(), request.getMapLongitude(), 2.0).stream()
+				.filter(store -> store.getMenuCategories().contains(request.getCategoryType()))
+				.map(store -> StoreInfoResponse.of(store, request.getLatitude(), request.getLongitude()))
+				.sorted(Comparator.comparing(StoreInfoResponse::getDistance))
+				.collect(Collectors.toList());
+		return StoresGroupByDistanceResponse.of(stores);
+	}
+
+	@Transactional(readOnly = true)
+	public StoresGroupByReviewResponse retrieveStoresGroupByRating(RetrieveStoreGroupByCategoryRequest request) {
+		List<StoreInfoResponse> stores = storeRepository.findStoresByLocationLessThanDistance(
+				request.getMapLatitude(), request.getMapLongitude(), 2.0).stream()
+				.filter(store -> store.getMenuCategories().contains(request.getCategoryType()))
+				.map(store -> StoreInfoResponse.of(store, request.getLatitude(), request.getLongitude()))
+				.sorted(Comparator.comparing(StoreInfoResponse::getRating).reversed())
+				.collect(Collectors.toList());
+		return StoresGroupByReviewResponse.of(stores);
 	}
 
 }
