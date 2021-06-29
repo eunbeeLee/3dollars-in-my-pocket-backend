@@ -3,7 +3,6 @@ package com.depromeet.threedollar.api.service.store.dto.request;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.constraints.NotNull;
 

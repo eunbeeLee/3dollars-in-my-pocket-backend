@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-import static com.depromeet.threedollar.domain.domain.store.QStore.store;
 import static com.depromeet.threedollar.domain.domain.store.QStoreImage.storeImage;
 
 @RequiredArgsConstructor
