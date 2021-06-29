@@ -2,8 +2,12 @@ package com.depromeet.threedollar.domain.domain.store.repository;
 
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreStatus;
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import static com.depromeet.threedollar.domain.domain.menu.QMenu.menu;
 import static com.depromeet.threedollar.domain.domain.store.QAppearanceDay.appearanceDay;
@@ -26,6 +30,15 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
 						store.id.eq(storeId),
 						store.status.eq(StoreStatus.ACTIVE)
 				).fetchOne();
+	}
+
+	@Override
+	public Page<Store> findAllStoresByUserIdWithPagination(Long userId, PageRequest pageRequest) {
+		QueryResults<Store> result = queryFactory.selectFrom(store)
+				.where(
+						store.userId.eq(userId)
+				).fetchResults();
+		return new PageImpl<>(result.getResults(), pageRequest, result.getTotal());
 	}
 
 }
