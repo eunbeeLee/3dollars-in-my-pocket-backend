@@ -2,12 +2,17 @@ package com.depromeet.threedollar.domain.domain.review.repository;
 
 import com.depromeet.threedollar.domain.domain.review.Review;
 import com.depromeet.threedollar.domain.domain.review.ReviewStatus;
-import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithCreator;
+import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithCreatorDto;
+import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithStoreAndCreatorDto;
 import com.depromeet.threedollar.domain.domain.store.StoreStatus;
 import com.depromeet.threedollar.domain.domain.user.UserStatusType;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -31,11 +36,13 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
 	}
 
 	@Override
-	public List<ReviewWithCreator> findAllReviewWithCreatorByStoreId(Long storeId) {
-		return queryFactory.select(Projections.fields(ReviewWithCreator.class,
+	public List<ReviewWithCreatorDto> findAllReviewWithCreatorByStoreId(Long storeId) {
+		return queryFactory.select(Projections.fields(ReviewWithCreatorDto.class,
 				review.id.as("id"),
 				review.rating.rating.as("rating"),
 				review.contents.as("contents"),
+				review.createdAt.as("createdAt"),
+				review.updatedAt.as("updatedAt"),
 				user.id.as("userId"),
 				user.name.as("userName"),
 				user.socialInfo.socialType.as("userSocialType")
@@ -58,11 +65,16 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
 	}
 
 	@Override
-	public List<ReviewWithCreator> findAllReviewWithCreatorByUserId(Long userId) {
-		return queryFactory.select(Projections.fields(ReviewWithCreator.class,
+	public Page<ReviewWithStoreAndCreatorDto> findAllReviewWithCreatorByUserId(Long userId, Pageable pageable) {
+		QueryResults<ReviewWithStoreAndCreatorDto> result = queryFactory.select(Projections.fields(ReviewWithStoreAndCreatorDto.class,
 				review.id.as("id"),
 				review.rating.rating.as("rating"),
 				review.contents.as("contents"),
+				review.status.as("status"),
+				review.createdAt.as("createdAt"),
+				review.updatedAt.as("updatedAt"),
+				review.storeId.as("storeId"),
+				store.storeName.as("storeName"),
 				user.id.as("userId"),
 				user.name.as("userName"),
 				user.socialInfo.socialType.as("userSocialType")
@@ -74,7 +86,11 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
 						review.userId.eq(userId),
 						review.status.eq(ReviewStatus.POSTED),
 						store.status.eq(StoreStatus.ACTIVE)
-				).fetch();
+				)
+				.offset(pageable.getOffset())
+				.limit(pageable.getPageSize())
+				.fetchResults();
+		return new PageImpl<>(result.getResults(), pageable, result.getTotal());
 	}
 
 }

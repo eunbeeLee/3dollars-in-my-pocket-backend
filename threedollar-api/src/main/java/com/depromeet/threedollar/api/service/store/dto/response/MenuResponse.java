@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.api.service.store.dto.response;
 
+import com.depromeet.threedollar.api.dto.AudtingTimeResponse;
 import com.depromeet.threedollar.domain.domain.menu.Menu;
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import lombok.AccessLevel;
@@ -10,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class MenuResponse {
+public class MenuResponse extends AudtingTimeResponse {
 
-	private Long id;
+	private Long menuId;
 
 	private MenuCategoryType category;
 
@@ -21,7 +22,9 @@ public class MenuResponse {
 	private String price;
 
 	public static MenuResponse of(Menu menu) {
-		return new MenuResponse(menu.getId(), menu.getCategory(), menu.getName(), menu.getPrice());
+		MenuResponse response = new MenuResponse(menu.getId(), menu.getCategory(), menu.getName(), menu.getPrice());
+		response.setBaseTime(menu);
+		return response;
 	}
 
 }

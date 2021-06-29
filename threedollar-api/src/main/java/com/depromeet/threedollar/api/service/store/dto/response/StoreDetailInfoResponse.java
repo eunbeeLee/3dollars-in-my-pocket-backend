@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.api.service.store.dto.response;
 
+import com.depromeet.threedollar.api.dto.AudtingTimeResponse;
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewResponse;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import com.depromeet.threedollar.domain.utils.LocationDistanceUtils;
@@ -23,9 +24,9 @@ import java.util.stream.Collectors;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class StoreDetailInfoResponse {
+public class StoreDetailInfoResponse extends AudtingTimeResponse {
 
-	private Long id;
+	private Long storeId;
 
 	private Double latitude;
 
@@ -64,6 +65,7 @@ public class StoreDetailInfoResponse {
 				.map(MenuResponse::of)
 				.collect(Collectors.toList()));
 		response.review.addAll(reviewResponses);
+		response.setBaseTime(store);
 		return response;
 	}
 
