@@ -12,25 +12,25 @@ import javax.persistence.*;
 @Entity
 public class PaymentMethod extends AuditingTimeEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "store_id", nullable = false)
-	private Store store;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store store;
 
-	@Column(nullable = false, length = 30)
-	@Enumerated(value = EnumType.STRING)
-	private PaymentMethodType method;
+    @Column(nullable = false, length = 30)
+    @Enumerated(value = EnumType.STRING)
+    private PaymentMethodType method;
 
-	private PaymentMethod(Store store, PaymentMethodType method) {
-		this.store = store;
-		this.method = method;
-	}
+    private PaymentMethod(Store store, PaymentMethodType method) {
+        this.store = store;
+        this.method = method;
+    }
 
-	public static PaymentMethod of(Store store, PaymentMethodType type) {
-		return new PaymentMethod(store, type);
-	}
+    public static PaymentMethod of(Store store, PaymentMethodType type) {
+        return new PaymentMethod(store, type);
+    }
 
 }

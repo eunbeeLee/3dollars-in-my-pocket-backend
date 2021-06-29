@@ -11,14 +11,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReviewWithCreatorDto {
 
-	private Long id;
-	private int rating;
-	private String contents;
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
+    private Long id;
+    private int rating;
+    private String contents;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-	private Long userId;
-	private String userName;
-	private UserSocialType userSocialType;
+    private Long userId;
+    private String userName;
+    private UserSocialType userSocialType;
 
 }

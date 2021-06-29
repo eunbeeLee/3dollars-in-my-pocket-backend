@@ -13,18 +13,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MenuResponse extends AudtingTimeResponse {
 
-	private Long menuId;
+    private Long menuId;
 
-	private MenuCategoryType category;
+    private MenuCategoryType category;
 
-	private String name;
+    private String name;
 
-	private String price;
+    private String price;
 
-	public static MenuResponse of(Menu menu) {
-		MenuResponse response = new MenuResponse(menu.getId(), menu.getCategory(), menu.getName(), menu.getPrice());
-		response.setBaseTime(menu);
-		return response;
-	}
+    public static MenuResponse of(Menu menu) {
+        MenuResponse response = new MenuResponse(menu.getId(), menu.getCategory(), menu.getName(), menu.getPrice());
+        response.setBaseTime(menu);
+        return response;
+    }
 
 }

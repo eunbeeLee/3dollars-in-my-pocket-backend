@@ -22,142 +22,142 @@ import java.util.stream.Collectors;
 @Entity
 public class Store extends AuditingTimeEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(nullable = false)
-	private Long userId;
+    @Column(nullable = false)
+    private Long userId;
 
-	@Embedded
-	private Location location;
+    @Embedded
+    private Location location;
 
-	@Column(nullable = false, length = 300)
-	private String storeName;
+    @Column(nullable = false, length = 300)
+    private String storeName;
 
-	@Column(nullable = false, length = 30)
-	@Enumerated(EnumType.STRING)
-	private StoreType storeType;
+    @Column(nullable = false, length = 30)
+    @Enumerated(EnumType.STRING)
+    private StoreType storeType;
 
-	@Column(nullable = false)
-	private double rating;
+    @Column(nullable = false)
+    private double rating;
 
-	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-	private final Set<PaymentMethod> paymentMethods = new HashSet<>();
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final Set<PaymentMethod> paymentMethods = new HashSet<>();
 
-	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-	private final Set<AppearanceDay> appearanceDays = new HashSet<>();
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final Set<AppearanceDay> appearanceDays = new HashSet<>();
 
-	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-	private final List<Menu> menus = new ArrayList<>();
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Menu> menus = new ArrayList<>();
 
-	@Column(nullable = false, length = 30)
-	@Enumerated(EnumType.STRING)
-	private StoreStatus status;
+    @Column(nullable = false, length = 30)
+    @Enumerated(EnumType.STRING)
+    private StoreStatus status;
 
-	@Builder
-	private Store(Long userId, double latitude, double longitude, String storeName, StoreType storeType) {
-		this.userId = userId;
-		this.location = Location.of(latitude, longitude);
-		this.storeName = storeName;
-		this.storeType = storeType;
-		this.rating = 0.0;
-		this.status = StoreStatus.ACTIVE;
-	}
+    @Builder
+    private Store(Long userId, double latitude, double longitude, String storeName, StoreType storeType) {
+        this.userId = userId;
+        this.location = Location.of(latitude, longitude);
+        this.storeName = storeName;
+        this.storeType = storeType;
+        this.rating = 0.0;
+        this.status = StoreStatus.ACTIVE;
+    }
 
-	public static Store newInstance(Long userId, double latitude, double longitude, String storeName, StoreType storeType) {
-		return new Store(userId, latitude, longitude, storeName, storeType);
-	}
+    public static Store newInstance(Long userId, double latitude, double longitude, String storeName, StoreType storeType) {
+        return new Store(userId, latitude, longitude, storeName, storeType);
+    }
 
-	private void addPaymentMethod(PaymentMethodType type) {
-		PaymentMethod paymentMethod = PaymentMethod.of(this, type);
-		this.paymentMethods.add(paymentMethod);
-	}
+    private void addPaymentMethod(PaymentMethodType type) {
+        PaymentMethod paymentMethod = PaymentMethod.of(this, type);
+        this.paymentMethods.add(paymentMethod);
+    }
 
-	public void addPaymentMethods(Set<PaymentMethodType> types) {
-		for (PaymentMethodType type : types) {
-			this.addPaymentMethod(type);
-		}
-	}
+    public void addPaymentMethods(Set<PaymentMethodType> types) {
+        for (PaymentMethodType type : types) {
+            this.addPaymentMethod(type);
+        }
+    }
 
-	public void updatePaymentMethods(Set<PaymentMethodType> paymentMethods) {
-		this.paymentMethods.clear();
-		addPaymentMethods(paymentMethods);
-	}
+    public void updatePaymentMethods(Set<PaymentMethodType> paymentMethods) {
+        this.paymentMethods.clear();
+        addPaymentMethods(paymentMethods);
+    }
 
-	private void addAppearanceDay(DayOfTheWeek dayOfTheWeek) {
-		AppearanceDay appearanceDay = AppearanceDay.of(this, dayOfTheWeek);
-		this.appearanceDays.add(appearanceDay);
-	}
+    private void addAppearanceDay(DayOfTheWeek dayOfTheWeek) {
+        AppearanceDay appearanceDay = AppearanceDay.of(this, dayOfTheWeek);
+        this.appearanceDays.add(appearanceDay);
+    }
 
-	public void addAppearanceDays(Set<DayOfTheWeek> dayOfTheWeeks) {
-		for (DayOfTheWeek dayOfTheWeek : dayOfTheWeeks) {
-			this.addAppearanceDay(dayOfTheWeek);
-		}
-	}
+    public void addAppearanceDays(Set<DayOfTheWeek> dayOfTheWeeks) {
+        for (DayOfTheWeek dayOfTheWeek : dayOfTheWeeks) {
+            this.addAppearanceDay(dayOfTheWeek);
+        }
+    }
 
-	public void updateAppearanceDays(Set<DayOfTheWeek> dayOfTheWeeks) {
-		this.appearanceDays.clear();
-		addAppearanceDays(dayOfTheWeeks);
-	}
+    public void updateAppearanceDays(Set<DayOfTheWeek> dayOfTheWeeks) {
+        this.appearanceDays.clear();
+        addAppearanceDays(dayOfTheWeeks);
+    }
 
-	private void addMenu(Menu menu) {
-		this.menus.add(menu);
-	}
+    private void addMenu(Menu menu) {
+        this.menus.add(menu);
+    }
 
-	public void addMenus(List<Menu> menus) {
-		for (Menu menu : menus) {
-			this.addMenu(menu);
-		}
-	}
+    public void addMenus(List<Menu> menus) {
+        for (Menu menu : menus) {
+            this.addMenu(menu);
+        }
+    }
 
-	public void updateMenu(List<Menu> menus) {
-		this.menus.clear();
-		addMenus(menus);
-	}
+    public void updateMenu(List<Menu> menus) {
+        this.menus.clear();
+        addMenus(menus);
+    }
 
-	public void updateLocation(Double latitude, Double longitude) {
-		this.location = Location.of(latitude, longitude);
-	}
+    public void updateLocation(Double latitude, Double longitude) {
+        this.location = Location.of(latitude, longitude);
+    }
 
-	public void updateInfo(String storeName, StoreType storeType, Long userId) {
-		this.storeName = storeName;
-		this.storeType = storeType;
-		this.userId = userId;
-	}
+    public void updateInfo(String storeName, StoreType storeType, Long userId) {
+        this.storeName = storeName;
+        this.storeType = storeType;
+        this.userId = userId;
+    }
 
-	public Double getLatitude() {
-		return this.location.getLatitude();
-	}
+    public Double getLatitude() {
+        return this.location.getLatitude();
+    }
 
-	public Double getLongitude() {
-		return this.location.getLongitude();
-	}
+    public Double getLongitude() {
+        return this.location.getLongitude();
+    }
 
-	public void delete() {
-		this.status = StoreStatus.DELETED;
-	}
+    public void delete() {
+        this.status = StoreStatus.DELETED;
+    }
 
-	public List<MenuCategoryType> getMenuCategories() {
-		return this.menus.stream()
-				.map(Menu::getCategory).distinct()
-				.collect(Collectors.toList());
-	}
+    public List<MenuCategoryType> getMenuCategories() {
+        return this.menus.stream()
+            .map(Menu::getCategory).distinct()
+            .collect(Collectors.toList());
+    }
 
-	public Set<DayOfTheWeek> getAppearanceDaysType() {
-		return this.appearanceDays.stream()
-				.map(AppearanceDay::getDay)
-				.collect(Collectors.toSet());
-	}
+    public Set<DayOfTheWeek> getAppearanceDaysType() {
+        return this.appearanceDays.stream()
+            .map(AppearanceDay::getDay)
+            .collect(Collectors.toSet());
+    }
 
-	public Set<PaymentMethodType> getPaymentMethodsType() {
-		return this.paymentMethods.stream()
-				.map(PaymentMethod::getMethod)
-				.collect(Collectors.toSet());
-	}
+    public Set<PaymentMethodType> getPaymentMethodsType() {
+        return this.paymentMethods.stream()
+            .map(PaymentMethod::getMethod)
+            .collect(Collectors.toSet());
+    }
 
-	public void updateRating(double average) {
-		this.rating = average;
-	}
+    public void updateRating(double average) {
+        this.rating = average;
+    }
 
 }

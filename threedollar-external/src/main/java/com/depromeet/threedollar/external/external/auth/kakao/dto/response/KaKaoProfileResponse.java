@@ -12,14 +12,14 @@ import lombok.ToString;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class KaKaoProfileResponse {
 
-	private String id;
+    private String id;
 
-	private KaKaoProfileResponse(String id) {
-		this.id = id;
-	}
+    private KaKaoProfileResponse(String id) {
+        this.id = id;
+    }
 
-	public static KaKaoProfileResponse testInstance(String socialId) {
-		return new KaKaoProfileResponse(socialId);
-	}
+    public static KaKaoProfileResponse testInstance(String socialId) {
+        return new KaKaoProfileResponse(socialId);
+    }
 
 }

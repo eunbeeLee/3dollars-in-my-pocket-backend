@@ -11,23 +11,23 @@ import static com.depromeet.threedollar.domain.domain.storedelete.QStoreDeleteRe
 @RequiredArgsConstructor
 public class StoreDeleteRequestRepositoryCustomImpl implements StoreDeleteRequestRepositoryCustom {
 
-	private final JPAQueryFactory queryFactory;
+    private final JPAQueryFactory queryFactory;
 
-	@Override
-	public StoreDeleteRequest findStoreDeleteRequestByStoreIdAndUserId(Long storeId, Long userId) {
-		return queryFactory.selectFrom(storeDeleteRequest)
-				.where(
-						storeDeleteRequest.storeId.eq(storeId),
-						storeDeleteRequest.userId.eq(userId)
-				).fetchOne();
-	}
+    @Override
+    public StoreDeleteRequest findStoreDeleteRequestByStoreIdAndUserId(Long storeId, Long userId) {
+        return queryFactory.selectFrom(storeDeleteRequest)
+            .where(
+                storeDeleteRequest.storeId.eq(storeId),
+                storeDeleteRequest.userId.eq(userId)
+            ).fetchOne();
+    }
 
-	@Override
-	public List<StoreDeleteRequest> findAllByStoreId(Long storeId) {
-		return queryFactory.selectFrom(storeDeleteRequest)
-				.where(
-						storeDeleteRequest.storeId.eq(storeId)
-				).fetch();
-	}
+    @Override
+    public List<StoreDeleteRequest> findAllByStoreId(Long storeId) {
+        return queryFactory.selectFrom(storeDeleteRequest)
+            .where(
+                storeDeleteRequest.storeId.eq(storeId)
+            ).fetch();
+    }
 
 }

@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class StoreImageResponse extends AudtingTimeResponse {
 
-	private Long imageId;
+    private Long imageId;
 
-	private String url;
+    private String url;
 
-	public static StoreImageResponse of(StoreImage storeImage) {
-		StoreImageResponse response = new StoreImageResponse(storeImage.getId(), storeImage.getUrl());
-		response.setBaseTime(storeImage);
-		return response;
-	}
+    public static StoreImageResponse of(StoreImage storeImage) {
+        StoreImageResponse response = new StoreImageResponse(storeImage.getId(), storeImage.getUrl());
+        response.setBaseTime(storeImage);
+        return response;
+    }
 
 }

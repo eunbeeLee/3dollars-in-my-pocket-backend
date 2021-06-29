@@ -19,31 +19,31 @@ import java.time.LocalDateTime;
 @Entity
 public class WithdrawalUser extends AuditingTimeEntity {
 
-	@Id
-	private Long userId;
+    @Id
+    private Long userId;
 
-	private String name;
+    private String name;
 
-	@Embedded
-	private SocialInfo socialInfo;
+    @Embedded
+    private SocialInfo socialInfo;
 
-	private LocalDateTime userCreatedAt;
+    private LocalDateTime userCreatedAt;
 
-	@Builder
-	private WithdrawalUser(Long userId, String name, SocialInfo socialInfo, LocalDateTime userCreatedAt) {
-		this.userId = userId;
-		this.name = name;
-		this.socialInfo = socialInfo;
-		this.userCreatedAt = userCreatedAt;
-	}
+    @Builder
+    private WithdrawalUser(Long userId, String name, SocialInfo socialInfo, LocalDateTime userCreatedAt) {
+        this.userId = userId;
+        this.name = name;
+        this.socialInfo = socialInfo;
+        this.userCreatedAt = userCreatedAt;
+    }
 
-	static WithdrawalUser of(User user) {
-		return WithdrawalUser.builder()
-				.userId(user.getId())
-				.name(user.getOriginName())
-				.socialInfo(SocialInfo.of(user.getSocialId(), user.getSocialType()))
-				.userCreatedAt(user.getCreatedAt())
-				.build();
-	}
+    static WithdrawalUser of(User user) {
+        return WithdrawalUser.builder()
+            .userId(user.getId())
+            .name(user.getOriginName())
+            .socialInfo(SocialInfo.of(user.getSocialId(), user.getSocialType()))
+            .userCreatedAt(user.getCreatedAt())
+            .build();
+    }
 
 }

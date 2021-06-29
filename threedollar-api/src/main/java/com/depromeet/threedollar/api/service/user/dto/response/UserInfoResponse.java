@@ -13,20 +13,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserInfoResponse extends AudtingTimeResponse {
 
-	private Long userId;
+    private Long userId;
 
-	private String name;
+    private String name;
 
-	private UserSocialType socialType;
+    private UserSocialType socialType;
 
-	public static UserInfoResponse of(User user) {
-		UserInfoResponse response = new UserInfoResponse(user.getId(), user.getName(), user.getSocialType());
-		response.setBaseTime(user);
-		return response;
-	}
+    public static UserInfoResponse of(User user) {
+        UserInfoResponse response = new UserInfoResponse(user.getId(), user.getName(), user.getSocialType());
+        response.setBaseTime(user);
+        return response;
+    }
 
-	public static UserInfoResponse of(Long userId, String userName, UserSocialType userSocialType) {
-		return new UserInfoResponse(userId, userName, userSocialType);
-	}
+    public static UserInfoResponse of(Long userId, String userName, UserSocialType userSocialType) {
+        return new UserInfoResponse(userId, userName, userSocialType);
+    }
 
 }

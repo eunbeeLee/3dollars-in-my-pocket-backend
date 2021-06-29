@@ -11,33 +11,33 @@ import static com.depromeet.threedollar.domain.domain.user.QUser.user;
 @RequiredArgsConstructor
 public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
-	private final JPAQueryFactory queryFactory;
+    private final JPAQueryFactory queryFactory;
 
-	@Override
-	public User findUserBySocialIdAndSocialType(String socialId, UserSocialType type) {
-		return queryFactory.selectFrom(user)
-				.where(
-						user.socialInfo.socialId.eq(socialId),
-						user.socialInfo.socialType.eq(type),
-						user.status.eq(UserStatusType.ACTIVE)
-				).fetchOne();
-	}
+    @Override
+    public User findUserBySocialIdAndSocialType(String socialId, UserSocialType type) {
+        return queryFactory.selectFrom(user)
+            .where(
+                user.socialInfo.socialId.eq(socialId),
+                user.socialInfo.socialType.eq(type),
+                user.status.eq(UserStatusType.ACTIVE)
+            ).fetchOne();
+    }
 
-	@Override
-	public User findUserByName(String name) {
-		return queryFactory.selectFrom(user)
-				.where(
-						user.name.eq(name)
-				).fetchOne();
-	}
+    @Override
+    public User findUserByName(String name) {
+        return queryFactory.selectFrom(user)
+            .where(
+                user.name.eq(name)
+            ).fetchOne();
+    }
 
-	@Override
-	public User findUserById(Long userId) {
-		return queryFactory.selectFrom(user)
-				.where(
-						user.id.eq(userId),
-						user.status.eq(UserStatusType.ACTIVE)
-				).fetchOne();
-	}
+    @Override
+    public User findUserById(Long userId) {
+        return queryFactory.selectFrom(user)
+            .where(
+                user.id.eq(userId),
+                user.status.eq(UserStatusType.ACTIVE)
+            ).fetchOne();
+    }
 
 }

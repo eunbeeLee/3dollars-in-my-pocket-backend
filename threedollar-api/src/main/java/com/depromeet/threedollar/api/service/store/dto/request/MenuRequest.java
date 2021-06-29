@@ -16,21 +16,21 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MenuRequest {
 
-	@NotBlank(message = "{menu.name.notBlank}")
-	private String name;
+    @NotBlank(message = "{menu.name.notBlank}")
+    private String name;
 
-	@NotBlank(message = "{menu.price.notBlank}")
-	private String price;
+    @NotBlank(message = "{menu.price.notBlank}")
+    private String price;
 
-	@NotNull(message = "{menu.category.notnull}")
-	private MenuCategoryType category;
+    @NotNull(message = "{menu.category.notnull}")
+    private MenuCategoryType category;
 
-	public static MenuRequest of(String name, String price, MenuCategoryType category) {
-		return new MenuRequest(name, price, category);
-	}
+    public static MenuRequest of(String name, String price, MenuCategoryType category) {
+        return new MenuRequest(name, price, category);
+    }
 
-	public Menu toEntity(Store store) {
-		return Menu.of(store, name, price, category);
-	}
+    public Menu toEntity(Store store) {
+        return Menu.of(store, name, price, category);
+    }
 
 }

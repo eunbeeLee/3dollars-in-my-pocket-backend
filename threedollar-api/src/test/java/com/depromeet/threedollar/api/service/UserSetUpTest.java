@@ -11,19 +11,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class UserSetUpTest {
 
-	@Autowired
-	protected UserRepository userRepository;
+    @Autowired
+    protected UserRepository userRepository;
 
-	protected Long userId;
+    protected Long userId;
 
-	@BeforeEach
-	void setUp() {
-		User user = userRepository.save(UserCreator.create("social-id", UserSocialType.KAKAO, "디프만"));
-		userId = user.getId();
-	}
+    @BeforeEach
+    void setUp() {
+        User user = userRepository.save(UserCreator.create("social-id", UserSocialType.KAKAO, "디프만"));
+        userId = user.getId();
+    }
 
-	protected void cleanup() {
-		userRepository.deleteAll();
-	}
+    protected void cleanup() {
+        userRepository.deleteAll();
+    }
 
 }

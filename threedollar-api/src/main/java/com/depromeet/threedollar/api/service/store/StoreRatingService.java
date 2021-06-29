@@ -13,17 +13,17 @@ import java.util.List;
 @Service
 public class StoreRatingService {
 
-	private final StoreRepository storeRepository;
-	private final ReviewRepository reviewRepository;
+    private final StoreRepository storeRepository;
+    private final ReviewRepository reviewRepository;
 
-	public void renewRating(Long storeId) {
-		Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
-		List<Review> reviews = reviewRepository.findAllReviewByStoreId(storeId);
-		double average = reviews.stream()
-				.mapToInt(Review::getRating)
-				.average()
-				.orElse(0);
-		store.updateRating(average);
-	}
+    public void renewRating(Long storeId) {
+        Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
+        List<Review> reviews = reviewRepository.findAllReviewByStoreId(storeId);
+        double average = reviews.stream()
+            .mapToInt(Review::getRating)
+            .average()
+            .orElse(0);
+        store.updateRating(average);
+    }
 
 }

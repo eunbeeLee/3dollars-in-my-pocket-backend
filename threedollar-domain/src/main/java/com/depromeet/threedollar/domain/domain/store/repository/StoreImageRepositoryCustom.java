@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface StoreImageRepositoryCustom {
 
-	StoreImage findStoreImageById(Long storeImageId);
+    StoreImage findStoreImageById(Long storeImageId);
 
-	List<StoreImage> findStoreImagesByStoreId(Long storeId);
+    List<StoreImage> findStoreImagesByStoreId(Long storeId);
 
 }

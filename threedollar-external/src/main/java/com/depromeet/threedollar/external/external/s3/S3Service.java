@@ -6,8 +6,8 @@ import java.io.InputStream;
 
 public interface S3Service {
 
-	void uploadFile(InputStream inputStream, ObjectMetadata objectMetadata, String fileName);
+    void uploadFile(InputStream inputStream, ObjectMetadata objectMetadata, String fileName);
 
-	String getFileUrl(String fileName);
+    String getFileUrl(String fileName);
 
 }

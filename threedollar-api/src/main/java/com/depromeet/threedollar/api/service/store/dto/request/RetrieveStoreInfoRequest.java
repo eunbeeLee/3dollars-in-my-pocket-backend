@@ -12,13 +12,13 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RetrieveStoreInfoRequest {
 
-	@NotNull(message = "{store.storeId.notnull}")
-	private Long storeId;
+    @NotNull(message = "{store.storeId.notnull}")
+    private Long storeId;
 
-	@NotNull(message = "{store.latitude.notnull}")
-	private Double latitude;
+    @NotNull(message = "{store.latitude.notnull}")
+    private Double latitude;
 
-	@NotNull(message = "{store.longitude.notnull}")
-	private Double longitude;
+    @NotNull(message = "{store.longitude.notnull}")
+    private Double longitude;
 
 }

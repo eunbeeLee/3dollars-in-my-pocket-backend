@@ -23,74 +23,74 @@ import static com.depromeet.threedollar.domain.domain.review.QReview.review;
 @RequiredArgsConstructor
 public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
 
-	private final JPAQueryFactory queryFactory;
+    private final JPAQueryFactory queryFactory;
 
-	@Override
-	public Review findReviewByIdAndUserId(Long reviewId, Long userId) {
-		return queryFactory.selectFrom(review)
-				.where(
-						review.id.eq(reviewId),
-						review.userId.eq(userId),
-						review.status.eq(ReviewStatus.POSTED)
-				).fetchOne();
-	}
+    @Override
+    public Review findReviewByIdAndUserId(Long reviewId, Long userId) {
+        return queryFactory.selectFrom(review)
+            .where(
+                review.id.eq(reviewId),
+                review.userId.eq(userId),
+                review.status.eq(ReviewStatus.POSTED)
+            ).fetchOne();
+    }
 
-	@Override
-	public List<ReviewWithCreatorDto> findAllReviewWithCreatorByStoreId(Long storeId) {
-		return queryFactory.select(Projections.fields(ReviewWithCreatorDto.class,
-				review.id.as("id"),
-				review.rating.rating.as("rating"),
-				review.contents.as("contents"),
-				review.createdAt.as("createdAt"),
-				review.updatedAt.as("updatedAt"),
-				user.id.as("userId"),
-				user.name.as("userName"),
-				user.socialInfo.socialType.as("userSocialType")
-		))
-				.from(review)
-				.innerJoin(user).on(review.userId.eq(user.id))
-				.where(
-						review.storeId.eq(storeId),
-						user.status.eq(UserStatusType.ACTIVE)
-				).fetch();
-	}
+    @Override
+    public List<ReviewWithCreatorDto> findAllReviewWithCreatorByStoreId(Long storeId) {
+        return queryFactory.select(Projections.fields(ReviewWithCreatorDto.class,
+            review.id.as("id"),
+            review.rating.rating.as("rating"),
+            review.contents.as("contents"),
+            review.createdAt.as("createdAt"),
+            review.updatedAt.as("updatedAt"),
+            user.id.as("userId"),
+            user.name.as("userName"),
+            user.socialInfo.socialType.as("userSocialType")
+        ))
+            .from(review)
+            .innerJoin(user).on(review.userId.eq(user.id))
+            .where(
+                review.storeId.eq(storeId),
+                user.status.eq(UserStatusType.ACTIVE)
+            ).fetch();
+    }
 
-	@Override
-	public List<Review> findAllReviewByStoreId(Long storeId) {
-		return queryFactory.selectFrom(review)
-				.where(
-						review.storeId.eq(storeId),
-						review.status.eq(ReviewStatus.POSTED)
-				).fetch();
-	}
+    @Override
+    public List<Review> findAllReviewByStoreId(Long storeId) {
+        return queryFactory.selectFrom(review)
+            .where(
+                review.storeId.eq(storeId),
+                review.status.eq(ReviewStatus.POSTED)
+            ).fetch();
+    }
 
-	@Override
-	public Page<ReviewWithStoreAndCreatorDto> findAllReviewWithCreatorByUserId(Long userId, Pageable pageable) {
-		QueryResults<ReviewWithStoreAndCreatorDto> result = queryFactory.select(Projections.fields(ReviewWithStoreAndCreatorDto.class,
-				review.id.as("id"),
-				review.rating.rating.as("rating"),
-				review.contents.as("contents"),
-				review.status.as("status"),
-				review.createdAt.as("createdAt"),
-				review.updatedAt.as("updatedAt"),
-				review.storeId.as("storeId"),
-				store.storeName.as("storeName"),
-				user.id.as("userId"),
-				user.name.as("userName"),
-				user.socialInfo.socialType.as("userSocialType")
-		))
-				.from(review)
-				.innerJoin(user).on(review.userId.eq(user.id))
-				.innerJoin(store).on(review.storeId.eq(store.id))
-				.where(
-						review.userId.eq(userId),
-						review.status.eq(ReviewStatus.POSTED),
-						store.status.eq(StoreStatus.ACTIVE)
-				)
-				.offset(pageable.getOffset())
-				.limit(pageable.getPageSize())
-				.fetchResults();
-		return new PageImpl<>(result.getResults(), pageable, result.getTotal());
-	}
+    @Override
+    public Page<ReviewWithStoreAndCreatorDto> findAllReviewWithCreatorByUserId(Long userId, Pageable pageable) {
+        QueryResults<ReviewWithStoreAndCreatorDto> result = queryFactory.select(Projections.fields(ReviewWithStoreAndCreatorDto.class,
+            review.id.as("id"),
+            review.rating.rating.as("rating"),
+            review.contents.as("contents"),
+            review.status.as("status"),
+            review.createdAt.as("createdAt"),
+            review.updatedAt.as("updatedAt"),
+            review.storeId.as("storeId"),
+            store.storeName.as("storeName"),
+            user.id.as("userId"),
+            user.name.as("userName"),
+            user.socialInfo.socialType.as("userSocialType")
+        ))
+            .from(review)
+            .innerJoin(user).on(review.userId.eq(user.id))
+            .innerJoin(store).on(review.storeId.eq(store.id))
+            .where(
+                review.userId.eq(userId),
+                review.status.eq(ReviewStatus.POSTED),
+                store.status.eq(StoreStatus.ACTIVE)
+            )
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetchResults();
+        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
+    }
 
 }

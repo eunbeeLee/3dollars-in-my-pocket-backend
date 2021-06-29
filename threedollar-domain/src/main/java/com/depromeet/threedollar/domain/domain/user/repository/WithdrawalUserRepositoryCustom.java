@@ -4,6 +4,6 @@ import com.depromeet.threedollar.domain.domain.user.WithdrawalUser;
 
 public interface WithdrawalUserRepositoryCustom {
 
-	WithdrawalUser findWithdrawalUserByUserId(Long userId);
+    WithdrawalUser findWithdrawalUserByUserId(Long userId);
 
 }

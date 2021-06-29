@@ -13,26 +13,26 @@ import javax.persistence.*;
 @Entity
 public class AppearanceDay extends AuditingTimeEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "store_id", nullable = false)
-	private Store store;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store store;
 
-	@Column(nullable = false, length = 30)
-	@Enumerated(value = EnumType.STRING)
-	private DayOfTheWeek day;
+    @Column(nullable = false, length = 30)
+    @Enumerated(value = EnumType.STRING)
+    private DayOfTheWeek day;
 
-	private AppearanceDay(Store store, DayOfTheWeek day) {
-		this.store = store;
-		this.day = day;
-	}
+    private AppearanceDay(Store store, DayOfTheWeek day) {
+        this.store = store;
+        this.day = day;
+    }
 
-	public static AppearanceDay of(Store store, DayOfTheWeek day) {
-		return new AppearanceDay(store, day);
-	}
+    public static AppearanceDay of(Store store, DayOfTheWeek day) {
+        return new AppearanceDay(store, day);
+    }
 
 }
 

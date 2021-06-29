@@ -6,9 +6,8 @@ import java.util.List;
 
 public interface StoreDeleteRequestRepositoryCustom {
 
-	StoreDeleteRequest findStoreDeleteRequestByStoreIdAndUserId(Long storeId, Long userId);
+    StoreDeleteRequest findStoreDeleteRequestByStoreIdAndUserId(Long storeId, Long userId);
 
-	List<StoreDeleteRequest> findAllByStoreId(Long storeId);
-
+    List<StoreDeleteRequest> findAllByStoreId(Long storeId);
 
 }

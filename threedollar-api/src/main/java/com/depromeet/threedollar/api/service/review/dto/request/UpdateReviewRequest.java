@@ -14,15 +14,15 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UpdateReviewRequest {
 
-	@NotBlank(message = "{review.content.notBlank}")
-	private String content;
+    @NotBlank(message = "{review.content.notBlank}")
+    private String content;
 
-	@Min(value = 0, message = "{review.rating.min}")
-	@Max(value = 5, message = "{review.rating.max}")
-	private int rating;
+    @Min(value = 0, message = "{review.rating.min}")
+    @Max(value = 5, message = "{review.rating.max}")
+    private int rating;
 
-	public static UpdateReviewRequest testInstance(String content, int rating) {
-		return new UpdateReviewRequest(content, rating);
-	}
+    public static UpdateReviewRequest testInstance(String content, int rating) {
+        return new UpdateReviewRequest(content, rating);
+    }
 
 }

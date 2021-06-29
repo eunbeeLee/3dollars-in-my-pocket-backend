@@ -11,24 +11,24 @@ import static com.depromeet.threedollar.domain.domain.store.QStoreImage.storeIma
 @RequiredArgsConstructor
 public class StoreImageRepositoryCustomImpl implements StoreImageRepositoryCustom {
 
-	private final JPAQueryFactory queryFactory;
+    private final JPAQueryFactory queryFactory;
 
-	@Override
-	public StoreImage findStoreImageById(Long storeImageId) {
-		return queryFactory.selectFrom(storeImage)
-				.where(
-						storeImage.id.eq(storeImageId),
-						storeImage.isDeleted.isFalse()
-				).fetchOne();
-	}
+    @Override
+    public StoreImage findStoreImageById(Long storeImageId) {
+        return queryFactory.selectFrom(storeImage)
+            .where(
+                storeImage.id.eq(storeImageId),
+                storeImage.isDeleted.isFalse()
+            ).fetchOne();
+    }
 
-	@Override
-	public List<StoreImage> findStoreImagesByStoreId(Long storeId) {
-		return queryFactory.selectFrom(storeImage)
-				.where(
-						storeImage.storeId.eq(storeId),
-						storeImage.isDeleted.isFalse()
-				).fetch();
-	}
+    @Override
+    public List<StoreImage> findStoreImagesByStoreId(Long storeId) {
+        return queryFactory.selectFrom(storeImage)
+            .where(
+                storeImage.storeId.eq(storeId),
+                storeImage.isDeleted.isFalse()
+            ).fetch();
+    }
 
 }

@@ -10,12 +10,12 @@ import java.util.List;
 
 public interface ReviewRepositoryCustom {
 
-	Review findReviewByIdAndUserId(Long reviewId, Long userId);
+    Review findReviewByIdAndUserId(Long reviewId, Long userId);
 
-	List<ReviewWithCreatorDto> findAllReviewWithCreatorByStoreId(Long storeId);
+    List<ReviewWithCreatorDto> findAllReviewWithCreatorByStoreId(Long storeId);
 
-	List<Review> findAllReviewByStoreId(Long storeId);
+    List<Review> findAllReviewByStoreId(Long storeId);
 
-	Page<ReviewWithStoreAndCreatorDto> findAllReviewWithCreatorByUserId(Long userId, Pageable pageable);
+    Page<ReviewWithStoreAndCreatorDto> findAllReviewWithCreatorByUserId(Long userId, Pageable pageable);
 
 }

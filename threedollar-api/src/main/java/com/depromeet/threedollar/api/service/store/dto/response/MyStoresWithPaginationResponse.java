@@ -14,21 +14,21 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MyStoresWithPaginationResponse {
 
-	private List<StoreInfoResponse> content = new ArrayList<>();
-	private long totalElements;
-	private long totalPages;
+    private List<StoreInfoResponse> content = new ArrayList<>();
+    private long totalElements;
+    private long totalPages;
 
-	private MyStoresWithPaginationResponse(List<StoreInfoResponse> content, long totalElements, long totalPages) {
-		this.content = content;
-		this.totalElements = totalElements;
-		this.totalPages = totalPages;
-	}
+    private MyStoresWithPaginationResponse(List<StoreInfoResponse> content, long totalElements, long totalPages) {
+        this.content = content;
+        this.totalElements = totalElements;
+        this.totalPages = totalPages;
+    }
 
-	public static MyStoresWithPaginationResponse of(Page<Store> stores, double latitude, double longitude) {
-		List<StoreInfoResponse> responses = stores.getContent().stream()
-				.map(store -> StoreInfoResponse.of(store, latitude, longitude))
-				.collect(Collectors.toList());
-		return new MyStoresWithPaginationResponse(responses, stores.getTotalElements(), stores.getTotalPages());
-	}
+    public static MyStoresWithPaginationResponse of(Page<Store> stores, double latitude, double longitude) {
+        List<StoreInfoResponse> responses = stores.getContent().stream()
+            .map(store -> StoreInfoResponse.of(store, latitude, longitude))
+            .collect(Collectors.toList());
+        return new MyStoresWithPaginationResponse(responses, stores.getTotalElements(), stores.getTotalPages());
+    }
 
 }

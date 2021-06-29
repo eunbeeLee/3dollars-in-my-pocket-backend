@@ -9,14 +9,14 @@ import static com.depromeet.threedollar.domain.domain.user.QWithdrawalUser.withd
 @RequiredArgsConstructor
 public class WithdrawalUserRepositoryCustomImpl implements WithdrawalUserRepositoryCustom {
 
-	private final JPAQueryFactory queryFactory;
+    private final JPAQueryFactory queryFactory;
 
-	@Override
-	public WithdrawalUser findWithdrawalUserByUserId(Long userId) {
-		return queryFactory.selectFrom(withdrawalUser)
-				.where(
-						withdrawalUser.userId.eq(userId)
-				).fetchOne();
-	}
+    @Override
+    public WithdrawalUser findWithdrawalUserByUserId(Long userId) {
+        return queryFactory.selectFrom(withdrawalUser)
+            .where(
+                withdrawalUser.userId.eq(userId)
+            ).fetchOne();
+    }
 
 }

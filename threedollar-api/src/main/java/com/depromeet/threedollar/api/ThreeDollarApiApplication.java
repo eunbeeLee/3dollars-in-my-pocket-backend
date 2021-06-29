@@ -6,14 +6,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackageClasses = {
-		ThreeDollarApiApplication.class,
-		ThreeDollarDomainRoot.class,
-		ThreeDollarExternalRoot.class
+    ThreeDollarApiApplication.class,
+    ThreeDollarDomainRoot.class,
+    ThreeDollarExternalRoot.class
 })
 public class ThreeDollarApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ThreeDollarApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ThreeDollarApiApplication.class, args);
+    }
 
 }

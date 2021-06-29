@@ -19,29 +19,29 @@ import java.util.stream.Collectors;
 @Service
 public class StoreImageService {
 
-	private final StoreRepository storeRepository;
-	private final StoreImageRepository storeImageRepository;
-	private final FileUploadService fileUploadService;
+    private final StoreRepository storeRepository;
+    private final StoreImageRepository storeImageRepository;
+    private final FileUploadService fileUploadService;
 
-	@Transactional
-	public StoreImageResponse addStoreImage(Long storeId, MultipartFile image, Long userId) {
-		StoreServiceUtils.validateExistsStore(storeRepository, storeId);
-		String imageUrl = fileUploadService.uploadImage(FileUploadRequest.of(ImageType.STORE), image);
-		return StoreImageResponse.of(storeImageRepository.save(StoreImage.newInstance(storeId, userId, imageUrl)));
-	}
+    @Transactional
+    public StoreImageResponse addStoreImage(Long storeId, MultipartFile image, Long userId) {
+        StoreServiceUtils.validateExistsStore(storeRepository, storeId);
+        String imageUrl = fileUploadService.uploadImage(FileUploadRequest.of(ImageType.STORE), image);
+        return StoreImageResponse.of(storeImageRepository.save(StoreImage.newInstance(storeId, userId, imageUrl)));
+    }
 
-	@Transactional
-	public void deleteStoreImage(Long imageId) {
-		StoreImage storeImage = StoreImageServiceUtils.findStoreImageById(storeImageRepository, imageId);
-		storeImage.delete();
-	}
+    @Transactional
+    public void deleteStoreImage(Long imageId) {
+        StoreImage storeImage = StoreImageServiceUtils.findStoreImageById(storeImageRepository, imageId);
+        storeImage.delete();
+    }
 
-	@Transactional(readOnly = true)
-	public List<StoreImageResponse> getStoreImages(Long storeId) {
-		List<StoreImage> storeImages = storeImageRepository.findStoreImagesByStoreId(storeId);
-		return storeImages.stream()
-				.map(StoreImageResponse::of)
-				.collect(Collectors.toList());
-	}
+    @Transactional(readOnly = true)
+    public List<StoreImageResponse> getStoreImages(Long storeId) {
+        List<StoreImage> storeImages = storeImageRepository.findStoreImagesByStoreId(storeId);
+        return storeImages.stream()
+            .map(StoreImageResponse::of)
+            .collect(Collectors.toList());
+    }
 
 }

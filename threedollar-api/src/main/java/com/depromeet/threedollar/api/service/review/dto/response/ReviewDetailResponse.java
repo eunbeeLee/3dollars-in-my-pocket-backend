@@ -14,21 +14,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReviewDetailResponse extends AudtingTimeResponse {
 
-	private Long reviewId;
+    private Long reviewId;
 
-	private int rating;
+    private int rating;
 
-	private ReviewStatus status;
+    private ReviewStatus status;
 
-	private Long storeId;
+    private Long storeId;
 
-	private UserInfoResponse user;
+    private UserInfoResponse user;
 
-	public static ReviewDetailResponse of(ReviewWithStoreAndCreatorDto review) {
-		ReviewDetailResponse response = new ReviewDetailResponse(review.getId(), review.getRating(), review.getStatus(),
-				review.getStoreId(), UserInfoResponse.of(review.getUserId(), review.getUserName(), review.getUserSocialType()));
-		response.setBaseTime(review.getCreatedAt(), review.getUpdatedAt());
-		return response;
-	}
+    public static ReviewDetailResponse of(ReviewWithStoreAndCreatorDto review) {
+        ReviewDetailResponse response = new ReviewDetailResponse(review.getId(), review.getRating(), review.getStatus(),
+            review.getStoreId(), UserInfoResponse.of(review.getUserId(), review.getUserName(), review.getUserSocialType()));
+        response.setBaseTime(review.getCreatedAt(), review.getUpdatedAt());
+        return response;
+    }
 
 }

@@ -14,18 +14,18 @@ import java.io.InputStream;
 @Component
 public class AWSClientS3ServiceImpl implements S3Service {
 
-	private final AmazonS3Client amazonS3Client;
-	private final AmazonClientS3Component component;
+    private final AmazonS3Client amazonS3Client;
+    private final AmazonClientS3Component component;
 
-	@Override
-	public void uploadFile(InputStream inputStream, ObjectMetadata objectMetadata, String fileName) {
-		amazonS3Client.putObject(new PutObjectRequest(component.getBucket(), fileName, inputStream, objectMetadata)
-				.withCannedAcl(CannedAccessControlList.PublicRead));
-	}
+    @Override
+    public void uploadFile(InputStream inputStream, ObjectMetadata objectMetadata, String fileName) {
+        amazonS3Client.putObject(new PutObjectRequest(component.getBucket(), fileName, inputStream, objectMetadata)
+            .withCannedAcl(CannedAccessControlList.PublicRead));
+    }
 
-	@Override
-	public String getFileUrl(String fileName) {
-		return amazonS3Client.getResourceUrl(component.getBucket(), fileName);
-	}
+    @Override
+    public String getFileUrl(String fileName) {
+        return amazonS3Client.getResourceUrl(component.getBucket(), fileName);
+    }
 
 }

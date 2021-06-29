@@ -11,9 +11,9 @@ import java.sql.SQLException;
 @Configuration
 public class H2ServerConfig {
 
-	@Bean
-	public Server h2TcpServer() throws SQLException {
-		return Server.createTcpServer().start();
-	}
+    @Bean
+    public Server h2TcpServer() throws SQLException {
+        return Server.createTcpServer().start();
+    }
 
 }

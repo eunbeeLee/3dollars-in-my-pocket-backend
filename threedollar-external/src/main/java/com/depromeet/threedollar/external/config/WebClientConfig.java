@@ -14,18 +14,18 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class WebClientConfig {
 
-	@Bean
-	public WebClient webClient() {
-		return WebClient.builder()
-				.clientConnector(new ReactorClientHttpConnector(
-						HttpClient.from(
-								TcpClient.create()
-										.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
-										.doOnConnected(conn ->
-												conn.addHandler(new ReadTimeoutHandler(5000, TimeUnit.MILLISECONDS))
-										)
-						)
-				)).build();
-	}
+    @Bean
+    public WebClient webClient() {
+        return WebClient.builder()
+            .clientConnector(new ReactorClientHttpConnector(
+                HttpClient.from(
+                    TcpClient.create()
+                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                        .doOnConnected(conn ->
+                            conn.addHandler(new ReadTimeoutHandler(5000, TimeUnit.MILLISECONDS))
+                        )
+                )
+            )).build();
+    }
 
 }

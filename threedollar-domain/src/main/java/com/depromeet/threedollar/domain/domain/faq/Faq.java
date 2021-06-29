@@ -12,18 +12,18 @@ import javax.persistence.*;
 @Entity
 public class Faq extends AuditingTimeEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(nullable = false, length = 100)
-	private String question;
+    @Column(nullable = false, length = 100)
+    private String question;
 
-	@Column(nullable = false, length = 200)
-	private String answer;
+    @Column(nullable = false, length = 200)
+    private String answer;
 
-	@Column(nullable = false, length = 30)
-	@Enumerated(EnumType.STRING)
-	private FaqCategory category;
+    @Column(nullable = false, length = 30)
+    @Enumerated(EnumType.STRING)
+    private FaqCategory category;
 
 }

@@ -13,11 +13,11 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FileUploadRequest {
 
-	@NotNull(message = "{image.type.notnull}")
-	private ImageType type;
+    @NotNull(message = "{image.type.notnull}")
+    private ImageType type;
 
-	public static FileUploadRequest of(ImageType type) {
-		return new FileUploadRequest(type);
-	}
+    public static FileUploadRequest of(ImageType type) {
+        return new FileUploadRequest(type);
+    }
 
 }

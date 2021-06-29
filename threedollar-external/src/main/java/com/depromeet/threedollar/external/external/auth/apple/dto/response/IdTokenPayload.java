@@ -10,32 +10,32 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class IdTokenPayload {
 
-	private String iss;
+    private String iss;
 
-	private String aud;
+    private String aud;
 
-	private Long exp;
+    private Long exp;
 
-	private Long iat;
+    private Long iat;
 
-	private String sub;
+    private String sub;
 
-	private String c_hash;
+    private String c_hash;
 
-	private Long auth_time;
+    private Long auth_time;
 
-	private Boolean nonce_supported;
+    private Boolean nonce_supported;
 
-	private Boolean email_verified;
+    private Boolean email_verified;
 
-	private String email;
+    private String email;
 
-	private IdTokenPayload(String sub) {
-		this.sub = sub;
-	}
+    private IdTokenPayload(String sub) {
+        this.sub = sub;
+    }
 
-	public static IdTokenPayload testInstance(String sub) {
-		return new IdTokenPayload(sub);
-	}
+    public static IdTokenPayload testInstance(String sub) {
+        return new IdTokenPayload(sub);
+    }
 
 }

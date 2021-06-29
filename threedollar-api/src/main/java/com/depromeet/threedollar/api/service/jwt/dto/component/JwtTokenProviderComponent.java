@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProviderComponent {
 
-	private String secretKey;
+    private String secretKey;
 
-	private String issuer;
+    private String issuer;
 
 }

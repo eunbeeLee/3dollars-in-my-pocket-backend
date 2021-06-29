@@ -5,10 +5,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ReviewStatus {
 
-	POSTED(true),
-	FILTERED(false),
-	DELETED(false);
+    POSTED(true),
+    FILTERED(false),
+    DELETED(false);
 
-	private final boolean visible;
+    private final boolean visible;
 
 }

@@ -14,15 +14,15 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DeleteStoreRequest {
 
-	@NotNull(message = "{store.delete.reason.notnull}")
-	private DeleteReasonType deleteReasonType;
+    @NotNull(message = "{store.delete.reason.notnull}")
+    private DeleteReasonType deleteReasonType;
 
-	public static DeleteStoreRequest testInstance(DeleteReasonType reasonType) {
-		return new DeleteStoreRequest(reasonType);
-	}
+    public static DeleteStoreRequest testInstance(DeleteReasonType reasonType) {
+        return new DeleteStoreRequest(reasonType);
+    }
 
-	public StoreDeleteRequest toEntity(Long storeId, Long userId) {
-		return StoreDeleteRequest.of(storeId, userId, deleteReasonType);
-	}
+    public StoreDeleteRequest toEntity(Long storeId, Long userId) {
+        return StoreDeleteRequest.of(storeId, userId, deleteReasonType);
+    }
 
 }

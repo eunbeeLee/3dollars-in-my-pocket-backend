@@ -16,27 +16,27 @@ import java.util.List;
 @Service
 public class StoreDeleteService {
 
-	private static final int MAX_DELETE_REQUEST = 3;
+    private static final int MAX_DELETE_REQUEST = 3;
 
-	private final StoreRepository storeRepository;
-	private final StoreDeleteRequestRepository storeDeleteRequestRepository;
+    private final StoreRepository storeRepository;
+    private final StoreDeleteRequestRepository storeDeleteRequestRepository;
 
-	@Transactional
-	public void delete(Long storeId, DeleteStoreRequest request, Long userId) {
-		validateNotExistsStoreDeleteRequest(storeId, userId);
-		Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
-		storeDeleteRequestRepository.save(request.toEntity(store.getId(), userId));
-		List<StoreDeleteRequest> storeDeleteRequests = storeDeleteRequestRepository.findAllByStoreId(store.getId());
-		if (storeDeleteRequests.size() >= MAX_DELETE_REQUEST) {
-			store.delete();
-		}
-	}
+    @Transactional
+    public void delete(Long storeId, DeleteStoreRequest request, Long userId) {
+        validateNotExistsStoreDeleteRequest(storeId, userId);
+        Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
+        storeDeleteRequestRepository.save(request.toEntity(store.getId(), userId));
+        List<StoreDeleteRequest> storeDeleteRequests = storeDeleteRequestRepository.findAllByStoreId(store.getId());
+        if (storeDeleteRequests.size() >= MAX_DELETE_REQUEST) {
+            store.delete();
+        }
+    }
 
-	private void validateNotExistsStoreDeleteRequest(Long storeId, Long userId) {
-		StoreDeleteRequest storeDeleteRequest = storeDeleteRequestRepository.findStoreDeleteRequestByStoreIdAndUserId(storeId, userId);
-		if (storeDeleteRequest != null) {
-			throw new ConflictException(String.format("사용자 (%s)는 가게 (%s)에 대해 이미 삭제 요청을 하였습니다", userId, storeId));
-		}
-	}
+    private void validateNotExistsStoreDeleteRequest(Long storeId, Long userId) {
+        StoreDeleteRequest storeDeleteRequest = storeDeleteRequestRepository.findStoreDeleteRequestByStoreIdAndUserId(storeId, userId);
+        if (storeDeleteRequest != null) {
+            throw new ConflictException(String.format("사용자 (%s)는 가게 (%s)에 대해 이미 삭제 요청을 하였습니다", userId, storeId));
+        }
+    }
 
 }

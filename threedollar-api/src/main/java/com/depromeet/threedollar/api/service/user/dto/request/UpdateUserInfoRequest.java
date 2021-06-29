@@ -12,11 +12,11 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UpdateUserInfoRequest {
 
-	@NotBlank(message = "{member.name.notBlank}")
-	private String nickName;
+    @NotBlank(message = "{member.name.notBlank}")
+    private String nickName;
 
-	public static UpdateUserInfoRequest testInstance(String name) {
-		return new UpdateUserInfoRequest(name);
-	}
+    public static UpdateUserInfoRequest testInstance(String name) {
+        return new UpdateUserInfoRequest(name);
+    }
 
 }

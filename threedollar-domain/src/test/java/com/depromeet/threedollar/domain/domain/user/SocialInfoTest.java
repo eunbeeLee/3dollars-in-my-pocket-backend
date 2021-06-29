@@ -6,18 +6,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SocialInfoTest {
 
-	@Test
-	void SocialInfo_동등성_테스트() {
-		// given
-		String socialId = "social-id";
-		UserSocialType type = UserSocialType.KAKAO;
+    @Test
+    void SocialInfo_동등성_테스트() {
+        // given
+        String socialId = "social-id";
+        UserSocialType type = UserSocialType.KAKAO;
 
-		// when
-		SocialInfo source = SocialInfo.of(socialId, type);
-		SocialInfo target = SocialInfo.of(socialId, type);
+        // when
+        SocialInfo source = SocialInfo.of(socialId, type);
+        SocialInfo target = SocialInfo.of(socialId, type);
 
-		// then
-		assertThat(source).isEqualTo(target);
-	}
+        // then
+        assertThat(source).isEqualTo(target);
+    }
 
 }

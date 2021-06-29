@@ -23,29 +23,29 @@ import javax.validation.Valid;
 @RestController
 public class KaKaoAuthController {
 
-	private final AuthService kaKaoAuthService;
-	private final JwtService jwtService;
+    private final AuthService kaKaoAuthService;
+    private final JwtService jwtService;
 
-	@Operation(summary = "카카오 계정의 회원가입을 요청하는 API")
-	@PostMapping("/api/v2/signup/kakao")
-	public ApiResponse<LoginResponse> signUpKaKao(@Valid @RequestBody SignUpRequest request) {
-		Long userId = kaKaoAuthService.signUp(request);
-		return ApiResponse.success(LoginResponse.of(jwtService.encodeSignUpToken(userId)));
-	}
+    @Operation(summary = "카카오 계정의 회원가입을 요청하는 API")
+    @PostMapping("/api/v2/signup/kakao")
+    public ApiResponse<LoginResponse> signUpKaKao(@Valid @RequestBody SignUpRequest request) {
+        Long userId = kaKaoAuthService.signUp(request);
+        return ApiResponse.success(LoginResponse.of(jwtService.encodeSignUpToken(userId)));
+    }
 
-	@Operation(summary = "카카오 계정의 로그인을 요청하는 API")
-	@PostMapping("/api/v2/login/kakao")
-	public ApiResponse<LoginResponse> loginKaKao(@Valid @RequestBody LoginRequest request) {
-		Long userId = kaKaoAuthService.login(request);
-		return ApiResponse.success(LoginResponse.of(jwtService.encodeSignUpToken(userId)));
-	}
+    @Operation(summary = "카카오 계정의 로그인을 요청하는 API")
+    @PostMapping("/api/v2/login/kakao")
+    public ApiResponse<LoginResponse> loginKaKao(@Valid @RequestBody LoginRequest request) {
+        Long userId = kaKaoAuthService.login(request);
+        return ApiResponse.success(LoginResponse.of(jwtService.encodeSignUpToken(userId)));
+    }
 
-	@Operation(summary = "카카오 계정의 회원탈퇴 요청하는 API. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
-	@Auth
-	@DeleteMapping("/api/v2/signout/kakao")
-	public ApiResponse<String> signOutKakao(@UserId Long userId) {
-		kaKaoAuthService.signOut(userId);
-		return ApiResponse.SUCCESS;
-	}
+    @Operation(summary = "카카오 계정의 회원탈퇴 요청하는 API. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @Auth
+    @DeleteMapping("/api/v2/signout/kakao")
+    public ApiResponse<String> signOutKakao(@UserId Long userId) {
+        kaKaoAuthService.signOut(userId);
+        return ApiResponse.SUCCESS;
+    }
 
 }

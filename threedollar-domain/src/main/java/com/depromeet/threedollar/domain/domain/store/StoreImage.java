@@ -11,36 +11,36 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(
-		indexes = @Index(name = "idx_store_image_1", columnList = "storeId")
+    indexes = @Index(name = "idx_store_image_1", columnList = "storeId")
 )
 public class StoreImage extends AuditingTimeEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(nullable = false)
-	private Long storeId;
+    @Column(nullable = false)
+    private Long storeId;
 
-	private Long userId;
+    private Long userId;
 
-	private String url;
+    private String url;
 
-	private boolean isDeleted;
+    private boolean isDeleted;
 
-	private StoreImage(Long storeId, Long userId, String url) {
-		this.storeId = storeId;
-		this.userId = userId;
-		this.url = url;
-		this.isDeleted = false;
-	}
+    private StoreImage(Long storeId, Long userId, String url) {
+        this.storeId = storeId;
+        this.userId = userId;
+        this.url = url;
+        this.isDeleted = false;
+    }
 
-	public static StoreImage newInstance(Long storeId, Long userId, String imageUrl) {
-		return new StoreImage(storeId, userId, imageUrl);
-	}
+    public static StoreImage newInstance(Long storeId, Long userId, String imageUrl) {
+        return new StoreImage(storeId, userId, imageUrl);
+    }
 
-	public void delete() {
-		this.isDeleted = true;
-	}
+    public void delete() {
+        this.isDeleted = true;
+    }
 
 }

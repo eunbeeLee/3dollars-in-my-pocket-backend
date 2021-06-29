@@ -15,33 +15,33 @@ import java.util.Objects;
 @Embeddable
 public class SocialInfo {
 
-	@Column(nullable = false, length = 200)
-	private String socialId;
+    @Column(nullable = false, length = 200)
+    private String socialId;
 
-	@Column(nullable = false, length = 30)
-	@Enumerated(EnumType.STRING)
-	private UserSocialType socialType;
+    @Column(nullable = false, length = 30)
+    @Enumerated(EnumType.STRING)
+    private UserSocialType socialType;
 
-	private SocialInfo(String socialId, UserSocialType socialType) {
-		this.socialId = socialId;
-		this.socialType = socialType;
-	}
+    private SocialInfo(String socialId, UserSocialType socialType) {
+        this.socialId = socialId;
+        this.socialType = socialType;
+    }
 
-	public static SocialInfo of(String socialId, UserSocialType socialType) {
-		return new SocialInfo(socialId, socialType);
-	}
+    public static SocialInfo of(String socialId, UserSocialType socialType) {
+        return new SocialInfo(socialId, socialType);
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		SocialInfo that = (SocialInfo) o;
-		return Objects.equals(socialId, that.socialId) && socialType == that.socialType;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SocialInfo that = (SocialInfo) o;
+        return Objects.equals(socialId, that.socialId) && socialType == that.socialType;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(socialId, socialType);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(socialId, socialType);
+    }
 
 }

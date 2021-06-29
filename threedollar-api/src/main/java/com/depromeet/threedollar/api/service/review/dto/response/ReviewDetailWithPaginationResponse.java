@@ -14,21 +14,21 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReviewDetailWithPaginationResponse {
 
-	private final List<ReviewDetailResponse> content = new ArrayList<>();
-	private long totalElements;
-	private long totalPages;
+    private final List<ReviewDetailResponse> content = new ArrayList<>();
+    private long totalElements;
+    private long totalPages;
 
-	private ReviewDetailWithPaginationResponse(List<ReviewDetailResponse> reviews, long totalElements, long totalPages) {
-		this.content.addAll(reviews);
-		this.totalElements = totalElements;
-		this.totalPages = totalPages;
-	}
+    private ReviewDetailWithPaginationResponse(List<ReviewDetailResponse> reviews, long totalElements, long totalPages) {
+        this.content.addAll(reviews);
+        this.totalElements = totalElements;
+        this.totalPages = totalPages;
+    }
 
-	public static ReviewDetailWithPaginationResponse of(Page<ReviewWithStoreAndCreatorDto> reviewDto) {
-		List<ReviewDetailResponse> responses = reviewDto.getContent().stream()
-				.map(ReviewDetailResponse::of)
-				.collect(Collectors.toList());
-		return new ReviewDetailWithPaginationResponse(responses, reviewDto.getTotalElements(), reviewDto.getTotalPages());
-	}
+    public static ReviewDetailWithPaginationResponse of(Page<ReviewWithStoreAndCreatorDto> reviewDto) {
+        List<ReviewDetailResponse> responses = reviewDto.getContent().stream()
+            .map(ReviewDetailResponse::of)
+            .collect(Collectors.toList());
+        return new ReviewDetailWithPaginationResponse(responses, reviewDto.getTotalElements(), reviewDto.getTotalPages());
+    }
 
 }

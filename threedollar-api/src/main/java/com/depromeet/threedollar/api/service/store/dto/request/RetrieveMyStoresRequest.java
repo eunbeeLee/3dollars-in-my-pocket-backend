@@ -13,16 +13,16 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RetrieveMyStoresRequest {
 
-	@Min(value = 1,message = "{common.page.min}")
-	private int size;
+    @Min(value = 1, message = "{common.page.min}")
+    private int size;
 
-	@Min(value = 0, message = "{common.size.min}")
-	private int page;
+    @Min(value = 0, message = "{common.size.min}")
+    private int page;
 
-	@NotNull(message = "{store.latitude.notnull}")
-	private Double latitude;
+    @NotNull(message = "{store.latitude.notnull}")
+    private Double latitude;
 
-	@NotNull(message = "{store.longitude.notnull}")
-	private Double longitude;
+    @NotNull(message = "{store.longitude.notnull}")
+    private Double longitude;
 
 }

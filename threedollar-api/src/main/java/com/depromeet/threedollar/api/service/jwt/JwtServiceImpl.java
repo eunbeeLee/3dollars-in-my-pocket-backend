@@ -19,44 +19,44 @@ import java.util.Map;
 @Component
 public class JwtServiceImpl implements JwtService {
 
-	private final static long expiresMilliSeconds = 60 * 60 * 24 * 15; // 만료시간: 15일
+    private final static long expiresMilliSeconds = 60 * 60 * 24 * 15; // 만료시간: 15일
 
-	private final JwtTokenProviderComponent jwtTokenProviderComponent;
+    private final JwtTokenProviderComponent jwtTokenProviderComponent;
 
-	public String encodeSignUpToken(Long userId) {
-		try {
-			final ZonedDateTime now = ZonedDateTime.now();
-			return JWT.create()
-					.withHeader(creatJwtHeader())
-					.withIssuer(jwtTokenProviderComponent.getIssuer())
-					.withClaim("userId", Double.valueOf(userId))
-					.withIssuedAt(Date.from(now.toInstant()))
-					.withExpiresAt(Date.from(now.toInstant().plusSeconds(expiresMilliSeconds)))
-					.sign(Algorithm.HMAC512(jwtTokenProviderComponent.getSecretKey().getBytes()));
-		} catch (JWTCreationException e) {
-			throw new IllegalArgumentException(String.format("토큰 생성이 실패하였습니다 (%s)", userId));
-		}
-	}
+    public String encodeSignUpToken(Long userId) {
+        try {
+            final ZonedDateTime now = ZonedDateTime.now();
+            return JWT.create()
+                .withHeader(creatJwtHeader())
+                .withIssuer(jwtTokenProviderComponent.getIssuer())
+                .withClaim("userId", Double.valueOf(userId))
+                .withIssuedAt(Date.from(now.toInstant()))
+                .withExpiresAt(Date.from(now.toInstant().plusSeconds(expiresMilliSeconds)))
+                .sign(Algorithm.HMAC512(jwtTokenProviderComponent.getSecretKey().getBytes()));
+        } catch (JWTCreationException e) {
+            throw new IllegalArgumentException(String.format("토큰 생성이 실패하였습니다 (%s)", userId));
+        }
+    }
 
-	private Map<String, Object> creatJwtHeader() {
-		Map<String, Object> headers = new HashMap<>();
-		headers.put("typ", "JWT");
-		return headers;
-	}
+    private Map<String, Object> creatJwtHeader() {
+        Map<String, Object> headers = new HashMap<>();
+        headers.put("typ", "JWT");
+        return headers;
+    }
 
-	public Long decodeSignUpToken(String token) {
-		try {
-			final DecodedJWT jwt = createJwtVerifier().verify(token);
-			return jwt.getClaim("userId").asDouble().longValue();
-		} catch (RuntimeException e) {
-			throw new UnAuthorizedException(String.format("토큰 Decode 에 실패하였습니다 (%s)", token));
-		}
-	}
+    public Long decodeSignUpToken(String token) {
+        try {
+            final DecodedJWT jwt = createJwtVerifier().verify(token);
+            return jwt.getClaim("userId").asDouble().longValue();
+        } catch (RuntimeException e) {
+            throw new UnAuthorizedException(String.format("토큰 Decode 에 실패하였습니다 (%s)", token));
+        }
+    }
 
-	private JWTVerifier createJwtVerifier() {
-		return JWT.require(Algorithm.HMAC512(jwtTokenProviderComponent.getSecretKey().getBytes()))
-				.withIssuer(jwtTokenProviderComponent.getIssuer())
-				.build();
-	}
+    private JWTVerifier createJwtVerifier() {
+        return JWT.require(Algorithm.HMAC512(jwtTokenProviderComponent.getSecretKey().getBytes()))
+            .withIssuer(jwtTokenProviderComponent.getIssuer())
+            .build();
+    }
 
 }

@@ -15,19 +15,19 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AddReviewRequest {
 
-	@NotBlank(message = "{review.content.notBlank}")
-	private String content;
+    @NotBlank(message = "{review.content.notBlank}")
+    private String content;
 
-	@Min(value = 0, message = "{review.rating.min}")
-	@Max(value = 5, message = "{review.rating.max}")
-	private int rating;
+    @Min(value = 0, message = "{review.rating.min}")
+    @Max(value = 5, message = "{review.rating.max}")
+    private int rating;
 
-	public static AddReviewRequest testInstance(String content, int rating) {
-		return new AddReviewRequest(content, rating);
-	}
+    public static AddReviewRequest testInstance(String content, int rating) {
+        return new AddReviewRequest(content, rating);
+    }
 
-	public Review toEntity(Long storeId, Long userId) {
-		return Review.of(storeId, userId, content, rating);
-	}
+    public Review toEntity(Long storeId, Long userId) {
+        return Review.of(storeId, userId, content, rating);
+    }
 
 }

@@ -15,25 +15,25 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CreateUserRequest {
 
-	@NotBlank(message = "{member.socialId.notBlank}")
-	private String socialId;
+    @NotBlank(message = "{member.socialId.notBlank}")
+    private String socialId;
 
-	@NotNull(message = "{member.socialType.notnull}")
-	private UserSocialType socialType;
+    @NotNull(message = "{member.socialType.notnull}")
+    private UserSocialType socialType;
 
-	@NotBlank(message = "{member.name.notBlank}")
-	private String name;
+    @NotBlank(message = "{member.name.notBlank}")
+    private String name;
 
-	public static CreateUserRequest of(String socialId, UserSocialType type, String name) {
-		return new CreateUserRequest(socialId, type, name);
-	}
+    public static CreateUserRequest of(String socialId, UserSocialType type, String name) {
+        return new CreateUserRequest(socialId, type, name);
+    }
 
-	public static CreateUserRequest testInstance(String socialId, UserSocialType type, String name) {
-		return new CreateUserRequest(socialId, type, name);
-	}
+    public static CreateUserRequest testInstance(String socialId, UserSocialType type, String name) {
+        return new CreateUserRequest(socialId, type, name);
+    }
 
-	public User toEntity() {
-		return User.newInstance(socialId, socialType, name);
-	}
+    public User toEntity() {
+        return User.newInstance(socialId, socialType, name);
+    }
 
 }

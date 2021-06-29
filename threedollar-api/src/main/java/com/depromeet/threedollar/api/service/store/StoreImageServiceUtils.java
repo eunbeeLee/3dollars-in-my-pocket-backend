@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 class StoreImageServiceUtils {
 
-	static StoreImage findStoreImageById(StoreImageRepository storeImageRepository, Long storeImageId) {
-		StoreImage storeImage = storeImageRepository.findStoreImageById(storeImageId);
-		if (storeImage == null) {
-			throw new NotFoundException(String.format("해당하는 가게 이미지 (%s)는 존재하지 않습니다", storeImageId), ErrorCode.NOT_FOUND_STORE_IMAGE_EXCEPTION);
-		}
-		return storeImage;
-	}
+    static StoreImage findStoreImageById(StoreImageRepository storeImageRepository, Long storeImageId) {
+        StoreImage storeImage = storeImageRepository.findStoreImageById(storeImageId);
+        if (storeImage == null) {
+            throw new NotFoundException(String.format("해당하는 가게 이미지 (%s)는 존재하지 않습니다", storeImageId), ErrorCode.NOT_FOUND_STORE_IMAGE_EXCEPTION);
+        }
+        return storeImage;
+    }
 
 }

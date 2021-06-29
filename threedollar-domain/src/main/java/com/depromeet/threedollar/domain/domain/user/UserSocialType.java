@@ -7,9 +7,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum UserSocialType {
 
-	KAKAO("카카오"),
-	APPLE("애플");
+    KAKAO("카카오"),
+    APPLE("애플");
 
-	private final String type;
+    private final String type;
 
 }

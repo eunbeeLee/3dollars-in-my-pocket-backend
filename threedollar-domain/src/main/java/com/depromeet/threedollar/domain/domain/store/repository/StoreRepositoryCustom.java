@@ -6,8 +6,8 @@ import org.springframework.data.domain.PageRequest;
 
 public interface StoreRepositoryCustom {
 
-	Store findStoreById(Long storeId);
+    Store findStoreById(Long storeId);
 
-	Page<Store> findAllStoresByUserIdWithPagination(Long userId, PageRequest pageRequest);
+    Page<Store> findAllStoresByUserIdWithPagination(Long userId, PageRequest pageRequest);
 
 }
