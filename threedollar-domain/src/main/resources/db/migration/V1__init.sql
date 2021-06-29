@@ -1,8 +1,8 @@
 CREATE TABLE `user`
 (
     `id`          BIGINT       NOT NULL AUTO_INCREMENT,
-    `social_id`   VARCHAR(200) NOT NULL,
-    `social_type` VARCHAR(30)  NOT NULL,
+    `social_id`   VARCHAR(200) DEFAULT NULL,
+    `social_type` VARCHAR(30)  DEFAULT NULL,
     `name`        VARCHAR(50) DEFAULT NULL,
     `status`      VARCHAR(30)  NOT NULL,
     `created_at`  DATETIME(6) DEFAULT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE `store`
     `user_id`    BIGINT           NOT NULL,
     `latitude`   DOUBLE PRECISION NOT NULL,
     `longitude`  DOUBLE PRECISION NOT NULL,
-    `store_name` VARCHAR(300)     NOT NULL,
+    `store_name` VARCHAR(300)     DEFAULT NULL,
     `store_type` VARCHAR(30)               DEFAULT NULL,
     `rating`     DOUBLE PRECISION          DEFAULT 0,
     `status`     VARCHAR(30)      NOT NULL DEFAULT 'ACTIVE',

@@ -6,10 +6,10 @@ import com.depromeet.threedollar.api.service.store.dto.request.RetrieveMyStoresR
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreGroupByCategoryRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreInfoRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.*;
-import com.depromeet.threedollar.api.service.user.UserServiceUtils;
 import com.depromeet.threedollar.domain.domain.review.ReviewRepository;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
+import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -47,7 +47,16 @@ public class StoreRetrieveService {
     public StoreDetailInfoResponse getDetailStoreInfo(RetrieveStoreInfoRequest request) {
         Store store = StoreServiceUtils.findStoreById(storeRepository, request.getStoreId());
         return StoreDetailInfoResponse.of(store, storeImageService.getStoreImages(request.getStoreId()), request.getLatitude(), request.getLongitude(),
-            UserServiceUtils.findUserById(userRepository, store.getUserId()), getReviewResponse(request.getStoreId()));
+            findUserByIdOrDeletedUser(store.getUserId()), getReviewResponse(request.getStoreId()));
+    }
+
+    // 유저가 삭제된경우 에러가 아닌 삭제된 데이터를 보여주기 위한 메소드.
+    private User findUserByIdOrDeletedUser(Long userId) {
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
+            return User.deletedUser();
+        }
+        return user;
     }
 
     private List<ReviewResponse> getReviewResponse(Long storeId) {
@@ -64,24 +73,26 @@ public class StoreRetrieveService {
 
     @Transactional(readOnly = true)
     public StoresGroupByDistanceResponse retrieveStoresGroupByDistance(RetrieveStoreGroupByCategoryRequest request) {
-        List<StoreInfoResponse> stores = storeRepository.findStoresByLocationLessThanDistance(
-            request.getMapLatitude(), request.getMapLongitude(), 2.0).stream()
+        List<StoreInfoResponse> storeInfoResponses = findNearByStores(request.getMapLatitude(), request.getMapLongitude()).stream()
             .filter(store -> store.getMenuCategories().contains(request.getCategoryType()))
             .map(store -> StoreInfoResponse.of(store, request.getLatitude(), request.getLongitude()))
             .sorted(Comparator.comparing(StoreInfoResponse::getDistance))
             .collect(Collectors.toList());
-        return StoresGroupByDistanceResponse.of(stores);
+        return StoresGroupByDistanceResponse.of(storeInfoResponses);
     }
 
     @Transactional(readOnly = true)
     public StoresGroupByReviewResponse retrieveStoresGroupByRating(RetrieveStoreGroupByCategoryRequest request) {
-        List<StoreInfoResponse> stores = storeRepository.findStoresByLocationLessThanDistance(
-            request.getMapLatitude(), request.getMapLongitude(), 2.0).stream()
+        List<StoreInfoResponse> stores = findNearByStores(request.getMapLatitude(), request.getMapLongitude()).stream()
             .filter(store -> store.getMenuCategories().contains(request.getCategoryType()))
             .map(store -> StoreInfoResponse.of(store, request.getLatitude(), request.getLongitude()))
             .sorted(Comparator.comparing(StoreInfoResponse::getRating).reversed())
             .collect(Collectors.toList());
         return StoresGroupByReviewResponse.of(stores);
+    }
+
+    private List<Store> findNearByStores(double latitude, double longitude) {
+        return storeRepository.findStoresByLocationLessThanDistance(latitude, longitude, 2.0);
     }
 
 }

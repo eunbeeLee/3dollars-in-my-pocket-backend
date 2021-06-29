@@ -3,7 +3,7 @@ services:
   api:
     build: .
     ports:
-      - 7000:7000
+      - 8080:8080
     command: java -jar threedollar-api.jar
     environment:
       - "SPRING_PROFILES_ACTIVE=local"

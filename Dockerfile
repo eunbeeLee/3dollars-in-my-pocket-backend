@@ -7,4 +7,4 @@ RUN ./gradlew clean build
 FROM adoptopenjdk/openjdk11:alpine-jre
 ENV HOME=/usr/app
 COPY --from=BUILD  $HOME/threedollar-api/build/libs/threedollar-api.jar /threedollar-api.jar
-EXPOSE 7000
+EXPOSE 8080
