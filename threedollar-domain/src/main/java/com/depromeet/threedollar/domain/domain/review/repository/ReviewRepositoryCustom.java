@@ -12,10 +12,10 @@ public interface ReviewRepositoryCustom {
 
     Review findReviewByIdAndUserId(Long reviewId, Long userId);
 
-    List<ReviewWithCreatorDto> findAllReviewWithCreatorByStoreId(Long storeId);
+    List<ReviewWithCreatorDto> findAllWithCreatorByStoreId(Long storeId);
 
-    List<Review> findAllReviewByStoreId(Long storeId);
+    List<Review> findAllByStoreId(Long storeId);
 
-    Page<ReviewWithStoreAndCreatorDto> findAllReviewWithCreatorByUserId(Long userId, Pageable pageable);
+    Page<ReviewWithStoreAndCreatorDto> findAllWithCreatorByUserId(Long userId, Pageable pageable);
 
 }

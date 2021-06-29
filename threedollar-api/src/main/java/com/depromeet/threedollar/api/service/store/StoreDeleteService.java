@@ -16,6 +16,7 @@ import java.util.List;
 @Service
 public class StoreDeleteService {
 
+    // MAX_DELETE_REQUEST 만큼 가게 신고가 누적되면 실제로 가게가 삭제가 됩니다.
     private static final int MAX_DELETE_REQUEST = 3;
 
     private final StoreRepository storeRepository;
@@ -26,16 +27,20 @@ public class StoreDeleteService {
         validateNotExistsStoreDeleteRequest(storeId, userId);
         Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
         storeDeleteRequestRepository.save(request.toEntity(store.getId(), userId));
-        List<StoreDeleteRequest> storeDeleteRequests = storeDeleteRequestRepository.findAllByStoreId(store.getId());
-        if (storeDeleteRequests.size() >= MAX_DELETE_REQUEST) {
-            store.delete();
-        }
+        deleteStoreIfAccumulatedDeleteRequests(store);
     }
 
     private void validateNotExistsStoreDeleteRequest(Long storeId, Long userId) {
-        StoreDeleteRequest storeDeleteRequest = storeDeleteRequestRepository.findStoreDeleteRequestByStoreIdAndUserId(storeId, userId);
+        StoreDeleteRequest storeDeleteRequest = storeDeleteRequestRepository.findByStoreIdAndUserId(storeId, userId);
         if (storeDeleteRequest != null) {
             throw new ConflictException(String.format("사용자 (%s)는 가게 (%s)에 대해 이미 삭제 요청을 하였습니다", userId, storeId));
+        }
+    }
+
+    private void deleteStoreIfAccumulatedDeleteRequests(Store store) {
+        List<StoreDeleteRequest> storeDeleteRequests = storeDeleteRequestRepository.findAllByStoreId(store.getId());
+        if (storeDeleteRequests.size() >= MAX_DELETE_REQUEST) {
+            store.delete();
         }
     }
 

@@ -4,9 +4,7 @@ import com.depromeet.threedollar.api.event.review.ReviewChangedEvent;
 import com.depromeet.threedollar.api.service.review.dto.request.AddReviewRequest;
 import com.depromeet.threedollar.api.service.review.dto.request.RetrieveMyReviewsRequest;
 import com.depromeet.threedollar.api.service.review.dto.request.UpdateReviewRequest;
-import com.depromeet.threedollar.api.service.review.dto.response.ReviewDetailResponse;
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewDetailWithPaginationResponse;
-import com.depromeet.threedollar.api.service.review.dto.response.ReviewResponse;
 import com.depromeet.threedollar.api.service.store.StoreServiceUtils;
 import com.depromeet.threedollar.domain.domain.review.Review;
 import com.depromeet.threedollar.domain.domain.review.ReviewRepository;
@@ -19,42 +17,39 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @RequiredArgsConstructor
 @Service
 public class ReviewService {
 
-	private final ApplicationEventPublisher eventPublisher;
-	private final StoreRepository storeRepository;
-	private final ReviewRepository reviewRepository;
+    private final ApplicationEventPublisher eventPublisher;
+    private final StoreRepository storeRepository;
+    private final ReviewRepository reviewRepository;
 
-	@Transactional
-	public void addReview(Long storeId, AddReviewRequest request, Long userId) {
-		StoreServiceUtils.validateExistsStore(storeRepository, storeId);
-		reviewRepository.save(request.toEntity(storeId, userId));
-		eventPublisher.publishEvent(ReviewChangedEvent.of(storeId));
-	}
+    @Transactional
+    public void addReview(Long storeId, AddReviewRequest request, Long userId) {
+        StoreServiceUtils.validateExistsStore(storeRepository, storeId);
+        reviewRepository.save(request.toEntity(storeId, userId));
+        eventPublisher.publishEvent(ReviewChangedEvent.of(storeId));
+    }
 
-	@Transactional
-	public void updateReview(Long reviewId, UpdateReviewRequest request, Long userId) {
-		Review review = ReviewServiceUtils.findReviewByIdAndUserId(reviewRepository, reviewId, userId);
-		review.update(request.getContent(), request.getRating());
-		eventPublisher.publishEvent(ReviewChangedEvent.of(review.getStoreId()));
-	}
+    @Transactional
+    public void updateReview(Long reviewId, UpdateReviewRequest request, Long userId) {
+        Review review = ReviewServiceUtils.findReviewByIdAndUserId(reviewRepository, reviewId, userId);
+        review.update(request.getContent(), request.getRating());
+        eventPublisher.publishEvent(ReviewChangedEvent.of(review.getStoreId()));
+    }
 
-	@Transactional
-	public void deleteReview(Long reviewId, Long userId) {
-		Review review = ReviewServiceUtils.findReviewByIdAndUserId(reviewRepository, reviewId, userId);
-		review.delete();
-		eventPublisher.publishEvent(ReviewChangedEvent.of(review.getStoreId()));
-	}
+    @Transactional
+    public void deleteReview(Long reviewId, Long userId) {
+        Review review = ReviewServiceUtils.findReviewByIdAndUserId(reviewRepository, reviewId, userId);
+        review.delete();
+        eventPublisher.publishEvent(ReviewChangedEvent.of(review.getStoreId()));
+    }
 
-	@Transactional(readOnly = true)
-	public ReviewDetailWithPaginationResponse retrieveWrittenReviews(RetrieveMyReviewsRequest request, Long userId) {
-		Page<ReviewWithStoreAndCreatorDto> result = reviewRepository.findAllReviewWithCreatorByUserId(userId, PageRequest.of(request.getPage(), request.getSize()));
-		return ReviewDetailWithPaginationResponse.of(result);
-	}
+    @Transactional(readOnly = true)
+    public ReviewDetailWithPaginationResponse retrieveMyReviews(RetrieveMyReviewsRequest request, Long userId) {
+        Page<ReviewWithStoreAndCreatorDto> result = reviewRepository.findAllWithCreatorByUserId(userId, PageRequest.of(request.getPage(), request.getSize()));
+        return ReviewDetailWithPaginationResponse.of(result);
+    }
 
 }

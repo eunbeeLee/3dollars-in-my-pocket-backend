@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class StoreEventListener {
 
-	private final StoreRatingService storeRatingService;
+    private final StoreRatingService storeRatingService;
 
-	@EventListener
-	public void renewStoreRating(ReviewChangedEvent event) {
-		storeRatingService.renewRating(event.getStoreId());
-	}
+    @EventListener
+    public void renewStoreRating(ReviewChangedEvent event) {
+        storeRatingService.renewStoreRating(event.getStoreId());
+    }
 
 }

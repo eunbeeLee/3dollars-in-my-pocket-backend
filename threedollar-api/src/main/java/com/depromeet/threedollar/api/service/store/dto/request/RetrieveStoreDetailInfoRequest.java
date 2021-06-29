@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class RetrieveStoreInfoRequest {
+public class RetrieveStoreDetailInfoRequest {
 
     @NotNull(message = "{store.storeId.notnull}")
     private Long storeId;

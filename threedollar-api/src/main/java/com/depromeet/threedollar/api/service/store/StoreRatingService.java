@@ -16,14 +16,17 @@ public class StoreRatingService {
     private final StoreRepository storeRepository;
     private final ReviewRepository reviewRepository;
 
-    public void renewRating(Long storeId) {
+    public void renewStoreRating(Long storeId) {
         Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
-        List<Review> reviews = reviewRepository.findAllReviewByStoreId(storeId);
-        double average = reviews.stream()
+        store.updateAverageRating(calculateAverageRating(storeId));
+    }
+
+    private double calculateAverageRating(Long storeId) {
+        List<Review> reviews = reviewRepository.findAllByStoreId(storeId);
+        return reviews.stream()
             .mapToInt(Review::getRating)
             .average()
             .orElse(0);
-        store.updateRating(average);
     }
 
 }

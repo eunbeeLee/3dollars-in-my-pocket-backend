@@ -4,7 +4,7 @@ import com.depromeet.threedollar.api.service.review.dto.response.ReviewResponse;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveAroundStoresRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveMyStoresRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreGroupByCategoryRequest;
-import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreInfoRequest;
+import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreDetailInfoRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.*;
 import com.depromeet.threedollar.domain.domain.review.ReviewRepository;
 import com.depromeet.threedollar.domain.domain.store.Store;
@@ -35,23 +35,22 @@ public class StoreRetrieveService {
     private final ReviewRepository reviewRepository;
 
     @Transactional(readOnly = true)
-    public List<StoreInfoResponse> getAllStoresLessThanDistance(RetrieveAroundStoresRequest request) {
-        double distance = request.getDistance() > LIMIT_DISTANCE ? LIMIT_DISTANCE : request.getDistance();
-        List<Store> stores = storeRepository.findStoresByLocationLessThanDistance(request.getMapLatitude(), request.getMapLongitude(), distance);
+    public List<StoreInfoResponse> getNearStores(RetrieveAroundStoresRequest request) {
+        List<Store> stores = storeRepository.findStoresByLocationLessThanDistance(request.getMapLatitude(), request.getMapLongitude(), Math.min(request.getDistance(), LIMIT_DISTANCE));
         return stores.stream()
             .map(store -> StoreInfoResponse.of(store, request.getLatitude(), request.getLongitude()))
             .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public StoreDetailInfoResponse getDetailStoreInfo(RetrieveStoreInfoRequest request) {
+    public StoreDetailInfoResponse getDetailStoreInfo(RetrieveStoreDetailInfoRequest request) {
         Store store = StoreServiceUtils.findStoreById(storeRepository, request.getStoreId());
         return StoreDetailInfoResponse.of(store, storeImageService.getStoreImages(request.getStoreId()), request.getLatitude(), request.getLongitude(),
-            findUserByIdOrDeletedUser(store.getUserId()), getReviewResponse(request.getStoreId()));
+            findCreatorOrDeletedUserIfNotExists(store.getUserId()), getStoreReviewsResponse(request.getStoreId()));
     }
 
-    // 유저가 삭제된경우 에러가 아닌 삭제된 데이터를 보여주기 위한 메소드.
-    private User findUserByIdOrDeletedUser(Long userId) {
+    // 제보자가 삭제된경우 에러가 아닌 삭제된 데이터를 보여주기 위한 메소드.
+    private User findCreatorOrDeletedUserIfNotExists(Long userId) {
         User user = userRepository.findUserById(userId);
         if (user == null) {
             return User.deletedUser();
@@ -59,26 +58,26 @@ public class StoreRetrieveService {
         return user;
     }
 
-    private List<ReviewResponse> getReviewResponse(Long storeId) {
-        return reviewRepository.findAllReviewWithCreatorByStoreId(storeId).stream()
+    private List<ReviewResponse> getStoreReviewsResponse(Long storeId) {
+        return reviewRepository.findAllWithCreatorByStoreId(storeId).stream()
             .map(ReviewResponse::of)
             .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public MyStoresWithPaginationResponse retrieveMyStores(RetrieveMyStoresRequest request, Long userId) {
-        Page<Store> stores = storeRepository.findAllStoresByUserIdWithPagination(userId, PageRequest.of(request.getPage(), request.getSize()));
+        Page<Store> stores = storeRepository.findAllByUserIdWithPagination(userId, PageRequest.of(request.getPage(), request.getSize()));
         return MyStoresWithPaginationResponse.of(stores, request.getLatitude(), request.getLongitude());
     }
 
     @Transactional(readOnly = true)
     public StoresGroupByDistanceResponse retrieveStoresGroupByDistance(RetrieveStoreGroupByCategoryRequest request) {
-        List<StoreInfoResponse> storeInfoResponses = findNearByStores(request.getMapLatitude(), request.getMapLongitude()).stream()
+        List<StoreInfoResponse> stores = findNearByStores(request.getMapLatitude(), request.getMapLongitude()).stream()
             .filter(store -> store.getMenuCategories().contains(request.getCategoryType()))
             .map(store -> StoreInfoResponse.of(store, request.getLatitude(), request.getLongitude()))
             .sorted(Comparator.comparing(StoreInfoResponse::getDistance))
             .collect(Collectors.toList());
-        return StoresGroupByDistanceResponse.of(storeInfoResponses);
+        return StoresGroupByDistanceResponse.of(stores);
     }
 
     @Transactional(readOnly = true)

@@ -23,7 +23,7 @@ public class JwtServiceImpl implements JwtService {
 
     private final JwtTokenProviderComponent jwtTokenProviderComponent;
 
-    public String encodeSignUpToken(Long userId) {
+    public String encode(Long userId) {
         try {
             final ZonedDateTime now = ZonedDateTime.now();
             return JWT.create()
@@ -44,7 +44,7 @@ public class JwtServiceImpl implements JwtService {
         return headers;
     }
 
-    public Long decodeSignUpToken(String token) {
+    public Long decode(String token) {
         try {
             final DecodedJWT jwt = createJwtVerifier().verify(token);
             return jwt.getClaim("userId").asDouble().longValue();

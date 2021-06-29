@@ -20,7 +20,7 @@ public class LoginCheckHandler {
 
 	public Long getUserId(HttpServletRequest request) {
 		String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-		Long userId = jwtService.decodeSignUpToken(token);
+		Long userId = jwtService.decode(token);
 		User user = userRepository.findUserById(userId);
 		if (user == null) {
 			throw new UnAuthorizedException(String.format("존재하지 않는 유저 (%s) 입니다", userId));

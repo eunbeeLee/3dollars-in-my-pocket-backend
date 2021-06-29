@@ -14,15 +14,17 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class WebClientConfig {
 
+    private static final int TIMEOUT_CONFIG = 5000;
+
     @Bean
     public WebClient webClient() {
         return WebClient.builder()
             .clientConnector(new ReactorClientHttpConnector(
                 HttpClient.from(
                     TcpClient.create()
-                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, TIMEOUT_CONFIG)
                         .doOnConnected(conn ->
-                            conn.addHandler(new ReadTimeoutHandler(5000, TimeUnit.MILLISECONDS))
+                            conn.addHandler(new ReadTimeoutHandler(TIMEOUT_CONFIG, TimeUnit.MILLISECONDS))
                         )
                 )
             )).build();

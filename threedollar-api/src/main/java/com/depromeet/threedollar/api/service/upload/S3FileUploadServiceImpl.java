@@ -13,7 +13,7 @@ import java.io.InputStream;
 
 @RequiredArgsConstructor
 @Service
-public class FileUploadServiceImpl implements FileUploadService {
+public class S3FileUploadServiceImpl implements FileUploadService {
 
     private final S3Service s3Service;
 

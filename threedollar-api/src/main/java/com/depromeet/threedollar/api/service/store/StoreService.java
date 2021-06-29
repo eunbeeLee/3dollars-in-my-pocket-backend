@@ -36,8 +36,7 @@ public class StoreService {
 
     @Transactional
     public void deleteStore(Long storeId, DeleteStoreRequest request, Long userId) {
-        Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
-        deleteRequestService.delete(store.getId(), request, userId);
+        deleteRequestService.delete(storeId, request, userId);
     }
 
 }

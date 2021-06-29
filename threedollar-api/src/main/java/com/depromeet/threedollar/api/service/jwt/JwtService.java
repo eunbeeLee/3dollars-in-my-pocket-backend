@@ -2,8 +2,8 @@ package com.depromeet.threedollar.api.service.jwt;
 
 public interface JwtService {
 
-	String encodeSignUpToken(Long userId);
+    String encode(Long userId);
 
-	Long decodeSignUpToken(String token);
+    Long decode(String token);
 
 }

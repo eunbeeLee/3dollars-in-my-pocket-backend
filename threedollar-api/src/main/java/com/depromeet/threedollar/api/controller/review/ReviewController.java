@@ -49,8 +49,8 @@ public class ReviewController {
     @Operation(summary = "사용자가 작성한 리뷰를 조회합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
     @GetMapping("/api/v2/review/user")
-    public ApiResponse<ReviewDetailWithPaginationResponse> retrieveWrittenReviews(@Valid RetrieveMyReviewsRequest request, @UserId Long userId) {
-        return ApiResponse.success(reviewService.retrieveWrittenReviews(request, userId));
+    public ApiResponse<ReviewDetailWithPaginationResponse> retrieveMyReviews(@Valid RetrieveMyReviewsRequest request, @UserId Long userId) {
+        return ApiResponse.success(reviewService.retrieveMyReviews(request, userId));
     }
 
 }

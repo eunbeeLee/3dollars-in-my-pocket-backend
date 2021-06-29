@@ -23,7 +23,7 @@ public class StoreImageRepositoryCustomImpl implements StoreImageRepositoryCusto
     }
 
     @Override
-    public List<StoreImage> findStoreImagesByStoreId(Long storeId) {
+    public List<StoreImage> findAllByStoreId(Long storeId) {
         return queryFactory.selectFrom(storeImage)
             .where(
                 storeImage.storeId.eq(storeId),

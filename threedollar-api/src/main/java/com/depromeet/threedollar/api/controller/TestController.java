@@ -25,7 +25,7 @@ public class TestController {
 		if (user == null) {
 			user = userRepository.save(testUser);
 		}
-		String token = jwtService.encodeSignUpToken(user.getId());
+		String token = jwtService.encode(user.getId());
 		return ApiResponse.success(token);
 	}
 

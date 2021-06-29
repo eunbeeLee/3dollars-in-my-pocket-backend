@@ -52,7 +52,7 @@ class ReviewRepositoryTest {
         reviewRepository.save(review);
 
         // when
-        List<ReviewWithCreatorDto> reviews = reviewRepository.findAllReviewWithCreatorByStoreId(store.getId());
+        List<ReviewWithCreatorDto> reviews = reviewRepository.findAllWithCreatorByStoreId(store.getId());
 
         // then
         assertThat(reviews).hasSize(1);
@@ -83,7 +83,7 @@ class ReviewRepositoryTest {
         ));
 
         // when
-        Page<ReviewWithStoreAndCreatorDto> pages = reviewRepository.findAllReviewWithCreatorByUserId(user.getId(), PageRequest.of(0, 2));
+        Page<ReviewWithStoreAndCreatorDto> pages = reviewRepository.findAllWithCreatorByUserId(user.getId(), PageRequest.of(0, 2));
 
         // then
         assertThat(pages.getTotalElements()).isEqualTo(3);

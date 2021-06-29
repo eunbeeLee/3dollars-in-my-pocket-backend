@@ -8,6 +8,6 @@ public interface StoreRepositoryCustom {
 
     Store findStoreById(Long storeId);
 
-    Page<Store> findAllStoresByUserIdWithPagination(Long userId, PageRequest pageRequest);
+    Page<Store> findAllByUserIdWithPagination(Long userId, PageRequest pageRequest);
 
 }

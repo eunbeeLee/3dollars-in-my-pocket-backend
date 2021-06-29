@@ -8,6 +8,6 @@ public interface StoreImageRepositoryCustom {
 
     StoreImage findStoreImageById(Long storeImageId);
 
-    List<StoreImage> findStoreImagesByStoreId(Long storeId);
+    List<StoreImage> findAllByStoreId(Long storeId);
 
 }

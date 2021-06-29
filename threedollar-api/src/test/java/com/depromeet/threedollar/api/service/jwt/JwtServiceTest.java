@@ -18,7 +18,7 @@ class JwtServiceTest {
         Long userId = 100L;
 
         // when
-        String token = jwtService.encodeSignUpToken(userId);
+        String token = jwtService.encode(userId);
 
         // then
         assertThat(token.startsWith("ey")).isTrue();
@@ -28,10 +28,10 @@ class JwtServiceTest {
     void 토큰을_복호화하면_userID가_반환된다() {
         // given
         Long userId = 10L;
-        String token = jwtService.encodeSignUpToken(userId);
+        String token = jwtService.encode(userId);
 
         // when
-        Long result = jwtService.decodeSignUpToken(token);
+        Long result = jwtService.decode(token);
 
         // then
         assertThat(result).isEqualTo(userId);

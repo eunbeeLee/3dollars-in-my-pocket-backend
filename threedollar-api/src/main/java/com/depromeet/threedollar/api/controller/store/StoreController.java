@@ -23,44 +23,44 @@ import javax.validation.Valid;
 @RestController
 public class StoreController {
 
-	private final StoreService storeService;
-	private final StoreImageService storeImageService;
+    private final StoreService storeService;
+    private final StoreImageService storeImageService;
 
-	@Operation(summary = "가게 정보를 저장합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
-	@Auth
-	@PostMapping("/api/v2/store")
-	public ApiResponse<StoreInfoResponse> addStore(@Valid @RequestBody AddStoreRequest request, @UserId Long userId) {
-		return ApiResponse.success(storeService.addStore(request, userId));
-	}
+    @Operation(summary = "가게 정보를 저장합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @Auth
+    @PostMapping("/api/v2/store")
+    public ApiResponse<StoreInfoResponse> addStore(@Valid @RequestBody AddStoreRequest request, @UserId Long userId) {
+        return ApiResponse.success(storeService.addStore(request, userId));
+    }
 
-	@Operation(summary = "특정 가게의 정보를 수정합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
-	@Auth
-	@PutMapping("/api/v2/store/{storeId}")
-	public ApiResponse<StoreInfoResponse> updateStoreInfo(@PathVariable Long storeId, @Valid @RequestBody UpdateStoreRequest request, @UserId Long userId) {
-		return ApiResponse.success(storeService.updateStore(storeId, request, userId));
-	}
+    @Operation(summary = "특정 가게의 정보를 수정합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @Auth
+    @PutMapping("/api/v2/store/{storeId}")
+    public ApiResponse<StoreInfoResponse> updateStore(@PathVariable Long storeId, @Valid @RequestBody UpdateStoreRequest request, @UserId Long userId) {
+        return ApiResponse.success(storeService.updateStore(storeId, request, userId));
+    }
 
-	@Operation(summary = "특정 가게의 정보를 삭제합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
-	@Auth
-	@DeleteMapping("/api/v2/store/{storeId}")
-	public ApiResponse<String> deleteStoreInfo(@Valid DeleteStoreRequest request, @PathVariable Long storeId, @UserId Long userId) {
-		storeService.deleteStore(storeId, request, userId);
-		return ApiResponse.SUCCESS;
-	}
+    @Operation(summary = "특정 가게의 정보를 삭제합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @Auth
+    @DeleteMapping("/api/v2/store/{storeId}")
+    public ApiResponse<String> deleteStore(@Valid DeleteStoreRequest request, @PathVariable Long storeId, @UserId Long userId) {
+        storeService.deleteStore(storeId, request, userId);
+        return ApiResponse.SUCCESS;
+    }
 
-	@Operation(summary = "가게의 이미지를 등록합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
-	@Auth
-	@PostMapping("/api/v2/store/{storeId}/images")
-	public ApiResponse<StoreImageResponse> addStoreImage(@PathVariable Long storeId, @RequestPart(value = "image") MultipartFile multipartFile, @UserId Long userId) {
-		return ApiResponse.success(storeImageService.addStoreImage(storeId, multipartFile, userId));
-	}
+    @Operation(summary = "가게의 이미지를 등록합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @Auth
+    @PostMapping("/api/v2/store/{storeId}/images")
+    public ApiResponse<StoreImageResponse> addStoreImage(@PathVariable Long storeId, @RequestPart(value = "image") MultipartFile multipartFile, @UserId Long userId) {
+        return ApiResponse.success(storeImageService.addStoreImage(storeId, multipartFile, userId));
+    }
 
-	@Operation(summary = "가게의 이미지를 삭제합니다. 인증이 필요한 요청입니다", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
-	@Auth
-	@DeleteMapping("/api/v2/store/images/{imageId}")
-	public ApiResponse<String> deleteStoreImage(@PathVariable Long imageId) {
-		storeImageService.deleteStoreImage(imageId);
-		return ApiResponse.SUCCESS;
-	}
+    @Operation(summary = "가게의 이미지를 삭제합니다. 인증이 필요한 요청입니다", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @Auth
+    @DeleteMapping("/api/v2/store/images/{imageId}")
+    public ApiResponse<String> deleteStoreImage(@PathVariable Long imageId) {
+        storeImageService.deleteStoreImage(imageId);
+        return ApiResponse.SUCCESS;
+    }
 
 }

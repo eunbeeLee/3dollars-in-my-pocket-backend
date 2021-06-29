@@ -40,7 +40,7 @@ public class Store extends AuditingTimeEntity {
     private StoreType storeType;
 
     @Column(nullable = false)
-    private double rating;
+    private double rating; // 평균 평가 점수
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<PaymentMethod> paymentMethods = new HashSet<>();
@@ -156,7 +156,7 @@ public class Store extends AuditingTimeEntity {
             .collect(Collectors.toSet());
     }
 
-    public void updateRating(double average) {
+    public void updateAverageRating(double average) {
         this.rating = average;
     }
 

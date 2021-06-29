@@ -36,7 +36,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     }
 
     @Override
-    public List<ReviewWithCreatorDto> findAllReviewWithCreatorByStoreId(Long storeId) {
+    public List<ReviewWithCreatorDto> findAllWithCreatorByStoreId(Long storeId) {
         return queryFactory.select(Projections.fields(ReviewWithCreatorDto.class,
             review.id.as("id"),
             review.rating.rating.as("rating"),
@@ -56,7 +56,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     }
 
     @Override
-    public List<Review> findAllReviewByStoreId(Long storeId) {
+    public List<Review> findAllByStoreId(Long storeId) {
         return queryFactory.selectFrom(review)
             .where(
                 review.storeId.eq(storeId),
@@ -65,7 +65,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     }
 
     @Override
-    public Page<ReviewWithStoreAndCreatorDto> findAllReviewWithCreatorByUserId(Long userId, Pageable pageable) {
+    public Page<ReviewWithStoreAndCreatorDto> findAllWithCreatorByUserId(Long userId, Pageable pageable) {
         QueryResults<ReviewWithStoreAndCreatorDto> result = queryFactory.select(Projections.fields(ReviewWithStoreAndCreatorDto.class,
             review.id.as("id"),
             review.rating.rating.as("rating"),

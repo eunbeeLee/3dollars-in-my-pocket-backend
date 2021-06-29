@@ -33,7 +33,7 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
     }
 
     @Override
-    public Page<Store> findAllStoresByUserIdWithPagination(Long userId, PageRequest pageRequest) {
+    public Page<Store> findAllByUserIdWithPagination(Long userId, PageRequest pageRequest) {
         QueryResults<Store> result = queryFactory.selectFrom(store)
             .where(
                 store.userId.eq(userId)
