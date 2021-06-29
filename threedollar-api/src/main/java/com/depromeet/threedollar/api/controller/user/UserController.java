@@ -23,14 +23,14 @@ public class UserController {
 
 	private final UserService userService;
 
-	@Operation(summary = "내 정보를 가져오는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+	@Operation(summary = "내 정보를 조회합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
 	@Auth
 	@GetMapping("/api/v2/user/me")
 	public ApiResponse<UserInfoResponse> getMyUserInfo(@UserId Long userId) {
 		return ApiResponse.success(userService.getUserInfo(userId));
 	}
 
-	@Operation(summary = "내 정보를 수정하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+	@Operation(summary = "내 정보를 수정합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
 	@Auth
 	@PutMapping("/api/v2/user/me")
 	public ApiResponse<UserInfoResponse> updateMyUserInfo(@Valid @RequestBody UpdateUserInfoRequest request, @UserId Long userId) {

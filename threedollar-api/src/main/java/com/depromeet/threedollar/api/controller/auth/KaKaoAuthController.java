@@ -40,7 +40,7 @@ public class KaKaoAuthController {
 		return ApiResponse.success(LoginResponse.of(jwtService.encodeSignUpToken(userId)));
 	}
 
-	@Operation(summary = "카카오 계정의 회원탈퇴 요청하는 API", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+	@Operation(summary = "카카오 계정의 회원탈퇴 요청하는 API. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
 	@Auth
 	@DeleteMapping("/api/v2/signout/kakao")
 	public ApiResponse<String> signOutKakao(@UserId Long userId) {

@@ -8,7 +8,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class StoreImageServiceUtils {
+class StoreImageServiceUtils {
 
 	static StoreImage findStoreImageById(StoreImageRepository storeImageRepository, Long storeImageId) {
 		StoreImage storeImage = storeImageRepository.findStoreImageById(storeImageId);
