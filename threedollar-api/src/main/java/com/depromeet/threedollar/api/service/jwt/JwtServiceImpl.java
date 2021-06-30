@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.depromeet.threedollar.api.service.jwt.dto.component.JwtTokenProviderComponent;
-import com.depromeet.threedollar.domain.exception.UnAuthorizedException;
+import com.depromeet.threedollar.common.exception.UnAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

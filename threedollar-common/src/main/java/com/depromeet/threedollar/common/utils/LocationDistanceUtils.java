@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.domain.utils;
+package com.depromeet.threedollar.common.utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

@@ -3,7 +3,7 @@ package com.depromeet.threedollar.api.service.store;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreImageResponse;
 import com.depromeet.threedollar.api.service.upload.FileUploadService;
 import com.depromeet.threedollar.api.service.upload.dto.request.FileUploadRequest;
-import com.depromeet.threedollar.domain.utils.type.ImageType;
+import com.depromeet.threedollar.common.utils.type.ImageType;
 import com.depromeet.threedollar.domain.domain.store.StoreImage;
 import com.depromeet.threedollar.domain.domain.store.StoreImageRepository;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;

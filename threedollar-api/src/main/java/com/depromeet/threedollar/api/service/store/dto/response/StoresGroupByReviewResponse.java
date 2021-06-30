@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.store.dto.response;
 
-import com.depromeet.threedollar.domain.utils.type.StoreReviewGroup;
+import com.depromeet.threedollar.common.utils.type.StoreReviewGroup;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

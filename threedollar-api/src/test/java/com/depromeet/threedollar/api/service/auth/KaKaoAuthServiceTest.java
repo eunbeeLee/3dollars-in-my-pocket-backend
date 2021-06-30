@@ -7,7 +7,7 @@ import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserCreator;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
-import com.depromeet.threedollar.domain.exception.NotFoundException;
+import com.depromeet.threedollar.common.exception.NotFoundException;
 import com.depromeet.threedollar.external.external.auth.kakao.KaKaoApiCaller;
 import com.depromeet.threedollar.external.external.auth.kakao.dto.response.KaKaoProfileResponse;
 import org.junit.jupiter.api.AfterEach;

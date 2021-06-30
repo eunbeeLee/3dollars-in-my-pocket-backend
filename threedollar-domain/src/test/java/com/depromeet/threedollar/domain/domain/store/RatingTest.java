@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.domain.domain.store;
 
-import com.depromeet.threedollar.domain.exception.ValidationException;
+import com.depromeet.threedollar.common.exception.ValidationException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

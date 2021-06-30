@@ -1,7 +1,7 @@
 package com.depromeet.threedollar.domain.domain.common;
 
-import com.depromeet.threedollar.domain.exception.ErrorCode;
-import com.depromeet.threedollar.domain.exception.ValidationException;
+import com.depromeet.threedollar.common.exception.ErrorCode;
+import com.depromeet.threedollar.common.exception.ValidationException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

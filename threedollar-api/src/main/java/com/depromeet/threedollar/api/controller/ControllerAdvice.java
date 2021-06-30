@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.controller;
 
-import com.depromeet.threedollar.domain.exception.*;
+import com.depromeet.threedollar.common.exception.*;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

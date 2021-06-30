@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.store.dto.response;
 
-import com.depromeet.threedollar.domain.utils.type.StoreDistanceGroup;
+import com.depromeet.threedollar.common.utils.type.StoreDistanceGroup;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

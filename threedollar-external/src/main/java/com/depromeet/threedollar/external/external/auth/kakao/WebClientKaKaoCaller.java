@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.external.external.auth.kakao;
 
+import com.depromeet.threedollar.common.exception.BadGatewayException;
 import com.depromeet.threedollar.external.external.auth.kakao.dto.component.KaKaoProfileComponent;
 import com.depromeet.threedollar.external.external.auth.kakao.dto.response.KaKaoProfileResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,8 @@ public class WebClientKaKaoCaller implements KaKaoApiCaller {
             .uri(kaKaoProfileComponent.getUrl())
             .headers(headers -> headers.setBearerAuth(accessToken))
             .retrieve()
-            .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new IllegalArgumentException(String.format("잘못된 액세스 토큰 (%s) 입니다", accessToken))))
-            .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new IllegalArgumentException("카카오 로그인 연동 중 에러가 발생하였습니다")))
+            .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new BadGatewayException(String.format("잘못된 액세스 토큰 (%s) 입니다", accessToken))))
+            .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new BadGatewayException("카카오 로그인 연동 중 에러가 발생하였습니다")))
             .bodyToMono(KaKaoProfileResponse.class)
             .block();
     }

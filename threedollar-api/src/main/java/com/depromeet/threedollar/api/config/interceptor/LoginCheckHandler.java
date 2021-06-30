@@ -3,7 +3,7 @@ package com.depromeet.threedollar.api.config.interceptor;
 import com.depromeet.threedollar.api.service.jwt.JwtService;
 import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
-import com.depromeet.threedollar.domain.exception.UnAuthorizedException;
+import com.depromeet.threedollar.common.exception.UnAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;

@@ -7,7 +7,7 @@ import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import com.depromeet.threedollar.domain.domain.user.WithdrawalUser;
 import com.depromeet.threedollar.domain.domain.user.WithdrawalUserRepository;
-import com.depromeet.threedollar.domain.exception.ConflictException;
+import com.depromeet.threedollar.common.exception.ConflictException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

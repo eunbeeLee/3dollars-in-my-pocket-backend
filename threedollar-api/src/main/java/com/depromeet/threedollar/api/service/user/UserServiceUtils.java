@@ -3,9 +3,9 @@ package com.depromeet.threedollar.api.service.user;
 import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
-import com.depromeet.threedollar.domain.exception.ConflictException;
-import com.depromeet.threedollar.domain.exception.ErrorCode;
-import com.depromeet.threedollar.domain.exception.NotFoundException;
+import com.depromeet.threedollar.common.exception.ConflictException;
+import com.depromeet.threedollar.common.exception.ErrorCode;
+import com.depromeet.threedollar.common.exception.NotFoundException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

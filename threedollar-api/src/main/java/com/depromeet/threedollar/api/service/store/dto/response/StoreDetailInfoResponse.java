@@ -3,7 +3,7 @@ package com.depromeet.threedollar.api.service.store.dto.response;
 import com.depromeet.threedollar.api.dto.AudtingTimeResponse;
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewResponse;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
-import com.depromeet.threedollar.domain.utils.LocationDistanceUtils;
+import com.depromeet.threedollar.common.utils.LocationDistanceUtils;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.store.PaymentMethodType;

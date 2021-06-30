@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.controller;
 
-import com.depromeet.threedollar.domain.exception.ErrorCode;
+import com.depromeet.threedollar.common.exception.ErrorCode;
 import lombok.*;
 
 @ToString

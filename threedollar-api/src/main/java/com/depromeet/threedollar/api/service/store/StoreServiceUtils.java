@@ -2,8 +2,8 @@ package com.depromeet.threedollar.api.service.store;
 
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
-import com.depromeet.threedollar.domain.exception.ErrorCode;
-import com.depromeet.threedollar.domain.exception.NotFoundException;
+import com.depromeet.threedollar.common.exception.ErrorCode;
+import com.depromeet.threedollar.common.exception.NotFoundException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

@@ -7,6 +7,8 @@ tasks.bootJar {
 }
 
 dependencies {
+    api project(':threedollar-common')
+
     // Spring Data JPA
     api group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.3.8.RELEASE'
 

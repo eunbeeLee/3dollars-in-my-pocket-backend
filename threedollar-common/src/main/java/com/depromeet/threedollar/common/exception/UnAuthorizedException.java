@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.domain.exception;
+package com.depromeet.threedollar.common.exception;
 
 public class UnAuthorizedException extends BaseException {
 
