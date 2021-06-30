@@ -55,10 +55,10 @@ class ReviewServiceTest extends UserSetUpTest {
         // given
         String content = "우와 맛있어요";
         int rating = 4;
-        AddReviewRequest request = AddReviewRequest.testInstance(content, rating);
+        AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), content, rating);
 
         // when
-        reviewService.addReview(store.getId(), request, userId);
+        reviewService.addReview(request, userId);
 
         // then
         List<Review> reviewList = reviewRepository.findAll();
@@ -70,10 +70,10 @@ class ReviewServiceTest extends UserSetUpTest {
     void 리뷰_작성시_해당하는_가게가_존재하지_않는경우_에러가_발생한다() {
         // given
         Long storeId = 999L;
-        AddReviewRequest request = AddReviewRequest.testInstance("리뷰", 3);
+        AddReviewRequest request = AddReviewRequest.testInstance(storeId, "리뷰", 3);
 
         // when & then
-        assertThatThrownBy(() -> reviewService.addReview(storeId, request, userId)).isInstanceOf(NotFoundException.class);
+        assertThatThrownBy(() -> reviewService.addReview(request, userId)).isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -82,10 +82,10 @@ class ReviewServiceTest extends UserSetUpTest {
         String content = "우와 맛있어요";
         int rating = 4;
 
-        AddReviewRequest request = AddReviewRequest.testInstance(content, rating);
+        AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), content, rating);
 
         // when
-        reviewService.addReview(store.getId(), request, userId);
+        reviewService.addReview(request, userId);
 
         // then
         List<Store> stores = storeRepository.findAll();
@@ -102,10 +102,10 @@ class ReviewServiceTest extends UserSetUpTest {
         reviewRepository.save(ReviewCreator.create(store.getId(), userId, "맛 없어요", 1));
 
         // when
-        AddReviewRequest request = AddReviewRequest.testInstance(content, rating);
+        AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), content, rating);
 
         // when
-        reviewService.addReview(store.getId(), request, userId);
+        reviewService.addReview(request, userId);
 
         // then
         List<Store> stores = storeRepository.findAll();

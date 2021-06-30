@@ -24,32 +24,32 @@ public class ReviewController {
 
     @Operation(summary = "리뷰를 등록합니다. 인증이 필요한 요청입니다", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
-    @PostMapping("/api/v2/review/{storeId}")
-    public ApiResponse<String> addStoreReview(@PathVariable Long storeId, @Valid @RequestBody AddReviewRequest request, @UserId Long userId) {
-        reviewService.addReview(storeId, request, userId);
+    @PostMapping("/api/v2/store/review")
+    public ApiResponse<String> addStoreReview(@Valid @RequestBody AddReviewRequest request, @UserId Long userId) {
+        reviewService.addReview(request, userId);
         return ApiResponse.SUCCESS;
     }
 
     @Operation(summary = "사용자가 작성한 리뷰를 수정합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
-    @PutMapping("/api/v2/review/{reviewId}")
-    public ApiResponse<String> updateReview(@PathVariable Long reviewId, @Valid @RequestBody UpdateReviewRequest request, @UserId Long userId) {
+    @PutMapping("/api/v2/store/review/{reviewId}")
+    public ApiResponse<String> updateStoreReview(@PathVariable Long reviewId, @Valid @RequestBody UpdateReviewRequest request, @UserId Long userId) {
         reviewService.updateReview(reviewId, request, userId);
         return ApiResponse.SUCCESS;
     }
 
     @Operation(summary = "사용자가 작성한 리뷰를 삭제합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
-    @DeleteMapping("/api/v2/review/{reviewId}")
-    public ApiResponse<String> deleteReview(@PathVariable Long reviewId, @UserId Long userId) {
+    @DeleteMapping("/api/v2/store/review/{reviewId}")
+    public ApiResponse<String> deleteStoreReview(@PathVariable Long reviewId, @UserId Long userId) {
         reviewService.deleteReview(reviewId, userId);
         return ApiResponse.SUCCESS;
     }
 
     @Operation(summary = "사용자가 작성한 리뷰를 조회합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
-    @GetMapping("/api/v2/review/user")
-    public ApiResponse<ReviewDetailWithPaginationResponse> retrieveMyReviews(@Valid RetrieveMyReviewsRequest request, @UserId Long userId) {
+    @GetMapping("/api/v2/store/reviews/me")
+    public ApiResponse<ReviewDetailWithPaginationResponse> retrieveMyStoreReviews(@Valid RetrieveMyReviewsRequest request, @UserId Long userId) {
         return ApiResponse.success(reviewService.retrieveMyReviews(request, userId));
     }
 

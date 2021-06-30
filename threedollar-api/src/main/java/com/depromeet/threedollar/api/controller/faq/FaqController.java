@@ -15,7 +15,7 @@ public class FaqController {
 
     private final FaqService faqService;
 
-    @GetMapping("/api/v1/faqs")
+    @GetMapping("/api/v2/faqs")
     public ApiResponse<List<FaqResponse>> retrieveAllFaqs() {
         return ApiResponse.success(faqService.retrieveAllFaqs());
     }

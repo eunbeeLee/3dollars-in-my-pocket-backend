@@ -9,11 +9,15 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AddReviewRequest {
+
+    @NotNull(message = "{store.storeId.notnull}")
+    private Long storeId;
 
     @NotBlank(message = "{review.content.notBlank}")
     private String content;
@@ -22,11 +26,11 @@ public class AddReviewRequest {
     @Max(value = 5, message = "{review.rating.max}")
     private int rating;
 
-    public static AddReviewRequest testInstance(String content, int rating) {
-        return new AddReviewRequest(content, rating);
+    public static AddReviewRequest testInstance(Long storeId, String content, int rating) {
+        return new AddReviewRequest(storeId, content, rating);
     }
 
-    public Review toEntity(Long storeId, Long userId) {
+    public Review toEntity(Long userId) {
         return Review.of(storeId, userId, content, rating);
     }
 

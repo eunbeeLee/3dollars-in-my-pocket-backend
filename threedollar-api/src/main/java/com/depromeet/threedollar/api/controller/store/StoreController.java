@@ -5,6 +5,7 @@ import com.depromeet.threedollar.api.config.resolver.UserId;
 import com.depromeet.threedollar.api.controller.ApiResponse;
 import com.depromeet.threedollar.api.service.store.StoreImageService;
 import com.depromeet.threedollar.api.service.store.StoreService;
+import com.depromeet.threedollar.api.service.store.dto.request.AddStoreImageRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.DeleteStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
@@ -50,14 +51,14 @@ public class StoreController {
 
     @Operation(summary = "가게의 이미지를 등록합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
-    @PostMapping("/api/v2/store/{storeId}/images")
-    public ApiResponse<StoreImageResponse> addStoreImage(@PathVariable Long storeId, @RequestPart(value = "image") MultipartFile multipartFile, @UserId Long userId) {
-        return ApiResponse.success(storeImageService.addStoreImage(storeId, multipartFile, userId));
+    @PostMapping("/api/v2/store/image")
+    public ApiResponse<StoreImageResponse> addStoreImage(@Valid AddStoreImageRequest request, @RequestPart(value = "image") MultipartFile multipartFile, @UserId Long userId) {
+        return ApiResponse.success(storeImageService.addStoreImage(request.getStoreId(), multipartFile, userId));
     }
 
     @Operation(summary = "가게의 이미지를 삭제합니다. 인증이 필요한 요청입니다", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
     @Auth
-    @DeleteMapping("/api/v2/store/images/{imageId}")
+    @DeleteMapping("/api/v2/store/image/{imageId}")
     public ApiResponse<String> deleteStoreImage(@PathVariable Long imageId) {
         storeImageService.deleteStoreImage(imageId);
         return ApiResponse.SUCCESS;

@@ -26,10 +26,10 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public void addReview(Long storeId, AddReviewRequest request, Long userId) {
-        StoreServiceUtils.validateExistsStore(storeRepository, storeId);
-        reviewRepository.save(request.toEntity(storeId, userId));
-        eventPublisher.publishEvent(ReviewChangedEvent.of(storeId));
+    public void addReview(AddReviewRequest request, Long userId) {
+        StoreServiceUtils.validateExistsStore(storeRepository, request.getStoreId());
+        reviewRepository.save(request.toEntity(userId));
+        eventPublisher.publishEvent(ReviewChangedEvent.of(request.getStoreId()));
     }
 
     @Transactional
