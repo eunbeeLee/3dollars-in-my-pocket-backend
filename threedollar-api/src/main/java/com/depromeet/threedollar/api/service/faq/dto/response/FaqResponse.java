@@ -1,11 +1,9 @@
 package com.depromeet.threedollar.api.service.faq.dto.response;
 
 import com.depromeet.threedollar.domain.domain.faq.Faq;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

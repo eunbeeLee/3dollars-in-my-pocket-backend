@@ -4,10 +4,12 @@ import com.depromeet.threedollar.common.utils.type.StoreReviewGroup;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class StoresGroupByReviewResponse {

@@ -2,11 +2,9 @@ package com.depromeet.threedollar.api.service.store.dto.response;
 
 import com.depromeet.threedollar.api.dto.AudtingTimeResponse;
 import com.depromeet.threedollar.domain.domain.store.StoreImage;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
