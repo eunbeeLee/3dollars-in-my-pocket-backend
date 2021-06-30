@@ -10,7 +10,7 @@ class FaqService(
     private val faqRepository: FaqRepository
 ) {
 
-    @Transactional
+    @Transactional(readOnly = true)
     fun retrieveAllFaqs(): List<FaqResponse> {
         return faqRepository.findAll()
             .map { FaqResponse.of(it) }
