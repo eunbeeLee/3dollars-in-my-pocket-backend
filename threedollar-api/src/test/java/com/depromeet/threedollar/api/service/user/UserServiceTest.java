@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.api.service.user;
 
+import com.depromeet.threedollar.api.service.user.dto.request.CheckDuplicateNameRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.CreateUserRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
@@ -133,6 +134,30 @@ class UserServiceTest {
 
         // when & then
         assertThatThrownBy(() -> userService.getUserInfo(userId)).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void 중복된_닉네임인지_확인할때_중복된_닉네임이면_에러가_발생한다() {
+        // given
+        String name = "가슴속 삼천원";
+        User user = UserCreator.create("social-id", UserSocialType.KAKAO, name);
+        userRepository.save(user);
+
+        CheckDuplicateNameRequest request = CheckDuplicateNameRequest.testInstance(name);
+
+        // when & then
+        assertThatThrownBy(() -> userService.checkDuplicateName(request)).isInstanceOf(ConflictException.class);
+    }
+
+    @Test
+    void 중복된_닉네임인지_확인할때_중복된_닉네임이_아니면_통과한다() {
+        // given
+        String name = "가슴속 삼천원";
+
+        CheckDuplicateNameRequest request = CheckDuplicateNameRequest.testInstance(name);
+
+        // when
+        userService.checkDuplicateName(request);
     }
 
     @Test

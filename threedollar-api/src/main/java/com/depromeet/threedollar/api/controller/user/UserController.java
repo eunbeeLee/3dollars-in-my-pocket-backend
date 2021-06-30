@@ -4,6 +4,7 @@ import com.depromeet.threedollar.api.config.interceptor.Auth;
 import com.depromeet.threedollar.api.config.resolver.UserId;
 import com.depromeet.threedollar.api.controller.ApiResponse;
 import com.depromeet.threedollar.api.service.user.UserService;
+import com.depromeet.threedollar.api.service.user.dto.request.CheckDuplicateNameRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,5 +37,12 @@ public class UserController {
 	public ApiResponse<UserInfoResponse> updateMyUserInfo(@Valid @RequestBody UpdateUserInfoRequest request, @UserId Long userId) {
 		return ApiResponse.success(userService.updateUserInfo(request, userId));
 	}
+
+    @Operation(summary = "닉네임 중복 여부를 체크하는 API")
+    @GetMapping("/api/v2/user/name/check")
+    public ApiResponse<String> checkDuplicateName(@Valid CheckDuplicateNameRequest request) {
+	    userService.checkDuplicateName(request);
+	    return ApiResponse.SUCCESS;
+    }
 
 }
