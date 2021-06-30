@@ -2,6 +2,7 @@ package com.depromeet.threedollar.domain.domain.faq;
 
 import com.depromeet.threedollar.domain.domain.common.AuditingTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,5 +26,12 @@ public class Faq extends AuditingTimeEntity {
 
     @Column(nullable = false, length = 200)
     private String answer;
+
+    @Builder
+    Faq(FaqCategory category, String question, String answer) {
+        this.category = category;
+        this.question = question;
+        this.answer = answer;
+    }
 
 }

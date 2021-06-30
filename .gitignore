@@ -38,4 +38,6 @@ out/
 
 generated/
 
+logs/api
+
 application-credential.yml

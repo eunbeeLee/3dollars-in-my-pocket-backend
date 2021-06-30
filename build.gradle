@@ -1,12 +1,17 @@
 buildscript {
     ext {
         springBootVersion = '2.3.8.RELEASE'
+        kotlinVersion = '1.5.0'
     }
     repositories {
         mavenCentral()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}")
+        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2")
     }
 }
 
@@ -20,12 +25,26 @@ subprojects {
         plugin('eclipse')
         plugin('org.springframework.boot')
         plugin('io.spring.dependency-management')
+        plugin('kotlin')
+        plugin('kotlin-spring')
+        plugin('kotlin-jpa')
     }
 
     sourceCompatibility = '11'
 
     repositories {
         mavenCentral()
+    }
+
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
+        }
+    }
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
+        }
     }
 
     dependencies {
@@ -38,6 +57,11 @@ subprojects {
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
 
+        // kotlin
+        implementation("org.jetbrains.kotlin:kotlin-stdlib")
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+        implementation("com.google.code.gson:gson:2.8.5")
     }
 
     configurations {
