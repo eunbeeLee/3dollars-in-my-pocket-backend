@@ -80,9 +80,19 @@ public class Store extends AuditingTimeEntity {
         }
     }
 
-    public void updatePaymentMethods(Set<PaymentMethodType> paymentMethods) {
-        this.paymentMethods.clear();
-        addPaymentMethods(paymentMethods);
+    public void updatePaymentMethods(Set<PaymentMethodType> paymentMethodTypes) {
+        final List<PaymentMethodType> hasPaymentTypes = getPaymentMethodTypes();
+        this.paymentMethods.removeIf(paymentMethod -> !paymentMethodTypes.contains(paymentMethod.getMethod()));
+        Set<PaymentMethodType> newPaymentTypes = paymentMethodTypes.stream()
+            .filter(type -> !hasPaymentTypes.contains(type))
+            .collect(Collectors.toSet());
+        addPaymentMethods(newPaymentTypes);
+    }
+
+    private List<PaymentMethodType> getPaymentMethodTypes() {
+        return this.paymentMethods.stream()
+            .map(PaymentMethod::getMethod)
+            .collect(Collectors.toList());
     }
 
     private void addAppearanceDay(DayOfTheWeek dayOfTheWeek) {
@@ -92,13 +102,22 @@ public class Store extends AuditingTimeEntity {
 
     public void addAppearanceDays(Set<DayOfTheWeek> dayOfTheWeeks) {
         for (DayOfTheWeek dayOfTheWeek : dayOfTheWeeks) {
-            this.addAppearanceDay(dayOfTheWeek);
+            addAppearanceDay(dayOfTheWeek);
         }
     }
 
     public void updateAppearanceDays(Set<DayOfTheWeek> dayOfTheWeeks) {
-        this.appearanceDays.clear();
-        addAppearanceDays(dayOfTheWeeks);
+        final List<DayOfTheWeek> hasDayOfTheWeek = getDayOfTheWeek();
+        this.appearanceDays.removeIf(appearanceDay -> !dayOfTheWeeks.contains(appearanceDay.getDay()));
+        addAppearanceDays(dayOfTheWeeks.stream()
+            .filter(day -> !hasDayOfTheWeek.contains(day))
+            .collect(Collectors.toSet()));
+    }
+
+    private List<DayOfTheWeek> getDayOfTheWeek() {
+        return this.appearanceDays.stream()
+            .map(AppearanceDay::getDay)
+            .collect(Collectors.toList());
     }
 
     private void addMenu(Menu menu) {
