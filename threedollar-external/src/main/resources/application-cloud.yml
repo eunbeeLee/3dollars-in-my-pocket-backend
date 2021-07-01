@@ -1,7 +1,7 @@
 cloud:
   aws:
     s3:
-      bucket: potato-bucket-dev
+      bucket: 3dollar-backend-dev
     region:
       static: ap-northeast-2
     stack:

@@ -1,15 +1,16 @@
 package com.depromeet.threedollar.api.config;
+
 import com.depromeet.threedollar.api.config.resolver.UserId;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ResponseMessage;
@@ -24,9 +25,9 @@ import java.util.stream.Stream;
 import static springfox.documentation.builders.RequestHandlerSelectors.withClassAnnotation;
 
 @Profile("!prod")
-@ConditionalOnWebApplication
-@Configuration
+@Import(BeanValidatorPluginsConfiguration.class)
 @EnableSwagger2
+@Configuration
 public class SwaggerConfig {
 
     @Bean
@@ -42,8 +43,7 @@ public class SwaggerConfig {
             .globalResponseMessage(RequestMethod.GET, this.createGlobalResponseMessages())
             .globalResponseMessage(RequestMethod.POST, this.createGlobalResponseMessages())
             .globalResponseMessage(RequestMethod.PUT, this.createGlobalResponseMessages())
-            .globalResponseMessage(RequestMethod.DELETE, this.createGlobalResponseMessages())
-            ;
+            .globalResponseMessage(RequestMethod.DELETE, this.createGlobalResponseMessages());
     }
 
     private List<ResponseMessage> createGlobalResponseMessages() {
@@ -74,4 +74,5 @@ public class SwaggerConfig {
             .description("가슴 속 3천원 API 입니다.")
             .build();
     }
+
 }

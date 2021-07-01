@@ -24,6 +24,6 @@ public class RetrieveStoreGroupByCategoryRequest {
     private Double mapLongitude;
 
     @NotNull(message = "{menu.category.notnull}")
-    private MenuCategoryType categoryType;
+    private MenuCategoryType category;
 
 }

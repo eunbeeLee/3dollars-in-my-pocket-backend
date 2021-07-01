@@ -38,7 +38,9 @@ public class StoreController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PutMapping("/api/v2/store/{storeId}")
-    public ApiResponse<StoreInfoResponse> updateStore(@PathVariable Long storeId, @Valid @RequestBody UpdateStoreRequest request, @UserId Long userId) {
+    public ApiResponse<StoreInfoResponse> updateStore(@PathVariable Long storeId,
+                                                      @Valid @RequestBody UpdateStoreRequest request,
+                                                      @UserId Long userId) {
         return ApiResponse.success(storeService.updateStore(storeId, request, userId));
     }
 
@@ -55,7 +57,9 @@ public class StoreController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PostMapping("/api/v2/store/image")
-    public ApiResponse<StoreImageResponse> addStoreImage(@Valid @RequestBody AddStoreImageRequest request, @RequestPart(value = "image") MultipartFile multipartFile, @UserId Long userId) {
+    public ApiResponse<StoreImageResponse> addStoreImage(@Valid @RequestBody AddStoreImageRequest request,
+                                                         @RequestPart(value = "image") MultipartFile multipartFile,
+                                                         @UserId Long userId) {
         return ApiResponse.success(storeImageService.addStoreImage(request.getStoreId(), multipartFile, userId));
     }
 

@@ -73,7 +73,7 @@ public class StoreRetrieveService {
     @Transactional(readOnly = true)
     public StoresGroupByDistanceResponse retrieveStoresGroupByDistance(RetrieveStoreGroupByCategoryRequest request) {
         List<StoreInfoResponse> stores = findNearByStores(request.getMapLatitude(), request.getMapLongitude()).stream()
-            .filter(store -> store.getMenuCategories().contains(request.getCategoryType()))
+            .filter(store -> store.getMenuCategories().contains(request.getCategory()))
             .map(store -> StoreInfoResponse.of(store, request.getLatitude(), request.getLongitude()))
             .sorted(Comparator.comparing(StoreInfoResponse::getDistance))
             .collect(Collectors.toList());
@@ -83,7 +83,7 @@ public class StoreRetrieveService {
     @Transactional(readOnly = true)
     public StoresGroupByReviewResponse retrieveStoresGroupByRating(RetrieveStoreGroupByCategoryRequest request) {
         List<StoreInfoResponse> stores = findNearByStores(request.getMapLatitude(), request.getMapLongitude()).stream()
-            .filter(store -> store.getMenuCategories().contains(request.getCategoryType()))
+            .filter(store -> store.getMenuCategories().contains(request.getCategory()))
             .map(store -> StoreInfoResponse.of(store, request.getLatitude(), request.getLongitude()))
             .sorted(Comparator.comparing(StoreInfoResponse::getRating).reversed())
             .collect(Collectors.toList());
