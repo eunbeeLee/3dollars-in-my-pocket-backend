@@ -7,9 +7,8 @@ import com.depromeet.threedollar.api.service.user.UserService;
 import com.depromeet.threedollar.api.service.user.dto.request.CheckDuplicateNameRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,27 +21,29 @@ import javax.validation.Valid;
 @RestController
 public class UserController {
 
-	private final UserService userService;
+    private final UserService userService;
 
-	@Operation(summary = "내 정보를 조회합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
-	@Auth
-	@GetMapping("/api/v2/user/me")
-	public ApiResponse<UserInfoResponse> getMyUserInfo(@UserId Long userId) {
-		return ApiResponse.success(userService.getUserInfo(userId));
-	}
+    @ApiOperation("내 정보를 조회합니다. 인증이 필요한 요청입니다.")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
+    @Auth
+    @GetMapping("/api/v2/user/me")
+    public ApiResponse<UserInfoResponse> getMyUserInfo(@UserId Long userId) {
+        return ApiResponse.success(userService.getUserInfo(userId));
+    }
 
-	@Operation(summary = "내 정보를 수정합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
-	@Auth
-	@PutMapping("/api/v2/user/me")
-	public ApiResponse<UserInfoResponse> updateMyUserInfo(@Valid @RequestBody UpdateUserInfoRequest request, @UserId Long userId) {
-		return ApiResponse.success(userService.updateUserInfo(request, userId));
-	}
+    @ApiOperation("내 정보를 수정합니다. 인증이 필요한 요청입니다.")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
+    @Auth
+    @PutMapping("/api/v2/user/me")
+    public ApiResponse<UserInfoResponse> updateMyUserInfo(@Valid @RequestBody UpdateUserInfoRequest request, @UserId Long userId) {
+        return ApiResponse.success(userService.updateUserInfo(request, userId));
+    }
 
-    @Operation(summary = "닉네임 중복 여부를 체크하는 API")
+    @ApiOperation("닉네임 중복 여부를 체크하는 API")
     @GetMapping("/api/v2/user/name/check")
     public ApiResponse<String> checkDuplicateName(@Valid CheckDuplicateNameRequest request) {
-	    userService.checkDuplicateName(request);
-	    return ApiResponse.SUCCESS;
+        userService.checkDuplicateName(request);
+        return ApiResponse.SUCCESS;
     }
 
 }

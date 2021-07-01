@@ -8,9 +8,8 @@ import com.depromeet.threedollar.api.service.review.dto.request.AddReviewRequest
 import com.depromeet.threedollar.api.service.review.dto.request.RetrieveMyReviewsRequest;
 import com.depromeet.threedollar.api.service.review.dto.request.UpdateReviewRequest;
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewDetailWithPaginationResponse;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,8 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @Operation(summary = "리뷰를 등록합니다. 인증이 필요한 요청입니다", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @ApiOperation("리뷰를 등록합니다. 인증이 필요한 요청입니다")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PostMapping("/api/v2/store/review")
     public ApiResponse<String> addStoreReview(@Valid @RequestBody AddReviewRequest request, @UserId Long userId) {
@@ -30,7 +30,8 @@ public class ReviewController {
         return ApiResponse.SUCCESS;
     }
 
-    @Operation(summary = "사용자가 작성한 리뷰를 수정합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @ApiOperation("사용자가 작성한 리뷰를 수정합니다. 인증이 필요한 요청입니다")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PutMapping("/api/v2/store/review/{reviewId}")
     public ApiResponse<String> updateStoreReview(@PathVariable Long reviewId, @Valid @RequestBody UpdateReviewRequest request, @UserId Long userId) {
@@ -38,7 +39,8 @@ public class ReviewController {
         return ApiResponse.SUCCESS;
     }
 
-    @Operation(summary = "사용자가 작성한 리뷰를 삭제합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @ApiOperation("사용자가 작성한 리뷰를 삭제합니다. 인증이 필요한 요청입니다")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @DeleteMapping("/api/v2/store/review/{reviewId}")
     public ApiResponse<String> deleteStoreReview(@PathVariable Long reviewId, @UserId Long userId) {
@@ -46,7 +48,8 @@ public class ReviewController {
         return ApiResponse.SUCCESS;
     }
 
-    @Operation(summary = "사용자가 작성한 리뷰를 조회합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @ApiOperation("사용자가 작성한 리뷰를 조회합니다. 인증이 필요한 요청입니다.")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @GetMapping("/api/v2/store/reviews/me")
     public ApiResponse<ReviewDetailWithPaginationResponse> retrieveMyStoreReviews(@Valid RetrieveMyReviewsRequest request, @UserId Long userId) {

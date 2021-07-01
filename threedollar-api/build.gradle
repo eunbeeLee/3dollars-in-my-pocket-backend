@@ -6,7 +6,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     // swagger
-    implementation 'org.springdoc:springdoc-openapi-ui:1.5.4'
+    implementation "io.springfox:springfox-swagger2:2.9.2"
+    implementation "io.springfox:springfox-swagger-ui:2.9.2"
 
     // jwt
     implementation group: 'com.auth0', name: 'java-jwt', version: '3.1.0'

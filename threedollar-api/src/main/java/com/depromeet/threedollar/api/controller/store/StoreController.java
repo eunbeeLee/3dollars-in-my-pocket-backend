@@ -11,9 +11,8 @@ import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreReques
 import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreImageResponse;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,21 +26,24 @@ public class StoreController {
     private final StoreService storeService;
     private final StoreImageService storeImageService;
 
-    @Operation(summary = "가게 정보를 저장합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @ApiOperation("가게 정보를 저장합니다. 인증이 필요한 요청입니다.")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PostMapping("/api/v2/store")
     public ApiResponse<StoreInfoResponse> addStore(@Valid @RequestBody AddStoreRequest request, @UserId Long userId) {
         return ApiResponse.success(storeService.addStore(request, userId));
     }
 
-    @Operation(summary = "특정 가게의 정보를 수정합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @ApiOperation("특정 가게의 정보를 수정합니다. 인증이 필요한 요청입니다.")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PutMapping("/api/v2/store/{storeId}")
     public ApiResponse<StoreInfoResponse> updateStore(@PathVariable Long storeId, @Valid @RequestBody UpdateStoreRequest request, @UserId Long userId) {
         return ApiResponse.success(storeService.updateStore(storeId, request, userId));
     }
 
-    @Operation(summary = "특정 가게의 정보를 삭제합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @ApiOperation("특정 가게의 정보를 삭제합니다. 인증이 필요한 요청입니다.")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @DeleteMapping("/api/v2/store/{storeId}")
     public ApiResponse<String> deleteStore(@Valid DeleteStoreRequest request, @PathVariable Long storeId, @UserId Long userId) {
@@ -49,14 +51,16 @@ public class StoreController {
         return ApiResponse.SUCCESS;
     }
 
-    @Operation(summary = "가게의 이미지를 등록합니다. 인증이 필요한 요청입니다.", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @ApiOperation("가게의 이미지를 등록합니다. 인증이 필요한 요청입니다")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PostMapping("/api/v2/store/image")
-    public ApiResponse<StoreImageResponse> addStoreImage(@Valid AddStoreImageRequest request, @RequestPart(value = "image") MultipartFile multipartFile, @UserId Long userId) {
+    public ApiResponse<StoreImageResponse> addStoreImage(@Valid @RequestBody AddStoreImageRequest request, @RequestPart(value = "image") MultipartFile multipartFile, @UserId Long userId) {
         return ApiResponse.success(storeImageService.addStoreImage(request.getStoreId(), multipartFile, userId));
     }
 
-    @Operation(summary = "가게의 이미지를 삭제합니다. 인증이 필요한 요청입니다", security = {@SecurityRequirement(name = "Authorization")}, parameters = @Parameter(name = "Authorization"))
+    @ApiOperation("가게의 이미지를 삭제합니다. 인증이 필요한 요청입니다")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @DeleteMapping("/api/v2/store/image/{imageId}")
     public ApiResponse<String> deleteStoreImage(@PathVariable Long imageId) {
