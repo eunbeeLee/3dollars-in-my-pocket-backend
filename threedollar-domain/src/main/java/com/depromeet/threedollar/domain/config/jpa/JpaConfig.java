@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.domain.config;
+package com.depromeet.threedollar.domain.config.jpa;
 
 import com.depromeet.threedollar.domain.ThreeDollarDomainRoot;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

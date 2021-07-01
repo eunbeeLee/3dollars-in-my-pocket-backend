@@ -25,14 +25,12 @@ public class StoreRetrieveController {
     private final StoreRetrieveService storeRetrieveService;
 
     @ApiOperation("위도, 경도 주위 가게 목록을 조회합니다.")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @GetMapping("/api/v2/stores/near")
     public ApiResponse<List<StoreInfoResponse>> getNearStores(@Valid RetrieveAroundStoresRequest request) {
         return ApiResponse.success(storeRetrieveService.getNearStores(request));
     }
 
     @ApiOperation("특정 가게의 정보를 조회합니다.")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @GetMapping("/api/v2/store")
     public ApiResponse<StoreDetailInfoResponse> getStoreDetailInfo(@Valid RetrieveStoreDetailInfoRequest request) {
         return ApiResponse.success(storeRetrieveService.getDetailStoreInfo(request));
@@ -47,14 +45,12 @@ public class StoreRetrieveController {
     }
 
     @ApiOperation("거리순으로 특정 카테고리의 가게 정보를 가져옵니다.")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @GetMapping("/api/v2/stores/distance")
     public ApiResponse<StoresGroupByDistanceResponse> getStoresByCategory(@Valid RetrieveStoreGroupByCategoryRequest request) {
         return ApiResponse.success(storeRetrieveService.retrieveStoresGroupByDistance(request));
     }
 
     @ApiOperation("리뷰순으로 특정 카테고리의 가게 정보를 가져옵니다.")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @GetMapping("/api/v2/stores/review")
     public ApiResponse<StoresGroupByReviewResponse> getStoresByReview(@Valid RetrieveStoreGroupByCategoryRequest request) {
         return ApiResponse.success(storeRetrieveService.retrieveStoresGroupByRating(request));

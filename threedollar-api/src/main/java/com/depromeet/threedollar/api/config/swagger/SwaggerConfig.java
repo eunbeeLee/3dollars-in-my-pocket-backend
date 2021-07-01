@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.api.config;
+package com.depromeet.threedollar.api.config.swagger;
 
 import com.depromeet.threedollar.api.config.resolver.UserId;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +37,7 @@ public class SwaggerConfig {
             .ignoredParameterTypes(UserId.class)
             .select()
             .apis(withClassAnnotation(RestController.class))
-            .paths(PathSelectors.ant("/api/**"))
+            .paths(PathSelectors.ant("/**"))
             .build()
             .useDefaultResponseMessages(false)
             .globalResponseMessage(RequestMethod.GET, this.createGlobalResponseMessages())

@@ -44,7 +44,7 @@ public class StoreController {
         return ApiResponse.success(storeService.updateStore(storeId, request, userId));
     }
 
-    @ApiOperation("특정 가게의 정보를 삭제합니다. 인증이 필요한 요청입니다.")
+    @ApiOperation("특정 가게의 정보를 삭제 요청합니다. 인증이 필요한 요청입니다.")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @DeleteMapping("/api/v2/store/{storeId}")
