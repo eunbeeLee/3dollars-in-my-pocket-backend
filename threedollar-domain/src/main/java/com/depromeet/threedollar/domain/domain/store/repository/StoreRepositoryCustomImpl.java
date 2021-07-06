@@ -37,7 +37,9 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
         QueryResults<Store> result = queryFactory.selectFrom(store)
             .where(
                 store.userId.eq(userId)
-            ).fetchResults();
+            ).offset(pageRequest.getOffset())
+            .limit(pageRequest.getPageSize())
+            .fetchResults();
         return new PageImpl<>(result.getResults(), pageRequest, result.getTotal());
     }
 
