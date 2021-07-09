@@ -44,7 +44,7 @@ jobs:
       - name: Download muyaho-api task definition
         id: download-task-definition
         run: |
-          aws ecs describe-task-definition --task-definition muyaho-api-task --query taskDefinition > task-definition-dev.json
+          aws ecs describe-task-definition --task-definition 3dollar-api-dev --query taskDefinition > task-definition-dev.json
           echo "::set-output name=task-definition::$GITHUB_WORKSPACE/task-definition-dev.json"
 
       - name: Update Amazon ECS muyaho-api task definition
