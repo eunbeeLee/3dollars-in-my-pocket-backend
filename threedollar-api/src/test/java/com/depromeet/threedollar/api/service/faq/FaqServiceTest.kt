@@ -11,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class FaqServiceTest {
+internal class FaqServiceTest(
+    @Autowired
+    private val faqService: FaqService,
 
     @Autowired
-    lateinit var faqService: FaqService
-
-    @Autowired
-    lateinit var faqRepository: FaqRepository
+    private val faqRepository: FaqRepository
+) {
 
     @AfterEach
     fun cleanUp() {
