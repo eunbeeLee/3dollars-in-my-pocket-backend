@@ -1,7 +1,6 @@
 package com.depromeet.threedollar.domain.domain.review;
 
 import com.depromeet.threedollar.domain.domain.common.AuditingTimeEntity;
-import com.depromeet.threedollar.domain.domain.store.Rating;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

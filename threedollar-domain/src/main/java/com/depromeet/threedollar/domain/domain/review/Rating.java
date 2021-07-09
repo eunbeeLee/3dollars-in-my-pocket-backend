@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.domain.domain.store;
+package com.depromeet.threedollar.domain.domain.review;
 
 import com.depromeet.threedollar.common.exception.ErrorCode;
 import com.depromeet.threedollar.common.exception.ValidationException;
