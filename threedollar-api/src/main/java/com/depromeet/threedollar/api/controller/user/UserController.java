@@ -41,7 +41,7 @@ public class UserController {
 
     @ApiOperation("닉네임 중복 여부를 체크하는 API")
     @GetMapping("/api/v2/user/name/check")
-    public ApiResponse<String> checkDuplicateName(@Valid CheckDuplicateNameRequest request) {
+    public ApiResponse<String> checkAvailableName(@Valid CheckDuplicateNameRequest request) {
         userService.checkDuplicateName(request);
         return ApiResponse.SUCCESS;
     }

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -33,6 +34,13 @@ public class ControllerAdvice {
     protected ApiResponse<Object> handleBadRequest(BindException e) {
         log.error(e.getMessage(), e);
         return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    protected ApiResponse<Object> handleMissingRequestHeaderException(MissingRequestHeaderException e) {
+        log.error(e.getMessage(), e);
+        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, e.getMessage());
     }
 
     /**
