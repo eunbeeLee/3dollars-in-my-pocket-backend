@@ -23,21 +23,4 @@ class MainControllerTest(
             .andExpect(status().isOk)
     }
 
-    @Test
-    fun checkVersion_BadReqeust_without_UserAgent() {
-        this.mockMvc.perform(
-            get("/version")
-        )
-            .andExpect(status().isBadRequest)
-    }
-
-    @Test
-    fun checkVersion_OK_with_UserAgent() {
-        this.mockMvc.perform(
-            get("/version")
-                .header("User-Agent", "OK")
-        )
-            .andExpect(status().isOk)
-    }
-
 }
