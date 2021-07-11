@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.user.dto.response;
 
-import com.depromeet.threedollar.api.dto.AudtingTimeResponse;
+import com.depromeet.threedollar.api.common.dto.AudtingTimeResponse;
 import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
 import lombok.*;

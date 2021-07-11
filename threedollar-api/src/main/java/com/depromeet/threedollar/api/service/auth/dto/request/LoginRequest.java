@@ -10,11 +10,11 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginRequest {
 
-	@NotBlank
-	private String token;
+    @NotBlank
+    private String token;
 
-	public static LoginRequest testInstance(String token) {
-		return new LoginRequest(token);
-	}
+    public static LoginRequest testInstance(String token) {
+        return new LoginRequest(token);
+    }
 
 }

@@ -12,21 +12,21 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
-	private final LoginCheckHandler loginCheckHandler;
+    private final LoginCheckHandler loginCheckHandler;
 
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-		if (!(handler instanceof HandlerMethod)) {
-			return true;
-		}
-		HandlerMethod handlerMethod = (HandlerMethod) handler;
-		Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
-		if (auth == null) {
-			return true;
-		}
-		Long userId = loginCheckHandler.getUserId(request);
-		request.setAttribute("userId", userId);
-		return true;
-	}
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if (!(handler instanceof HandlerMethod)) {
+            return true;
+        }
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
+        if (auth == null) {
+            return true;
+        }
+        Long userId = loginCheckHandler.getUserId(request);
+        request.setAttribute("userId", userId);
+        return true;
+    }
 
 }

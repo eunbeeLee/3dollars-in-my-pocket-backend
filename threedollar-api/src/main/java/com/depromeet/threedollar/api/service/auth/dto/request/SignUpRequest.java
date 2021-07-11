@@ -12,18 +12,18 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SignUpRequest {
 
-	@NotBlank
-	private String token;
+    @NotBlank
+    private String token;
 
-	@NotBlank
-	private String name;
+    @NotBlank
+    private String name;
 
-	public static SignUpRequest testInstance(String token, String name) {
-		return new SignUpRequest(token, name);
-	}
+    public static SignUpRequest testInstance(String token, String name) {
+        return new SignUpRequest(token, name);
+    }
 
-	public CreateUserRequest toCreateUserRequest(String socialId, UserSocialType socialType) {
-		return CreateUserRequest.of(socialId, socialType, name);
-	}
+    public CreateUserRequest toCreateUserRequest(String socialId, UserSocialType socialType) {
+        return CreateUserRequest.of(socialId, socialType, name);
+    }
 
 }

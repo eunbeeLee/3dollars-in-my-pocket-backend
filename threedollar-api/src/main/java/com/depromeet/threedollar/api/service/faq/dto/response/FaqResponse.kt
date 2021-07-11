@@ -1,7 +1,6 @@
 package com.depromeet.threedollar.api.service.faq.dto.response
 
-import com.depromeet.threedollar.api.dto.AudtingTimeResponse
-import com.depromeet.threedollar.domain.domain.common.AuditingTimeEntity
+import com.depromeet.threedollar.api.common.dto.AudtingTimeResponse
 import com.depromeet.threedollar.domain.domain.faq.Faq
 import com.depromeet.threedollar.domain.domain.faq.FaqCategory
 

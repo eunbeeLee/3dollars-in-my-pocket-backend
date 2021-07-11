@@ -16,29 +16,29 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AppleAuthService implements AuthService {
 
-	private static final UserSocialType socialType = UserSocialType.APPLE;
+    private static final UserSocialType socialType = UserSocialType.APPLE;
 
-	private final AppleTokenDecoder appleTokenDecoder;
-	private final UserRepository userRepository;
-	private final UserService userService;
+    private final AppleTokenDecoder appleTokenDecoder;
+    private final UserRepository userRepository;
+    private final UserService userService;
 
-	@Transactional
-	@Override
-	public Long signUp(SignUpRequest request) {
-		IdTokenPayload payload = appleTokenDecoder.getUserInfoFromToken(request.getToken());
-		return userService.createUser(request.toCreateUserRequest(payload.getSub(), socialType));
-	}
+    @Transactional
+    @Override
+    public Long signUp(SignUpRequest request) {
+        IdTokenPayload payload = appleTokenDecoder.getUserInfoFromToken(request.getToken());
+        return userService.createUser(request.toCreateUserRequest(payload.getSub(), socialType));
+    }
 
-	@Transactional
-	@Override
-	public Long login(LoginRequest request) {
-		IdTokenPayload payload = appleTokenDecoder.getUserInfoFromToken(request.getToken());
-		return UserServiceUtils.findUserBySocialIdAndSocialType(userRepository, payload.getSub(), socialType).getId();
-	}
+    @Transactional
+    @Override
+    public Long login(LoginRequest request) {
+        IdTokenPayload payload = appleTokenDecoder.getUserInfoFromToken(request.getToken());
+        return UserServiceUtils.findUserBySocialIdAndSocialType(userRepository, payload.getSub(), socialType).getId();
+    }
 
-	@Override
-	public void signOut(Long userId) {
-		userService.signOut(userId);
-	}
+    @Override
+    public void signOut(Long userId) {
+        userService.signOut(userId);
+    }
 
 }

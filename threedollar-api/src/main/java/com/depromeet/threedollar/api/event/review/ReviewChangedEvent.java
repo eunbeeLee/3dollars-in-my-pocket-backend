@@ -8,10 +8,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReviewChangedEvent {
 
-	private final Long storeId;
+    private final Long storeId;
 
-	public static ReviewChangedEvent of(Long storeId) {
-		return new ReviewChangedEvent(storeId);
-	}
+    public static ReviewChangedEvent of(Long storeId) {
+        return new ReviewChangedEvent(storeId);
+    }
 
 }

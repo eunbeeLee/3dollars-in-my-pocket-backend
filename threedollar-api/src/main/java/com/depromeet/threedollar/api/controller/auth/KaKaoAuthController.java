@@ -2,7 +2,7 @@ package com.depromeet.threedollar.api.controller.auth;
 
 import com.depromeet.threedollar.api.config.interceptor.Auth;
 import com.depromeet.threedollar.api.config.resolver.UserId;
-import com.depromeet.threedollar.api.controller.ApiResponse;
+import com.depromeet.threedollar.api.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.service.auth.AuthService;
 import com.depromeet.threedollar.api.service.auth.dto.request.LoginRequest;
 import com.depromeet.threedollar.api.service.auth.dto.request.SignUpRequest;

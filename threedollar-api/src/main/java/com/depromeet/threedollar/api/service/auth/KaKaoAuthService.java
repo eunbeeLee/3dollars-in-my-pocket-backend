@@ -15,27 +15,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class KaKaoAuthService implements AuthService {
 
-	private static final UserSocialType socialType = UserSocialType.KAKAO;
+    private static final UserSocialType socialType = UserSocialType.KAKAO;
 
-	private final KaKaoApiCaller kaKaoApiCaller;
-	private final UserService userService;
-	private final UserRepository userRepository;
+    private final KaKaoApiCaller kaKaoApiCaller;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
-	@Override
-	public Long signUp(SignUpRequest request) {
-		KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo(request.getToken());
-		return userService.createUser(request.toCreateUserRequest(response.getId(), socialType));
-	}
+    @Override
+    public Long signUp(SignUpRequest request) {
+        KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo(request.getToken());
+        return userService.createUser(request.toCreateUserRequest(response.getId(), socialType));
+    }
 
-	@Override
-	public Long login(LoginRequest request) {
-		KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo(request.getToken());
-		return UserServiceUtils.findUserBySocialIdAndSocialType(userRepository, response.getId(), socialType).getId();
-	}
+    @Override
+    public Long login(LoginRequest request) {
+        KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo(request.getToken());
+        return UserServiceUtils.findUserBySocialIdAndSocialType(userRepository, response.getId(), socialType).getId();
+    }
 
-	@Override
-	public void signOut(Long userId) {
-		userService.signOut(userId);
-	}
+    @Override
+    public void signOut(Long userId) {
+        userService.signOut(userId);
+    }
 
 }

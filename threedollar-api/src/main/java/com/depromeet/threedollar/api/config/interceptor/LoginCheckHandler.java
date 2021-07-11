@@ -14,18 +14,18 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class LoginCheckHandler {
 
-	private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-	private final JwtService jwtService;
+    private final JwtService jwtService;
 
-	public Long getUserId(HttpServletRequest request) {
-		String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-		Long userId = jwtService.decode(token);
-		User user = userRepository.findUserById(userId);
-		if (user == null) {
-			throw new UnAuthorizedException(String.format("존재하지 않는 유저 (%s) 입니다", userId));
-		}
-		return userId;
-	}
+    public Long getUserId(HttpServletRequest request) {
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        Long userId = jwtService.decode(token);
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
+            throw new UnAuthorizedException(String.format("존재하지 않는 유저 (%s) 입니다", userId));
+        }
+        return userId;
+    }
 
 }
