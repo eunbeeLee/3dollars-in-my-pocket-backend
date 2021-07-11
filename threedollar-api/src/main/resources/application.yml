@@ -12,6 +12,7 @@ spring:
       - auth
       - cloud
       - credential
+      - agent
   servlet:
     multipart:
       max-file-size: 10MB
