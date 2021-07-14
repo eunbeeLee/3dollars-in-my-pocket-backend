@@ -3,6 +3,9 @@ package com.depromeet.threedollar.common.utils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+/**
+ * 일단 기존 프로젝트의 방법을 가져옴.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LocationDistanceUtils {
 
