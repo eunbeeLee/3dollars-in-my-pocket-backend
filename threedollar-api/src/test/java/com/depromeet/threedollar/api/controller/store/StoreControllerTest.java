@@ -2,7 +2,6 @@ package com.depromeet.threedollar.api.controller.store;
 
 import com.depromeet.threedollar.api.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.controller.AbstractControllerTest;
-import com.depromeet.threedollar.api.controller.store.api.StoreMockApiCaller;
 import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.DeleteStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.MenuRequest;

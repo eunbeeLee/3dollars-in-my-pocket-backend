@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.controller;
 
-import com.depromeet.threedollar.api.controller.user.api.UserMockApiCaller;
+import com.depromeet.threedollar.api.controller.user.UserMockApiCaller;
 import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
