@@ -21,7 +21,7 @@ class FaqController(
     }
 
     @ApiOperation("모든 FAQ 카테고리를 조회합니다")
-    @GetMapping("/api/v2/fag/categories")
+    @GetMapping("/api/v2/faq/categories")
     fun retrieveAllFaqCategories(): ApiResponse<List<FaqCategoryResponse>> {
         val response = FaqCategory.values()
             .map { FaqCategoryResponse.of(it) }

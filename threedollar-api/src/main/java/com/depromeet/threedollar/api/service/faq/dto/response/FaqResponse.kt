@@ -5,7 +5,7 @@ import com.depromeet.threedollar.domain.domain.faq.Faq
 import com.depromeet.threedollar.domain.domain.faq.FaqCategory
 
 data class FaqResponse(
-    val faqId: Long?,
+    val faqId: Long,
     val question: String,
     val answer: String,
     val category: FaqCategory

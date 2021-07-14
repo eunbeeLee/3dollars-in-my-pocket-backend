@@ -1,0 +1,73 @@
+package com.depromeet.threedollar.api.controller.faq;
+
+import com.depromeet.threedollar.api.common.dto.ApiResponse;
+import com.depromeet.threedollar.api.controller.AbstractControllerTest;
+import com.depromeet.threedollar.api.service.faq.dto.response.FaqCategoryResponse;
+import com.depromeet.threedollar.api.service.faq.dto.response.FaqResponse;
+import com.depromeet.threedollar.domain.domain.faq.Faq;
+import com.depromeet.threedollar.domain.domain.faq.FaqCategory;
+import com.depromeet.threedollar.domain.domain.faq.FaqCreator;
+import com.depromeet.threedollar.domain.domain.faq.FaqRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class FaqControllerTest extends AbstractControllerTest {
+
+    private FaqMockApiCaller faqMockApiCaller;
+
+    @Autowired
+    private FaqRepository faqRepository;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        super.setup();
+        faqMockApiCaller = new FaqMockApiCaller(mockMvc, objectMapper);
+    }
+
+    @AfterEach
+    void cleanUp() {
+        super.cleanup();
+        faqRepository.deleteAll();
+    }
+
+    @DisplayName("GET /api/v2/faqs 200 OK")
+    @Test
+    void FAQ_리스트를_조회하는_API_호출시_200OK() throws Exception {
+        // given
+        Faq faq1 = FaqCreator.create("question1", "answer1", FaqCategory.CATEGORY);
+        Faq faq2 = FaqCreator.create("question2", "answer2", FaqCategory.BOARD);
+        faqRepository.saveAll(Arrays.asList(faq1, faq2));
+
+        // when
+        ApiResponse<List<FaqResponse>> response = faqMockApiCaller.retrieveAllFaqs(200);
+
+        // then
+        assertThat(response.getData()).hasSize(2);
+        assertFaqResponse(response.getData().get(0), faq1.getId(), faq1.getQuestion(), faq1.getAnswer(), faq1.getCategory());
+    }
+
+    private void assertFaqResponse(FaqResponse faqResponse, Long id, String question, String answer, FaqCategory category) {
+        assertThat(faqResponse.getFaqId()).isEqualTo(id);
+        assertThat(faqResponse.getQuestion()).isEqualTo(question);
+        assertThat(faqResponse.getAnswer()).isEqualTo(answer);
+        assertThat(faqResponse.getCategory()).isEqualTo(category);
+    }
+
+    @Test
+    void FAQ_카테고리_리스트를_조회하는_API_호출시_200OK() throws Exception {
+        // when
+        ApiResponse<List<FaqCategoryResponse>> response = faqMockApiCaller.retrieveAllFaqCategories(200);
+
+        // then
+        assertThat(response.getData()).hasSize(FaqCategory.values().length);
+    }
+
+}
