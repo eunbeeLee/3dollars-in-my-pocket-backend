@@ -1,6 +1,7 @@
 # 가슴속 삼천원 백엔드
 
 ![Generic badge](https://img.shields.io/badge/version-2.0.0-green.svg)
+[![codecov](https://codecov.io/gh/depromeet/3dollars-in-my-pocket-backend/branch/develop/graph/badge.svg?token=QZPVF6VGHA)](https://codecov.io/gh/depromeet/3dollars-in-my-pocket-backend)
 
 ## Installation
 
