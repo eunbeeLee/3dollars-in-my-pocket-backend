@@ -5,6 +5,7 @@ import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.MenuRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
+import com.depromeet.threedollar.domain.domain.common.Location;
 import com.depromeet.threedollar.domain.domain.menu.Menu;
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.menu.MenuRepository;
@@ -198,11 +199,11 @@ class StoreServiceTest extends UserSetUpTest {
 
         List<AppearanceDay> appearanceDayList = appearanceDayRepository.findAll();
         assertThat(appearanceDayList).hasSize(1);
-        assertAppearanceDay(appearanceDayList.get(0), DayOfTheWeek.TUESDAY);
+        assertAppearanceDay(appearanceDayList.get(0), DayOfTheWeek.TUESDAY, stores.get(0).getId());
 
         List<PaymentMethod> paymentMethodsList = paymentMethodRepository.findAll();
         assertThat(paymentMethodsList).hasSize(1);
-        assertPaymentMethod(paymentMethodsList.get(0), PaymentMethodType.CARD);
+        assertPaymentMethod(paymentMethodsList.get(0), PaymentMethodType.CARD, stores.get(0).getId());
 
         List<Menu> menus = menuRepository.findAll();
         assertThat(menus).hasSize(1);
@@ -328,15 +329,18 @@ class StoreServiceTest extends UserSetUpTest {
         assertThat(menu.getCategory()).isEqualTo(type);
     }
 
-    private void assertPaymentMethod(PaymentMethod paymentMethod, PaymentMethodType type) {
+    private void assertPaymentMethod(PaymentMethod paymentMethod, PaymentMethodType type, Long storeId) {
+        assertThat(paymentMethod.getStore().getId()).isEqualTo(storeId);
         assertThat(paymentMethod.getMethod()).isEqualTo(type);
     }
 
-    private void assertAppearanceDay(AppearanceDay appearanceDay, DayOfTheWeek day) {
+    private void assertAppearanceDay(AppearanceDay appearanceDay, DayOfTheWeek day, Long storeId) {
+        assertThat(appearanceDay.getStore().getId()).isEqualTo(storeId);
         assertThat(appearanceDay.getDay()).isEqualTo(day);
     }
 
     private void assertStore(Store store, Double latitude, Double longitude, String storeName, StoreType storeType, Long userId) {
+        assertThat(store.getLocation()).isEqualTo(Location.of(latitude, longitude));
         assertThat(store.getLatitude()).isEqualTo(latitude);
         assertThat(store.getLongitude()).isEqualTo(longitude);
         assertThat(store.getStoreName()).isEqualTo(storeName);

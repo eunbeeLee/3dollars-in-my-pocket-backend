@@ -63,7 +63,7 @@ class ReviewServiceTest extends UserSetUpTest {
         // then
         List<Review> reviewList = reviewRepository.findAll();
         assertThat(reviewList).hasSize(1);
-        assertReview(reviewList.get(0), store.getId(), content, rating);
+        assertReview(reviewList.get(0), store.getId(), content, rating, userId);
     }
 
     @Test
@@ -130,7 +130,7 @@ class ReviewServiceTest extends UserSetUpTest {
         // then
         List<Review> reviewList = reviewRepository.findAll();
         assertThat(reviewList).hasSize(1);
-        assertReview(reviewList.get(0), store.getId(), content, rating);
+        assertReview(reviewList.get(0), store.getId(), content, rating, userId);
     }
 
     @Test
@@ -184,10 +184,11 @@ class ReviewServiceTest extends UserSetUpTest {
         assertThat(stores.get(0).getRating()).isEqualTo(0);
     }
 
-    private void assertReview(Review review, Long storeId, String content, int rating) {
+    private void assertReview(Review review, Long storeId, String content, int rating, Long userId) {
         assertThat(review.getStoreId()).isEqualTo(storeId);
         assertThat(review.getContents()).isEqualTo(content);
         assertThat(review.getRating()).isEqualTo(rating);
+        assertThat(review.getUserId()).isEqualTo(userId);
     }
 
 }
