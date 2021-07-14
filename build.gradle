@@ -27,6 +27,7 @@ subprojects {
         plugin('kotlin')
         plugin('kotlin-spring')
         plugin('kotlin-jpa')
+        plugin('jacoco')
     }
 
     sourceCompatibility = '11'
@@ -71,4 +72,33 @@ subprojects {
     test {
         useJUnitPlatform()
     }
+}
+
+def testProjects = [
+    project(':threedollar-api'),
+    project(':threedollar-domain'),
+    project(':threedollar-common')
+]
+
+configure(testProjects) {
+    apply plugin: 'jacoco'
+
+    jacoco {
+        toolVersion = '0.8.7'
+    }
+
+    jacocoTestReport {
+        executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
+
+        reports {
+            html.enabled true
+            xml.enabled true
+            csv.enabled false
+        }
+
+        for (testProject in testProjects) {
+            sourceSets(testProject.sourceSets["main"] as SourceSet)
+        }
+    }
+
 }
