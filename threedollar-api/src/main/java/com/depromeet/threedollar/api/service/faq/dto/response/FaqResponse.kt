@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.faq.dto.response
 
-import com.depromeet.threedollar.api.common.dto.AudtingTimeResponse
+import com.depromeet.threedollar.api.common.dto.AuditingTimeResponse
 import com.depromeet.threedollar.domain.domain.faq.Faq
 import com.depromeet.threedollar.domain.domain.faq.FaqCategory
 
@@ -9,7 +9,7 @@ data class FaqResponse(
     val question: String,
     val answer: String,
     val category: FaqCategory
-) : AudtingTimeResponse() {
+) : AuditingTimeResponse() {
 
     companion object {
         fun of(faq: Faq): FaqResponse {

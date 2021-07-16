@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.store.dto.response;
 
-import com.depromeet.threedollar.api.common.dto.AudtingTimeResponse;
+import com.depromeet.threedollar.api.common.dto.AuditingTimeResponse;
 import com.depromeet.threedollar.common.utils.LocationDistanceUtils;
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.store.Store;
@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class StoreInfoResponse extends AudtingTimeResponse {
+public class StoreInfoResponse extends AuditingTimeResponse {
 
     private Long storeId;
     private Double latitude;

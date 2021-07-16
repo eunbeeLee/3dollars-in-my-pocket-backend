@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.review.dto.response;
 
-import com.depromeet.threedollar.api.common.dto.AudtingTimeResponse;
+import com.depromeet.threedollar.api.common.dto.AuditingTimeResponse;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithCreatorDto;
 import lombok.*;
@@ -9,7 +9,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ReviewResponse extends AudtingTimeResponse {
+public class ReviewResponse extends AuditingTimeResponse {
 
     private Long reviewId;
 

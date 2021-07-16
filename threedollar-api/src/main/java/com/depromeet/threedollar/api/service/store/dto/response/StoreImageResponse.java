@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.store.dto.response;
 
-import com.depromeet.threedollar.api.common.dto.AudtingTimeResponse;
+import com.depromeet.threedollar.api.common.dto.AuditingTimeResponse;
 import com.depromeet.threedollar.domain.domain.store.StoreImage;
 import lombok.*;
 
@@ -8,7 +8,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class StoreImageResponse extends AudtingTimeResponse {
+public class StoreImageResponse extends AuditingTimeResponse {
 
     private Long imageId;
 
