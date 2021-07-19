@@ -30,7 +30,7 @@ internal class FaqServiceTest(
         val question = "질문"
         val answer = "대답"
         val category = FaqCategory.CATEGORY
-        faqRepository.save(FaqCreator.create(question, answer, category));
+        faqRepository.save(FaqCreator.create(question, answer, category))
 
         // when
         val result = faqService.retrieveAllFaqs()

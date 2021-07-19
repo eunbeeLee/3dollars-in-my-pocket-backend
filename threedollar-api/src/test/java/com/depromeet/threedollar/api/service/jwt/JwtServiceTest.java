@@ -17,7 +17,7 @@ class JwtServiceTest {
     @Test
     void userId를통해_토큰을_생성한다() {
         // given
-        Long userId = 100L;
+        long userId = 100L;
 
         // when
         String token = jwtService.encode(new UserTokenDto(userId));
