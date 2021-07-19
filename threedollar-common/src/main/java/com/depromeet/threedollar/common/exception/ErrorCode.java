@@ -10,7 +10,7 @@ public enum ErrorCode {
 
     // Common
     VALIDATION_EXCEPTION("C001", "잘못된 요청입니다"),
-    UNAUTHORIZED_EXCEPTION("C002", "세션이 만료되었습니다. 다시 로그인 해주세요"),
+    UNAUTHORIZED_EXCEPTION("C002", "토큰이 만료되었습니다. 다시 로그인 해주세요"),
     FORBIDDEN_EXCEPTION("C003", "허용하지 않는 접근입니다."),
     NOT_FOUND_EXCEPTION("C004", "존재하지 않습니다"),
     CONFLICT_EXCEPTION("C005", "이미 존재합니다"),

@@ -64,7 +64,7 @@ public class ControllerAdvice {
     }
 
     /**
-     * 세션에 문제가 있는 경우 발생하는 Exception
+     * 토큰에 문제가 있는 경우 발생하는 Exception
      */
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnAuthorizedException.class)

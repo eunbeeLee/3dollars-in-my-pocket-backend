@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.config.interceptor;
 
-import com.depromeet.threedollar.api.service.jwt.JwtService;
+import com.depromeet.threedollar.api.service.token.TokenService;
 import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import com.depromeet.threedollar.common.exception.UnAuthorizedException;
@@ -16,11 +16,11 @@ public class LoginCheckHandler {
 
     private final UserRepository userRepository;
 
-    private final JwtService jwtService;
+    private final TokenService jwtService;
 
     public Long getUserId(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        Long userId = jwtService.decode(token);
+        Long userId = jwtService.decode(token).getUserId();
         User user = userRepository.findUserById(userId);
         if (user == null) {
             throw new UnAuthorizedException(String.format("존재하지 않는 유저 (%s) 입니다", userId));
