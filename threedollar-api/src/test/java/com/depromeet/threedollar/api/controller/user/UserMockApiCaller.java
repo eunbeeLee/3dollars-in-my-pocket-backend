@@ -2,6 +2,7 @@ package com.depromeet.threedollar.api.controller.user;
 
 import com.depromeet.threedollar.api.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.controller.MockMvcUtils;
+import com.depromeet.threedollar.api.service.auth.dto.response.LoginResponse;
 import com.depromeet.threedollar.api.service.user.dto.request.CheckDuplicateNameRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
@@ -24,7 +25,7 @@ public class UserMockApiCaller extends MockMvcUtils {
         super(mockMvc, objectMapper);
     }
 
-    public ApiResponse<String> getTestToken() throws Exception {
+    public ApiResponse<LoginResponse> getTestToken() throws Exception {
         MockHttpServletRequestBuilder builder = get("/test-token");
 
         return objectMapper.readValue(
