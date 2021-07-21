@@ -5,7 +5,6 @@ import com.depromeet.threedollar.domain.domain.review.ReviewStatus;
 import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithCreatorDto;
 import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithStoreAndCreatorDto;
 import com.depromeet.threedollar.domain.domain.store.StoreStatus;
-import com.depromeet.threedollar.domain.domain.user.UserStatusType;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -51,7 +50,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
             .innerJoin(user).on(review.userId.eq(user.id))
             .where(
                 review.storeId.eq(storeId),
-                user.status.eq(UserStatusType.ACTIVE)
+                review.status.eq(ReviewStatus.POSTED)
             ).fetch();
     }
 
@@ -74,7 +73,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
             review.createdAt.as("createdAt"),
             review.updatedAt.as("updatedAt"),
             review.storeId.as("storeId"),
-            store.storeName.as("storeName"),
+            store.name.as("storeName"),
             user.id.as("userId"),
             user.name.as("userName"),
             user.socialInfo.socialType.as("userSocialType")

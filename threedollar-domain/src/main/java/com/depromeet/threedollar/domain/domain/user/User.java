@@ -26,26 +26,21 @@ public class User extends AuditingTimeEntity {
     @Embedded
     private SocialInfo socialInfo;
 
-    @Column(length = 50)
+    @Column(length = 50, nullable = false)
     private String name;
 
-    @Column(nullable = false, length = 30)
-    @Enumerated(EnumType.STRING)
-    private UserStatusType status;
-
     @Builder
-    User(String socialId, UserSocialType socialType, String name, UserStatusType statusType) {
+    User(String socialId, UserSocialType socialType, String name) {
         this.socialInfo = SocialInfo.of(socialId, socialType);
         this.name = name;
-        this.status = statusType;
     }
 
     public static User newInstance(String socialId, UserSocialType socialType, String name) {
-        return new User(socialId, socialType, name, UserStatusType.ACTIVE);
+        return new User(socialId, socialType, name);
     }
 
 	public static User deletedUser() {
-        return new User(null, null, "사라진 제보자", UserStatusType.INACTIVE);
+        return new User(null, null, "사라진 제보자");
 	}
 
 	public void update(String name) {
@@ -60,25 +55,8 @@ public class User extends AuditingTimeEntity {
         return this.socialInfo.getSocialType();
     }
 
-    public boolean isInActive() {
-        return this.status.equals(UserStatusType.INACTIVE);
-    }
-
-    public String getName() {
-        if (isInActive()) {
-            return "사라진 제보자";
-        }
-        return this.name;
-    }
-
     public WithdrawalUser signOut() {
-        this.status = UserStatusType.INACTIVE;
         return WithdrawalUser.of(this);
-    }
-
-    public void rejoin(String name) {
-        this.status = UserStatusType.ACTIVE;
-        this.name = name;
     }
 
     String getOriginName() {

@@ -53,8 +53,8 @@ public class StoreDetailInfoResponse extends AuditingTimeResponse {
     private final List<ReviewResponse> review = new ArrayList<>();
 
     public static StoreDetailInfoResponse of(Store store, List<StoreImageResponse> imageResponses, Double latitude, Double longitude, User user, List<ReviewResponse> reviewResponses) {
-        StoreDetailInfoResponse response = new StoreDetailInfoResponse(store.getId(), store.getLatitude(), store.getLongitude(), store.getStoreName(),
-            store.getMenuCategories(), store.getStoreType(), store.getRating(), LocationDistanceUtils.getDistance(store.getLatitude(), store.getLongitude(), latitude, longitude),
+        StoreDetailInfoResponse response = new StoreDetailInfoResponse(store.getId(), store.getLatitude(), store.getLongitude(), store.getName(),
+            store.getMenuCategories(), store.getType(), store.getRating(), LocationDistanceUtils.getDistance(store.getLatitude(), store.getLongitude(), latitude, longitude),
             UserInfoResponse.of(user));
         response.appearanceDays.addAll(store.getAppearanceDaysType());
         response.paymentMethods.addAll(store.getPaymentMethodsType());

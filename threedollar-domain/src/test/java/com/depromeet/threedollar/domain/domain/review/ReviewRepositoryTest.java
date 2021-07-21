@@ -89,8 +89,8 @@ class ReviewRepositoryTest {
         assertThat(pages.getTotalElements()).isEqualTo(3);
         assertThat(pages.getTotalPages()).isEqualTo(2);
         List<ReviewWithStoreAndCreatorDto> reviews = pages.getContent();
-        assertReviewWithStoreAndCreatorDto(reviews.get(0), 5, "리뷰 1", ReviewStatus.POSTED, store.getId(), store.getStoreName(), user.getId(), user.getName(), user.getSocialType());
-        assertReviewWithStoreAndCreatorDto(reviews.get(1), 4, "리뷰 2", ReviewStatus.POSTED, store.getId(), store.getStoreName(), user.getId(), user.getName(), user.getSocialType());
+        assertReviewWithStoreAndCreatorDto(reviews.get(0), 5, "리뷰 1", ReviewStatus.POSTED, store.getId(), store.getName(), user.getId(), user.getName(), user.getSocialType());
+        assertReviewWithStoreAndCreatorDto(reviews.get(1), 4, "리뷰 2", ReviewStatus.POSTED, store.getId(), store.getName(), user.getId(), user.getName(), user.getSocialType());
     }
 
     private void assertReviewWithStoreAndCreatorDto(ReviewWithStoreAndCreatorDto review, int rating, String contents, ReviewStatus status,

@@ -6,7 +6,6 @@ import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequ
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
-import com.depromeet.threedollar.domain.domain.user.WithdrawalUser;
 import com.depromeet.threedollar.domain.domain.user.WithdrawalUserRepository;
 import com.depromeet.threedollar.common.exception.ConflictException;
 import lombok.RequiredArgsConstructor;
@@ -20,27 +19,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final WithdrawalUserRepository withdrawalUserRepository;
 
-    /**
-     * TODO
-     * 기존의 회원탈퇴 방식과 호환성을 위해서 일단 그대로 감.
-     * 차후 방식 변경이 필요해보입니다.
-     */
     @Transactional
     public Long createUser(CreateUserRequest request) {
         UserServiceUtils.validateNotExistsUserName(userRepository, request.getName());
         User user = userRepository.findUserBySocialIdAndSocialType(request.getSocialId(), request.getSocialType());
-        // 신규 회원인 경우.
         if (user == null) {
             return signUp(request);
         }
-        // 회원탈퇴한 계정인경우 (기존 데이터 호환성을 위한 로직)
-        if (user.isInActive()) {
-            WithdrawalUser withdrawalUser = withdrawalUserRepository.findWithdrawalUserByUserId(user.getId());
-            user.rejoin(request.getName());
-            withdrawalUserRepository.delete(withdrawalUser);
-            return user.getId();
-        }
-        // 이미 활성화된 계정이 존재하는 경우.
         throw new ConflictException(String.format("이미 존재하는 유저 (%s - %s) 입니다", request.getSocialId(), request.getSocialType()));
     }
 
@@ -71,6 +56,7 @@ public class UserService {
     public void signOut(Long userId) {
         User user = UserServiceUtils.findUserById(userRepository, userId);
         withdrawalUserRepository.save(user.signOut());
+        userRepository.delete(user);
     }
 
 }

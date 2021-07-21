@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,7 +51,7 @@ class UserServiceTest {
         // then
         List<User> users = userRepository.findAll();
         assertThat(users).hasSize(1);
-        assertUserInfo(users.get(0), socialId, type, name, UserStatusType.ACTIVE);
+        assertUserInfo(users.get(0), socialId, type, name);
     }
 
     @Test
@@ -106,8 +107,8 @@ class UserServiceTest {
         // then
         List<User> users = userRepository.findAll();
         assertThat(users).hasSize(2);
-        assertUserInfo(users.get(0), socialId, UserSocialType.APPLE, "기존의 닉네임", UserStatusType.ACTIVE);
-        assertUserInfo(users.get(1), socialId, UserSocialType.KAKAO, "새로운 닉네임", UserStatusType.ACTIVE);
+        assertUserInfo(users.get(0), socialId, UserSocialType.APPLE, "기존의 닉네임");
+        assertUserInfo(users.get(1), socialId, UserSocialType.KAKAO, "새로운 닉네임");
     }
 
     @Test
@@ -177,7 +178,7 @@ class UserServiceTest {
         // then
         List<User> users = userRepository.findAll();
         assertThat(users).hasSize(1);
-        assertUserInfo(users.get(0), socialId, type, name, UserStatusType.ACTIVE);
+        assertUserInfo(users.get(0), socialId, type, name);
     }
 
     @Test
@@ -201,14 +202,29 @@ class UserServiceTest {
 
         // then
         List<User> users = userRepository.findAll();
-        assertThat(users).hasSize(1);
-        assertThat(users.get(0).getStatus()).isEqualTo(UserStatusType.INACTIVE);
+        assertThat(users).isEmpty();
 
-        // then
         List<WithdrawalUser> withdrawalUsers = withdrawalUserRepository.findAll();
         assertThat(withdrawalUsers).hasSize(1);
         assertWithdrawalUser(withdrawalUsers.get(0), user.getId(), user.getName(), user.getSocialId(), user.getSocialType());
     }
+
+    @Test
+    void 회원탈퇴한_유저만_USER_테이블에서_삭제된다() {
+        // given
+        User user1 = UserCreator.create("social-id1", UserSocialType.APPLE, "기존의 닉네임1");
+        User user2 = UserCreator.create("social-id2", UserSocialType.APPLE, "기존의 닉네임2");
+        userRepository.saveAll(Arrays.asList(user1, user2));
+
+        // then
+        userService.signOut(user1.getId());
+
+        // then
+        List<User> users = userRepository.findAll();
+        assertThat(users).hasSize(1);
+        assertUserInfo(users.get(0), user2.getSocialId(), user2.getSocialType(), user2.getName());
+    }
+
 
     private void assertWithdrawalUser(WithdrawalUser withdrawalUser, Long userId, String name, String socialId, UserSocialType socialType) {
         assertThat(withdrawalUser.getUserId()).isEqualTo(userId);
@@ -217,11 +233,10 @@ class UserServiceTest {
         assertThat(withdrawalUser.getSocialInfo().getSocialType()).isEqualTo(socialType);
     }
 
-    private void assertUserInfo(User user, String socialId, UserSocialType type, String name, UserStatusType statusType) {
+    private void assertUserInfo(User user, String socialId, UserSocialType type, String name) {
         assertThat(user.getSocialInfo().getSocialId()).isEqualTo(socialId);
         assertThat(user.getSocialInfo().getSocialType()).isEqualTo(type);
         assertThat(user.getName()).isEqualTo(name);
-        assertThat(user.getStatus()).isEqualTo(statusType);
     }
 
 }

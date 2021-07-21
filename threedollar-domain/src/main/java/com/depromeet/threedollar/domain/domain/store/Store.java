@@ -20,6 +20,9 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(
+    indexes = @Index(name = "idx_store_1", columnList = "userId")
+)
 public class Store extends AuditingTimeEntity {
 
     @Id
@@ -33,11 +36,11 @@ public class Store extends AuditingTimeEntity {
     private Location location;
 
     @Column(nullable = false, length = 300)
-    private String storeName;
+    private String name;
 
     @Column(nullable = false, length = 30)
     @Enumerated(EnumType.STRING)
-    private StoreType storeType;
+    private StoreType type;
 
     @Column(nullable = false)
     private double rating; // 평균 평가 점수
@@ -56,11 +59,11 @@ public class Store extends AuditingTimeEntity {
     private StoreStatus status;
 
     @Builder
-    private Store(Long userId, double latitude, double longitude, String storeName, StoreType storeType) {
+    private Store(Long userId, double latitude, double longitude, String name, StoreType type) {
         this.userId = userId;
         this.location = Location.of(latitude, longitude);
-        this.storeName = storeName;
-        this.storeType = storeType;
+        this.name = name;
+        this.type = type;
         this.rating = 0.0;
         this.status = StoreStatus.ACTIVE;
     }
@@ -139,9 +142,9 @@ public class Store extends AuditingTimeEntity {
         this.location = Location.of(latitude, longitude);
     }
 
-    public void updateInfo(String storeName, StoreType storeType, Long userId) {
-        this.storeName = storeName;
-        this.storeType = storeType;
+    public void updateInfo(String name, StoreType type, Long userId) {
+        this.name = name;
+        this.type = type;
         this.userId = userId;
     }
 

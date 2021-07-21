@@ -11,7 +11,6 @@ public class UserCreator {
             .socialId(socialId)
             .socialType(socialType)
             .name(name)
-            .statusType(UserStatusType.ACTIVE)
             .build();
     }
 
@@ -20,7 +19,6 @@ public class UserCreator {
             .socialId(socialId)
             .socialType(socialType)
             .name(name)
-            .statusType(UserStatusType.INACTIVE)
             .build();
     }
 

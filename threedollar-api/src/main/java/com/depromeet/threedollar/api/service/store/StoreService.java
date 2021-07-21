@@ -27,7 +27,7 @@ public class StoreService {
     public StoreInfoResponse updateStore(Long storeId, UpdateStoreRequest request, Long userId) {
         Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
         store.updateLocation(request.getLatitude(), request.getLongitude());
-        store.updateInfo(request.getStoreName(), store.getStoreType(), userId);
+        store.updateInfo(request.getStoreName(), request.getStoreType(), userId);
         store.updatePaymentMethods(request.getPaymentMethods());
         store.updateAppearanceDays(request.getAppearanceDays());
         store.updateMenu(request.toMenus(store));

@@ -343,8 +343,8 @@ class StoreServiceTest extends UserSetUpTest {
         assertThat(store.getLocation()).isEqualTo(Location.of(latitude, longitude));
         assertThat(store.getLatitude()).isEqualTo(latitude);
         assertThat(store.getLongitude()).isEqualTo(longitude);
-        assertThat(store.getStoreName()).isEqualTo(storeName);
-        assertThat(store.getStoreType()).isEqualTo(storeType);
+        assertThat(store.getName()).isEqualTo(storeName);
+        assertThat(store.getType()).isEqualTo(storeType);
         assertThat(store.getUserId()).isEqualTo(userId);
     }
 

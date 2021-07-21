@@ -27,8 +27,8 @@ class StoreRepositoryTest {
             .userId(100L)
             .latitude(37.358483)
             .longitude(126.930947)
-            .storeName("storeName")
-            .storeType(StoreType.STORE)
+            .name("storeName")
+            .type(StoreType.STORE)
             .build());
 
         // when
@@ -45,8 +45,8 @@ class StoreRepositoryTest {
             .userId(100L)
             .latitude(37.328431)
             .longitude(126.91674)
-            .storeName("storeName")
-            .storeType(StoreType.STORE)
+            .name("storeName")
+            .type(StoreType.STORE)
             .build());
 
         // when

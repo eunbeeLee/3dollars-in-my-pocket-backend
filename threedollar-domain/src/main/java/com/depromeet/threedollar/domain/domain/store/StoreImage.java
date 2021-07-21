@@ -22,17 +22,21 @@ public class StoreImage extends AuditingTimeEntity {
     @Column(nullable = false)
     private Long storeId;
 
+    @Column(nullable = false)
     private Long userId;
 
+    @Column(nullable = false)
     private String url;
 
-    private boolean isDeleted;
+    @Column(nullable = false, length = 30)
+    @Enumerated(EnumType.STRING)
+    private StoreImageStatus status;
 
     private StoreImage(Long storeId, Long userId, String url) {
         this.storeId = storeId;
         this.userId = userId;
         this.url = url;
-        this.isDeleted = false;
+        this.status = StoreImageStatus.ACTIVE;
     }
 
     public static StoreImage newInstance(Long storeId, Long userId, String imageUrl) {
@@ -40,7 +44,7 @@ public class StoreImage extends AuditingTimeEntity {
     }
 
     public void delete() {
-        this.isDeleted = true;
+        this.status = StoreImageStatus.INACTIVE;
     }
 
 }

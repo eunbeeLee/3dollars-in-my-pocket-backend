@@ -1,10 +1,9 @@
 CREATE TABLE `user`
 (
     `id`          BIGINT       NOT NULL AUTO_INCREMENT,
-    `social_id`   VARCHAR(200) DEFAULT NULL,
-    `social_type` VARCHAR(30)  DEFAULT NULL,
-    `name`        VARCHAR(50) DEFAULT NULL,
-    `status`      VARCHAR(30)  NOT NULL,
+    `social_id`   VARCHAR(200) NOT NULL,
+    `social_type` VARCHAR(30)  NOT NULL,
+    `name`        VARCHAR(50)  NOT NULL,
     `created_at`  DATETIME(6) DEFAULT NULL,
     `updated_at`  DATETIME(6) DEFAULT NULL,
     PRIMARY KEY (`id`),
@@ -16,7 +15,7 @@ CREATE TABLE `user`
 CREATE TABLE `withdrawal_user`
 (
     `user_id`         BIGINT       NOT NULL,
-    `name`            VARCHAR(50) DEFAULT NULL,
+    `name`            VARCHAR(50)  NOT NULL,
     `social_id`       VARCHAR(200) NOT NULL,
     `social_type`     VARCHAR(30)  NOT NULL,
     `user_created_at` DATETIME(6) DEFAULT NULL,
@@ -32,25 +31,26 @@ CREATE TABLE `store`
     `user_id`    BIGINT           NOT NULL,
     `latitude`   DOUBLE PRECISION NOT NULL,
     `longitude`  DOUBLE PRECISION NOT NULL,
-    `store_name` VARCHAR(300)     DEFAULT NULL,
-    `store_type` VARCHAR(30)               DEFAULT NULL,
-    `rating`     DOUBLE PRECISION          DEFAULT 0,
+    `name`       VARCHAR(300)     NOT NULL,
+    `type`       VARCHAR(30)               DEFAULT NULL,
+    `rating`     DOUBLE PRECISION NOT NULL DEFAULT 0,
     `status`     VARCHAR(30)      NOT NULL DEFAULT 'ACTIVE',
     `created_at` DATETIME(6)               DEFAULT NULL,
     `updated_at` DATETIME(6)               DEFAULT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    KEY `idx_store_1` (`user_id`)
 ) ENGINE = InnoDB;
 
 
 CREATE TABLE `store_image`
 (
-    `id`         BIGINT     NOT NULL AUTO_INCREMENT,
-    `store_id`   BIGINT     NOT NULL,
-    `user_id`    BIGINT              DEFAULT NULL,
-    `url`        VARCHAR(255)        DEFAULT NULL,
-    `is_deleted` TINYINT(1) NOT NULL DEFAULT FALSE,
-    `created_at` DATETIME(6)         DEFAULT NULL,
-    `updated_at` DATETIME(6)         DEFAULT NULL,
+    `id`         BIGINT       NOT NULL AUTO_INCREMENT,
+    `store_id`   BIGINT       NOT NULL,
+    `user_id`    BIGINT                DEFAULT NULL,
+    `url`        VARCHAR(255) NOT NULL,
+    `status`     VARCHAR(30)  NOT NULL DEFAULT 'ACTIVE',
+    `created_at` DATETIME(6)           DEFAULT NULL,
+    `updated_at` DATETIME(6)           DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `idx_store_image_1` (`store_id`)
 ) ENGINE = InnoDB;
@@ -125,8 +125,8 @@ CREATE TABLE `faq`
 (
     `id`         BIGINT       NOT NULL AUTO_INCREMENT,
     `category`   VARCHAR(30)  NOT NULL,
-    `question`   VARCHAR(100) NOT NULL,
-    `answer`     VARCHAR(200) NOT NULL,
+    `question`   VARCHAR(150) NOT NULL,
+    `answer`     VARCHAR(300) NOT NULL,
     `created_at` DATETIME(6) DEFAULT NULL,
     `updated_at` DATETIME(6) DEFAULT NULL,
     PRIMARY KEY (`id`),

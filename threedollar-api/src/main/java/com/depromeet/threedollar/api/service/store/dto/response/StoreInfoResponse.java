@@ -24,7 +24,7 @@ public class StoreInfoResponse extends AuditingTimeResponse {
     private final List<MenuCategoryType> categories = new ArrayList<>();
 
     public static StoreInfoResponse of(Store store, Double latitude, Double longitude) {
-        StoreInfoResponse storeInfoResponse = new StoreInfoResponse(store.getId(), store.getLatitude(), store.getLongitude(), store.getStoreName(), store.getRating(),
+        StoreInfoResponse storeInfoResponse = new StoreInfoResponse(store.getId(), store.getLatitude(), store.getLongitude(), store.getName(), store.getRating(),
             LocationDistanceUtils.getDistance(latitude, longitude, store.getLatitude(), store.getLongitude()));
         storeInfoResponse.categories.addAll(store.getMenuCategories());
         storeInfoResponse.setBaseTime(store);
@@ -32,7 +32,7 @@ public class StoreInfoResponse extends AuditingTimeResponse {
     }
 
     public static StoreInfoResponse of(Store store) {
-        StoreInfoResponse storeInfoResponse = new StoreInfoResponse(store.getId(), store.getLatitude(), store.getLongitude(), store.getStoreName(), store.getRating(), null);
+        StoreInfoResponse storeInfoResponse = new StoreInfoResponse(store.getId(), store.getLatitude(), store.getLongitude(), store.getName(), store.getRating(), null);
         storeInfoResponse.categories.addAll(store.getMenuCategories());
         storeInfoResponse.setBaseTime(store);
         return storeInfoResponse;

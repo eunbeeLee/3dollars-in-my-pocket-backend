@@ -18,8 +18,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return queryFactory.selectFrom(user)
             .where(
                 user.socialInfo.socialId.eq(socialId),
-                user.socialInfo.socialType.eq(type),
-                user.status.eq(UserStatusType.ACTIVE)
+                user.socialInfo.socialType.eq(type)
             ).fetchOne();
     }
 
@@ -35,8 +34,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     public User findUserById(Long userId) {
         return queryFactory.selectFrom(user)
             .where(
-                user.id.eq(userId),
-                user.status.eq(UserStatusType.ACTIVE)
+                user.id.eq(userId)
             ).fetchOne();
     }
 
