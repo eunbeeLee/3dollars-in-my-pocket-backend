@@ -24,7 +24,7 @@ public class KaKaoAuthService implements AuthService {
     @Override
     public Long signUp(SignUpRequest request) {
         KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo(request.getToken());
-        return userService.createUser(request.toCreateUserRequest(response.getId(), socialType));
+        return userService.createUser(request.toCreateUserRequest(response.getId()));
     }
 
     @Override

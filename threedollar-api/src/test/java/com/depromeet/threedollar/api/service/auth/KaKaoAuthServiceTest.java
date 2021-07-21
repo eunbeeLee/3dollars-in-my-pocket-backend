@@ -50,7 +50,7 @@ class KaKaoAuthServiceTest {
         User user = UserCreator.create(socialId, UserSocialType.KAKAO, "닉네임");
         userRepository.save(user);
 
-        LoginRequest request = LoginRequest.testInstance("token");
+        LoginRequest request = LoginRequest.testInstance("token", UserSocialType.KAKAO);
 
         // when
         Long userId = authService.login(request);
@@ -62,7 +62,7 @@ class KaKaoAuthServiceTest {
     @Test
     void 카카오_로그인_요청시_아직_회원가입하지_않은_유저면_404_에러가_발생한다() {
         // given
-        LoginRequest request = LoginRequest.testInstance("token");
+        LoginRequest request = LoginRequest.testInstance("token", UserSocialType.KAKAO);
 
         // when & then
         assertThatThrownBy(() -> authService.login(request)).isInstanceOf(NotFoundException.class);
@@ -74,7 +74,7 @@ class KaKaoAuthServiceTest {
         String name = "무야호";
         UserSocialType socialType = UserSocialType.KAKAO;
 
-        SignUpRequest request = SignUpRequest.testInstance("token", name);
+        SignUpRequest request = SignUpRequest.testInstance("token", name, socialType);
 
         authService.signUp(request);
 

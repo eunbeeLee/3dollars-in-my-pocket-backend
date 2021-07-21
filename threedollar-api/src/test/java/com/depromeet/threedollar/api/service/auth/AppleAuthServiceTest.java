@@ -47,7 +47,7 @@ class AppleAuthServiceTest {
         User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
         userRepository.save(user);
 
-        LoginRequest request = LoginRequest.testInstance("token");
+        LoginRequest request = LoginRequest.testInstance("token", UserSocialType.APPLE);
 
         // when
         Long userId = authService.login(request);
@@ -59,7 +59,7 @@ class AppleAuthServiceTest {
     @Test
     void 애플_로그인_요청시_회원가입_하지_않은_유저면_404_에러가_발생한다() {
         // given
-        LoginRequest request = LoginRequest.testInstance("token");
+        LoginRequest request = LoginRequest.testInstance("token", UserSocialType.APPLE);
 
         // when & then
         assertThatThrownBy(() -> authService.login(request)).isInstanceOf(NotFoundException.class);
@@ -71,7 +71,7 @@ class AppleAuthServiceTest {
         String name = "무야호";
         UserSocialType socialType = UserSocialType.APPLE;
 
-        SignUpRequest request = SignUpRequest.testInstance("token", name);
+        SignUpRequest request = SignUpRequest.testInstance("token", name, socialType);
 
         authService.signUp(request);
 

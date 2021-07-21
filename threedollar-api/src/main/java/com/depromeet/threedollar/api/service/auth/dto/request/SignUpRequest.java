@@ -5,6 +5,7 @@ import com.depromeet.threedollar.domain.domain.user.UserSocialType;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @ToString
 @Getter
@@ -18,11 +19,14 @@ public class SignUpRequest {
     @NotBlank
     private String name;
 
-    public static SignUpRequest testInstance(String token, String name) {
-        return new SignUpRequest(token, name);
+    @NotNull
+    private UserSocialType socialType;
+
+    public static SignUpRequest testInstance(String token, String name, UserSocialType socialType) {
+        return new SignUpRequest(token, name, socialType);
     }
 
-    public CreateUserRequest toCreateUserRequest(String socialId, UserSocialType socialType) {
+    public CreateUserRequest toCreateUserRequest(String socialId) {
         return CreateUserRequest.of(socialId, socialType, name);
     }
 

@@ -26,7 +26,7 @@ public class AppleAuthService implements AuthService {
     @Override
     public Long signUp(SignUpRequest request) {
         IdTokenPayload payload = appleTokenDecoder.getUserInfoFromToken(request.getToken());
-        return userService.createUser(request.toCreateUserRequest(payload.getSub(), socialType));
+        return userService.createUser(request.toCreateUserRequest(payload.getSub()));
     }
 
     @Transactional

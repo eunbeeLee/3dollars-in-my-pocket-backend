@@ -71,7 +71,7 @@ class StoreDeleteServiceTest extends UserSetUpTest {
     }
 
     @Test
-    void 해당_가게에_삭제요청이_와서_두개가_되면_Store_Delete_Request_가_하나_추가된다() {
+    void 해당_가게에_삭제요청이_와서_삭제_요칭이_두개가_되면_Store_Delete_Request_가_하나_추가된다() {
         // given
         Store store = StoreCreator.create(userId, "storeName");
         storeRepository.save(store);
