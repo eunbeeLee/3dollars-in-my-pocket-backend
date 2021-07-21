@@ -20,6 +20,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final WithdrawalUserRepository withdrawalUserRepository;
 
+    /**
+     * TODO
+     * 기존의 회원탈퇴 방식과 호환성을 위해서 일단 그대로 감.
+     * 차후 방식 변경이 필요해보입니다.
+     */
     @Transactional
     public Long createUser(CreateUserRequest request) {
         UserServiceUtils.validateNotExistsUserName(userRepository, request.getName());

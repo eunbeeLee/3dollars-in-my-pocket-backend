@@ -13,6 +13,7 @@ import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.menu.MenuRepository;
 import com.depromeet.threedollar.domain.domain.store.*;
 import com.depromeet.threedollar.domain.domain.storedelete.DeleteReasonType;
+import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequestRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,6 +48,9 @@ class StoreControllerTest extends AbstractControllerTest {
     @Autowired
     private MenuRepository menuRepository;
 
+    @Autowired
+    private StoreDeleteRequestRepository storeDeleteRequestRepository;
+
     @AfterEach
     void cleanUp() {
         super.cleanup();
@@ -54,6 +58,7 @@ class StoreControllerTest extends AbstractControllerTest {
         paymentMethodRepository.deleteAllInBatch();
         menuRepository.deleteAllInBatch();
         storeRepository.deleteAllInBatch();
+        storeDeleteRequestRepository.deleteAll();
     }
 
     @DisplayName("POST /api/v2/store 200 OK")
