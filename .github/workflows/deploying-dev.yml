@@ -18,7 +18,7 @@ jobs:
 
           RESOURCE_PWD: threedollar-api/src/main/resources
         run: |
-          echo -e "jwt.secret_key=$JWT_SECRET_KEY\jwt.issuer=$JWT_ISSUER" > $RESOURCE_PWD/application-jwt.properties
+          echo -e "jwt.secret_key=$JWT_SECRET_KEY\njwt.issuer=$JWT_ISSUER" > $RESOURCE_PWD/application-jwt.properties
 
       - name: Create rds secret properties
         env:
