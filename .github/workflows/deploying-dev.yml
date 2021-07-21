@@ -1,0 +1,88 @@
+name: 개발환경 API 서버 배포
+
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout@v2
+        uses: actions/checkout@v2
+
+      - name: Create secret properties (application-jwt)
+        env:
+          JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
+          JWT_ISSUER: ${{secrets.JWT_ISSUER}}
+
+          RESOURCE_PWD: threedollar-api/src/main/resources
+        run: |
+          echo -e "jwt.secret_key=$JWT_SECRET_KEY\jwt.issuer=$JWT_ISSUER" > $RESOURCE_PWD/application-jwt.properties
+
+      - name: Create rds secret properties
+        env:
+          PROFILES: dev
+          DB_URI: ${{secrets.JDBC_URI}}
+          DB_USERNAME: ${{secrets.DB_USERNAME}}
+          DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+          DB_DRIVER: org.mariadb.jdbc.Driver
+
+          RESOURCE_PWD: threedollar-domain/src/main/resources
+        run: |
+          echo -e "spring.profiles=$PROFILES\nspring.datasource.hikari.jdbc-url=$DB_URI\nspring.datasource.hikari.username=$DB_USERNAME\nspring.datasource.hikari.password=$DB_PASSWORD\nspring.datasource.hikari.driver-class-name=$DB_DRIVER" > $RESOURCE_PWD/application-rds.properties
+
+      - name: Get Semantic Versioning
+        id: dev-version
+        run: |
+          VERSION=`cat ./version.txt`-${{ github.run_id }}
+          echo "::set-output name=version::$VERSION"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build
+        id: build-api
+        env:
+          DOCKER_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          DOCKER_REPOSITORY: 3dollar-api
+          IMAGE_TAG: ${{ steps.dev-version.outputs.version }}
+        run: |
+          docker build -t $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG .
+          docker tag $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
+          docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG
+          docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:latest
+          echo "::set-output name=image::$DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG"
+          echo -e "API_IMAGE=$DOCKER_REGISTRY/$DOCKER_REPOSITORY\nTAG=$IMAGE_TAG" > deploy/.env
+
+      - name: Zip deploy.zip
+        run: zip -r deploy.zip deploy
+
+      - name: Upload deploy.zip
+        uses: actions/upload-artifact@v2
+        with:
+          name: deploy.zip
+          path: deploy.zip
+  deploy:
+    needs:
+      - build
+    runs-on: 3dollar-api-dev
+    steps:
+      - name: Download deploy.zip
+        uses: actions/download-artifact@v2
+        with:
+          name: deploy.zip
+
+      - name: run server
+        run: |
+          unzip -o ./deploy.zip
+          cd deploy
+          sh ./deploy.sh

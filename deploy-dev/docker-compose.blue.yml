@@ -1,0 +1,11 @@
+version: "3"
+services:
+  api:
+    image: ${API_IMAGE}:${TAG}
+    ports:
+      - 5001:8080
+    command: java -jar /threedollar-api.jar
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+    volumes:
+      - ~/logs/api:/logs/api
