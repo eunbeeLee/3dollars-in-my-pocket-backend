@@ -4,6 +4,7 @@ import com.depromeet.threedollar.api.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.controller.MockMvcUtils;
 import com.depromeet.threedollar.api.service.faq.dto.response.FaqCategoryResponse;
 import com.depromeet.threedollar.api.service.faq.dto.response.FaqResponse;
+import com.depromeet.threedollar.domain.domain.faq.FaqCategory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,6 +24,20 @@ public class FaqMockApiCaller extends MockMvcUtils {
 
     public ApiResponse<List<FaqResponse>> retrieveAllFaqs(int expectedStatus) throws Exception {
         MockHttpServletRequestBuilder builder = get("/api/v2/faqs");
+
+        return objectMapper.readValue(
+            mockMvc.perform(builder)
+                .andExpect(status().is(expectedStatus))
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
+            }
+        );
+    }
+
+    public ApiResponse<List<FaqResponse>> retrieveAllFaqs(FaqCategory category, int expectedStatus) throws Exception {
+        MockHttpServletRequestBuilder builder = get("/api/v2/faqs")
+            .param("category", category.toString());
 
         return objectMapper.readValue(
             mockMvc.perform(builder)

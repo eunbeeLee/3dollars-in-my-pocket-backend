@@ -51,6 +51,23 @@ class FaqControllerTest extends AbstractControllerTest {
 
         // then
         assertThat(response.getData()).hasSize(2);
+        assertFaqResponse(response.getData().get(0), faq2.getId(), faq2.getQuestion(), faq2.getAnswer(), faq2.getCategory());
+        assertFaqResponse(response.getData().get(1), faq1.getId(), faq1.getQuestion(), faq1.getAnswer(), faq1.getCategory());
+    }
+
+    @DisplayName("GET /api/v2/faqs?category=BOARD 200 OK")
+    @Test
+    void 특정_카테고리의_FAQ_리스트를_조회하는_API_호출시_200OK() throws Exception {
+        // given
+        Faq faq1 = FaqCreator.create("question1", "answer1", FaqCategory.CATEGORY);
+        Faq faq2 = FaqCreator.create("question2", "answer2", FaqCategory.BOARD);
+        faqRepository.saveAll(Arrays.asList(faq1, faq2));
+
+        // when
+        ApiResponse<List<FaqResponse>> response = faqMockApiCaller.retrieveAllFaqs(FaqCategory.CATEGORY, 200);
+
+        // then
+        assertThat(response.getData()).hasSize(1);
         assertFaqResponse(response.getData().get(0), faq1.getId(), faq1.getQuestion(), faq1.getAnswer(), faq1.getCategory());
     }
 
