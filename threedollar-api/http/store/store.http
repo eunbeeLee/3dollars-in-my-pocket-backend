@@ -1,0 +1,132 @@
+### 가게 정보를 저장합니다
+POST {{host_api}}/api/v2/store
+Content-Type: application/json
+Authorization: {{AUTHORIZATION}}
+
+{
+    "appearanceDays": [
+        "MONDAY", "TUESDAY"
+    ],
+    "latitude": 33,
+    "longitude": 124,
+    "menu": [
+        {
+            "category": "BUNGEOPPANG",
+            "name": "붕어빵 10개에 3000원",
+            "price": "3000원"
+        }
+    ],
+    "paymentMethods": [
+        "CASH"
+    ],
+    "storeName": "승호의 붕어빵",
+    "storeType": "ROAD"
+}
+
+> {%
+
+client.test("200 OK", function() {
+    client.global.set("STORE_ID", response.body["data"]["storeId"])
+    client.assert(response.status === 200, "응답 실패");
+});
+%}
+
+
+### 특정 가게 정보를 조회합니다.
+GET {{host_api}}/api/v2/store/?storeId={{STORE_ID}}&latitude=34&longitude=124
+
+> {%
+client.test("200 OK", function() {
+    client.assert(response.status === 200, "응답 실패");
+});
+%}
+
+
+### 내 주변 가게들을 조회합니다
+GET {{host_api}}/api/v2/stores/near?latitude=33&longitude=124&mapLatitude=33&mapLongitude=124&distance=2000
+
+> {%
+client.test("200 OK", function() {
+    client.assert(response.status === 200, "응답 실패");
+});
+%}
+
+
+### 사용자가 작성한 가게의 정보를 조회합니다
+GET {{host_api}}/api/v2/stores/me?size=5&page=0&latitude=33.1&longitude=124.2
+Authorization: {{AUTHORIZATION}}
+
+
+> {%
+client.test("200 OK", function() {
+    client.assert(response.status === 200, "응답 실패");
+});
+%}
+
+
+### 거리순으로 특정 카테고리의 가게 정보를 가져옵니다
+GET {{host_api}}/api/v2/stores/distance?size=5&page=0&latitude=33.1&longitude=124.2&mapLatitude=33&mapLongitude=124&category=BUNGEOPPANG
+
+> {%
+client.test("200 OK", function() {
+    client.assert(response.status === 200, "응답 실패");
+});
+%}
+
+
+### 리뷰순으로 특정 카테고리의 가게 정보를 가져옵니다
+GET {{host_api}}/api/v2/stores/review?size=5&page=0&latitude=33.1&longitude=124.2&mapLatitude=33&mapLongitude=124&category=BUNGEOPPANG
+
+> {%
+client.test("200 OK", function() {
+    client.assert(response.status === 200, "응답 실패");
+});
+%}
+
+
+### 특정 가게의 정보를 수정합니다.
+PUT {{host_api}}/api/v2/store/{{STORE_ID}}
+Content-Type: application/json
+Authorization: {{AUTHORIZATION}}
+
+{
+    "appearanceDays": [
+        "WEDNESDAY", "SUNDAY"
+    ],
+    "latitude": 33.123,
+    "longitude": 124.234,
+    "menu": [
+        {
+            "category": "EOMUK",
+            "name": "어묵",
+            "price": "1000원"
+        }
+    ],
+    "paymentMethods": [
+        "CARD",
+        "ACCOUNT_TRANSFER"
+    ],
+    "storeName": "승호의 붕어빵",
+    "storeType": "ROAD"
+}
+
+> {%
+
+client.test("200 OK", function() {
+    client.global.set("STORE_ID", response.body["data"]["storeId"])
+    client.assert(response.status === 200, "응답 실패");
+});
+%}
+
+
+### 특정 가게의 정보를 삭제요청합니다.
+DELETE {{host_api}}/api/v2/store/{{STORE_ID}}?deleteReasonType=NOSTORE
+Authorization: {{AUTHORIZATION}}
+
+> {%
+
+client.test("200 OK", function() {
+    client.global.set("STORE_ID", response.body["data"]["storeId"])
+    client.assert(response.status === 200, "응답 실패");
+});
+%}
