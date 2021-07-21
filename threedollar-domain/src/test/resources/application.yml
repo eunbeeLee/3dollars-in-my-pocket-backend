@@ -9,6 +9,3 @@ spring:
     enabled: false
   profiles:
     active: local
-jwt:
-  secret_key: test
-  issuer: test

@@ -41,5 +41,4 @@ generated/
 logs
 
 application-credential.yml
-application-jwt.yml
 application-rds.yml
