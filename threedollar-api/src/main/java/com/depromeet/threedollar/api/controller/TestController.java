@@ -7,6 +7,7 @@ import com.depromeet.threedollar.api.service.token.dto.UserTokenDto;
 import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ public class TestController {
     private final TokenService jwtService;
     private final UserRepository userRepository;
 
+    @ApiOperation("[테스트용] 테스트를 위한 토큰을 받아옵니다.")
     @GetMapping("/test-token")
     public ApiResponse<LoginResponse> getTestToken() {
         User user = userRepository.findUserBySocialIdAndSocialType(testUser.getSocialId(), testUser.getSocialType());

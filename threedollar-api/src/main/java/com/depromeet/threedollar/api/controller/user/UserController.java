@@ -23,7 +23,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @ApiOperation("내 정보를 조회합니다. 인증이 필요한 요청입니다.")
+    @ApiOperation("[인증] 나의 회원 정보를 조회합니다.")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @GetMapping("/api/v2/user/me")
@@ -31,7 +31,7 @@ public class UserController {
         return ApiResponse.success(userService.getUserInfo(userId));
     }
 
-    @ApiOperation("내 정보를 수정합니다. 인증이 필요한 요청입니다.")
+    @ApiOperation("[인증] 나의 회원 정보를 수정합니다.")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PutMapping("/api/v2/user/me")
@@ -39,7 +39,7 @@ public class UserController {
         return ApiResponse.success(userService.updateUserInfo(request, userId));
     }
 
-    @ApiOperation("닉네임 중복 여부를 체크하는 API")
+    @ApiOperation("닉네임 중복 여부를 체크 요청합니다.")
     @GetMapping("/api/v2/user/name/check")
     public ApiResponse<String> checkAvailableName(@Valid CheckDuplicateNameRequest request) {
         userService.checkDuplicateName(request);

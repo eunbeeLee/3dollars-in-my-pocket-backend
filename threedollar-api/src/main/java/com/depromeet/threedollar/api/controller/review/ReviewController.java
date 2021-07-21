@@ -22,7 +22,7 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @ApiOperation("리뷰를 등록합니다. 인증이 필요한 요청입니다")
+    @ApiOperation("[인증] 가게에 새로운 리뷰를 등록합니다.")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PostMapping("/api/v2/store/review")
@@ -30,7 +30,7 @@ public class ReviewController {
         return ApiResponse.success(reviewService.addReview(request, userId));
     }
 
-    @ApiOperation("사용자가 작성한 리뷰를 수정합니다. 인증이 필요한 요청입니다")
+    @ApiOperation("[인증] 사용자가 작성한 리뷰를 수정합니다.")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PutMapping("/api/v2/store/review/{reviewId}")
@@ -38,7 +38,7 @@ public class ReviewController {
         return ApiResponse.success(reviewService.updateReview(reviewId, request, userId));
     }
 
-    @ApiOperation("사용자가 작성한 리뷰를 삭제합니다. 인증이 필요한 요청입니다")
+    @ApiOperation("[인증] 사용자가 작성한 리뷰를 삭제합니다.")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @DeleteMapping("/api/v2/store/review/{reviewId}")
@@ -47,7 +47,7 @@ public class ReviewController {
         return ApiResponse.SUCCESS;
     }
 
-    @ApiOperation("사용자가 작성한 리뷰를 조회합니다. 인증이 필요한 요청입니다.")
+    @ApiOperation("[인증] 사용자가 작성한 리뷰를 전체 조회합니다. (페이지네이션)")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @GetMapping("/api/v2/store/reviews/me")

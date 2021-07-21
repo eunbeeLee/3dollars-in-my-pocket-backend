@@ -1,4 +1,4 @@
-### 가게 정보를 저장합니다
+### [인증] 새로운 가게 정보를 등록합니다.
 POST {{host_api}}/api/v2/store
 Content-Type: application/json
 Authorization: {{AUTHORIZATION}}
@@ -32,7 +32,7 @@ client.test("200 OK", function() {
 %}
 
 
-### 특정 가게 정보를 조회합니다.
+### 특정 가게의 정보를 조회합니다.
 GET {{host_api}}/api/v2/store/?storeId={{STORE_ID}}&latitude=34&longitude=124
 
 > {%
@@ -42,7 +42,7 @@ client.test("200 OK", function() {
 %}
 
 
-### 내 주변 가게들을 조회합니다
+### 위도, 경도 주위 가게 목록을 조회합니다.
 GET {{host_api}}/api/v2/stores/near?latitude=33&longitude=124&mapLatitude=33&mapLongitude=124&distance=2000
 
 > {%
@@ -52,7 +52,7 @@ client.test("200 OK", function() {
 %}
 
 
-### 사용자가 작성한 가게의 정보를 조회합니다
+### [인증] 사용자가 작성한 가게의 정보를 조회합니다. (페이지네이션)
 GET {{host_api}}/api/v2/stores/me?size=5&page=0&latitude=33.1&longitude=124.2
 Authorization: {{AUTHORIZATION}}
 
@@ -64,7 +64,7 @@ client.test("200 OK", function() {
 %}
 
 
-### 거리순으로 특정 카테고리의 가게 정보를 가져옵니다
+### 거리순으로 특정 카테고리의 가게 정보를 조회합니다.
 GET {{host_api}}/api/v2/stores/distance?size=5&page=0&latitude=33.1&longitude=124.2&mapLatitude=33&mapLongitude=124&category=BUNGEOPPANG
 
 > {%
@@ -74,7 +74,7 @@ client.test("200 OK", function() {
 %}
 
 
-### 리뷰순으로 특정 카테고리의 가게 정보를 가져옵니다
+### 리뷰순으로 특정 카테고리의 가게 정보를 조회합니다.
 GET {{host_api}}/api/v2/stores/review?size=5&page=0&latitude=33.1&longitude=124.2&mapLatitude=33&mapLongitude=124&category=BUNGEOPPANG
 
 > {%
@@ -84,7 +84,7 @@ client.test("200 OK", function() {
 %}
 
 
-### 특정 가게의 정보를 수정합니다.
+### [인증] 특정 가게의 정보를 수정합니다.
 PUT {{host_api}}/api/v2/store/{{STORE_ID}}
 Content-Type: application/json
 Authorization: {{AUTHORIZATION}}
@@ -117,7 +117,7 @@ client.test("200 OK", function() {
 %}
 
 
-### 특정 가게의 정보를 삭제요청합니다.
+### [인증] 특정 가게의 정보를 삭제 요청합니다.
 DELETE {{host_api}}/api/v2/store/{{STORE_ID}}?deleteReasonType=NOSTORE
 Authorization: {{AUTHORIZATION}}
 

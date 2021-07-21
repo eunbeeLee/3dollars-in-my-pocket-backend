@@ -30,7 +30,7 @@ public class AuthController {
     private final AuthService kaKaoAuthService;
     private final TokenService jwtService;
 
-    @ApiOperation("회원가입을 요청하는 API")
+    @ApiOperation("회원가입을 요청합니다")
     @PostMapping("/api/v2/signup")
     public ApiResponse<LoginResponse> signUp(@Valid @RequestBody SignUpRequest request) {
         Long userId = signUpBySocialType(request);
@@ -47,7 +47,7 @@ public class AuthController {
         throw new ValidationException(String.format("허용하지 않는 소셜 타입 (%s) 입니다.", request.getSocialType()));
     }
 
-    @ApiOperation("로그인을 요청하는 API")
+    @ApiOperation("로그인을 요청합니다")
     @PostMapping("/api/v2/login")
     public ApiResponse<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         UserTokenDto tokenDto = new UserTokenDto(loginBySocialType(request));
@@ -64,7 +64,7 @@ public class AuthController {
         throw new ValidationException(String.format("허용하지 않는 소셜 타입 (%s) 입니다.", request.getSocialType()));
     }
 
-    @ApiOperation("회원탈퇴 요청하는 API. 인증이 필요한 요청입니다.")
+    @ApiOperation("[인증] 회원탈퇴를 요청합니다")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @DeleteMapping("/api/v2/signout")

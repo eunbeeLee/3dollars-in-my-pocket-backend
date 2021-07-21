@@ -36,7 +36,7 @@ public class StoreRetrieveController {
         return ApiResponse.success(storeRetrieveService.getDetailStoreInfo(request));
     }
 
-    @ApiOperation("사용자가 작성한 가게의 정보를 조회합니다. 인증이 필요한 요청입니다.")
+    @ApiOperation("[인증] 사용자가 작성한 가게의 정보를 조회합니다. (페이지네이션)")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @GetMapping("/api/v2/stores/me")
@@ -44,13 +44,13 @@ public class StoreRetrieveController {
         return ApiResponse.success(storeRetrieveService.retrieveMyStores(request, userId));
     }
 
-    @ApiOperation("거리순으로 특정 카테고리의 가게 정보를 가져옵니다.")
+    @ApiOperation("거리순으로 특정 카테고리의 가게 정보를 조회합니다.")
     @GetMapping("/api/v2/stores/distance")
     public ApiResponse<StoresGroupByDistanceResponse> getStoresByCategory(@Valid RetrieveStoreGroupByCategoryRequest request) {
         return ApiResponse.success(storeRetrieveService.retrieveStoresGroupByDistance(request));
     }
 
-    @ApiOperation("리뷰순으로 특정 카테고리의 가게 정보를 가져옵니다.")
+    @ApiOperation("리뷰순으로 특정 카테고리의 가게 정보를 조회합니다.")
     @GetMapping("/api/v2/stores/review")
     public ApiResponse<StoresGroupByReviewResponse> getStoresByReview(@Valid RetrieveStoreGroupByCategoryRequest request) {
         return ApiResponse.success(storeRetrieveService.retrieveStoresGroupByRating(request));

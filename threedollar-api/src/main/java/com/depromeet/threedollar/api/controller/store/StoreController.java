@@ -26,7 +26,7 @@ public class StoreController {
     private final StoreService storeService;
     private final StoreImageService storeImageService;
 
-    @ApiOperation("가게 정보를 저장합니다. 인증이 필요한 요청입니다.")
+    @ApiOperation("[인증] 새로운 가게 정보를 등록합니다.")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PostMapping("/api/v2/store")
@@ -34,7 +34,7 @@ public class StoreController {
         return ApiResponse.success(storeService.addStore(request, userId));
     }
 
-    @ApiOperation("특정 가게의 정보를 수정합니다. 인증이 필요한 요청입니다.")
+    @ApiOperation("[인증] 특정 가게의 정보를 수정합니다.")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PutMapping("/api/v2/store/{storeId}")
@@ -44,7 +44,7 @@ public class StoreController {
         return ApiResponse.success(storeService.updateStore(storeId, request, userId));
     }
 
-    @ApiOperation("특정 가게의 정보를 삭제 요청합니다. 인증이 필요한 요청입니다.")
+    @ApiOperation("[인증] 특정 가게의 정보를 삭제 요청합니다.")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @DeleteMapping("/api/v2/store/{storeId}")
@@ -53,7 +53,7 @@ public class StoreController {
         return ApiResponse.SUCCESS;
     }
 
-    @ApiOperation("가게의 이미지를 등록합니다. 인증이 필요한 요청입니다")
+    @ApiOperation("[인증] 가게의 이미지를 등록합니다.")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PostMapping("/api/v2/store/image")
@@ -63,7 +63,7 @@ public class StoreController {
         return ApiResponse.success(storeImageService.addStoreImage(request.getStoreId(), multipartFile, userId));
     }
 
-    @ApiOperation("가게의 이미지를 삭제합니다. 인증이 필요한 요청입니다")
+    @ApiOperation("[인증] 가게의 이미지를 삭제합니다.")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @DeleteMapping("/api/v2/store/image/{imageId}")
