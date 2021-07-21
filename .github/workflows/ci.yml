@@ -1,14 +1,14 @@
 name: CI 테스팅 및 테스트 커버리지 측정
 
 on:
-  pull_request:
-    branches:
-      - main
-      - develop
-  push:
-    branches:
-      - main
-      - develop
+#  pull_request:
+#    branches:
+#      - main
+#      - develop
+#  push:
+#    branches:
+#      - main
+#      - develop
 jobs:
   testing:
     runs-on: ubuntu-latest

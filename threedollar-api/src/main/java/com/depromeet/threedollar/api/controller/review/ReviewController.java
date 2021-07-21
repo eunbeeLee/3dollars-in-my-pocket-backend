@@ -6,6 +6,7 @@ import com.depromeet.threedollar.api.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.service.review.ReviewService;
 import com.depromeet.threedollar.api.service.review.dto.request.AddReviewRequest;
 import com.depromeet.threedollar.api.service.review.dto.request.RetrieveMyReviewsRequest;
+import com.depromeet.threedollar.api.service.review.dto.request.ReviewInfoResponse;
 import com.depromeet.threedollar.api.service.review.dto.request.UpdateReviewRequest;
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewDetailWithPaginationResponse;
 import io.swagger.annotations.ApiImplicitParam;
@@ -25,18 +26,16 @@ public class ReviewController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PostMapping("/api/v2/store/review")
-    public ApiResponse<String> addStoreReview(@Valid @RequestBody AddReviewRequest request, @UserId Long userId) {
-        reviewService.addReview(request, userId);
-        return ApiResponse.SUCCESS;
+    public ApiResponse<ReviewInfoResponse> addStoreReview(@Valid @RequestBody AddReviewRequest request, @UserId Long userId) {
+        return ApiResponse.success(reviewService.addReview(request, userId));
     }
 
     @ApiOperation("사용자가 작성한 리뷰를 수정합니다. 인증이 필요한 요청입니다")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PutMapping("/api/v2/store/review/{reviewId}")
-    public ApiResponse<String> updateStoreReview(@PathVariable Long reviewId, @Valid @RequestBody UpdateReviewRequest request, @UserId Long userId) {
-        reviewService.updateReview(reviewId, request, userId);
-        return ApiResponse.SUCCESS;
+    public ApiResponse<ReviewInfoResponse> updateStoreReview(@PathVariable Long reviewId, @Valid @RequestBody UpdateReviewRequest request, @UserId Long userId) {
+        return ApiResponse.success(reviewService.updateReview(reviewId, request, userId));
     }
 
     @ApiOperation("사용자가 작성한 리뷰를 삭제합니다. 인증이 필요한 요청입니다")

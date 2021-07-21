@@ -3,6 +3,7 @@ package com.depromeet.threedollar.api.service.review;
 import com.depromeet.threedollar.api.event.review.ReviewChangedEvent;
 import com.depromeet.threedollar.api.service.review.dto.request.AddReviewRequest;
 import com.depromeet.threedollar.api.service.review.dto.request.RetrieveMyReviewsRequest;
+import com.depromeet.threedollar.api.service.review.dto.request.ReviewInfoResponse;
 import com.depromeet.threedollar.api.service.review.dto.request.UpdateReviewRequest;
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewDetailWithPaginationResponse;
 import com.depromeet.threedollar.api.service.store.StoreServiceUtils;
@@ -26,17 +27,19 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public void addReview(AddReviewRequest request, Long userId) {
+    public ReviewInfoResponse addReview(AddReviewRequest request, Long userId) {
         StoreServiceUtils.validateExistsStore(storeRepository, request.getStoreId());
-        reviewRepository.save(request.toEntity(userId));
+        Review review = reviewRepository.save(request.toEntity(userId));
         eventPublisher.publishEvent(ReviewChangedEvent.of(request.getStoreId()));
+        return ReviewInfoResponse.of(review);
     }
 
     @Transactional
-    public void updateReview(Long reviewId, UpdateReviewRequest request, Long userId) {
+    public ReviewInfoResponse updateReview(Long reviewId, UpdateReviewRequest request, Long userId) {
         Review review = ReviewServiceUtils.findReviewByIdAndUserId(reviewRepository, reviewId, userId);
         review.update(request.getContent(), request.getRating());
         eventPublisher.publishEvent(ReviewChangedEvent.of(review.getStoreId()));
+        return ReviewInfoResponse.of(review);
     }
 
     @Transactional

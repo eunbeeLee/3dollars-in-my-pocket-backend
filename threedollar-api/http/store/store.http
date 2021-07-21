@@ -111,9 +111,7 @@ Authorization: {{AUTHORIZATION}}
 }
 
 > {%
-
 client.test("200 OK", function() {
-    client.global.set("STORE_ID", response.body["data"]["storeId"])
     client.assert(response.status === 200, "응답 실패");
 });
 %}
@@ -124,9 +122,7 @@ DELETE {{host_api}}/api/v2/store/{{STORE_ID}}?deleteReasonType=NOSTORE
 Authorization: {{AUTHORIZATION}}
 
 > {%
-
 client.test("200 OK", function() {
-    client.global.set("STORE_ID", response.body["data"]["storeId"])
     client.assert(response.status === 200, "응답 실패");
 });
 %}
