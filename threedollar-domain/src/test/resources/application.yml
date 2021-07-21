@@ -10,5 +10,5 @@ spring:
   profiles:
     active: local
 jwt:
-  secret_key: secret_key
-  issuer: issuer
+  secret_key: test
+  issuer: test
