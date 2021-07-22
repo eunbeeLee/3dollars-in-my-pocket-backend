@@ -37,9 +37,9 @@ class UserControllerTest extends AbstractControllerTest {
         assertUserInfoResponse(response.getData(), testUser.getId(), testUser.getName(), testUser.getSocialType());
     }
 
-    @DisplayName("GET /api/v2/user/me 잘못된 토큰일 경우 401 Error")
+    @DisplayName("GET /api/v2/user/me 잘못된 세션일 경우 401 Error")
     @Test
-    void 자신의_회원정보를_조회하는_API_호출시_잘못된_토큰이면_401_에러가_발생한다() throws Exception {
+    void 자신의_회원정보를_조회하는_API_호출시_잘못된_세션이면_401_에러가_발생한다() throws Exception {
         // when
         ApiResponse<UserInfoResponse> response = userMockApiCaller.getMyUserInfo("wrong token", 401);
 
@@ -82,9 +82,9 @@ class UserControllerTest extends AbstractControllerTest {
         assertThat(response.getData()).isNull();
     }
 
-    @DisplayName("PUT /api/v2/user/me 잘못된 토큰일 경우 401 Error")
+    @DisplayName("PUT /api/v2/user/me 잘못된 세션일 경우 401 Error")
     @Test
-    void 자신의_회원정보를_수정하는_API_호출시_잘못된_토큰일경우_401_에러가_발생한다() throws Exception {
+    void 자신의_회원정보를_수정하는_API_호출시_잘못된_세션일경우_401_에러가_발생한다() throws Exception {
         // given
         UpdateUserInfoRequest request = UpdateUserInfoRequest.testInstance("디프만");
 

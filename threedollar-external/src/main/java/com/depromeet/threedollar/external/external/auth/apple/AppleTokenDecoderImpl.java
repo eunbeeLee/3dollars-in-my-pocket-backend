@@ -22,7 +22,7 @@ public class AppleTokenDecoderImpl implements AppleTokenDecoder {
             String decodedPayload = new String(Base64.getDecoder().decode(payload));
             return objectMapper.readValue(decodedPayload, IdTokenPayload.class);
         } catch (IOException | IllegalArgumentException e) {
-            throw new ValidationException(String.format("잘못된 토큰 (%s) 입니다", idToken));
+            throw new ValidationException(String.format("잘못된 애플 토큰 (%s) 입니다", idToken));
         }
     }
 

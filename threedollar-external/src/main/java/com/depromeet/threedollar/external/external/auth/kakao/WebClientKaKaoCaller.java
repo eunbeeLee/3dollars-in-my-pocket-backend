@@ -22,7 +22,7 @@ public class WebClientKaKaoCaller implements KaKaoApiCaller {
             .uri(kaKaoProfileComponent.getUrl())
             .headers(headers -> headers.setBearerAuth(accessToken))
             .retrieve()
-            .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new BadGatewayException(String.format("잘못된 액세스 토큰 (%s) 입니다", accessToken))))
+            .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new BadGatewayException(String.format("잘못된 카카오 액세스 토큰 (%s) 입니다", accessToken))))
             .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new BadGatewayException("카카오 로그인 연동 중 에러가 발생하였습니다")))
             .bodyToMono(KaKaoProfileResponse.class)
             .block();

@@ -26,9 +26,9 @@ public class TestController {
     private final HttpSession httpSession;
     private final UserRepository userRepository;
 
-    @ApiOperation("[테스트용] 테스트를 위한 토큰을 받아옵니다.")
+    @ApiOperation("[테스트용] 테스트를 위한 세션Id을 받아옵니다.")
     @GetMapping("/test-token")
-    public ApiResponse<LoginResponse> getTestToken() {
+    public ApiResponse<LoginResponse> getTestSession() {
         User user = userRepository.findUserBySocialIdAndSocialType(testUser.getSocialId(), testUser.getSocialType());
         if (user == null) {
             user = userRepository.save(testUser);
