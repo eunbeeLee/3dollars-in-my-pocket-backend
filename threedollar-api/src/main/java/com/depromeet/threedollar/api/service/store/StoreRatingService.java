@@ -6,6 +6,7 @@ import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class StoreRatingService {
     private final StoreRepository storeRepository;
     private final ReviewRepository reviewRepository;
 
+    @Transactional
     public void renewStoreRating(Long storeId) {
         Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
         store.updateAverageRating(calculateAverageRating(storeId));
