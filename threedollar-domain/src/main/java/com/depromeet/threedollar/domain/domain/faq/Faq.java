@@ -30,11 +30,14 @@ public class Faq extends AuditingTimeEntity {
     @Column(nullable = false, length = 200)
     private String answer;
 
-    @Builder
-    Faq(FaqCategory category, String question, String answer) {
+    private Faq(FaqCategory category, String question, String answer) {
         this.category = category;
         this.question = question;
         this.answer = answer;
+    }
+
+    public static Faq newInstance(FaqCategory category, String question, String answer) {
+        return new Faq(category, question, answer);
     }
 
 }

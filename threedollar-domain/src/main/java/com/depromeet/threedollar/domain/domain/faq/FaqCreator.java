@@ -7,11 +7,7 @@ import lombok.NoArgsConstructor;
 public class FaqCreator {
 
     public static Faq create(String question, String answer, FaqCategory category) {
-        return Faq.builder()
-            .question(question)
-            .answer(answer)
-            .category(category)
-            .build();
+        return Faq.newInstance(category, question, answer);
     }
 
 }
