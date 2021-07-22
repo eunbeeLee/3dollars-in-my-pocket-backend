@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.api.service.user.dto.request;
 
+import com.depromeet.threedollar.api.config.validator.NickName;
 import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
 import lombok.*;
@@ -20,6 +21,7 @@ public class CreateUserRequest {
     private UserSocialType socialType;
 
     @NotBlank(message = "{user.name.notBlank}")
+    @NickName
     private String name;
 
     public static CreateUserRequest of(String socialId, UserSocialType type, String name) {
