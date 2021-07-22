@@ -3,7 +3,16 @@ services:
   api:
     build: .
     ports:
-      - 8080:8080
+      - 5000:5000
     command: java -jar threedollar-api.jar
+    environment:
+      - "SPRING_PROFILES_ACTIVE=local"
+  admin:
+    build:
+      context: .
+      dockerfile: Dockerfile_admin
+    ports:
+      - 6000:6000
+    command: java -jar threedollar-admin.jar
     environment:
       - "SPRING_PROFILES_ACTIVE=local"

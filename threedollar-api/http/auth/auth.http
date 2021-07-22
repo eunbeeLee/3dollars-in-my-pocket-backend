@@ -15,6 +15,6 @@ Authorization: {{AUTHORIZATION}}
 
 > {%
 client.test("200 OK", function() {
-    client.assert(response.status === 200, "응답 실패");
+    client.assert(response.status === 404 | 200, "응답 실패");
 });
 %}

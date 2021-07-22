@@ -1,0 +1,10 @@
+server:
+  port: 6000
+  servlet:
+    encoding:
+      charset: UTF-8
+spring:
+  profiles:
+    active: local
+    include:
+      - domain
