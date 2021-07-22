@@ -1,0 +1,17 @@
+### [인증] 새로운 FAQ를 등록합니다.
+POST {{host_admin}}/admin/v1/faq
+Authorization: Bearer {{ADMIN_AUTHORIZATION}}
+Content-Type: application/json
+
+{
+    "category": "CATEGORY",
+    "question": "앱 이름이 뭔가요??",
+    "answer": "\"가슴속 삼천원\"입니다.\n많이 이용해주세요."
+}
+
+> {%
+client.test("200 OK", function() {
+    client.global.set("REVIEW_ID", response.body["data"]["reviewId"])
+    client.assert(response.status === 200, "응답 실패");
+});
+%}
