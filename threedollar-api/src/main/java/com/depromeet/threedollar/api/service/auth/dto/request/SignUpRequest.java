@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.api.service.auth.dto.request;
 
+import com.depromeet.threedollar.api.config.validator.NickName;
 import com.depromeet.threedollar.api.service.user.dto.request.CreateUserRequest;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
 import lombok.*;
@@ -17,6 +18,7 @@ public class SignUpRequest {
     private String token;
 
     @NotBlank
+    @NickName
     private String name;
 
     @NotNull
