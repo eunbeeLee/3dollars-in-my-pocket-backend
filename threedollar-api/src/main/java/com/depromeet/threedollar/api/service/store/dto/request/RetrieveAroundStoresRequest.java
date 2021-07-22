@@ -1,15 +1,13 @@
 package com.depromeet.threedollar.api.service.store.dto.request;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
 @ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class RetrieveAroundStoresRequest {
 
     @NotNull(message = "{store.latitude.notnull}")
@@ -26,6 +24,10 @@ public class RetrieveAroundStoresRequest {
 
     @NotNull(message = "{store.distance.notnull}")
     private Double distance;
+
+    public static RetrieveAroundStoresRequest testInstance(double latitude, double longitude, double mapLatitude, double mapLongitude, double distance) {
+        return new RetrieveAroundStoresRequest(latitude, longitude, mapLatitude, mapLongitude, distance);
+    }
 
     public Double getDistance() {
         return this.distance / 1000;

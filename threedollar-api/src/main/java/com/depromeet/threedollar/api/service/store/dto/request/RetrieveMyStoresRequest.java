@@ -23,4 +23,8 @@ public class RetrieveMyStoresRequest {
     @NotNull(message = "{store.longitude.notnull}")
     private Double longitude;
 
+    public static RetrieveMyStoresRequest testInstance(int size, int page, double latitude, double longitude) {
+        return new RetrieveMyStoresRequest(size, page, latitude, longitude);
+    }
+
 }
