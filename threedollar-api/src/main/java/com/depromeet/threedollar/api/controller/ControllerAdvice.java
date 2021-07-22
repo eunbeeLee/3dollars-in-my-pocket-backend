@@ -20,7 +20,8 @@ import java.util.Objects;
 public class ControllerAdvice {
 
     /**
-     * Spring Validation Exception
+     * 400 BadRequest
+     * 잘못된 입력이 들어왔을 경우 발생하는 Exception
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -43,9 +44,6 @@ public class ControllerAdvice {
         return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, e.getMessage());
     }
 
-    /**
-     * enum 타입이 일치하지 않을 경우 발생하는 Exception
-     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(InvalidFormatException.class)
     protected ApiResponse<Object> handleMethodArgumentTypeMismatchException(InvalidFormatException e) {
@@ -53,17 +51,15 @@ public class ControllerAdvice {
         return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION);
     }
 
-    /**
-     * 지원하지 않은 HTTP method 호출 할 경우 발생하는 Exception
-     */
-    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    protected ApiResponse<Object> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        log.error(e.getMessage(), e);
-        return ApiResponse.error(ErrorCode.METHOD_NOT_ALLOWED_EXCEPTION);
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ValidationException.class)
+    protected ApiResponse<Object> handleValidationException(final ValidationException exception) {
+        log.error(exception.getMessage(), exception);
+        return ApiResponse.error(exception.getErrorCode());
     }
 
     /**
+     * 401 UnAuthorized
      * 세션에 문제가 있는 경우 발생하는 Exception
      */
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -74,16 +70,7 @@ public class ControllerAdvice {
     }
 
     /**
-     * 잘못된 입력이 들어왔을 경우 발생하는 Exception
-     */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ValidationException.class)
-    protected ApiResponse<Object> handleValidationException(final ValidationException exception) {
-        log.error(exception.getMessage(), exception);
-        return ApiResponse.error(exception.getErrorCode());
-    }
-
-    /**
+     * 403 Forbidden
      * 허용하지 않는 경우 발생하는 Exception
      */
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -94,6 +81,7 @@ public class ControllerAdvice {
     }
 
     /**
+     * 404 Not Found
      * 존재하지 않는 경우 발생하는 Exception
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -104,6 +92,18 @@ public class ControllerAdvice {
     }
 
     /**
+     * 405 Method Not Allowed
+     * 지원하지 않은 HTTP method 호출 할 경우 발생하는 Exception
+     */
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    protected ApiResponse<Object> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        log.error(e.getMessage(), e);
+        return ApiResponse.error(ErrorCode.METHOD_NOT_ALLOWED_EXCEPTION);
+    }
+
+    /**
+     * 409 Conflict
      * 이미 존재하는 경우 발생하는 Exception
      */
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -114,6 +114,7 @@ public class ControllerAdvice {
     }
 
     /**
+     * 502 Bad Gateway
      * 외부 API 연동 중 에러가 발생할 경우 발생하는 Exception
      */
     @ResponseStatus(HttpStatus.BAD_GATEWAY)
@@ -124,6 +125,7 @@ public class ControllerAdvice {
     }
 
     /**
+     * 503 Service Unavailable
      * 서비스를 사용할 수 없을 때 발생하는 Exception
      */
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
@@ -134,6 +136,7 @@ public class ControllerAdvice {
     }
 
     /**
+     * 500 Internal Server Error
      * 서버 내부에서 발생하는 Exception
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.admin.config.resolver
+package com.depromeet.threedollar.admin.config.interceptor
 
 import com.depromeet.threedollar.admin.service.token.TokenService
 import com.depromeet.threedollar.common.exception.UnAuthorizedException

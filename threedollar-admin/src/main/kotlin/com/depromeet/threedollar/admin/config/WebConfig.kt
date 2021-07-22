@@ -1,7 +1,7 @@
 package com.depromeet.threedollar.admin.config
 
+import com.depromeet.threedollar.admin.config.interceptor.AuthInterceptor
 import com.depromeet.threedollar.admin.config.resolver.AccountIdResolver
-import com.depromeet.threedollar.admin.config.resolver.AuthInterceptor
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
@@ -15,7 +15,7 @@ class WebConfig(
 
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(authInterceptor)
-            .addPathPatterns("/api/**")
+            .addPathPatterns("/admin/**")
     }
 
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {

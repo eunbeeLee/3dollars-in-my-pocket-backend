@@ -19,8 +19,9 @@ class AccountIdResolver : HandlerMethodArgumentResolver {
         mavContainer: ModelAndViewContainer?,
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?
-    ): Any? {
-        return webRequest.getAttribute("adminId", 0);
+    ): Any {
+        return webRequest.getAttribute("adminId", 0)
+            ?: throw IllegalArgumentException("adminId를 받아오지 못했습니다.")
     }
 
 }

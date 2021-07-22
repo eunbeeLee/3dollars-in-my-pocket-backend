@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.domain.domain.admin;
 
+import com.depromeet.threedollar.domain.domain.common.AuditingTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import javax.persistence.Id;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Admin {
+public class Admin extends AuditingTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
