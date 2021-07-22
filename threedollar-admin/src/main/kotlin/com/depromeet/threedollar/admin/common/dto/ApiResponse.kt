@@ -14,7 +14,7 @@ data class ApiResponse<T>(
         fun <T> success(data: T) = ApiResponse("", "", data)
         fun error(errorCode: ErrorCode) = ApiResponse(errorCode.code, errorCode.message, null)
         fun error(errorCode: ErrorCode, message: String?): ApiResponse<Nothing> {
-            return ApiResponse(errorCode.code, errorCode.message, null)
+            return ApiResponse(errorCode.code, message ?: errorCode.message, null)
         }
     }
 
