@@ -116,10 +116,10 @@ class ReviewControllerTest extends AbstractControllerTest {
         assertThat(response.getData().getTotalElements()).isEqualTo(2);
         assertThat(response.getData().getContent()).hasSize(2);
 
-        assertReviewInfoResponse(response.getData().getContent().get(0), review1.getId(), store.getId(), review1.getContents(), review1.getRating(), ReviewStatus.POSTED);
+        assertReviewInfoResponse(response.getData().getContent().get(0), review1.getId(), store.getId(), store.getName(), review1.getContents(), review1.getRating(), ReviewStatus.POSTED);
         assertUserInfoResponse(response.getData().getContent().get(0).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
 
-        assertReviewInfoResponse(response.getData().getContent().get(1), review2.getId(), store.getId(), review2.getContents(), review2.getRating(), ReviewStatus.POSTED);
+        assertReviewInfoResponse(response.getData().getContent().get(1), review2.getId(), store.getId(), store.getName(), review2.getContents(), review2.getRating(), ReviewStatus.POSTED);
         assertUserInfoResponse(response.getData().getContent().get(1).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
     }
 
@@ -155,8 +155,9 @@ class ReviewControllerTest extends AbstractControllerTest {
         assertThat(response.getStatus()).isEqualTo(status);
     }
 
-    private void assertReviewInfoResponse(ReviewDetailResponse response, Long reviewId, Long storeId, String content, int rating, ReviewStatus status) {
+    private void assertReviewInfoResponse(ReviewDetailResponse response, Long reviewId, Long storeId, String storeName, String content, int rating, ReviewStatus status) {
         assertThat(response.getStoreId()).isEqualTo(storeId);
+        assertThat(response.getStoreName()).isEqualTo(storeName);
         assertThat(response.getContents()).isEqualTo(content);
         assertThat(response.getRating()).isEqualTo(rating);
         assertThat(response.getStatus()).isEqualTo(status);

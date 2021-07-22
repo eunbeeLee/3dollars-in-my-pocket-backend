@@ -22,11 +22,13 @@ public class ReviewDetailResponse extends AuditingTimeResponse {
 
     private Long storeId;
 
+    private String storeName;
+
     private UserInfoResponse user;
 
     public static ReviewDetailResponse of(ReviewWithStoreAndCreatorDto review) {
         ReviewDetailResponse response = new ReviewDetailResponse(review.getId(), review.getRating(), review.getContents(),
-            review.getStatus(), review.getStoreId(), UserInfoResponse.of(review.getUserId(), review.getUserName(), review.getUserSocialType()));
+            review.getStatus(), review.getStoreId(), review.getStoreName(), UserInfoResponse.of(review.getUserId(), review.getUserName(), review.getUserSocialType()));
         response.setBaseTime(review.getCreatedAt(), review.getUpdatedAt());
         return response;
     }
