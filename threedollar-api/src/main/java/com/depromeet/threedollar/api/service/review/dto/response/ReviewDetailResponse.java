@@ -16,6 +16,8 @@ public class ReviewDetailResponse extends AuditingTimeResponse {
 
     private int rating;
 
+    private String contents;
+
     private ReviewStatus status;
 
     private Long storeId;
@@ -23,8 +25,8 @@ public class ReviewDetailResponse extends AuditingTimeResponse {
     private UserInfoResponse user;
 
     public static ReviewDetailResponse of(ReviewWithStoreAndCreatorDto review) {
-        ReviewDetailResponse response = new ReviewDetailResponse(review.getId(), review.getRating(), review.getStatus(),
-            review.getStoreId(), UserInfoResponse.of(review.getUserId(), review.getUserName(), review.getUserSocialType()));
+        ReviewDetailResponse response = new ReviewDetailResponse(review.getId(), review.getRating(), review.getContents(),
+            review.getStatus(), review.getStoreId(), UserInfoResponse.of(review.getUserId(), review.getUserName(), review.getUserSocialType()));
         response.setBaseTime(review.getCreatedAt(), review.getUpdatedAt());
         return response;
     }

@@ -16,4 +16,8 @@ public class RetrieveMyReviewsRequest {
     @Min(value = 0, message = "{common.size.min}")
     private int page;
 
+    public static RetrieveMyReviewsRequest testInstance(int size, int page) {
+        return new RetrieveMyReviewsRequest(size, page);
+    }
+
 }
