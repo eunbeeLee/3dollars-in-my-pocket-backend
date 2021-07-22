@@ -47,7 +47,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
             user.socialInfo.socialType.as("userSocialType")
         ))
             .from(review)
-            .innerJoin(user).on(review.userId.eq(user.id))
+            .leftJoin(user).on(review.userId.eq(user.id))
             .where(
                 review.storeId.eq(storeId),
                 review.status.eq(ReviewStatus.POSTED)
