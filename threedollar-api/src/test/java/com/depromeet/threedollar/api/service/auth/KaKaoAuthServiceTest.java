@@ -84,6 +84,30 @@ class KaKaoAuthServiceTest {
         assertUser(users.get(0), socialId, name, socialType);
     }
 
+    @Test
+    void 카카오로_가입한_유저가_회원탈퇴를_요청하면_해당하는_USER_데이터가_삭제된다() {
+        // given
+        User user = UserCreator.create(socialId, UserSocialType.KAKAO, "닉네임");
+        userRepository.save(user);
+
+        // when
+        authService.signOut(user.getId());
+
+        // then
+        List<User> users = userRepository.findAll();
+        assertThat(users).isEmpty();
+    }
+
+    @Test
+    void 애플로_가입한_유저가_카카오_회원탈퇴_요청을하면_NOT_FOUND_EXCEPTION() {
+        // given
+        User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
+        userRepository.save(user);
+
+        // when & then
+        assertThatThrownBy(() -> authService.signOut(user.getId())).isInstanceOf(NotFoundException.class);
+    }
+
     private static class StubKaKaoApiCaller implements KaKaoApiCaller {
         @Override
         public KaKaoProfileResponse getProfileInfo(String accessToken) {
