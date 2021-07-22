@@ -9,3 +9,8 @@ spring:
     include:
       - domain
       - jwt
+  mvc:
+    log-request-details: true
+logging:
+  file:
+    path: logs/admin/
