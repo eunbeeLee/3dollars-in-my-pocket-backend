@@ -155,6 +155,27 @@ class ReviewServiceTest extends UserSetUpTest {
     }
 
     @Test
+    void 작성한_리뷰를_수정시_해당하는_리뷰가_없을경우_NOT_FOUND_EXCEPTION_이_발생한다() {
+        // given
+        UpdateReviewRequest request = UpdateReviewRequest.testInstance("content", 5);
+
+        // when & then
+        assertThatThrownBy(() -> reviewService.updateReview(999L, request, userId)).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void 작성한_리뷰_수정시_해당하는_리뷰가_사용자가_작성하지_않았을경우_NOT_FOUND_EXCEPTION() {
+        // given
+        Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
+        reviewRepository.save(review);
+
+        UpdateReviewRequest request = UpdateReviewRequest.testInstance("content", 5);
+
+        // when & then
+        assertThatThrownBy(() -> reviewService.updateReview(review.getId(), request, 999L)).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
     void 작성한_리뷰를_삭제한다() {
         // given
         Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
@@ -182,6 +203,22 @@ class ReviewServiceTest extends UserSetUpTest {
         List<Store> stores = storeRepository.findAll();
         assertThat(stores).hasSize(1);
         assertThat(stores.get(0).getRating()).isEqualTo(0);
+    }
+
+    @Test
+    void 작성한_리뷰를_삭제시_해당하는_리뷰가_없을경우_NOT_FOUND_EXCEPTION_이_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> reviewService.deleteReview(999L, userId)).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void 리뷰_삭제시_해당하는_리뷰가_사용자가_작성하지_않았을경우_NOT_FOUND_EXCEPTION() {
+        // given
+        Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
+        reviewRepository.save(review);
+
+        // when & then
+        assertThatThrownBy(() -> reviewService.deleteReview(review.getId(), 999L)).isInstanceOf(NotFoundException.class);
     }
 
     private void assertReview(Review review, Long storeId, String content, int rating, Long userId) {
