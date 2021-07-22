@@ -17,7 +17,7 @@ public class UserSetUpTest {
     protected Long userId;
 
     @BeforeEach
-    void setUp() {
+    void setup() {
         User user = userRepository.save(UserCreator.create("social-id", UserSocialType.KAKAO, "디프만"));
         userId = user.getId();
     }
