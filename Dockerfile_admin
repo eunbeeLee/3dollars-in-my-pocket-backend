@@ -7,4 +7,4 @@ RUN ./gradlew clean bootJar
 FROM adoptopenjdk/openjdk11:alpine-jre
 ENV HOME=/usr/app
 COPY --from=BUILD  $HOME/threedollar-admin/build/libs/threedollar-admin.jar /threedollar-admin.jar
-EXPOSE 6000
+EXPOSE 4000

@@ -1,0 +1,4 @@
+# TOOD ADD ignore
+jwt:
+  secret_key: test
+  issuer: test

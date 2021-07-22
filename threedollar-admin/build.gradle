@@ -3,4 +3,7 @@ dependencies {
 
     // Spring MVC
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // jwt
+    implementation("com.auth0:java-jwt:3.18.1")
 }
