@@ -19,6 +19,7 @@ import com.depromeet.threedollar.domain.domain.store.StoreRepository;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -54,6 +55,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         storeRepository.deleteAll();
     }
 
+    @DisplayName("POST /api/v2/store/review 200 OK")
     @Test
     void 가게에_새로운_리뷰를_등록합니다() throws Exception {
         // given
@@ -66,6 +68,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         assertReviewInfoResponse(response.getData(), store.getId(), request.getContent(), request.getRating(), ReviewStatus.POSTED);
     }
 
+    @DisplayName("PUT /api/v2/store/review 200 OK")
     @Test
     void 사용자가_작성한_리뷰를_수정하는_API_호출시_200_OK() throws Exception {
         // given
@@ -81,6 +84,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         assertReviewInfoResponse(response.getData(), store.getId(), request.getContent(), request.getRating(), ReviewStatus.POSTED);
     }
 
+    @DisplayName("DELETE /api/v2/store/review 200 OK")
     @Test
     void 사용자가_작성한_리뷰를_삭제하는_API_호출시_200_OK() throws Exception {
         // given
@@ -94,6 +98,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         assertThat(response.getData()).isEqualTo("OK");
     }
 
+    @DisplayName("GET /api/v2/store/reviews/me 200 OK")
     @Test
     void 사용자가_작성한_리뷰를_전체_조회하는_API_호출시_200_OK() throws Exception {
         // given
@@ -118,6 +123,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         assertUserInfoResponse(response.getData().getContent().get(1).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
     }
 
+    @DisplayName("GET /api/v2/store/reviews/me 삭제된 리뷰는 조회되지 않는다.")
     @Test
     void 사용자가_작성한_리뷰를_전체조회시_삭제된_리뷰는_조회되지_않는다() throws Exception {
         // given

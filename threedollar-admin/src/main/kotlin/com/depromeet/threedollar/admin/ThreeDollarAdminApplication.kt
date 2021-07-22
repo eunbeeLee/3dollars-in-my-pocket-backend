@@ -13,5 +13,5 @@ import org.springframework.boot.runApplication
 class ThreeDollarAdminApplication
 
 fun main(args: Array<String>) {
-    runApplication<ThreeDollarAdminApplication>(*args);
+    runApplication<ThreeDollarAdminApplication>(*args)
 }
