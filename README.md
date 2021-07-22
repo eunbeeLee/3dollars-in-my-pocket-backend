@@ -23,6 +23,25 @@ docker-compose up --build
 - Java 11, Kotlin 1.5
 - Spring Boot 2.3 + Spring MVC
 - Spring Data JPA + QueryDSL 4.3
-- flyway 6.4
 - Gradle 7.0
 - Junit 5
+
+## Infra
+### Production Environment
+> 차후 구성할 예정입니다.
+
+- AWS RDS (MariaDB 10.4)
+- flyway
+- AWS ElasticCache Redis
+- Github Actions CI/CD
+
+
+### Development Environment
+> AWS 프리티어 내에서 비용 없이 구성하였습니다.
+- AWS EC2
+- AWS RDS (MariaDB 10.4)
+- flyway
+- Nginx
+- Docker compose
+- Redis
+- Github Actions CI/CD
