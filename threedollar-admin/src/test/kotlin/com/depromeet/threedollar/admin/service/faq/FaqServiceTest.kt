@@ -1,10 +1,16 @@
 package com.depromeet.threedollar.admin.service.faq
 
 import com.depromeet.threedollar.admin.service.faq.dto.request.AddFaqRequest
+import com.depromeet.threedollar.admin.service.faq.dto.request.RetrieveFaqRequest
+import com.depromeet.threedollar.admin.service.faq.dto.request.UpdateFaqRequest
+import com.depromeet.threedollar.admin.service.faq.dto.response.FaqResponse
+import com.depromeet.threedollar.common.exception.NotFoundException
 import com.depromeet.threedollar.domain.domain.faq.Faq
 import com.depromeet.threedollar.domain.domain.faq.FaqCategory
+import com.depromeet.threedollar.domain.domain.faq.FaqCreator
 import com.depromeet.threedollar.domain.domain.faq.FaqRepository
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -40,6 +46,87 @@ internal class FaqServiceTest(
         val faqs = faqRepository.findAll()
         assertThat(faqs).hasSize(1)
         assertFaq(faqs[0], question, answer, category)
+    }
+
+    @Test
+    fun 등록된_FAQ를_수정한다() {
+        // give
+        val question = "질문"
+        val answer = "답변"
+        val category = FaqCategory.CATEGORY
+
+        val faq = FaqCreator.create("question", "answer", FaqCategory.CATEGORY)
+        faqRepository.save(faq)
+
+        val request = UpdateFaqRequest(question, answer, category)
+
+        // when
+        faqService.updateFaq(faq.id, request)
+
+        // then
+        val faqs = faqRepository.findAll()
+        assertThat(faqs).hasSize(1)
+        assertFaq(faqs[0], question, answer, category)
+    }
+
+    @Test
+    fun 등록된_FAQ를_수정할때_해당하는_id_를가진_Faq_가_없으면_NotFOUND_EXCEPTION() {
+        // given
+        val request = UpdateFaqRequest("question", "answer", FaqCategory.CATEGORY)
+
+        // when & then
+        assertThatThrownBy { faqService.updateFaq(999L, request) }.isInstanceOf(NotFoundException::class.java)
+    }
+
+    @Test
+    fun 등록된_특정_FAQ_를_삭제한다() {
+        // given
+        val faq = FaqCreator.create("question", "answer", FaqCategory.CATEGORY)
+        faqRepository.save(faq)
+
+        // when
+        faqService.deleteFaq(faq.id)
+
+        // then
+        val faqs = faqRepository.findAll()
+        assertThat(faqs).isEmpty()
+    }
+
+    @Test
+    fun 등록된_특정_FAQ_를_삭제할때__해당하는_id_를가진_Faq_가_없으면_NotFOUND_EXCEPTION() {
+        // when & then
+        assertThatThrownBy { faqService.deleteFaq(999L) }.isInstanceOf(NotFoundException::class.java)
+    }
+
+    @Test
+    fun 등록된_FAQ들을_카테고리_순서별로_조회한다() {
+        // given
+        val faq1 = FaqCreator.create("question1", "answer1", FaqCategory.CATEGORY)
+        val faq2 = FaqCreator.create("question2", "answer2", FaqCategory.WITHDRAWAL)
+        val faq3 = FaqCreator.create("question3", "answer3", FaqCategory.STORE)
+        faqRepository.saveAll(listOf(faq1, faq2, faq3))
+
+        // when
+        val faqs = faqService.retrieveFaqs(RetrieveFaqRequest(null))
+
+        // then
+        assertThat(faqs).hasSize(3)
+        assertFaqInfoResponse(faqs[0], faq3.id, faq3.question, faq3.answer, faq3.category)
+        assertFaqInfoResponse(faqs[1], faq2.id, faq2.question, faq2.answer, faq2.category)
+        assertFaqInfoResponse(faqs[2], faq1.id, faq1.question, faq1.answer, faq1.category)
+    }
+
+    private fun assertFaqInfoResponse(
+        response: FaqResponse,
+        faqId: Long,
+        question: String,
+        answer: String,
+        category: FaqCategory
+    ) {
+        assertThat(response.faqId).isEqualTo(faqId)
+        assertThat(response.question).isEqualTo(question)
+        assertThat(response.answer).isEqualTo(answer)
+        assertThat(response.category).isEqualTo(category)
     }
 
     private fun assertFaq(faq: Faq, question: String, answer: String, category: FaqCategory) {

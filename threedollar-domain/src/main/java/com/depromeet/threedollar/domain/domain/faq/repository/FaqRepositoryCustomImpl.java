@@ -30,5 +30,13 @@ public class FaqRepositoryCustomImpl implements FaqRepositoryCustom {
         return faq.category.eq(category);
     }
 
+    @Override
+    public Faq findFaqById(long faqId) {
+        return queryFactory.selectFrom(faq)
+            .where(
+                faq.id.eq(faqId)
+            ).fetchOne();
+    }
+
 }
 

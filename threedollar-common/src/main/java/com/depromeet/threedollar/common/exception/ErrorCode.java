@@ -24,6 +24,7 @@ public enum ErrorCode {
     NOT_FOUND_STORE_EXCEPTION("N002", "존재하지 않는 가게입니다"),
     NOT_FOUND_REVIEW_EXCEPTION("N003", "존재하지 않는 리뷰입니다"),
     NOT_FOUND_STORE_IMAGE_EXCEPTION("N003", "존재하지 않는 가게 이미지입니다"),
+    NOT_FOUND_FAQ_EXCEPTION("N004", "존재하지 않는 FAQ입니다"),
 
     // Validation Exception
     VALIDATION_RATING_EXCEPTION("V001", "허용되지 않은 평가 점수입니다. (0 ~ 5)"),

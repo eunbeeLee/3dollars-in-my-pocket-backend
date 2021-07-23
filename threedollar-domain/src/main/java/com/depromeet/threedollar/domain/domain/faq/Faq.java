@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 
@@ -38,6 +39,12 @@ public class Faq extends AuditingTimeEntity {
 
     public static Faq newInstance(FaqCategory category, String question, String answer) {
         return new Faq(category, question, answer);
+    }
+
+    public void update(String question, String answer, FaqCategory category) {
+        this.question = question;
+        this.answer = answer;
+        this.category = category;
     }
 
 }
