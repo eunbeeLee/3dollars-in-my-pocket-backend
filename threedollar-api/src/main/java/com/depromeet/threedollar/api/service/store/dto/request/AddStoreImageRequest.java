@@ -13,4 +13,8 @@ public class AddStoreImageRequest {
     @NotNull(message = "{store.storeId.notnull}")
     private Long storeId;
 
+    public static AddStoreImageRequest testInstance(Long storeId) {
+        return new AddStoreImageRequest(storeId);
+    }
+
 }

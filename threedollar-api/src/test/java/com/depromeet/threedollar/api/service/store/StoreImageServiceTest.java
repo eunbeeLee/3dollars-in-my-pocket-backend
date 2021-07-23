@@ -1,6 +1,7 @@
 package com.depromeet.threedollar.api.service.store;
 
 import com.depromeet.threedollar.api.service.UserSetUpTest;
+import com.depromeet.threedollar.api.service.store.dto.request.AddStoreImageRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreImageResponse;
 import com.depromeet.threedollar.api.service.upload.FileUploadService;
 import com.depromeet.threedollar.api.service.upload.dto.request.FileUploadRequest;
@@ -57,8 +58,11 @@ class StoreImageServiceTest extends UserSetUpTest {
 
     @Test
     void 가게에_새로운_이미지를_등록한다() {
+        // given
+        AddStoreImageRequest request = AddStoreImageRequest.testInstance(store.getId());
+
         // when
-        storeImageService.addStoreImage(store.getId(), new MockMultipartFile("name", new byte[]{}), userId);
+        storeImageService.addStoreImage(request, new MockMultipartFile("name", new byte[]{}), userId);
 
         // then
         List<StoreImage> storeImageList = storeImageRepository.findAll();

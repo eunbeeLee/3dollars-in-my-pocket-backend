@@ -68,17 +68,14 @@ class AppleAuthServiceTest {
     @Test
     void 새로운_유저가_애플로_회원가입요청하면_멤버정보가_DB에_저장된다() {
         // given
-        String name = "무야호";
-        UserSocialType socialType = UserSocialType.APPLE;
-
-        SignUpRequest request = SignUpRequest.testInstance("token", name, socialType);
+        SignUpRequest request = SignUpRequest.testInstance("token", "가슴속 삼천원", UserSocialType.APPLE);
 
         authService.signUp(request);
 
         // then
         List<User> users = userRepository.findAll();
         assertThat(users).hasSize(1);
-        assertUser(users.get(0), socialId, name, socialType);
+        assertUser(users.get(0), socialId, request.getName(), request.getSocialType());
     }
 
     @Test

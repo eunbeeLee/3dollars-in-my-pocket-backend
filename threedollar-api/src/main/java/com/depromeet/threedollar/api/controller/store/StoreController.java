@@ -60,7 +60,7 @@ public class StoreController {
     public ApiResponse<StoreImageResponse> addStoreImage(@Valid @RequestBody AddStoreImageRequest request,
                                                          @RequestPart(value = "image") MultipartFile multipartFile,
                                                          @UserId Long userId) {
-        return ApiResponse.success(storeImageService.addStoreImage(request.getStoreId(), multipartFile, userId));
+        return ApiResponse.success(storeImageService.addStoreImage(request, multipartFile, userId));
     }
 
     @ApiOperation("[인증] 가게의 이미지를 삭제합니다.")

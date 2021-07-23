@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.api.service.store;
 
+import com.depromeet.threedollar.api.service.store.dto.request.AddStoreImageRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreImageResponse;
 import com.depromeet.threedollar.api.service.upload.FileUploadService;
 import com.depromeet.threedollar.api.service.upload.dto.request.FileUploadRequest;
@@ -23,10 +24,10 @@ public class StoreImageService {
     private final StoreImageRepository storeImageRepository;
     private final FileUploadService fileUploadService;
 
-    public StoreImageResponse addStoreImage(Long storeId, MultipartFile image, Long userId) {
-        StoreServiceUtils.validateExistsStore(storeRepository, storeId);
+    public StoreImageResponse addStoreImage(AddStoreImageRequest request, MultipartFile image, Long userId) {
+        StoreServiceUtils.validateExistsStore(storeRepository, request.getStoreId());
         String imageUrl = fileUploadService.uploadImage(FileUploadRequest.of(ImageType.STORE), image);
-        return StoreImageResponse.of(storeImageRepository.save(StoreImage.newInstance(storeId, userId, imageUrl)));
+        return StoreImageResponse.of(storeImageRepository.save(StoreImage.newInstance(request.getStoreId(), userId, imageUrl)));
     }
 
     @Transactional

@@ -71,17 +71,15 @@ class KaKaoAuthServiceTest {
     @Test
     void 새로운_유저가_카카오로_회원가입시_회원정보가_DB_에_저장된다() {
         // given
-        String name = "무야호";
-        UserSocialType socialType = UserSocialType.KAKAO;
+        SignUpRequest request = SignUpRequest.testInstance("token", "가슴속 삼천원", UserSocialType.KAKAO);
 
-        SignUpRequest request = SignUpRequest.testInstance("token", name, socialType);
-
+        // when
         authService.signUp(request);
 
         // then
         List<User> users = userRepository.findAll();
         assertThat(users).hasSize(1);
-        assertUser(users.get(0), socialId, name, socialType);
+        assertUser(users.get(0), socialId, request.getName(), request.getSocialType());
     }
 
     @Test
