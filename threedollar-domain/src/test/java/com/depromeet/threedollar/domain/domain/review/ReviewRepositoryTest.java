@@ -1,7 +1,7 @@
 package com.depromeet.threedollar.domain.domain.review;
 
-import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithCreatorDto;
-import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithStoreAndCreatorDto;
+import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithCreatorProjection;
+import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithStoreAndCreatorProjection;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreCreator;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
@@ -52,14 +52,14 @@ class ReviewRepositoryTest {
         reviewRepository.save(review);
 
         // when
-        List<ReviewWithCreatorDto> reviews = reviewRepository.findAllWithCreatorByStoreId(store.getId());
+        List<ReviewWithCreatorProjection> reviews = reviewRepository.findAllWithCreatorByStoreId(store.getId());
 
         // then
         assertThat(reviews).hasSize(1);
         assertReviewWithCreatorDto(reviews.get(0), review.getId(), review.getRating(), review.getContents(), user.getId(), user.getName(), user.getSocialType());
     }
 
-    private void assertReviewWithCreatorDto(ReviewWithCreatorDto review, Long id, int rating, String contents, Long userId, String name, UserSocialType socialType) {
+    private void assertReviewWithCreatorDto(ReviewWithCreatorProjection review, Long id, int rating, String contents, Long userId, String name, UserSocialType socialType) {
         assertThat(review.getId()).isEqualTo(id);
         assertThat(review.getRating()).isEqualTo(rating);
         assertThat(review.getContents()).isEqualTo(contents);
@@ -83,17 +83,17 @@ class ReviewRepositoryTest {
         ));
 
         // when
-        Page<ReviewWithStoreAndCreatorDto> pages = reviewRepository.findAllWithCreatorByUserId(user.getId(), PageRequest.of(0, 2));
+        Page<ReviewWithStoreAndCreatorProjection> pages = reviewRepository.findAllWithCreatorByUserId(user.getId(), PageRequest.of(0, 2));
 
         // then
         assertThat(pages.getTotalElements()).isEqualTo(3);
         assertThat(pages.getTotalPages()).isEqualTo(2);
-        List<ReviewWithStoreAndCreatorDto> reviews = pages.getContent();
+        List<ReviewWithStoreAndCreatorProjection> reviews = pages.getContent();
         assertReviewWithStoreAndCreatorDto(reviews.get(0), 5, "리뷰 1", ReviewStatus.POSTED, store.getId(), store.getName(), user.getId(), user.getName(), user.getSocialType());
         assertReviewWithStoreAndCreatorDto(reviews.get(1), 4, "리뷰 2", ReviewStatus.POSTED, store.getId(), store.getName(), user.getId(), user.getName(), user.getSocialType());
     }
 
-    private void assertReviewWithStoreAndCreatorDto(ReviewWithStoreAndCreatorDto review, int rating, String contents, ReviewStatus status,
+    private void assertReviewWithStoreAndCreatorDto(ReviewWithStoreAndCreatorProjection review, int rating, String contents, ReviewStatus status,
                                                     Long storeId, String storeName, Long userId, String userName, UserSocialType socialType) {
         assertThat(review.getRating()).isEqualTo(rating);
         assertThat(review.getContents()).isEqualTo(contents);

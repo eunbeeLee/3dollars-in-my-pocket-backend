@@ -17,4 +17,9 @@ abstract class AuditingTimeResponse {
         this.updatedAt = auditingTimeEntity.updatedAt
     }
 
+    fun setAuditingTime(createdAt: LocalDateTime?, updatedAt: LocalDateTime?) {
+        this.createdAt = createdAt
+        this.updatedAt = updatedAt
+    }
+
 }

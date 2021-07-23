@@ -1,8 +1,8 @@
 package com.depromeet.threedollar.domain.domain.review.repository;
 
 import com.depromeet.threedollar.domain.domain.review.Review;
-import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithCreatorDto;
-import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithStoreAndCreatorDto;
+import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithCreatorProjection;
+import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithStoreAndCreatorProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,10 +12,10 @@ public interface ReviewRepositoryCustom {
 
     Review findReviewByIdAndUserId(Long reviewId, Long userId);
 
-    List<ReviewWithCreatorDto> findAllWithCreatorByStoreId(Long storeId);
+    List<ReviewWithCreatorProjection> findAllWithCreatorByStoreId(Long storeId);
 
     List<Review> findAllByStoreId(Long storeId);
 
-    Page<ReviewWithStoreAndCreatorDto> findAllWithCreatorByUserId(Long userId, Pageable pageable);
+    Page<ReviewWithStoreAndCreatorProjection> findAllWithCreatorByUserId(Long userId, Pageable pageable);
 
 }

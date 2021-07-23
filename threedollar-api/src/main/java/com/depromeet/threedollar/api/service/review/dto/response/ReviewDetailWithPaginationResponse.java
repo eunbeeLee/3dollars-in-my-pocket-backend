@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.review.dto.response;
 
-import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithStoreAndCreatorDto;
+import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithStoreAndCreatorProjection;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +26,7 @@ public class ReviewDetailWithPaginationResponse {
         this.totalPages = totalPages;
     }
 
-    public static ReviewDetailWithPaginationResponse of(Page<ReviewWithStoreAndCreatorDto> reviewDto) {
+    public static ReviewDetailWithPaginationResponse of(Page<ReviewWithStoreAndCreatorProjection> reviewDto) {
         List<ReviewDetailResponse> responses = reviewDto.getContent().stream()
             .map(ReviewDetailResponse::of)
             .collect(Collectors.toList());

@@ -9,7 +9,7 @@ import com.depromeet.threedollar.api.service.review.dto.response.ReviewDetailWit
 import com.depromeet.threedollar.api.service.store.StoreServiceUtils;
 import com.depromeet.threedollar.domain.domain.review.Review;
 import com.depromeet.threedollar.domain.domain.review.ReviewRepository;
-import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithStoreAndCreatorDto;
+import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithStoreAndCreatorProjection;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -51,7 +51,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewDetailWithPaginationResponse retrieveMyReviews(RetrieveMyReviewsRequest request, Long userId) {
-        Page<ReviewWithStoreAndCreatorDto> result = reviewRepository.findAllWithCreatorByUserId(userId, PageRequest.of(request.getPage(), request.getSize()));
+        Page<ReviewWithStoreAndCreatorProjection> result = reviewRepository.findAllWithCreatorByUserId(userId, PageRequest.of(request.getPage(), request.getSize()));
         return ReviewDetailWithPaginationResponse.of(result);
     }
 

@@ -2,7 +2,7 @@ package com.depromeet.threedollar.api.service.review.dto.response;
 
 import com.depromeet.threedollar.api.common.dto.AuditingTimeResponse;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
-import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithCreatorDto;
+import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithCreatorProjection;
 import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
 import lombok.*;
@@ -21,7 +21,7 @@ public class ReviewResponse extends AuditingTimeResponse {
 
     private UserInfoResponse user;
 
-    public static ReviewResponse of(ReviewWithCreatorDto review) {
+    public static ReviewResponse of(ReviewWithCreatorProjection review) {
         ReviewResponse response = new ReviewResponse(review.getId(), review.getRating(), review.getContents(),
             getUserInfoResponse(review.getUserId(), review.getUserName(), review.getUserSocialType()));
         response.setBaseTime(review.getCreatedAt(), review.getUpdatedAt());

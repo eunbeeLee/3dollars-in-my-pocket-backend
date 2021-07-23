@@ -2,8 +2,8 @@ package com.depromeet.threedollar.domain.domain.review.repository;
 
 import com.depromeet.threedollar.domain.domain.review.Review;
 import com.depromeet.threedollar.domain.domain.review.ReviewStatus;
-import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithCreatorDto;
-import com.depromeet.threedollar.domain.domain.review.repository.dto.ReviewWithStoreAndCreatorDto;
+import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithCreatorProjection;
+import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithStoreAndCreatorProjection;
 import com.depromeet.threedollar.domain.domain.store.StoreStatus;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
@@ -35,8 +35,8 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     }
 
     @Override
-    public List<ReviewWithCreatorDto> findAllWithCreatorByStoreId(Long storeId) {
-        return queryFactory.select(Projections.fields(ReviewWithCreatorDto.class,
+    public List<ReviewWithCreatorProjection> findAllWithCreatorByStoreId(Long storeId) {
+        return queryFactory.select(Projections.fields(ReviewWithCreatorProjection.class,
             review.id.as("id"),
             review.rating.rating.as("rating"),
             review.contents.as("contents"),
@@ -64,8 +64,8 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     }
 
     @Override
-    public Page<ReviewWithStoreAndCreatorDto> findAllWithCreatorByUserId(Long userId, Pageable pageable) {
-        QueryResults<ReviewWithStoreAndCreatorDto> result = queryFactory.select(Projections.fields(ReviewWithStoreAndCreatorDto.class,
+    public Page<ReviewWithStoreAndCreatorProjection> findAllWithCreatorByUserId(Long userId, Pageable pageable) {
+        QueryResults<ReviewWithStoreAndCreatorProjection> result = queryFactory.select(Projections.fields(ReviewWithStoreAndCreatorProjection.class,
             review.id.as("id"),
             review.rating.rating.as("rating"),
             review.contents.as("contents"),
