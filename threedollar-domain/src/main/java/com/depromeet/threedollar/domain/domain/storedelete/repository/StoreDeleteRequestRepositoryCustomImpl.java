@@ -2,8 +2,8 @@ package com.depromeet.threedollar.domain.domain.storedelete.repository;
 
 import com.depromeet.threedollar.domain.domain.store.StoreStatus;
 import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequest;
+import com.depromeet.threedollar.domain.domain.storedelete.repository.projection.QReportedStoreProjection;
 import com.depromeet.threedollar.domain.domain.storedelete.repository.projection.ReportedStoreProjection;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -36,16 +36,16 @@ public class StoreDeleteRequestRepositoryCustomImpl implements StoreDeleteReques
 
     @Override
     public List<ReportedStoreProjection> findStoreHasDeleteRequestMoreThanCnt(int minCount) {
-        return queryFactory.select(Projections.fields(ReportedStoreProjection.class,
-            store.id.as("storeId"),
-            store.name.as("storeName"),
-            store.location.latitude.as("latitude"),
-            store.location.longitude.as("longitude"),
-            store.type.as("type"),
-            store.rating.as("rating"),
-            store.createdAt.as("storeCreatedAt"),
-            store.updatedAt.as("storeUpdatedAt"),
-            storeDeleteRequest.id.count().as("reportsCount")
+        return queryFactory.select(new QReportedStoreProjection(
+            store.id,
+            store.name,
+            store.location.latitude,
+            store.location.longitude,
+            store.type,
+            store.rating,
+            store.createdAt,
+            store.updatedAt,
+            storeDeleteRequest.id.count()
         ))
             .from(storeDeleteRequest)
             .innerJoin(store).on(storeDeleteRequest.storeId.eq(store.id))

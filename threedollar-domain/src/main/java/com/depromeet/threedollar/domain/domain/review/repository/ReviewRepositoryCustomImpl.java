@@ -2,11 +2,12 @@ package com.depromeet.threedollar.domain.domain.review.repository;
 
 import com.depromeet.threedollar.domain.domain.review.Review;
 import com.depromeet.threedollar.domain.domain.review.ReviewStatus;
+import com.depromeet.threedollar.domain.domain.review.repository.projection.QReviewWithCreatorProjection;
+import com.depromeet.threedollar.domain.domain.review.repository.projection.QReviewWithStoreAndCreatorProjection;
 import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithCreatorProjection;
 import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithStoreAndCreatorProjection;
 import com.depromeet.threedollar.domain.domain.store.StoreStatus;
 import com.querydsl.core.QueryResults;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,15 +37,15 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
 
     @Override
     public List<ReviewWithCreatorProjection> findAllWithCreatorByStoreId(Long storeId) {
-        return queryFactory.select(Projections.fields(ReviewWithCreatorProjection.class,
-            review.id.as("id"),
-            review.rating.rating.as("rating"),
-            review.contents.as("contents"),
-            review.createdAt.as("createdAt"),
-            review.updatedAt.as("updatedAt"),
-            user.id.as("userId"),
-            user.name.as("userName"),
-            user.socialInfo.socialType.as("userSocialType")
+        return queryFactory.select(new QReviewWithCreatorProjection(
+            review.id,
+            review.rating.rating,
+            review.contents,
+            review.createdAt,
+            review.updatedAt,
+            user.id,
+            user.name,
+            user.socialInfo.socialType
         ))
             .from(review)
             .leftJoin(user).on(review.userId.eq(user.id))
@@ -65,18 +66,18 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
 
     @Override
     public Page<ReviewWithStoreAndCreatorProjection> findAllWithCreatorByUserId(Long userId, Pageable pageable) {
-        QueryResults<ReviewWithStoreAndCreatorProjection> result = queryFactory.select(Projections.fields(ReviewWithStoreAndCreatorProjection.class,
-            review.id.as("id"),
-            review.rating.rating.as("rating"),
-            review.contents.as("contents"),
-            review.status.as("status"),
-            review.createdAt.as("createdAt"),
-            review.updatedAt.as("updatedAt"),
-            review.storeId.as("storeId"),
-            store.name.as("storeName"),
-            user.id.as("userId"),
-            user.name.as("userName"),
-            user.socialInfo.socialType.as("userSocialType")
+        final QueryResults<ReviewWithStoreAndCreatorProjection> result = queryFactory.select(new QReviewWithStoreAndCreatorProjection(
+            review.id,
+            review.rating.rating,
+            review.contents,
+            review.status,
+            review.createdAt,
+            review.updatedAt,
+            review.storeId,
+            store.name,
+            user.id,
+            user.name,
+            user.socialInfo.socialType
         ))
             .from(review)
             .innerJoin(user).on(review.userId.eq(user.id))

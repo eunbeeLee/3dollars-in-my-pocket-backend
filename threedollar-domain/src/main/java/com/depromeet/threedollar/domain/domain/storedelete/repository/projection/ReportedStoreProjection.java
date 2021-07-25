@@ -1,24 +1,37 @@
 package com.depromeet.threedollar.domain.domain.storedelete.repository.projection;
 
 import com.depromeet.threedollar.domain.domain.store.StoreType;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
 @ToString
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReportedStoreProjection {
 
-    private Long storeId;
-    private String storeName;
-    private double latitude;
-    private double longitude;
-    private StoreType type;
-    private double rating;
-    private LocalDateTime storeCreatedAt;
-    private LocalDateTime storeUpdatedAt;
-    private long reportsCount;
+    private final Long storeId;
+    private final String storeName;
+    private final double latitude;
+    private final double longitude;
+    private final StoreType type;
+    private final double rating;
+    private final LocalDateTime storeCreatedAt;
+    private final LocalDateTime storeUpdatedAt;
+    private final long reportsCount;
+
+    @QueryProjection
+    public ReportedStoreProjection(Long storeId, String storeName, double latitude, double longitude, StoreType type,
+                                   double rating, LocalDateTime storeCreatedAt, LocalDateTime storeUpdatedAt, long reportsCount) {
+        this.storeId = storeId;
+        this.storeName = storeName;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.type = type;
+        this.rating = rating;
+        this.storeCreatedAt = storeCreatedAt;
+        this.storeUpdatedAt = storeUpdatedAt;
+        this.reportsCount = reportsCount;
+    }
 
 }
