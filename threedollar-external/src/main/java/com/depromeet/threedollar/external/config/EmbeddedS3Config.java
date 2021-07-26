@@ -3,7 +3,7 @@ package com.depromeet.threedollar.external.config;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.AnonymousAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import io.findify.s3mock.S3Mock;
 import lombok.extern.slf4j.Slf4j;
@@ -58,9 +58,9 @@ public class EmbeddedS3Config {
 
     @Bean
     @Primary
-    public AmazonS3Client amazonS3Client() {
+    public AmazonS3 amazonS3Client() {
         AwsClientBuilder.EndpointConfiguration endpoint = new AwsClientBuilder.EndpointConfiguration(getUri(), region);
-        AmazonS3Client client = (AmazonS3Client) AmazonS3ClientBuilder
+        AmazonS3 client = AmazonS3ClientBuilder
             .standard()
             .withPathStyleAccessEnabled(true)
             .withEndpointConfiguration(endpoint)

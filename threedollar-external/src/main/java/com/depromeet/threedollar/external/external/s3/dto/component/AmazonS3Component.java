@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Setter
 @ConfigurationProperties(prefix = "cloud.aws.s3")
 @Component
-public class AmazonClientS3Component {
+public class AmazonS3Component {
 
     private String bucket;
 
