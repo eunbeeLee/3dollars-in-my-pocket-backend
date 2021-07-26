@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -58,7 +59,7 @@ public class EmbeddedS3Config {
     @Bean
     @Primary
     public AmazonS3Client amazonS3Client() {
-        AwsClientBuilder.EndpointConfiguration endpoint = new AwsClientBuilder.EndpointConfiguration("http://localhost:".concat(String.valueOf(port)), region);
+        AwsClientBuilder.EndpointConfiguration endpoint = new AwsClientBuilder.EndpointConfiguration(getUri(), region);
         AmazonS3Client client = (AmazonS3Client) AmazonS3ClientBuilder
             .standard()
             .withPathStyleAccessEnabled(true)
@@ -67,6 +68,15 @@ public class EmbeddedS3Config {
             .build();
         client.createBucket(bucket);
         return client;
+    }
+
+    private String getUri() {
+        return UriComponentsBuilder.newInstance()
+            .scheme("http")
+            .host("localhost")
+            .port(port)
+            .build()
+            .toUriString();
     }
 
 }
