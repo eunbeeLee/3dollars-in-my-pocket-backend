@@ -1,3 +1,18 @@
+spring:
+  profiles: local,local-will
+cloud:
+  aws:
+    s3:
+      bucket: 3dollar-local-embedded-bucket
+      mock:
+        port: 5050
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+---
+spring:
+  profiles: dev,prod
 cloud:
   aws:
     s3:

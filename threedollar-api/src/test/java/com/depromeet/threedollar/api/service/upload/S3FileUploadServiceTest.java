@@ -50,7 +50,6 @@ class S3FileUploadServiceTest {
         String result = s3FileUploadService.uploadImage(request, multipartFile);
 
         // then
-        assertThat(result.startsWith(type.getDirectory())).isTrue();
         assertThat(result.endsWith(".jpeg")).isTrue();
     }
 

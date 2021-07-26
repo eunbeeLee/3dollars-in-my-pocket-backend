@@ -57,7 +57,7 @@ public class StoreController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PostMapping("/api/v2/store/image")
-    public ApiResponse<StoreImageResponse> addStoreImage(@Valid @RequestBody AddStoreImageRequest request,
+    public ApiResponse<StoreImageResponse> addStoreImage(@Valid AddStoreImageRequest request,
                                                          @RequestPart(value = "image") MultipartFile multipartFile,
                                                          @UserId Long userId) {
         return ApiResponse.success(storeImageService.addStoreImage(request, multipartFile, userId));
