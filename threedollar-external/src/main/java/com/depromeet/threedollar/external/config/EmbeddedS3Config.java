@@ -60,8 +60,7 @@ public class EmbeddedS3Config {
     @Primary
     public AmazonS3 amazonS3Client() {
         AwsClientBuilder.EndpointConfiguration endpoint = new AwsClientBuilder.EndpointConfiguration(getUri(), region);
-        AmazonS3 client = AmazonS3ClientBuilder
-            .standard()
+        AmazonS3 client = AmazonS3ClientBuilder.standard()
             .withPathStyleAccessEnabled(true)
             .withEndpointConfiguration(endpoint)
             .withCredentials(new AWSStaticCredentialsProvider(new AnonymousAWSCredentials()))

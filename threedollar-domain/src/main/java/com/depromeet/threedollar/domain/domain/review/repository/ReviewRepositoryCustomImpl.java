@@ -7,13 +7,13 @@ import com.depromeet.threedollar.domain.domain.review.repository.projection.QRev
 import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithCreatorProjection;
 import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithStoreAndCreatorProjection;
 import com.depromeet.threedollar.domain.domain.store.StoreStatus;
-import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.depromeet.threedollar.domain.domain.store.QStore.store;
@@ -66,7 +66,36 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
 
     @Override
     public Page<ReviewWithStoreAndCreatorProjection> findAllWithCreatorByUserId(Long userId, Pageable pageable) {
-        final QueryResults<ReviewWithStoreAndCreatorProjection> result = queryFactory.select(new QReviewWithStoreAndCreatorProjection(
+        long totalCount = queryFactory.select(review.id)
+            .from(review)
+            .innerJoin(user).on(review.userId.eq(user.id))
+            .innerJoin(store).on(review.storeId.eq(store.id))
+            .where(
+                review.userId.eq(userId),
+                review.status.eq(ReviewStatus.POSTED),
+                store.status.eq(StoreStatus.ACTIVE)
+            )
+            .fetchCount();
+
+        if (totalCount == 0) {
+            return new PageImpl<>(Collections.emptyList(), pageable, totalCount);
+        }
+
+        List<Long> reviewIds = queryFactory.select(review.id)
+            .from(review)
+            .innerJoin(user).on(review.userId.eq(user.id))
+            .innerJoin(store).on(review.storeId.eq(store.id))
+            .where(
+                review.userId.eq(userId),
+                review.status.eq(ReviewStatus.POSTED),
+                store.status.eq(StoreStatus.ACTIVE)
+            )
+            .orderBy(review.id.desc())
+            .limit(pageable.getPageSize())
+            .offset(pageable.getOffset())
+            .fetch();
+
+        List<ReviewWithStoreAndCreatorProjection> result = queryFactory.select(new QReviewWithStoreAndCreatorProjection(
             review.id,
             review.rating.rating,
             review.contents,
@@ -83,14 +112,12 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
             .innerJoin(user).on(review.userId.eq(user.id))
             .innerJoin(store).on(review.storeId.eq(store.id))
             .where(
-                review.userId.eq(userId),
-                review.status.eq(ReviewStatus.POSTED),
-                store.status.eq(StoreStatus.ACTIVE)
+                review.id.in(reviewIds)
             )
-            .offset(pageable.getOffset())
-            .limit(pageable.getPageSize())
-            .fetchResults();
-        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
+            .orderBy(review.id.desc())
+            .fetch();
+
+        return new PageImpl<>(result, pageable, totalCount);
     }
 
 }

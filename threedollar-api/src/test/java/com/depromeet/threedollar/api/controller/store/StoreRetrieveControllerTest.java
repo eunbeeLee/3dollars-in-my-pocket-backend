@@ -167,8 +167,8 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertThat(response.getData().getTotalElements()).isEqualTo(2);
         assertThat(response.getData().getTotalPages()).isEqualTo(1);
         assertThat(response.getData().getContent()).hasSize(2);
-        assertStoreInfoResponse(response.getData().getContent().get(0), store1.getId(), store1.getLatitude(), store1.getLongitude(), store1.getName(), store1.getRating());
-        assertStoreInfoResponse(response.getData().getContent().get(1), store2.getId(), store2.getLatitude(), store2.getLongitude(), store2.getName(), store2.getRating());
+        assertStoreInfoResponse(response.getData().getContent().get(0), store2.getId(), store2.getLatitude(), store2.getLongitude(), store2.getName(), store2.getRating());
+        assertStoreInfoResponse(response.getData().getContent().get(1), store1.getId(), store1.getLatitude(), store1.getLongitude(), store1.getName(), store1.getRating());
     }
 
     private void assertUserInfoResponse(UserInfoResponse user, Long userId, String name, UserSocialType socialType) {

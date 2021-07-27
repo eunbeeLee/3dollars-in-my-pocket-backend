@@ -21,7 +21,10 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(
-    indexes = @Index(name = "idx_store_1", columnList = "userId")
+    indexes = {
+        @Index(name = "idx_store_1", columnList = "userId"),
+        @Index(name = "idx_store_2", columnList = "status"),
+    }
 )
 public class Store extends AuditingTimeEntity {
 

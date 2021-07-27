@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -76,21 +75,30 @@ class ReviewRepositoryTest {
         Store store = StoreCreator.create(user.getId(), "가게");
         storeRepository.save(store);
 
-        reviewRepository.saveAll(Arrays.asList(
-            ReviewCreator.create(store.getId(), user.getId(), "리뷰 1", 5),
-            ReviewCreator.create(store.getId(), user.getId(), "리뷰 2", 4),
-            ReviewCreator.create(store.getId(), user.getId(), "리뷰 3", 3)
-        ));
+        for (int i = 1; i <= 30; i++) {
+            reviewRepository.save(ReviewCreator.create(store.getId(), user.getId(), String.valueOf(i), 5));
+        }
 
         // when
-        Page<ReviewWithStoreAndCreatorProjection> pages = reviewRepository.findAllWithCreatorByUserId(user.getId(), PageRequest.of(0, 2));
+        Page<ReviewWithStoreAndCreatorProjection> pages = reviewRepository.findAllWithCreatorByUserId(user.getId(), PageRequest.of(1, 2));
 
         // then
-        assertThat(pages.getTotalElements()).isEqualTo(3);
-        assertThat(pages.getTotalPages()).isEqualTo(2);
+        assertThat(pages.getTotalElements()).isEqualTo(30);
+        assertThat(pages.getTotalPages()).isEqualTo(15);
         List<ReviewWithStoreAndCreatorProjection> reviews = pages.getContent();
-        assertReviewWithStoreAndCreatorDto(reviews.get(0), 5, "리뷰 1", ReviewStatus.POSTED, store.getId(), store.getName(), user.getId(), user.getName(), user.getSocialType());
-        assertReviewWithStoreAndCreatorDto(reviews.get(1), 4, "리뷰 2", ReviewStatus.POSTED, store.getId(), store.getName(), user.getId(), user.getName(), user.getSocialType());
+        assertReviewWithStoreAndCreatorDto(reviews.get(0), 5, "28", ReviewStatus.POSTED, store.getId(), store.getName(), user.getId(), user.getName(), user.getSocialType());
+        assertReviewWithStoreAndCreatorDto(reviews.get(1), 5, "27", ReviewStatus.POSTED, store.getId(), store.getName(), user.getId(), user.getName(), user.getSocialType());
+    }
+
+    @Test
+    void 리뷰를_페이지네이션으로_가져올때_해당하는_데이터가_없는경우() {
+        // when
+        Page<ReviewWithStoreAndCreatorProjection> pages = reviewRepository.findAllWithCreatorByUserId(999L, PageRequest.of(0, 2));
+
+        // then
+        assertThat(pages.getTotalElements()).isEqualTo(0);
+        assertThat(pages.getTotalPages()).isEqualTo(0);
+        assertThat(pages.getContent()).isEmpty();
     }
 
     private void assertReviewWithStoreAndCreatorDto(ReviewWithStoreAndCreatorProjection review, int rating, String contents, ReviewStatus status,

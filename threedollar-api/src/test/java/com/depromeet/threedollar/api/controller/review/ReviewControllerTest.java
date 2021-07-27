@@ -116,10 +116,10 @@ class ReviewControllerTest extends AbstractControllerTest {
         assertThat(response.getData().getTotalElements()).isEqualTo(2);
         assertThat(response.getData().getContent()).hasSize(2);
 
-        assertReviewInfoResponse(response.getData().getContent().get(0), review1.getId(), store.getId(), store.getName(), review1.getContents(), review1.getRating(), ReviewStatus.POSTED);
+        assertReviewInfoResponse(response.getData().getContent().get(0), review2.getId(), store.getId(), store.getName(), review2.getContents(), review2.getRating(), ReviewStatus.POSTED);
         assertUserInfoResponse(response.getData().getContent().get(0).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
 
-        assertReviewInfoResponse(response.getData().getContent().get(1), review2.getId(), store.getId(), store.getName(), review2.getContents(), review2.getRating(), ReviewStatus.POSTED);
+        assertReviewInfoResponse(response.getData().getContent().get(1), review1.getId(), store.getId(), store.getName(), review1.getContents(), review1.getRating(), ReviewStatus.POSTED);
         assertUserInfoResponse(response.getData().getContent().get(1).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
     }
 
