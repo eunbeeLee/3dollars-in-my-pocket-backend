@@ -23,6 +23,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @SpringBootTest
 class StoreImageServiceTest extends UserSetUpTest {
 
+    private static final String IMAGE_URL = "https://image.url";
+
     private StoreImageService storeImageService;
 
     @Autowired
@@ -31,6 +33,8 @@ class StoreImageServiceTest extends UserSetUpTest {
     @Autowired
     private StoreRepository storeRepository;
 
+    private Store store;
+
     @AfterEach
     void cleanUp() {
         super.cleanup();
@@ -38,22 +42,12 @@ class StoreImageServiceTest extends UserSetUpTest {
         storeImageRepository.deleteAll();
     }
 
-    private Store store;
-    private static final String IMAGE_URL = "https://image.url";
-
     @BeforeEach
     void setUpStoreImageService() {
         storeImageService = new StoreImageService(storeRepository, storeImageRepository, new StubFileUploadService());
 
         store = StoreCreator.create(userId, "가게이름");
         storeRepository.save(store);
-    }
-
-    private static class StubFileUploadService implements FileUploadService {
-        @Override
-        public String uploadImage(FileUploadRequest request, MultipartFile file) {
-            return IMAGE_URL;
-        }
     }
 
     @Test
@@ -140,6 +134,13 @@ class StoreImageServiceTest extends UserSetUpTest {
         assertThat(storeImage.getUserId()).isEqualTo(userId);
         assertThat(storeImage.getUrl()).isEqualTo(imageUrl);
         assertThat(storeImage.getStatus()).isEqualTo(status);
+    }
+
+    private static class StubFileUploadService implements FileUploadService {
+        @Override
+        public String uploadImage(FileUploadRequest request, MultipartFile file) {
+            return IMAGE_URL;
+        }
     }
 
 }

@@ -15,10 +15,6 @@ class JwtTokenService(
     private val component: JwtTokenProviderComponent
 ) : TokenService {
 
-    companion object {
-        private const val EXPIRES_TIME: Long = 60 * 60 * 24 // 1일
-    }
-
     override fun encode(adminTokenDto: AdminTokenDto): String {
         return try {
             val now = ZonedDateTime.now()
@@ -44,6 +40,10 @@ class JwtTokenService(
         } catch (e: RuntimeException) {
             throw UnAuthorizedException("잘못된 토큰입니다. 다시 로그인 해주세요")
         }
+    }
+
+    companion object {
+        private const val EXPIRES_TIME: Long = 60 * 60 * 24 // 1일
     }
 
 }

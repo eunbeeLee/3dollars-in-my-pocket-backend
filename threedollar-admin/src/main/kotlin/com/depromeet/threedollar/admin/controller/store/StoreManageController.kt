@@ -15,9 +15,7 @@ class StoreManageController(
 
     @ApiOperation("신고가 기준치 이상 요청된 가게들을 조회한다.")
     @GetMapping("/admin/v1/stores/report")
-    fun retrieveReportedStores(
-        request: RetrieveReportedStoresRequest
-    ): ApiResponse<List<ReportedStoresResponse>> {
+    fun retrieveReportedStores(request: RetrieveReportedStoresRequest): ApiResponse<List<ReportedStoresResponse>> {
         return ApiResponse.success(storeManageService.retrieveReportedStores(request))
     }
 

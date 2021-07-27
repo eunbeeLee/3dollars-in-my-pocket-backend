@@ -26,18 +26,6 @@ class S3FileUploadServiceTest {
         s3FileUploadService = new S3FileUploadService(new StubS3Service());
     }
 
-    private static class StubS3Service implements S3Service {
-        @Override
-        public void uploadFile(InputStream inputStream, ObjectMetadata objectMetadata, String fileName) {
-
-        }
-
-        @Override
-        public String getFileUrl(String fileName) {
-            return fileName;
-        }
-    }
-
     @Test
     void 파일이_정상적으로_업로드되면_업로드된_파일명이_반환된다() {
         // given
@@ -73,6 +61,18 @@ class S3FileUploadServiceTest {
 
         // when & then
         assertThatThrownBy(() -> s3FileUploadService.uploadImage(request, multipartFile)).isInstanceOf(ValidationException.class);
+    }
+
+    private static class StubS3Service implements S3Service {
+        @Override
+        public void uploadFile(InputStream inputStream, ObjectMetadata objectMetadata, String fileName) {
+
+        }
+
+        @Override
+        public String getFileUrl(String fileName) {
+            return fileName;
+        }
     }
 
 }

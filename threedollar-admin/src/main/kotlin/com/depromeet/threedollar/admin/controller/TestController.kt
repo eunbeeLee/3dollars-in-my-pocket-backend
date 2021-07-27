@@ -16,16 +16,16 @@ class TestController(
     private val adminRepository: AdminRepository
 ) {
 
-    companion object {
-        private const val TEST_ADMIN_EMAIL = "test.admin@test.com"
-        private const val TEST_ADMIN_NAME = "테스트 관리자"
-    }
-
     @GetMapping("/test-token")
     fun getTestToken(): ApiResponse<String> {
         val admin = adminRepository.findAdminByEmail(TEST_ADMIN_EMAIL)
             ?: adminRepository.save(AdminCreator.create(TEST_ADMIN_EMAIL, TEST_ADMIN_NAME))
         return ApiResponse.success(tokenService.encode(AdminTokenDto(admin.id)))
+    }
+
+    companion object {
+        private const val TEST_ADMIN_EMAIL = "test.admin@test.com"
+        private const val TEST_ADMIN_NAME = "테스트 관리자"
     }
 
 }

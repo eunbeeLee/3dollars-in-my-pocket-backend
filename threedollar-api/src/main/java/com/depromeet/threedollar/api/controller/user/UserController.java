@@ -35,7 +35,8 @@ public class UserController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PutMapping("/api/v2/user/me")
-    public ApiResponse<UserInfoResponse> updateMyUserInfo(@Valid @RequestBody UpdateUserInfoRequest request, @UserId Long userId) {
+    public ApiResponse<UserInfoResponse> updateMyUserInfo(@Valid @RequestBody UpdateUserInfoRequest request,
+                                                          @UserId Long userId) {
         return ApiResponse.success(userService.updateUserInfo(request, userId));
     }
 

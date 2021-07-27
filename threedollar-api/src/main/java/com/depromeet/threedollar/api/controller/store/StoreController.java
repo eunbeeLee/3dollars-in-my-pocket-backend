@@ -30,7 +30,8 @@ public class StoreController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PostMapping("/api/v2/store")
-    public ApiResponse<StoreInfoResponse> addStore(@Valid @RequestBody AddStoreRequest request, @UserId Long userId) {
+    public ApiResponse<StoreInfoResponse> addStore(@Valid @RequestBody AddStoreRequest request,
+                                                   @UserId Long userId) {
         return ApiResponse.success(storeService.addStore(request, userId));
     }
 
@@ -48,7 +49,9 @@ public class StoreController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @DeleteMapping("/api/v2/store/{storeId}")
-    public ApiResponse<String> deleteStore(@Valid DeleteStoreRequest request, @PathVariable Long storeId, @UserId Long userId) {
+    public ApiResponse<String> deleteStore(@Valid DeleteStoreRequest request,
+                                           @PathVariable Long storeId,
+                                           @UserId Long userId) {
         storeService.deleteStore(storeId, request, userId);
         return ApiResponse.SUCCESS;
     }

@@ -16,10 +16,6 @@ class AuthInterceptor(
     private val adminRepository: AdminRepository
 ) : HandlerInterceptorAdapter() {
 
-    companion object {
-        const val TOKEN_PREFIX = "Bearer "
-    }
-
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         val header = request.getHeader(HttpHeaders.AUTHORIZATION)
         if (StringUtils.hasText(header) && header.startsWith(TOKEN_PREFIX)) {
@@ -31,6 +27,10 @@ class AuthInterceptor(
             return true
         }
         throw UnAuthorizedException("잘못된 토큰(${header})입니다 다시 로그인해주세요.")
+    }
+
+    companion object {
+        const val TOKEN_PREFIX = "Bearer "
     }
 
 }

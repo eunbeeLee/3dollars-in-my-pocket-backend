@@ -26,7 +26,8 @@ public class ReviewController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PostMapping("/api/v2/store/review")
-    public ApiResponse<ReviewInfoResponse> addStoreReview(@Valid @RequestBody AddReviewRequest request, @UserId Long userId) {
+    public ApiResponse<ReviewInfoResponse> addStoreReview(@Valid @RequestBody AddReviewRequest request,
+                                                          @UserId Long userId) {
         return ApiResponse.success(reviewService.addReview(request, userId));
     }
 
@@ -34,7 +35,9 @@ public class ReviewController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PutMapping("/api/v2/store/review/{reviewId}")
-    public ApiResponse<ReviewInfoResponse> updateStoreReview(@PathVariable Long reviewId, @Valid @RequestBody UpdateReviewRequest request, @UserId Long userId) {
+    public ApiResponse<ReviewInfoResponse> updateStoreReview(@PathVariable Long reviewId,
+                                                             @Valid @RequestBody UpdateReviewRequest request,
+                                                             @UserId Long userId) {
         return ApiResponse.success(reviewService.updateReview(reviewId, request, userId));
     }
 
@@ -51,7 +54,8 @@ public class ReviewController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @GetMapping("/api/v2/store/reviews/me")
-    public ApiResponse<ReviewDetailWithPaginationResponse> retrieveMyStoreReviews(@Valid RetrieveMyReviewsRequest request, @UserId Long userId) {
+    public ApiResponse<ReviewDetailWithPaginationResponse> retrieveMyStoreReviews(@Valid RetrieveMyReviewsRequest request,
+                                                                                  @UserId Long userId) {
         return ApiResponse.success(reviewService.retrieveMyReviews(request, userId));
     }
 
