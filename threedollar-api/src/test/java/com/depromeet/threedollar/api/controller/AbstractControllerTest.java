@@ -31,7 +31,7 @@ public abstract class AbstractControllerTest {
 
     protected void setup() throws Exception {
         userMockApiCaller = new UserMockApiCaller(mockMvc, objectMapper);
-        token = userMockApiCaller.getTestToken().getData().getSessionId();
+        token = userMockApiCaller.getTestToken().getData().getToken();
         testUser = userRepository.findUserBySocialIdAndSocialType("test-uid", UserSocialType.KAKAO);
     }
 
