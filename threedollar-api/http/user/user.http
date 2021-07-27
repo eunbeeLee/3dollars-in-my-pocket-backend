@@ -1,14 +1,3 @@
-### 테스트를 위한 세션
-GET {{host_api}}/test-token
-
-> {%
-client.global.set("AUTHORIZATION", response.body["data"]["sessionId"])
-client.test("200 OK", function() {
-    client.assert(response.status === 200, "응답 실패");
-});
-%}
-
-
 ### [인증] 나의 회원 정보를 조회합니다.
 GET {{host_api}}/api/v2/user/me
 Authorization: {{AUTHORIZATION}}

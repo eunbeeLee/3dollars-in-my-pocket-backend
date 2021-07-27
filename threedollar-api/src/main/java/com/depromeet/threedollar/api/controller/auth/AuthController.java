@@ -74,6 +74,7 @@ public class AuthController {
     @DeleteMapping("/api/v2/signout")
     public ApiResponse<String> signOut(@Valid SignOutRequest request, @UserId Long userId) {
         signOutBySocialType(request, userId);
+        httpSession.invalidate();
         return ApiResponse.SUCCESS;
     }
 
@@ -87,6 +88,15 @@ public class AuthController {
             return;
         }
         throw new ValidationException(String.format("허용하지 않는 소셜 타입 (%s) 입니다.", request.getSocialType()));
+    }
+
+    @ApiOperation("[인증] 로그아웃을 요청합니다.")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
+    @Auth
+    @PostMapping("/api/v2/logout")
+    public ApiResponse<String> logout() {
+        httpSession.invalidate();
+        return ApiResponse.SUCCESS;
     }
 
 }
