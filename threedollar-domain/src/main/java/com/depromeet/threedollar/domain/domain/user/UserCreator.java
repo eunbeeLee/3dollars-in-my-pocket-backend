@@ -14,12 +14,4 @@ public class UserCreator {
             .build();
     }
 
-    public static User createInactive(String socialId, UserSocialType socialType, String name) {
-        return User.builder()
-            .socialId(socialId)
-            .socialType(socialType)
-            .name(name)
-            .build();
-    }
-
 }

@@ -61,18 +61,6 @@ class StoreDeleteServiceTest extends UserSetUpTest {
     }
 
     @Test
-    void 해당_사용자가_해당하는_가게에_대해_이미_삭제요청_한경우_에러가_발생한다() {
-        // given
-        Store store = StoreCreator.create(userId, "storeName");
-        storeRepository.save(store);
-
-        storeDeleteRequestRepository.save(StoreDeleteRequestCreator.create(store.getId(), userId, DeleteReasonType.NOSTORE));
-
-        // when & then
-        assertThatThrownBy(() -> storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId)).isInstanceOf(ConflictException.class);
-    }
-
-    @Test
     void 가게_삭제_요청이_2개_쌓이면_실제로_가게정보가_삭제되지_않는다() {
         // given
         Store store = StoreCreator.create(userId, "storeName");
@@ -115,6 +103,18 @@ class StoreDeleteServiceTest extends UserSetUpTest {
         assertThat(storeDeleteRequestList).hasSize(3);
 
         assertThat(result).isTrue();
+    }
+
+    @Test
+    void 해당_사용자가_해당하는_가게에_대해_이미_삭제요청_한경우_에러가_발생한다() {
+        // given
+        Store store = StoreCreator.create(userId, "storeName");
+        storeRepository.save(store);
+
+        storeDeleteRequestRepository.save(StoreDeleteRequestCreator.create(store.getId(), userId, DeleteReasonType.NOSTORE));
+
+        // when & then
+        assertThatThrownBy(() -> storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId)).isInstanceOf(ConflictException.class);
     }
 
     private void assertStoreDeleteRequest(StoreDeleteRequest storeDeleteRequest, Long storeId, Long userId, DeleteReasonType type) {

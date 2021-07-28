@@ -52,7 +52,7 @@ class StoreServiceTest extends UserSetUpTest {
     }
 
     @Test
-    void 새로운_가게를_등록하면_Store_DB_데이터가_추가된다() {
+    void 새로운_가게를_등록하면_새로운_가게_데이터가_추가된다() {
         // given
         Double latitude = 34.0;
         Double longitude = 130.0;
@@ -87,7 +87,7 @@ class StoreServiceTest extends UserSetUpTest {
     }
 
     @Test
-    void 새로운_가게를_등록하면_새로운_게시일도_함께_추가된다() {
+    void 새로운_가게를_등록하면_게시일_정보도_함께_추가된다() {
         // given
         Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY, DayOfTheWeek.WEDNESDAY);
 

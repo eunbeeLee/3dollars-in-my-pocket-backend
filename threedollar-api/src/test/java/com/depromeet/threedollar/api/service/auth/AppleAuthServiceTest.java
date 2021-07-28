@@ -42,7 +42,7 @@ class AppleAuthServiceTest {
     }
 
     @Test
-    void 애플_로그인_요청시_회원가입한_유저면_멤버의_PK_가_반환된다() {
+    void 애플_로그인_요청시_회원이면_멤버의_PK_가_반환된다() {
         // given
         User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
         userRepository.save(user);
@@ -57,7 +57,7 @@ class AppleAuthServiceTest {
     }
 
     @Test
-    void 애플_로그인_요청시_회원가입_하지_않은_유저면_404_에러가_발생한다() {
+    void 애플_로그인_요청시_회원이_아니면_404_에러가_발생한다() {
         // given
         LoginRequest request = LoginRequest.testInstance("token", UserSocialType.APPLE);
 

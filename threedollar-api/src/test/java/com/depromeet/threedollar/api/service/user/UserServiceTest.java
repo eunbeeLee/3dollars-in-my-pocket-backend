@@ -37,7 +37,7 @@ class UserServiceTest {
     }
 
     @Test
-    void 새로운_유저가_회원가입하면_DB에_유저정보가_저장된다() {
+    void 회원가입이_성공하면_유저정보가_저장된다() {
         // given
         String socialId = "social-id";
         UserSocialType type = UserSocialType.KAKAO;
@@ -55,7 +55,7 @@ class UserServiceTest {
     }
 
     @Test
-    void 이미_존재하는_닉네임인_경우_에러가_발생한다() {
+    void 회원가입시_중복된_닉네임이면_에러_발생() {
         // given
         String name = "가슴속 삼천원";
         userRepository.save(UserCreator.create("social-id", UserSocialType.KAKAO, name));
@@ -67,21 +67,7 @@ class UserServiceTest {
     }
 
     @Test
-    void 회원탈퇴한_유저의_닉네임과_중복될수_없다() {
-        // given
-        String socialId = "social-id";
-        UserSocialType type = UserSocialType.KAKAO;
-        String name = "가슴속 삼천원";
-        userRepository.save(UserCreator.createInactive("social-id", type, name));
-
-        CreateUserRequest request = CreateUserRequest.testInstance("another-id", UserSocialType.APPLE, name);
-
-        // when & then
-        assertThatThrownBy(() -> userService.createUser(request)).isInstanceOf(ConflictException.class);
-    }
-
-    @Test
-    void 이미_존재하는_소셜_ID인경우_에러가_발생한다() {
+    void 회원가입시_중복된_SOCIALID이면_에러_발생() {
         // given
         String socialId = "social-id";
         UserSocialType type = UserSocialType.KAKAO;
@@ -94,7 +80,7 @@ class UserServiceTest {
     }
 
     @Test
-    void 소셜ID가_같더라도_제공하는_소셜이_다른경우_회원가입이_정상적으로_처리된다() {
+    void 회원가입시_SOCIALID가_같더라도_제공하는_소셜이_다른경우_회원가입이_정상적으로_처리된다() {
         // given
         String socialId = "social-id";
         userRepository.save(UserCreator.create(socialId, UserSocialType.APPLE, "기존의 닉네임"));
@@ -129,7 +115,7 @@ class UserServiceTest {
     }
 
     @Test
-    void 존재하지_않는_유저정보를_조회하면_에러가_발생한다() {
+    void 유저_정보를_조회시_존재하지_않는_유저면_에러가_발생한다() {
         // given
         Long userId = 999L;
 
@@ -138,7 +124,7 @@ class UserServiceTest {
     }
 
     @Test
-    void 중복된_닉네임인지_확인할때_중복된_닉네임이면_에러가_발생한다() {
+    void 중복된_닉네임인지_체크시_중복된_닉네임이면_에러가_발생한다() {
         // given
         String name = "가슴속 삼천원";
         User user = UserCreator.create("social-id", UserSocialType.KAKAO, name);
@@ -151,7 +137,7 @@ class UserServiceTest {
     }
 
     @Test
-    void 중복된_닉네임인지_확인할때_중복된_닉네임이_아니면_통과한다() {
+    void 중복된_닉네임인지_체크시_중복되지_않으면_OK() {
         // given
         String name = "가슴속 삼천원";
 
@@ -162,7 +148,7 @@ class UserServiceTest {
     }
 
     @Test
-    void 유저정보를_수정요청하면_DB_정보가_변경된다() {
+    void 회원정보_수정이_상공하면_DB_정보가_변경된다() {
         // given
         String socialId = "social-id";
         UserSocialType type = UserSocialType.KAKAO;
@@ -182,7 +168,7 @@ class UserServiceTest {
     }
 
     @Test
-    void 존재하지_않는_유저정보를_수정요청하면_에러가_발생한다() {
+    void 회원정보_수정시_존재하지_않는_유저면_에러가_발생한다() {
         // given
         Long userId = 999L;
         UpdateUserInfoRequest request = UpdateUserInfoRequest.testInstance("name");
@@ -192,7 +178,7 @@ class UserServiceTest {
     }
 
     @Test
-    void 회원탈퇴하면_INACTIVE되고_WithdrawlUser_데이터가_하나_생성된다() {
+    void 회원탈퇴하면_백업을_위한_데이터가_생성된다() {
         // given
         UserSocialType type = UserSocialType.APPLE;
         User user = UserCreator.create("social-id", type, "기존의 닉네임");
@@ -211,7 +197,7 @@ class UserServiceTest {
     }
 
     @Test
-    void 회원탈퇴한_유저만_USER_테이블에서_삭제된다() {
+    void 회원탈퇴한_유저만이_USER_테이블에서_삭제된다() {
         // given
         UserSocialType type = UserSocialType.APPLE;
         User user1 = UserCreator.create("social-id1", type, "기존의 닉네임1");
@@ -227,7 +213,6 @@ class UserServiceTest {
         assertThat(users).hasSize(1);
         assertUserInfo(users.get(0), user2.getSocialId(), user2.getSocialType(), user2.getName());
     }
-
 
     private void assertWithdrawalUser(WithdrawalUser withdrawalUser, Long userId, String name, String socialId, UserSocialType socialType) {
         assertThat(withdrawalUser.getUserId()).isEqualTo(userId);

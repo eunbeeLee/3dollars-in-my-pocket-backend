@@ -45,7 +45,7 @@ class KaKaoAuthServiceTest {
     }
 
     @Test
-    void 카카오_로그인_요청시_회원가입한_유저면_멤버의_PK_가_반환된다() {
+    void 카카오_로그인_요청시_회원이면_멤버의_PK_가_반환된다() {
         // given
         User user = UserCreator.create(socialId, UserSocialType.KAKAO, "닉네임");
         userRepository.save(user);
@@ -60,7 +60,7 @@ class KaKaoAuthServiceTest {
     }
 
     @Test
-    void 카카오_로그인_요청시_아직_회원가입하지_않은_유저면_404_에러가_발생한다() {
+    void 카카오_로그인_요청시_회원이_아니면_404_에러가_발생한다() {
         // given
         LoginRequest request = LoginRequest.testInstance("token", UserSocialType.KAKAO);
 
