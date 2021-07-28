@@ -10,10 +10,10 @@ import javax.validation.constraints.Min;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RetrieveMyReviewsRequest {
 
-    @Min(value = 1, message = "{common.page.min}")
+    @Min(value = 1, message = "{common.size.min}")
     private int size;
 
-    @Min(value = 0, message = "{common.size.min}")
+    @Min(value = 0, message = "{common.page.min}")
     private int page;
 
     public static RetrieveMyReviewsRequest testInstance(int size, int page) {

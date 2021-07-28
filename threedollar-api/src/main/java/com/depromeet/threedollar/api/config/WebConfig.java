@@ -32,19 +32,20 @@ public class WebConfig implements WebMvcConfigurer {
         resolvers.add(userIdResolver);
     }
 
+    @Override
+    public Validator getValidator() {
+        LocalValidatorFactoryBean validatorFactoryBean = new LocalValidatorFactoryBean();
+        validatorFactoryBean.setValidationMessageSource(validationMessageSource());
+        return validatorFactoryBean;
+    }
+
     @Bean
     public MessageSource validationMessageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:/messages/validation");
         messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setCacheSeconds(10);
         return messageSource;
-    }
-
-    @Override
-    public Validator getValidator() {
-        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-        bean.setValidationMessageSource(validationMessageSource());
-        return bean;
     }
 
 }

@@ -8,7 +8,10 @@ import javax.validation.ConstraintValidatorContext
 @Component
 class NickNameValidator : ConstraintValidator<NickName, String> {
 
-    override fun isValid(nickName: String, context: ConstraintValidatorContext): Boolean {
+    override fun isValid(nickName: String?, context: ConstraintValidatorContext): Boolean {
+        if (nickName == null) {
+            return false
+        }
         return NICKNAME_REGEX.matcher(nickName).matches()
     }
 

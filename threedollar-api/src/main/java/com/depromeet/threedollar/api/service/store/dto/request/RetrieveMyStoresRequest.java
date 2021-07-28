@@ -11,10 +11,10 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RetrieveMyStoresRequest {
 
-    @Min(value = 1, message = "{common.page.min}")
+    @Min(value = 1, message = "{common.size.min}")
     private int size;
 
-    @Min(value = 0, message = "{common.size.min}")
+    @Min(value = 0, message = "{common.page.min}")
     private int page;
 
     @NotNull(message = "{store.latitude.notnull}")
