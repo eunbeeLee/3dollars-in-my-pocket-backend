@@ -8,7 +8,7 @@ import kotlin.reflect.KClass
 @Target(AnnotationTarget.FIELD)
 annotation class NickName(
 
-    val message: String = "잘못된 닉네임입니다",
+    val message: String = "{user.name.format}",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = []
 

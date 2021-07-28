@@ -48,7 +48,7 @@ public class UserService {
     @Transactional
     public UserInfoResponse updateUserInfo(UpdateUserInfoRequest request, Long userId) {
         User user = UserServiceUtils.findUserById(userRepository, userId);
-        UserServiceUtils.validateNotExistsUserName(userRepository, request.getName()); // TODO 차후 닉네임 공백 적용 여부 고민.
+        UserServiceUtils.validateNotExistsUserName(userRepository, request.getName());
         user.update(request.getName());
         return UserInfoResponse.of(user);
     }
