@@ -3,6 +3,7 @@ package com.depromeet.threedollar.api.service.store;
 import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.DeleteStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
+import com.depromeet.threedollar.api.service.store.dto.response.StoreDeleteResponse;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
@@ -35,8 +36,8 @@ public class StoreService {
     }
 
     @Transactional
-    public void deleteStore(Long storeId, DeleteStoreRequest request, Long userId) {
-        deleteRequestService.delete(storeId, request, userId);
+    public StoreDeleteResponse deleteStore(Long storeId, DeleteStoreRequest request, Long userId) {
+        return StoreDeleteResponse.of(deleteRequestService.delete(storeId, request, userId));
     }
 
 }

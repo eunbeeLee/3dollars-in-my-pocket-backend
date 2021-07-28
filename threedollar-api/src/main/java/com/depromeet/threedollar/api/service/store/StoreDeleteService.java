@@ -23,11 +23,11 @@ public class StoreDeleteService {
     private final StoreDeleteRequestRepository storeDeleteRequestRepository;
 
     @Transactional
-    public void delete(Long storeId, DeleteStoreRequest request, Long userId) {
+    public boolean delete(Long storeId, DeleteStoreRequest request, Long userId) {
         validateNotExistsStoreDeleteRequest(storeId, userId);
         Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
         storeDeleteRequestRepository.save(request.toEntity(store.getId(), userId));
-        deleteStoreIfAccumulatedDeleteRequests(store);
+        return deleteStoreIfAccumulatedDeleteRequests(store);
     }
 
     private void validateNotExistsStoreDeleteRequest(Long storeId, Long userId) {
@@ -37,11 +37,13 @@ public class StoreDeleteService {
         }
     }
 
-    private void deleteStoreIfAccumulatedDeleteRequests(Store store) {
+    private boolean deleteStoreIfAccumulatedDeleteRequests(Store store) {
         List<StoreDeleteRequest> storeDeleteRequests = storeDeleteRequestRepository.findAllByStoreId(store.getId());
         if (storeDeleteRequests.size() >= MAX_DELETE_REQUEST) {
             store.delete();
+            return true;
         }
+        return false;
     }
 
 }

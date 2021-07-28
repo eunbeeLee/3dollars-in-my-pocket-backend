@@ -6,6 +6,7 @@ import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.DeleteStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.MenuRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
+import com.depromeet.threedollar.api.service.store.dto.response.StoreDeleteResponse;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
 import com.depromeet.threedollar.common.exception.ErrorCode;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
@@ -13,6 +14,7 @@ import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.menu.MenuRepository;
 import com.depromeet.threedollar.domain.domain.store.*;
 import com.depromeet.threedollar.domain.domain.storedelete.DeleteReasonType;
+import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequestCreator;
 import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequestRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +22,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -132,7 +135,7 @@ class StoreControllerTest extends AbstractControllerTest {
         assertStoreInfoResponse(response.getData(), latitude, longitude, storeName);
     }
 
-    @DisplayName("DELETE /api/v2/store 200 OK")
+    @DisplayName("DELETE /api/v2/store 200 OK 삭제 요청만 쌓이는 경우")
     @Test
     void 특정_가게정보를_삭제하는_API_호출시_200_OK() throws Exception {
         // given
@@ -142,10 +145,31 @@ class StoreControllerTest extends AbstractControllerTest {
         DeleteStoreRequest request = DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE);
 
         // when
-        ApiResponse<String> response = storeMockApiCaller.deleteStore(store.getId(), request, token, 200);
+        ApiResponse<StoreDeleteResponse> response = storeMockApiCaller.deleteStore(store.getId(), request, token, 200);
 
         // then
-        assertThat(response.getData()).isEqualTo("OK");
+        assertThat(response.getData().getIsDeleted()).isFalse();
+    }
+
+    @DisplayName("DELETE /api/v2/store 200 OK 실제 삭제되는 경우")
+    @Test
+    void 특정_가게정보를_삭제하는_API_호출시_3개가_되면_실제로_삭제되고_true_를_반환한다_200OK() throws Exception {
+        // given
+        Store store = StoreCreator.create(testUser.getId(), "storeName");
+        storeRepository.save(store);
+
+        storeDeleteRequestRepository.saveAll(Arrays.asList(
+            StoreDeleteRequestCreator.create(store.getId(), 10L, DeleteReasonType.NOSTORE),
+            StoreDeleteRequestCreator.create(store.getId(), 11L, DeleteReasonType.NOSTORE)
+        ));
+
+        DeleteStoreRequest request = DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE);
+
+        // when
+        ApiResponse<StoreDeleteResponse> response = storeMockApiCaller.deleteStore(store.getId(), request, token, 200);
+
+        // then
+        assertThat(response.getData().getIsDeleted()).isTrue();
     }
 
     @DisplayName("DELETE /api/v2/store 존재하지 않는 가게인경우 404 Error")
@@ -155,7 +179,7 @@ class StoreControllerTest extends AbstractControllerTest {
         DeleteStoreRequest request = DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE);
 
         // when
-        ApiResponse<String> response = storeMockApiCaller.deleteStore(999L, request, token, 404);
+        ApiResponse<StoreDeleteResponse> response = storeMockApiCaller.deleteStore(999L, request, token, 404);
 
         // then
         assertThat(response.getResultCode()).isEqualTo(ErrorCode.NOT_FOUND_STORE_EXCEPTION.getCode());

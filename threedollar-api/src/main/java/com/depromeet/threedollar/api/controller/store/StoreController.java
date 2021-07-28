@@ -9,6 +9,7 @@ import com.depromeet.threedollar.api.service.store.dto.request.AddStoreImageRequ
 import com.depromeet.threedollar.api.service.store.dto.request.DeleteStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
+import com.depromeet.threedollar.api.service.store.dto.response.StoreDeleteResponse;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreImageResponse;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
 import io.swagger.annotations.ApiImplicitParam;
@@ -49,11 +50,10 @@ public class StoreController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @DeleteMapping("/api/v2/store/{storeId}")
-    public ApiResponse<String> deleteStore(@Valid DeleteStoreRequest request,
-                                           @PathVariable Long storeId,
-                                           @UserId Long userId) {
-        storeService.deleteStore(storeId, request, userId);
-        return ApiResponse.SUCCESS;
+    public ApiResponse<StoreDeleteResponse> deleteStore(@Valid DeleteStoreRequest request,
+                                                        @PathVariable Long storeId,
+                                                        @UserId Long userId) {
+        return ApiResponse.success(storeService.deleteStore(storeId, request, userId));
     }
 
     @ApiOperation("[인증] 가게의 이미지를 등록합니다.")

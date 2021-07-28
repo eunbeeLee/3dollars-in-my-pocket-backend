@@ -5,6 +5,7 @@ import com.depromeet.threedollar.api.controller.MockMvcUtils;
 import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.DeleteStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
+import com.depromeet.threedollar.api.service.store.dto.response.StoreDeleteResponse;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -56,7 +57,7 @@ public class StoreMockApiCaller extends MockMvcUtils {
         );
     }
 
-    public ApiResponse<String> deleteStore(Long storeId, DeleteStoreRequest request, String token, int expectedStatus) throws Exception {
+    public ApiResponse<StoreDeleteResponse> deleteStore(Long storeId, DeleteStoreRequest request, String token, int expectedStatus) throws Exception {
         MockHttpServletRequestBuilder builder = delete("/api/v2/store/".concat(String.valueOf(storeId)))
             .header(HttpHeaders.AUTHORIZATION, token)
             .param("deleteReasonType", String.valueOf(request.getDeleteReasonType()));

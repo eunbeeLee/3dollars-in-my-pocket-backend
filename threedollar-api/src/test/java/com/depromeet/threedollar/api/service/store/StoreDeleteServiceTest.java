@@ -42,7 +42,7 @@ class StoreDeleteServiceTest extends UserSetUpTest {
     }
 
     @Test
-    void 해당_가게에_삭제요청이_오면_Store_Delete_Request_가_하나_추가된다() {
+    void 가게_삭제_요청이_1개_쌓이면_실제로_가게정보가_삭제되지_않는다() {
         // given
         Store store = StoreCreator.create(userId, "storeName");
         storeRepository.save(store);
@@ -50,12 +50,14 @@ class StoreDeleteServiceTest extends UserSetUpTest {
         DeleteReasonType type = DeleteReasonType.NOSTORE;
 
         // when
-        storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
+        boolean result = storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
 
         // then
         List<StoreDeleteRequest> storeDeleteRequestList = storeDeleteRequestRepository.findAll();
         assertThat(storeDeleteRequestList).hasSize(1);
         assertStoreDeleteRequest(storeDeleteRequestList.get(0), store.getId(), userId, type);
+
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -71,7 +73,7 @@ class StoreDeleteServiceTest extends UserSetUpTest {
     }
 
     @Test
-    void 해당_가게에_삭제요청이_와서_삭제_요칭이_두개가_되면_Store_Delete_Request_가_하나_추가된다() {
+    void 가게_삭제_요청이_2개_쌓이면_실제로_가게정보가_삭제되지_않는다() {
         // given
         Store store = StoreCreator.create(userId, "storeName");
         storeRepository.save(store);
@@ -79,17 +81,19 @@ class StoreDeleteServiceTest extends UserSetUpTest {
         storeDeleteRequestRepository.save(StoreDeleteRequestCreator.create(store.getId(), 90L, DeleteReasonType.WRONG_CONTENT));
 
         // when
-        storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
+        boolean result = storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
 
         // then
         List<StoreDeleteRequest> storeDeleteRequestList = storeDeleteRequestRepository.findAll();
         assertThat(storeDeleteRequestList).hasSize(2);
         assertStoreDeleteRequest(storeDeleteRequestList.get(0), store.getId(), 90L, DeleteReasonType.WRONG_CONTENT);
         assertStoreDeleteRequest(storeDeleteRequestList.get(1), store.getId(), userId, DeleteReasonType.NOSTORE);
+
+        assertThat(result).isFalse();
     }
 
     @Test
-    void 해당_가게에_삭제요청이_와서_세개가_되면_Store_Delete_Request_가_하나_추가되고_해당_가게는_삭제처리된다() {
+    void 가게_삭제_요청이_3개_쌓이면_실제로_가게정보가_실제로_삭제된다() {
         // given
         Store store = StoreCreator.create(userId, "storeName");
         storeRepository.save(store);
@@ -100,7 +104,7 @@ class StoreDeleteServiceTest extends UserSetUpTest {
         );
 
         // when
-        storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
+        boolean result = storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
 
         // then
         List<Store> stores = storeRepository.findAll();
@@ -109,6 +113,8 @@ class StoreDeleteServiceTest extends UserSetUpTest {
 
         List<StoreDeleteRequest> storeDeleteRequestList = storeDeleteRequestRepository.findAll();
         assertThat(storeDeleteRequestList).hasSize(3);
+
+        assertThat(result).isTrue();
     }
 
     private void assertStoreDeleteRequest(StoreDeleteRequest storeDeleteRequest, Long storeId, Long userId, DeleteReasonType type) {
