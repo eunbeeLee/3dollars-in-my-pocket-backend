@@ -11,7 +11,7 @@ jobs:
       - name: checkout@v2
         uses: actions/checkout@v2
 
-      - name: Create rds secret properties
+      - name: Create rds properties
         env:
           PROFILES: dev
           DB_URI: ${{secrets.JDBC_URI}}
@@ -22,6 +22,15 @@ jobs:
           RESOURCE_PWD: threedollar-domain/src/main/resources
         run: |
           echo -e "spring.profiles=$PROFILES\nspring.datasource.hikari.jdbc-url=$DB_URI\nspring.datasource.hikari.username=$DB_USERNAME\nspring.datasource.hikari.password=$DB_PASSWORD\nspring.datasource.hikari.driver-class-name=$DB_DRIVER" > $RESOURCE_PWD/application-rds.properties
+
+      - name: Create security properties
+        env:
+          USER_NAME: ${{secrets.SECURITY_USER_NAME}}
+          USER_PASSWORD: ${{secrets.SECURITY_USER_PASSWORD}}
+
+          RESOURCE_PWD: threedollar-api/src/main/resources
+        run: |
+          echo -e "spring.security.user.name=$USER_NAME\nspring.security.user.password=$USER_PASSWORD" > $RESOURCE_PWD/application-actuator.properties
 
       - name: Get Semantic Versioning
         id: dev-version

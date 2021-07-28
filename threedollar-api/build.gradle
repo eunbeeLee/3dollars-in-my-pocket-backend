@@ -12,5 +12,11 @@ dependencies {
 
     // Spring Session (Redis)
     implementation 'org.springframework.session:spring-session-data-redis'
+
+    // Spring actuator
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
+    // Spring Security
+    implementation("org.springframework.boot:spring-boot-starter-security")
 }
 

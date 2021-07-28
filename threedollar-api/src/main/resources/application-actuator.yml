@@ -1,0 +1,9 @@
+management:
+  endpoints:
+    web:
+      base-path: /monitoring
+      exposure:
+        include: health,metrics,logfile
+  endpoint:
+    health:
+      show-details: always

@@ -13,6 +13,8 @@ spring:
       - credential
       - rds
       - redis
+      - actuator
+      - security
   servlet:
     multipart:
       max-file-size: 10MB
