@@ -21,7 +21,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// TODO 전반적 개선 필요.
 @RequiredArgsConstructor
 @Service
 public class StoreRetrieveService {

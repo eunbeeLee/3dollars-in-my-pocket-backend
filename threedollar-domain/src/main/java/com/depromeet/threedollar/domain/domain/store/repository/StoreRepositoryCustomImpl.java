@@ -32,6 +32,15 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
             ).fetchOne();
     }
 
+    /**
+     * OneToMany에서는 다중 FetchJoin 불가.
+     * -
+     * Store를 조회할때 [menu, appearanceDays, payments]를 oneToMany로 조회해서 N+1가 발생하는 이슈로
+     * menu만 fetchJoin을 걸어두고 (cuz menu만 필요한 쿼리들이 1/2로 존재하는 이유로 menu에 페치조인을 검)
+     * -
+     * default_batch_fetch_size: 1000 으로 설정하며
+     * 1000개 칼럼씩 WHERE store_id IN (...)으로 조회해서 N+1 문제를 해결하는 중.
+     */
     @Override
     public Store findStoreByIdFetchJoinMenu(Long storeId) {
         return queryFactory.selectFrom(store).distinct()
@@ -42,6 +51,12 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
             ).fetchOne();
     }
 
+    /**
+     * TODO 차후 스크롤 방식 페이지네이션 고려 필요.
+     * 기존의 offset 방식의 페이지네이션을 사용하고 있어서 호환성을 위해 유지하는 중.
+     * 성능 최적화를 위해서 커버링 인덱싱을 이용한 방식으로 개선중인데 쿼리가 세번 나가는 중.
+     * offset 없이 가능한 페이징 정책인 경우 교체 필요.
+     */
     @Override
     public Page<Store> findAllByUserIdWithPagination(Long userId, PageRequest pageRequest) {
         long totalCount = queryFactory.select(store.id)
@@ -71,6 +86,10 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
         return new PageImpl<>(stores, pageRequest, totalCount);
     }
 
+    /**
+     * TODO  B-Tree의 공간정보 인덱스 한계로, R-Tree 인덱스 리서치 필요.
+     * 현재 인덱스 풀스캔 (커버링 인덱스) -> PK들을 통한 LEFT JOIN을 통해서 계산하고 있음.
+     */
     @Override
     public List<Store> findStoresByLocationLessThanDistance(double latitude, double longitude, double distance) {
         List<Long> storeIds = queryFactory.select(store.id)
@@ -87,6 +106,12 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
             .fetch();
     }
 
+    /**
+     * 위도 (latitude), 경도 (longitude)가 주어졌을때 거리 계산 공식.
+     * -
+     * 6371 * acos(cos(radians(:latitude)) * cos(radians(store.latitude)) * cos(radians(store.longitude)
+     * - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(store.latitude)))) as distance
+     */
     private NumberExpression<Double> getDistanceExpression(double latitude, double longitude) {
         return acos(sin(radians(Expressions.constant(latitude)))
             .multiply(sin(radians(store.location.latitude)))

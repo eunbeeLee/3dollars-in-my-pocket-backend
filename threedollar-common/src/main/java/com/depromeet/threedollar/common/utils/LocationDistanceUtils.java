@@ -3,12 +3,13 @@ package com.depromeet.threedollar.common.utils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-/**
- * 일단 기존 프로젝트의 방법을 가져옴.
- */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LocationDistanceUtils {
 
+    /**
+     * 두 위도/경도간의 거리를 계산해주는 유틸성 메소드.
+     * 일단 기존의 프로젝트의 방법 적용하였음.
+     */
     public static int getDistance(double sourceLatitude, double sourceLongitude, double targetLatitude, double targetLongitude) {
         double theta = sourceLongitude - targetLongitude;
         double dist = Math.sin(deg2rad(sourceLatitude)) * Math.sin(deg2rad(targetLatitude))

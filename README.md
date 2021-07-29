@@ -8,8 +8,11 @@
 ### with gradlew
 
 ```bash
-./gradlew clean build
-java -jar threedollar-api/build/libs/threedollar-api.jar 
+./gradlew clean bootJar
+
+java -jar threedollar-api/build/libs/threedollar-api.jar
+
+java -jar threedollar-admin/build/libs/threedollar-admin.jar  
 ```
 
 ### with docker-compose
@@ -22,7 +25,7 @@ docker-compose up --build
 ### Language & Framework
 - Java 11, Kotlin 1.5
 - Spring Boot 2.3 + Spring MVC
-- Spring Data JPA + QueryDSL 4.3
+- Spring Data JPA (Hibernate) + QueryDSL 4.3
 - Gradle 7.0
 - Junit 5
 

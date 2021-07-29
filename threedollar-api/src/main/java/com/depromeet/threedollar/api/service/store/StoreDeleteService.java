@@ -16,7 +16,9 @@ import java.util.List;
 @Service
 public class StoreDeleteService {
 
-    // MAX_DELETE_REQUEST 만큼 가게 신고가 누적되면 실제로 가게가 삭제가 됩니다.
+    /**
+     * MAX_DELETE_REQUEST 만큼 가게 신고가 누적되면 실제로 가게가 삭제가 됩니다.
+     */
     private static final int MAX_DELETE_REQUEST = 3;
 
     private final StoreRepository storeRepository;

@@ -64,6 +64,12 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
             ).fetch();
     }
 
+    /**
+     * TODO 차후 스크롤 방식 페이지네이션 고려 필요.
+     * 기존의 offset 방식의 페이지네이션을 사용하고 있어서 호환성을 위해 유지하는 중.
+     * 성능 최적화를 위해서 커버링 인덱싱을 이용한 방식으로 개선중인데 쿼리가 세번 나가는 중.
+     * offset 없이 가능한 페이징 정책인 경우 교체 필요.
+     */
     @Override
     public Page<ReviewWithStoreAndCreatorProjection> findAllWithCreatorByUserId(Long userId, Pageable pageable) {
         long totalCount = queryFactory.select(review.id)
