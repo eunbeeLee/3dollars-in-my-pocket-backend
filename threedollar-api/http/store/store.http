@@ -8,12 +8,17 @@ Authorization: {{AUTHORIZATION}}
         "MONDAY",
         "TUESDAY"
     ],
-    "latitude": 33,
+    "latitude": 33.00001,
     "longitude": 124,
     "menu": [
         {
             "category": "BUNGEOPPANG",
             "name": "붕어빵 10개에 3000원",
+            "price": "3000원"
+        },
+        {
+            "category": "TAKOYAKI",
+            "name": "다코야키 10개에 3000원",
             "price": "3000원"
         }
     ],

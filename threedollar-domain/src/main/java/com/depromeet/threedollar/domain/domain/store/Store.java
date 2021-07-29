@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
     indexes = {
         @Index(name = "idx_store_1", columnList = "userId"),
         @Index(name = "idx_store_2", columnList = "status"),
+        @Index(name = "idx_store_3", columnList = "id,latitude,longitude")
     }
 )
 public class Store extends AuditingTimeEntity {

@@ -6,11 +6,9 @@ import com.depromeet.threedollar.api.service.review.dto.request.RetrieveMyReview
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewInfoResponse;
 import com.depromeet.threedollar.api.service.review.dto.request.UpdateReviewRequest;
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewDetailWithPaginationResponse;
-import com.depromeet.threedollar.api.service.store.StoreServiceUtils;
 import com.depromeet.threedollar.domain.domain.review.Review;
 import com.depromeet.threedollar.domain.domain.review.ReviewRepository;
 import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithStoreAndCreatorProjection;
-import com.depromeet.threedollar.domain.domain.store.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -23,12 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReviewService {
 
     private final ApplicationEventPublisher eventPublisher;
-    private final StoreRepository storeRepository;
     private final ReviewRepository reviewRepository;
 
     @Transactional
     public ReviewInfoResponse addReview(AddReviewRequest request, Long userId) {
-        StoreServiceUtils.validateExistsStore(storeRepository, request.getStoreId());
         Review review = reviewRepository.save(request.toEntity(userId));
         eventPublisher.publishEvent(ReviewChangedEvent.of(request.getStoreId()));
         return ReviewInfoResponse.of(review);

@@ -24,21 +24,21 @@ public class StoreDeleteService {
 
     @Transactional
     public boolean delete(Long storeId, DeleteStoreRequest request, Long userId) {
-        validateNotExistsStoreDeleteRequest(storeId, userId);
         Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
-        storeDeleteRequestRepository.save(request.toEntity(store.getId(), userId));
-        return deleteStoreIfAccumulatedDeleteRequests(store);
-    }
-
-    private void validateNotExistsStoreDeleteRequest(Long storeId, Long userId) {
-        StoreDeleteRequest storeDeleteRequest = storeDeleteRequestRepository.findByStoreIdAndUserId(storeId, userId);
-        if (storeDeleteRequest != null) {
+        List<StoreDeleteRequest> storeDeleteRequests = storeDeleteRequestRepository.findAllByStoreId(storeId);
+        if (hasAlreadyExistUserDeleteRequest(storeDeleteRequests, userId)) {
             throw new ConflictException(String.format("사용자 (%s)는 가게 (%s)에 대해 이미 삭제 요청을 하였습니다", userId, storeId));
         }
+        storeDeleteRequests.add(storeDeleteRequestRepository.save(request.toEntity(storeId, userId)));
+        return deleteStoreIfExcessLimit(storeDeleteRequests, store);
     }
 
-    private boolean deleteStoreIfAccumulatedDeleteRequests(Store store) {
-        List<StoreDeleteRequest> storeDeleteRequests = storeDeleteRequestRepository.findAllByStoreId(store.getId());
+    private boolean hasAlreadyExistUserDeleteRequest(List<StoreDeleteRequest> storeDeleteRequests, Long userId) {
+        return storeDeleteRequests.stream()
+            .anyMatch(storeDeleteRequest -> storeDeleteRequest.getUserId().equals(userId));
+    }
+
+    private boolean deleteStoreIfExcessLimit(List<StoreDeleteRequest> storeDeleteRequests, Store store) {
         if (storeDeleteRequests.size() >= MAX_DELETE_REQUEST) {
             store.delete();
             return true;

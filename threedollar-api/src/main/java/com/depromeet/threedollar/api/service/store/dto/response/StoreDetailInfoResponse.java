@@ -12,15 +12,11 @@ import com.depromeet.threedollar.domain.domain.store.StoreType;
 import com.depromeet.threedollar.domain.domain.user.User;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @ToString
 @Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class StoreDetailInfoResponse extends AuditingTimeResponse {
 
@@ -52,10 +48,32 @@ public class StoreDetailInfoResponse extends AuditingTimeResponse {
 
     private final List<ReviewResponse> review = new ArrayList<>();
 
-    public static StoreDetailInfoResponse of(Store store, List<StoreImageResponse> imageResponses, Double latitude, Double longitude, User user, List<ReviewResponse> reviewResponses) {
-        StoreDetailInfoResponse response = new StoreDetailInfoResponse(store.getId(), store.getLatitude(), store.getLongitude(), store.getName(),
-            store.getMenuCategories(), store.getType(), store.getRating(), LocationDistanceUtils.getDistance(store.getLatitude(), store.getLongitude(), latitude, longitude),
-            UserInfoResponse.of(user));
+    @Builder
+    private StoreDetailInfoResponse(Long storeId, Double latitude, Double longitude, String storeName, List<MenuCategoryType> categories, StoreType storeType, Double rating, Integer distance, UserInfoResponse user) {
+        this.storeId = storeId;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.storeName = storeName;
+        this.categories = categories;
+        this.storeType = storeType;
+        this.rating = rating;
+        this.distance = distance;
+        this.user = user;
+    }
+
+    public static StoreDetailInfoResponse of(Store store, List<StoreImageResponse> imageResponses, Double latitude,
+                                             Double longitude, User user, List<ReviewResponse> reviewResponses) {
+        StoreDetailInfoResponse response = StoreDetailInfoResponse.builder()
+            .storeId(store.getId())
+            .latitude(store.getLatitude())
+            .longitude(store.getLongitude())
+            .storeName(store.getName())
+            .categories(store.getMenuCategories())
+            .storeType(store.getType())
+            .rating(store.getRating())
+            .distance(LocationDistanceUtils.getDistance(store.getLatitude(), store.getLongitude(), latitude, longitude))
+            .user(UserInfoResponse.of(Objects.requireNonNullElseGet(user, User::deletedUser))) // 회원탈퇴한 제보자인경우 사라진 제보자로 보이게 하기 위함
+            .build();
         response.appearanceDays.addAll(store.getAppearanceDaysType());
         response.paymentMethods.addAll(store.getPaymentMethodsType());
         response.image.addAll(imageResponses);

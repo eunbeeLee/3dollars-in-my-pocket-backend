@@ -39,23 +39,15 @@ public class StoreRetrieveService {
         List<Store> stores = storeRepository.findStoresByLocationLessThanDistance(request.getMapLatitude(), request.getMapLongitude(), Math.min(request.getDistance(), LIMIT_DISTANCE));
         return stores.stream()
             .map(store -> StoreInfoResponse.of(store, request.getLatitude(), request.getLongitude()))
+            .sorted(Comparator.comparing(StoreInfoResponse::getDistance))
             .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public StoreDetailInfoResponse getDetailStoreInfo(RetrieveStoreDetailInfoRequest request) {
-        Store store = StoreServiceUtils.findStoreById(storeRepository, request.getStoreId());
-        return StoreDetailInfoResponse.of(store, storeImageService.getStoreImages(request.getStoreId()), request.getLatitude(), request.getLongitude(),
-            findCreatorOrDeletedUserIfNotExists(store.getUserId()), getStoreReviewsResponse(request.getStoreId()));
-    }
-
-    // 제보자가 삭제된경우 에러가 아닌 삭제된 데이터를 보여주기 위한 메소드.
-    private User findCreatorOrDeletedUserIfNotExists(Long userId) {
-        User user = userRepository.findUserById(userId);
-        if (user == null) {
-            return User.deletedUser();
-        }
-        return user;
+        Store store = StoreServiceUtils.findStoreByIdFetchJoinMenu(storeRepository, request.getStoreId());
+        User creator = userRepository.findUserById(store.getUserId());
+        return StoreDetailInfoResponse.of(store, storeImageService.getStoreImages(request.getStoreId()), request.getLatitude(), request.getLongitude(), creator, getStoreReviewsResponse(request.getStoreId()));
     }
 
     private List<ReviewResponse> getStoreReviewsResponse(Long storeId) {

@@ -12,9 +12,8 @@ import javax.persistence.*;
 @Entity
 @Table(
     indexes = {
-        @Index(name = "idx_review_1", columnList = "storeId"),
-        @Index(name = "idx_review_2", columnList = "userId"),
-        @Index(name = "idx_review_3", columnList = "status")
+        @Index(name = "idx_review_1", columnList = "storeId,status"),
+        @Index(name = "idx_review_2", columnList = "userId,status")
     }
 )
 public class Review extends AuditingTimeEntity {

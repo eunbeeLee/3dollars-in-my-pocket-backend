@@ -26,7 +26,7 @@ public class StoreService {
 
     @Transactional
     public StoreInfoResponse updateStore(Long storeId, UpdateStoreRequest request, Long userId) {
-        Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
+        Store store = StoreServiceUtils.findStoreByIdFetchJoinMenu(storeRepository, storeId);
         store.updateLocation(request.getLatitude(), request.getLongitude());
         store.updateInfo(request.getStoreName(), request.getStoreType(), userId);
         store.updatePaymentMethods(request.getPaymentMethods());

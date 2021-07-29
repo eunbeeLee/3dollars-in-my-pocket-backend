@@ -25,4 +25,12 @@ public class StoreServiceUtils {
         return store;
     }
 
+    public static Store findStoreByIdFetchJoinMenu(StoreRepository storeRepository, Long storeId) {
+        Store store = storeRepository.findStoreByIdFetchJoinMenu(storeId);
+        if (store == null) {
+            throw new NotFoundException(String.format("해당하는 가게 (%s)는 존재하지 않습니다", storeId), ErrorCode.NOT_FOUND_STORE_EXCEPTION);
+        }
+        return store;
+    }
+
 }
