@@ -14,6 +14,7 @@ CREATE TABLE `user`
 
 CREATE TABLE `withdrawal_user`
 (
+    `id`              BIGINT       NOT NULL AUTO_INCREMENT,
     `user_id`         BIGINT       NOT NULL,
     `name`            VARCHAR(50)  NOT NULL,
     `social_id`       VARCHAR(200) NOT NULL,
@@ -21,7 +22,7 @@ CREATE TABLE `withdrawal_user`
     `user_created_at` DATETIME(6) DEFAULT NULL,
     `created_at`      DATETIME(6) DEFAULT NULL,
     `updated_at`      DATETIME(6) DEFAULT NULL,
-    PRIMARY KEY (`user_id`)
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
 
@@ -38,7 +39,9 @@ CREATE TABLE `store`
     `created_at` DATETIME(6)               DEFAULT NULL,
     `updated_at` DATETIME(6)               DEFAULT NULL,
     PRIMARY KEY (`id`),
-    KEY `idx_store_1` (`user_id`)
+    KEY `idx_store_1` (`user_id`),
+    KEY `idx_store_2` (`status`),
+    KEY `idx_store_3` (`id`, `latitude`, `longitude`)
 ) ENGINE = InnoDB;
 
 
@@ -67,8 +70,8 @@ CREATE TABLE `review`
     `created_at` DATETIME(6)  DEFAULT NULL,
     `updated_at` DATETIME(6)  DEFAULT NULL,
     PRIMARY KEY (`id`),
-    KEY `idx_review_1` (`store_id`),
-    KEY `idx_review_2` (`user_id`)
+    KEY `idx_review_1` (`store_id`, `status`),
+    KEY `idx_review_2` (`user_id`, `status`)
 ) ENGINE = InnoDB;
 
 

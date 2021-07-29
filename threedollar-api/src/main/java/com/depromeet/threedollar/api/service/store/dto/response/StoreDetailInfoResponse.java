@@ -21,31 +21,18 @@ import java.util.stream.Collectors;
 public class StoreDetailInfoResponse extends AuditingTimeResponse {
 
     private Long storeId;
-
     private Double latitude;
-
     private Double longitude;
-
     private String storeName;
-
     private List<MenuCategoryType> categories;
-
     private StoreType storeType;
-
     private Double rating;
-
     private Integer distance;
-
     private UserInfoResponse user;
-
     private final Set<DayOfTheWeek> appearanceDays = new HashSet<>();
-
     private final Set<PaymentMethodType> paymentMethods = new HashSet<>();
-
     private final List<StoreImageResponse> image = new ArrayList<>();
-
     private final List<MenuResponse> menu = new ArrayList<>();
-
     private final List<ReviewResponse> review = new ArrayList<>();
 
     @Builder
@@ -72,7 +59,7 @@ public class StoreDetailInfoResponse extends AuditingTimeResponse {
             .storeType(store.getType())
             .rating(store.getRating())
             .distance(LocationDistanceUtils.getDistance(store.getLatitude(), store.getLongitude(), latitude, longitude))
-            .user(UserInfoResponse.of(Objects.requireNonNullElseGet(user, User::deletedUser))) // 회원탈퇴한 제보자인경우 사라진 제보자로 보이게 하기 위함
+            .user(UserInfoResponse.of(user))
             .build();
         response.appearanceDays.addAll(store.getAppearanceDaysType());
         response.paymentMethods.addAll(store.getPaymentMethodsType());

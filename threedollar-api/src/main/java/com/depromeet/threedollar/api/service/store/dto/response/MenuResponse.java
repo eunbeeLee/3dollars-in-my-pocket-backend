@@ -12,11 +12,8 @@ import lombok.*;
 public class MenuResponse extends AuditingTimeResponse {
 
     private Long menuId;
-
     private MenuCategoryType category;
-
     private String name;
-
     private String price;
 
     public static MenuResponse of(Menu menu) {

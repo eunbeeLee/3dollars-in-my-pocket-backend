@@ -39,10 +39,6 @@ public class User extends AuditingTimeEntity {
         return new User(socialId, socialType, name);
     }
 
-	public static User deletedUser() {
-        return new User(null, null, "사라진 제보자");
-	}
-
 	public void update(String name) {
         this.name = name;
     }

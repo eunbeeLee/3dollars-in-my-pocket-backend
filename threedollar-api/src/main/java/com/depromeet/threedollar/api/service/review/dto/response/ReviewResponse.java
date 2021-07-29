@@ -3,37 +3,35 @@ package com.depromeet.threedollar.api.service.review.dto.response;
 import com.depromeet.threedollar.api.common.dto.AuditingTimeResponse;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithCreatorProjection;
-import com.depromeet.threedollar.domain.domain.user.User;
-import com.depromeet.threedollar.domain.domain.user.UserSocialType;
 import lombok.*;
 
 @ToString
 @Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReviewResponse extends AuditingTimeResponse {
 
     private Long reviewId;
-
     private int rating;
-
     private String contents;
-
     private UserInfoResponse user;
 
-    public static ReviewResponse of(ReviewWithCreatorProjection review) {
-        ReviewResponse response = new ReviewResponse(review.getId(), review.getRating(), review.getContents(),
-            getUserInfoResponse(review.getUserId(), review.getUserName(), review.getUserSocialType()));
-        response.setBaseTime(review.getCreatedAt(), review.getUpdatedAt());
-        return response;
+    @Builder
+    private ReviewResponse(Long reviewId, int rating, String contents, UserInfoResponse user) {
+        this.reviewId = reviewId;
+        this.rating = rating;
+        this.contents = contents;
+        this.user = user;
     }
 
-    private static UserInfoResponse getUserInfoResponse(Long userId, String userName, UserSocialType socialType) {
-        if (userId == null) {
-            // 회원탈퇴한 유저인경우.
-            return UserInfoResponse.of(User.deletedUser());
-        }
-        return UserInfoResponse.of(userId, userName, socialType);
+    public static ReviewResponse of(ReviewWithCreatorProjection review) {
+        ReviewResponse response = ReviewResponse.builder()
+            .reviewId(review.getId())
+            .rating(review.getRating())
+            .contents(review.getContents())
+            .user(UserInfoResponse.of(review.getUserId(), review.getUserName(), review.getUserSocialType()))
+            .build();
+        response.setBaseTime(review.getCreatedAt(), review.getUpdatedAt());
+        return response;
     }
 
 }

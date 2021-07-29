@@ -12,13 +12,9 @@ import lombok.*;
 public class ReviewInfoResponse extends AuditingTimeResponse {
 
     private Long reviewId;
-
     private Long storeId;
-
     private String content;
-
     private int rating;
-
     private ReviewStatus status;
 
     public static ReviewInfoResponse of(Review review) {
