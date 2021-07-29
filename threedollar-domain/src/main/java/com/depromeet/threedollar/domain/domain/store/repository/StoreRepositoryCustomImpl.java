@@ -57,6 +57,7 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
             .fetch();
 
         List<Store> stores = queryFactory.selectFrom(store)
+            .leftJoin(store.menus, menu).fetchJoin()
             .where(
                 store.id.in(storeIds)
             )
