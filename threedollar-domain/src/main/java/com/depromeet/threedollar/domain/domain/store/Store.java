@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,10 +48,10 @@ public class Store extends AuditingTimeEntity {
     private double rating; // 평균 평가 점수
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final Set<PaymentMethod> paymentMethods = new HashSet<>();
+    private final List<PaymentMethod> paymentMethods = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final Set<AppearanceDay> appearanceDays = new HashSet<>();
+    private final List<AppearanceDay> appearanceDays = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Menu> menus = new ArrayList<>();
@@ -87,18 +86,18 @@ public class Store extends AuditingTimeEntity {
     }
 
     public void updatePaymentMethods(Set<PaymentMethodType> paymentMethodTypes) {
-        final List<PaymentMethodType> hasPaymentTypes = getPaymentMethodTypes();
         this.paymentMethods.removeIf(paymentMethod -> !paymentMethodTypes.contains(paymentMethod.getMethod()));
-        Set<PaymentMethodType> newPaymentTypes = paymentMethodTypes.stream()
+
+        Set<PaymentMethodType> hasPaymentTypes = getPaymentMethodTypes();
+        addPaymentMethods(paymentMethodTypes.stream()
             .filter(type -> !hasPaymentTypes.contains(type))
-            .collect(Collectors.toSet());
-        addPaymentMethods(newPaymentTypes);
+            .collect(Collectors.toSet()));
     }
 
-    private List<PaymentMethodType> getPaymentMethodTypes() {
+    private Set<PaymentMethodType> getPaymentMethodTypes() {
         return this.paymentMethods.stream()
             .map(PaymentMethod::getMethod)
-            .collect(Collectors.toList());
+            .collect(Collectors.toSet());
     }
 
     private void addAppearanceDay(DayOfTheWeek dayOfTheWeek) {
@@ -113,17 +112,18 @@ public class Store extends AuditingTimeEntity {
     }
 
     public void updateAppearanceDays(Set<DayOfTheWeek> dayOfTheWeeks) {
-        final List<DayOfTheWeek> hasDayOfTheWeek = getDayOfTheWeek();
         this.appearanceDays.removeIf(appearanceDay -> !dayOfTheWeeks.contains(appearanceDay.getDay()));
+
+        Set<DayOfTheWeek> hasDayOfTheWeek = getDayOfTheWeek();
         addAppearanceDays(dayOfTheWeeks.stream()
             .filter(day -> !hasDayOfTheWeek.contains(day))
             .collect(Collectors.toSet()));
     }
 
-    private List<DayOfTheWeek> getDayOfTheWeek() {
+    private Set<DayOfTheWeek> getDayOfTheWeek() {
         return this.appearanceDays.stream()
             .map(AppearanceDay::getDay)
-            .collect(Collectors.toList());
+            .collect(Collectors.toSet());
     }
 
     private void addMenu(Menu menu) {

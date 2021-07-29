@@ -55,12 +55,4 @@ public class User extends AuditingTimeEntity {
         return this.socialInfo.getSocialType();
     }
 
-    public WithdrawalUser signOut() {
-        return WithdrawalUser.of(this);
-    }
-
-    String getOriginName() {
-        return this.name;
-    }
-
 }

@@ -21,12 +21,16 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
+    /**
+     * menu, appearanceDay, payment에 대한 fetchJoin()이 필요한대
+     * 페치조인은 하나밖에 걸 수 없어서
+     * 일단 menu쪽에만 페치조인을 걸어두고
+     * batch_fetch_size를 1000으로 둔 상황.
+     */
     @Override
     public Store findStoreById(Long storeId) {
         return queryFactory.selectFrom(store)
-            .leftJoin(store.appearanceDays, appearanceDay)
-            .leftJoin(store.paymentMethods, paymentMethod)
-            .leftJoin(store.menus, menu)
+            .leftJoin(store.menus, menu).fetchJoin()
             .where(
                 store.id.eq(storeId),
                 store.status.eq(StoreStatus.ACTIVE)

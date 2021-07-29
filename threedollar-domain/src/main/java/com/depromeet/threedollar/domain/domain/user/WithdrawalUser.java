@@ -9,17 +9,15 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * TODO
- * 마이그레이션 이후에, 삭제된 유저 관리를 다른 방식으로 해야할 것 같음.
- * User.state, status를 다른 방식으로 관리하는 것이 좋아보입니다.
- */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class WithdrawalUser extends AuditingTimeEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private Long userId;
 
     private String name;
@@ -37,12 +35,12 @@ public class WithdrawalUser extends AuditingTimeEntity {
         this.userCreatedAt = userCreatedAt;
     }
 
-    static WithdrawalUser of(User user) {
+    public static WithdrawalUser newInstance(User signOutUser) {
         return WithdrawalUser.builder()
-            .userId(user.getId())
-            .name(user.getOriginName())
-            .socialInfo(SocialInfo.of(user.getSocialId(), user.getSocialType()))
-            .userCreatedAt(user.getCreatedAt())
+            .userId(signOutUser.getId())
+            .name(signOutUser.getName())
+            .socialInfo(SocialInfo.of(signOutUser.getSocialId(), signOutUser.getSocialType()))
+            .userCreatedAt(signOutUser.getCreatedAt())
             .build();
     }
 

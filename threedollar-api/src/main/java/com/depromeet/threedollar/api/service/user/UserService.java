@@ -4,10 +4,7 @@ import com.depromeet.threedollar.api.service.user.dto.request.CheckDuplicateName
 import com.depromeet.threedollar.api.service.user.dto.request.CreateUserRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
-import com.depromeet.threedollar.domain.domain.user.User;
-import com.depromeet.threedollar.domain.domain.user.UserRepository;
-import com.depromeet.threedollar.domain.domain.user.UserSocialType;
-import com.depromeet.threedollar.domain.domain.user.WithdrawalUserRepository;
+import com.depromeet.threedollar.domain.domain.user.*;
 import com.depromeet.threedollar.common.exception.ConflictException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,7 +53,7 @@ public class UserService {
     @Transactional
     public void signOut(Long userId, UserSocialType socialType) {
         User user = UserServiceUtils.findUserByIdAndSocialType(userRepository, userId, socialType);
-        withdrawalUserRepository.save(user.signOut());
+        withdrawalUserRepository.save(WithdrawalUser.newInstance(user));
         userRepository.delete(user);
     }
 
