@@ -11,9 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -162,6 +160,15 @@ public class Store extends AuditingTimeEntity {
 
     public void delete() {
         this.status = StoreStatus.DELETED;
+    }
+
+    public MenuCategoryType getRepresentativeCategory() {
+        if (this.menus.isEmpty()) {
+            return null;
+        }
+        Map<MenuCategoryType, Long> menusCounts = this.menus.stream()
+            .collect(Collectors.groupingBy(Menu::getCategory, Collectors.counting()));
+        return Collections.max(menusCounts.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 
     public List<MenuCategoryType> getMenuCategories() {

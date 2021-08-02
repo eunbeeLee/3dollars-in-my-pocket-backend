@@ -46,7 +46,8 @@ public class StoreRetrieveService {
     public StoreDetailInfoResponse getDetailStoreInfo(RetrieveStoreDetailInfoRequest request) {
         Store store = StoreServiceUtils.findStoreByIdFetchJoinMenu(storeRepository, request.getStoreId());
         User creator = userRepository.findUserById(store.getUserId());
-        return StoreDetailInfoResponse.of(store, storeImageService.getStoreImages(request.getStoreId()), request.getLatitude(), request.getLongitude(), creator, getStoreReviewsResponse(request.getStoreId()));
+        return StoreDetailInfoResponse.of(store, storeImageService.getStoreImages(request.getStoreId()), request.getLatitude(),
+            request.getLongitude(), creator, getStoreReviewsResponse(request.getStoreId()));
     }
 
     private List<ReviewResponse> getStoreReviewsResponse(Long storeId) {
