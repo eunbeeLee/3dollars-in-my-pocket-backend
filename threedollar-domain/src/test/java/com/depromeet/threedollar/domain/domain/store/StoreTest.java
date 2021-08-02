@@ -5,6 +5,7 @@ import com.depromeet.threedollar.domain.domain.menu.MenuCreator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,22 +22,23 @@ public class StoreTest {
         ));
 
         // when
-        MenuCategoryType category = store.getRepresentativeCategory();
+        List<MenuCategoryType> categories = store.getMenuCategories();
 
         // then
-        assertThat(category).isEqualTo(MenuCategoryType.BUNGEOPPANG);
+        assertThat(categories.get(0)).isEqualTo(MenuCategoryType.BUNGEOPPANG);
+        assertThat(categories.get(1)).isEqualTo(MenuCategoryType.EOMUK);
     }
 
     @Test
-    void 아무런_메뉴도_없을경우_null을_반환한다() {
+    void 아무런_메뉴도_없을경우_빈_리스트을_반환한다() {
         // given
         Store store = StoreCreator.create(100L, "가게");
 
         // when
-        MenuCategoryType category = store.getRepresentativeCategory();
+        List<MenuCategoryType> categories = store.getMenuCategories();
 
         // then
-        assertThat(category).isNull();
+        assertThat(categories).isEmpty();
     }
 
 }

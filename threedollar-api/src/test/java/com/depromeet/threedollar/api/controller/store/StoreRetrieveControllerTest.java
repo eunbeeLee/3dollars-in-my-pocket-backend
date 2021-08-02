@@ -80,12 +80,12 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
         // then
         assertThat(response.getData()).hasSize(2);
-        assertStoreInfoResponse(response.getData().get(0), store1.getId(), store1.getLatitude(), store1.getLongitude(), store1.getName(), store1.getRating(), MenuCategoryType.BUNGEOPPANG);
+        assertStoreInfoResponse(response.getData().get(0), store1.getId(), store1.getLatitude(), store1.getLongitude(), store1.getName(), store1.getRating());
         assertThat(response.getData().get(0).getCategories()).hasSize(2);
         assertThat(response.getData().get(0).getCategories().get(0)).isEqualTo(MenuCategoryType.BUNGEOPPANG);
         assertThat(response.getData().get(0).getCategories().get(1)).isEqualTo(MenuCategoryType.EOMUK);
 
-        assertStoreInfoResponse(response.getData().get(1), store2.getId(), store2.getLatitude(), store2.getLongitude(), store2.getName(), store2.getRating(), null);
+        assertStoreInfoResponse(response.getData().get(1), store2.getId(), store2.getLatitude(), store2.getLongitude(), store2.getName(), store2.getRating());
         assertThat(response.getData().get(1).getCategories()).isEmpty();
     }
 
@@ -113,7 +113,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
         // then
         StoreDetailInfoResponse data = response.getData();
-        assertStoreDetailInfoResponse(data, store.getId(), store.getLatitude(), store.getLongitude(), store.getName(), store.getType(), store.getRating(), menu.getCategory());
+        assertStoreDetailInfoResponse(data, store.getId(), store.getLatitude(), store.getLongitude(), store.getName(), store.getType(), store.getRating());
 
         assertThat(data.getCategories()).hasSize(1);
         assertThat(data.getCategories().get(0)).isEqualTo(menu.getCategory());
@@ -169,10 +169,10 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertThat(response.getData().getTotalElements()).isEqualTo(2);
         assertThat(response.getData().getTotalPages()).isEqualTo(1);
         assertThat(response.getData().getContent()).hasSize(2);
-        assertStoreInfoResponse(response.getData().getContent().get(0), store2.getId(), store2.getLatitude(), store2.getLongitude(), store2.getName(), store2.getRating(), null);
+        assertStoreInfoResponse(response.getData().getContent().get(0), store2.getId(), store2.getLatitude(), store2.getLongitude(), store2.getName(), store2.getRating());
         assertThat(response.getData().getContent().get(0).getCategories()).isEmpty();
 
-        assertStoreInfoResponse(response.getData().getContent().get(1), store1.getId(), store1.getLatitude(), store1.getLongitude(), store1.getName(), store1.getRating(), MenuCategoryType.BUNGEOPPANG);
+        assertStoreInfoResponse(response.getData().getContent().get(1), store1.getId(), store1.getLatitude(), store1.getLongitude(), store1.getName(), store1.getRating());
         assertThat(response.getData().getContent().get(1).getCategories()).hasSize(2);
         assertThat(response.getData().getContent().get(1).getCategories().get(0)).isEqualTo(MenuCategoryType.BUNGEOPPANG);
         assertThat(response.getData().getContent().get(1).getCategories().get(1)).isEqualTo(MenuCategoryType.EOMUK);
@@ -191,23 +191,21 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertThat(respose.getPrice()).isEqualTo(price);
     }
 
-    private void assertStoreDetailInfoResponse(StoreDetailInfoResponse response, Long storeId, Double latitude, Double longitude, String name, StoreType type, double rating, MenuCategoryType category) {
+    private void assertStoreDetailInfoResponse(StoreDetailInfoResponse response, Long storeId, Double latitude, Double longitude, String name, StoreType type, double rating) {
         assertThat(response.getStoreId()).isEqualTo(storeId);
         assertThat(response.getLatitude()).isEqualTo(latitude);
         assertThat(response.getLongitude()).isEqualTo(longitude);
         assertThat(response.getStoreName()).isEqualTo(name);
         assertThat(response.getStoreType()).isEqualTo(type);
         assertThat(response.getRating()).isEqualTo(rating);
-        assertThat(response.getCategory()).isEqualTo(category);
     }
 
-    private void assertStoreInfoResponse(StoreInfoResponse response, Long id, Double latitude, Double longitude, String name, double rating, MenuCategoryType category) {
+    private void assertStoreInfoResponse(StoreInfoResponse response, Long id, Double latitude, Double longitude, String name, double rating) {
         assertThat(response.getStoreId()).isEqualTo(id);
         assertThat(response.getLatitude()).isEqualTo(latitude);
         assertThat(response.getLongitude()).isEqualTo(longitude);
         assertThat(response.getStoreName()).isEqualTo(name);
         assertThat(response.getRating()).isEqualTo(rating);
-        assertThat(response.getCategory()).isEqualTo(category);
     }
 
 }

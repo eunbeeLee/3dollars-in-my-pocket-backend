@@ -162,18 +162,17 @@ public class Store extends AuditingTimeEntity {
         this.status = StoreStatus.DELETED;
     }
 
-    public MenuCategoryType getRepresentativeCategory() {
+    public List<MenuCategoryType> getMenuCategories() {
         if (this.menus.isEmpty()) {
-            return null;
+            return Collections.emptyList();
         }
+
         Map<MenuCategoryType, Long> menusCounts = this.menus.stream()
             .collect(Collectors.groupingBy(Menu::getCategory, Collectors.counting()));
-        return Collections.max(menusCounts.entrySet(), Map.Entry.comparingByValue()).getKey();
-    }
 
-    public List<MenuCategoryType> getMenuCategories() {
-        return this.menus.stream()
-            .map(Menu::getCategory).distinct()
+        return menusCounts.entrySet().stream()
+            .sorted(Map.Entry.<MenuCategoryType, Long>comparingByValue().reversed())
+            .map(Map.Entry::getKey)
             .collect(Collectors.toList());
     }
 

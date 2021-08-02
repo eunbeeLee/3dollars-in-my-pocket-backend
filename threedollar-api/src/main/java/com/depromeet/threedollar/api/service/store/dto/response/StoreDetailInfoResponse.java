@@ -28,7 +28,6 @@ public class StoreDetailInfoResponse extends AuditingTimeResponse {
     private StoreType storeType;
     private Double rating;
     private Integer distance;
-    private MenuCategoryType category;
     private UserInfoResponse user;
     private final Set<DayOfTheWeek> appearanceDays = new HashSet<>();
     private final Set<PaymentMethodType> paymentMethods = new HashSet<>();
@@ -39,7 +38,7 @@ public class StoreDetailInfoResponse extends AuditingTimeResponse {
     @Builder
     private StoreDetailInfoResponse(Long storeId, Double latitude, Double longitude, String storeName,
                                     List<MenuCategoryType> categories, StoreType storeType, Double rating,
-                                    Integer distance, MenuCategoryType category, UserInfoResponse user) {
+                                    Integer distance, UserInfoResponse user) {
         this.storeId = storeId;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -48,7 +47,6 @@ public class StoreDetailInfoResponse extends AuditingTimeResponse {
         this.storeType = storeType;
         this.rating = rating;
         this.distance = distance;
-        this.category = category;
         this.user = user;
     }
 
@@ -63,7 +61,6 @@ public class StoreDetailInfoResponse extends AuditingTimeResponse {
             .storeType(store.getType())
             .rating(store.getRating())
             .distance(LocationDistanceUtils.getDistance(store.getLatitude(), store.getLongitude(), latitude, longitude))
-            .category(store.getRepresentativeCategory())
             .user(UserInfoResponse.of(user))
             .build();
         response.appearanceDays.addAll(store.getAppearanceDaysType());
