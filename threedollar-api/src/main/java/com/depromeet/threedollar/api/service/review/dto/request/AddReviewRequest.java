@@ -18,18 +18,18 @@ public class AddReviewRequest {
     private Long storeId;
 
     @NotBlank(message = "{review.content.notBlank}")
-    private String content;
+    private String contents;
 
     @Min(value = 0, message = "{review.rating.min}")
     @Max(value = 5, message = "{review.rating.max}")
     private int rating;
 
-    public static AddReviewRequest testInstance(Long storeId, String content, int rating) {
-        return new AddReviewRequest(storeId, content, rating);
+    public static AddReviewRequest testInstance(Long storeId, String contents, int rating) {
+        return new AddReviewRequest(storeId, contents, rating);
     }
 
     public Review toEntity(Long userId) {
-        return Review.of(storeId, userId, content, rating);
+        return Review.of(storeId, userId, contents, rating);
     }
 
 }

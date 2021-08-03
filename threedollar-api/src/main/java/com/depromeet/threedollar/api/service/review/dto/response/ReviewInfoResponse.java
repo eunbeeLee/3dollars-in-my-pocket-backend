@@ -12,15 +12,15 @@ public class ReviewInfoResponse extends AuditingTimeResponse {
 
     private Long reviewId;
     private Long storeId;
-    private String content;
+    private String contents;
     private int rating;
     private ReviewStatus status;
 
     @Builder
-    private ReviewInfoResponse(Long reviewId, Long storeId, String content, int rating, ReviewStatus status) {
+    private ReviewInfoResponse(Long reviewId, Long storeId, String contents, int rating, ReviewStatus status) {
         this.reviewId = reviewId;
         this.storeId = storeId;
-        this.content = content;
+        this.contents = contents;
         this.rating = rating;
         this.status = status;
     }
@@ -29,7 +29,7 @@ public class ReviewInfoResponse extends AuditingTimeResponse {
         ReviewInfoResponse response = ReviewInfoResponse.builder()
             .reviewId(review.getId())
             .storeId(review.getStoreId())
-            .content(review.getContents())
+            .contents(review.getContents())
             .rating(review.getRating())
             .status(review.getStatus())
             .build();

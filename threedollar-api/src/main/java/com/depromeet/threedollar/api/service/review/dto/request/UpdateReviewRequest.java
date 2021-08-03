@@ -13,14 +13,14 @@ import javax.validation.constraints.NotBlank;
 public class UpdateReviewRequest {
 
     @NotBlank(message = "{review.content.notBlank}")
-    private String content;
+    private String contents;
 
     @Min(value = 0, message = "{review.rating.min}")
     @Max(value = 5, message = "{review.rating.max}")
     private int rating;
 
-    public static UpdateReviewRequest testInstance(String content, int rating) {
-        return new UpdateReviewRequest(content, rating);
+    public static UpdateReviewRequest testInstance(String contents, int rating) {
+        return new UpdateReviewRequest(contents, rating);
     }
 
 }

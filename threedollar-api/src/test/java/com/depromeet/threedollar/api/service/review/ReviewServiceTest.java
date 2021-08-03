@@ -53,9 +53,9 @@ class ReviewServiceTest extends UserSetUpTest {
     @Test
     void 새로운_리뷰를_작성한다() {
         // given
-        String content = "우와 맛있어요";
+        String contents = "우와 맛있어요";
         int rating = 4;
-        AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), content, rating);
+        AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), contents, rating);
 
         // when
         reviewService.addReview(request, userId);
@@ -63,7 +63,7 @@ class ReviewServiceTest extends UserSetUpTest {
         // then
         List<Review> reviewList = reviewRepository.findAll();
         assertThat(reviewList).hasSize(1);
-        assertReview(reviewList.get(0), store.getId(), content, rating, userId);
+        assertReview(reviewList.get(0), store.getId(), contents, rating, userId);
     }
 
     @Test
@@ -79,10 +79,10 @@ class ReviewServiceTest extends UserSetUpTest {
     @Test
     void 새로운_리뷰를_작성하면_Store의_평균_리뷰점수도_계산된다() {
         // given
-        String content = "우와 맛있어요";
+        String contents = "우와 맛있어요";
         int rating = 4;
 
-        AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), content, rating);
+        AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), contents, rating);
 
         // when
         reviewService.addReview(request, userId);
@@ -96,13 +96,13 @@ class ReviewServiceTest extends UserSetUpTest {
     @Test
     void 작성한_리뷰를_작성하면_가게의_평균_평가_점수가_다시_계산된다() {
         // given
-        String content = "우와 맛있어요";
+        String contents = "우와 맛있어요";
         int rating = 4;
 
         reviewRepository.save(ReviewCreator.create(store.getId(), userId, "맛 없어요", 1));
 
         // when
-        AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), content, rating);
+        AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), contents, rating);
 
         // when
         reviewService.addReview(request, userId);
@@ -116,13 +116,13 @@ class ReviewServiceTest extends UserSetUpTest {
     @Test
     void 리뷰를_수정하면_해당하는_DB에_리뷰_데이터가_수정된다() {
         // given
-        String content = "우와 맛있어요";
+        String contents = "우와 맛있어요";
         int rating = 4;
 
         Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
         reviewRepository.save(review);
 
-        UpdateReviewRequest request = UpdateReviewRequest.testInstance(content, rating);
+        UpdateReviewRequest request = UpdateReviewRequest.testInstance(contents, rating);
 
         // when
         reviewService.updateReview(review.getId(), request, userId);
@@ -130,20 +130,20 @@ class ReviewServiceTest extends UserSetUpTest {
         // then
         List<Review> reviewList = reviewRepository.findAll();
         assertThat(reviewList).hasSize(1);
-        assertReview(reviewList.get(0), store.getId(), content, rating, userId);
+        assertReview(reviewList.get(0), store.getId(), contents, rating, userId);
     }
 
     @Test
     void 리뷰를_수정하면_가게의_평균_리뷰_점수가_다시_계산된다() {
         // given
-        String content = "우와 맛있어요";
+        String contents = "우와 맛있어요";
         int rating = 4;
 
         Review review = ReviewCreator.create(store.getId(), userId, "맛 없어요", 1);
         reviewRepository.saveAll(Arrays.asList(ReviewCreator.create(store.getId(), userId, "맛 없어요", 2), review));
 
         // when
-        UpdateReviewRequest request = UpdateReviewRequest.testInstance(content, rating);
+        UpdateReviewRequest request = UpdateReviewRequest.testInstance(contents, rating);
 
         // when
         reviewService.updateReview(review.getId(), request, userId);
@@ -221,9 +221,9 @@ class ReviewServiceTest extends UserSetUpTest {
         assertThatThrownBy(() -> reviewService.deleteReview(review.getId(), 999L)).isInstanceOf(NotFoundException.class);
     }
 
-    private void assertReview(Review review, Long storeId, String content, int rating, Long userId) {
+    private void assertReview(Review review, Long storeId, String contents, int rating, Long userId) {
         assertThat(review.getStoreId()).isEqualTo(storeId);
-        assertThat(review.getContents()).isEqualTo(content);
+        assertThat(review.getContents()).isEqualTo(contents);
         assertThat(review.getRating()).isEqualTo(rating);
         assertThat(review.getUserId()).isEqualTo(userId);
     }

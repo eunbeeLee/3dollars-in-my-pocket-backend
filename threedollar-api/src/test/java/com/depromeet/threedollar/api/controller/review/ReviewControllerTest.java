@@ -74,7 +74,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         ApiResponse<ReviewInfoResponse> response = reviewMockApiCaller.addStoreReview(request, token, 200);
 
         // then
-        assertReviewInfoResponse(response.getData(), store.getId(), request.getContent(), request.getRating(), ReviewStatus.POSTED);
+        assertReviewInfoResponse(response.getData(), store.getId(), request.getContents(), request.getRating(), ReviewStatus.POSTED);
     }
 
     @DisplayName("PUT /api/v2/store/review 200 OK")
@@ -90,7 +90,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         ApiResponse<ReviewInfoResponse> response = reviewMockApiCaller.updateStoreReview(review.getId(), request, token, 200);
 
         // then
-        assertReviewInfoResponse(response.getData(), store.getId(), request.getContent(), request.getRating(), ReviewStatus.POSTED);
+        assertReviewInfoResponse(response.getData(), store.getId(), request.getContents(), request.getRating(), ReviewStatus.POSTED);
     }
 
     @DisplayName("DELETE /api/v2/store/review 200 OK")
@@ -264,17 +264,17 @@ class ReviewControllerTest extends AbstractControllerTest {
         assertThat(user.getSocialType()).isEqualTo(socialType);
     }
 
-    private void assertReviewInfoResponse(ReviewInfoResponse response, Long storeId, String content, int rating, ReviewStatus status) {
+    private void assertReviewInfoResponse(ReviewInfoResponse response, Long storeId, String contents, int rating, ReviewStatus status) {
         assertThat(response.getStoreId()).isEqualTo(storeId);
-        assertThat(response.getContent()).isEqualTo(content);
+        assertThat(response.getContents()).isEqualTo(contents);
         assertThat(response.getRating()).isEqualTo(rating);
         assertThat(response.getStatus()).isEqualTo(status);
     }
 
-    private void assertReviewInfoResponse(ReviewDetailResponse response, Long reviewId, Long storeId, String storeName, String content, int rating, ReviewStatus status) {
+    private void assertReviewInfoResponse(ReviewDetailResponse response, Long reviewId, Long storeId, String storeName, String contents, int rating, ReviewStatus status) {
         assertThat(response.getStoreId()).isEqualTo(storeId);
         assertThat(response.getStoreName()).isEqualTo(storeName);
-        assertThat(response.getContents()).isEqualTo(content);
+        assertThat(response.getContents()).isEqualTo(contents);
         assertThat(response.getRating()).isEqualTo(rating);
         assertThat(response.getStatus()).isEqualTo(status);
         assertThat(response.getReviewId()).isEqualTo(reviewId);

@@ -38,7 +38,7 @@ public class ReviewService {
     @Transactional
     public ReviewInfoResponse updateReview(Long reviewId, UpdateReviewRequest request, Long userId) {
         Review review = ReviewServiceUtils.findReviewByIdAndUserId(reviewRepository, reviewId, userId);
-        review.update(request.getContent(), request.getRating());
+        review.update(request.getContents(), request.getRating());
         eventPublisher.publishEvent(ReviewChangedEvent.of(review.getStoreId()));
         return ReviewInfoResponse.of(review);
     }
