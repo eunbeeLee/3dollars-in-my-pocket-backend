@@ -75,7 +75,8 @@ class StoreRepositoryTest {
         Long userId = 100L;
 
         Store store1 = StoreCreator.create(userId, "1번 가게");
-        store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
+        store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "붕어빵1", "만원1", MenuCategoryType.BUNGEOPPANG)));
+        store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "붕어빵2", "만원2", MenuCategoryType.BUNGEOPPANG)));
 
         Store store2 = StoreCreator.create(userId, "2번 가게");
         store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));

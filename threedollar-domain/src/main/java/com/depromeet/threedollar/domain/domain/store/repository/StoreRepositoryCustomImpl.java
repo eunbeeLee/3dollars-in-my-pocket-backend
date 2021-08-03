@@ -51,7 +51,7 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
 
     @Override
     public long findCountsByUserId(Long userId) {
-        return queryFactory.select(store.id)
+        return queryFactory.select(store.id).distinct()
             .from(store)
             .innerJoin(menu).on(menu.store.id.eq(store.id))
             .where(
