@@ -18,8 +18,8 @@ Authorization: {{AUTHORIZATION}}
         },
         {
             "category": "BUNGEOPPANG",
-            "name": "붕어빵 10개에 3000원",
-            "price": "3000원"
+            "name": "",
+            "price": ""
         },
         {
             "category": "TAKOYAKI",

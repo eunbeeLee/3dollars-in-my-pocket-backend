@@ -44,7 +44,7 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
     @Override
     public Store findStoreByIdFetchJoinMenu(Long storeId) {
         return queryFactory.selectFrom(store).distinct()
-            .leftJoin(store.menus, menu).fetchJoin()
+            .innerJoin(store.menus, menu).fetchJoin()
             .where(
                 store.id.eq(storeId),
                 store.status.eq(StoreStatus.ACTIVE)
@@ -77,7 +77,7 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
             .fetch();
 
         List<Store> stores = queryFactory.selectFrom(store).distinct()
-            .leftJoin(store.menus, menu).fetchJoin()
+            .innerJoin(store.menus, menu).fetchJoin()
             .where(
                 store.id.in(storeIds)
             )
@@ -99,7 +99,7 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
             .fetch();
 
         return queryFactory.selectFrom(store).distinct()
-            .leftJoin(store.menus, menu).fetchJoin()
+            .innerJoin(store.menus, menu).fetchJoin()
             .where(
                 store.id.in(storeIds)
             )

@@ -71,6 +71,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         store1.addMenus(Arrays.asList(menu1, menu2, menu3));
 
         Store store2 = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
+        store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
         storeRepository.saveAll(Arrays.asList(store1, store2));
 
         RetrieveAroundStoresRequest request = RetrieveAroundStoresRequest.testInstance(34, 124, 34, 124, 1000);
@@ -86,7 +87,8 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertThat(response.getData().get(0).getCategories().get(1)).isEqualTo(MenuCategoryType.EOMUK);
 
         assertStoreInfoResponse(response.getData().get(1), store2.getId(), store2.getLatitude(), store2.getLongitude(), store2.getName(), store2.getRating());
-        assertThat(response.getData().get(1).getCategories()).isEmpty();
+        assertThat(response.getData().get(1).getCategories()).hasSize(1);
+        assertThat(response.getData().get(1).getCategories().get(0)).isEqualTo(MenuCategoryType.BUNGEOPPANG);
     }
 
     @DisplayName("GET /api/v2/store 200 OK")
@@ -135,6 +137,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
     void 특정_가게에_대한_상세_정보를_조회할때_회원탈퇴한_유저의경우_사라진_제보자라고_보인다() throws Exception {
         // given
         Store store = StoreCreator.create(999L, "storeName", 34, 124);
+        store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
         storeRepository.save(store);
 
         RetrieveStoreDetailInfoRequest request = RetrieveStoreDetailInfoRequest.testInstance(store.getId(), 34, 124);
@@ -158,6 +161,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         store1.addMenus(Arrays.asList(menu1, menu2, menu3));
 
         Store store2 = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
+        store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
         storeRepository.saveAll(Arrays.asList(store1, store2));
 
         RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, 0, 34, 124);
@@ -170,7 +174,8 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertThat(response.getData().getTotalPages()).isEqualTo(1);
         assertThat(response.getData().getContent()).hasSize(2);
         assertStoreInfoResponse(response.getData().getContent().get(0), store2.getId(), store2.getLatitude(), store2.getLongitude(), store2.getName(), store2.getRating());
-        assertThat(response.getData().getContent().get(0).getCategories()).isEmpty();
+        assertThat(response.getData().getContent().get(0).getCategories()).hasSize(1);
+        assertThat(response.getData().getContent().get(0).getCategories().get(0)).isEqualTo(MenuCategoryType.BUNGEOPPANG);
 
         assertStoreInfoResponse(response.getData().getContent().get(1), store1.getId(), store1.getLatitude(), store1.getLongitude(), store1.getName(), store1.getRating());
         assertThat(response.getData().getContent().get(1).getCategories()).hasSize(2);

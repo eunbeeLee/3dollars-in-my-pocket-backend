@@ -7,7 +7,9 @@ import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreType;
 import lombok.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,7 +40,8 @@ public class AddStoreRequest {
     @NotNull(message = "{store.paymentMethods.notnull}")
     private Set<PaymentMethodType> paymentMethods = new HashSet<>();
 
-    @NotNull(message = "{store.menu.notnull}")
+    @NotEmpty(message = "{store.menu.notEmpty}")
+    @Valid
     private List<MenuRequest> menu = new ArrayList<>();
 
     @Builder(builderClassName = "TestBuilder", builderMethodName = "testBuilder")

@@ -11,6 +11,7 @@ import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoRespons
 import com.depromeet.threedollar.common.exception.ErrorCode;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
+import com.depromeet.threedollar.domain.domain.menu.MenuCreator;
 import com.depromeet.threedollar.domain.domain.menu.MenuRepository;
 import com.depromeet.threedollar.domain.domain.store.*;
 import com.depromeet.threedollar.domain.domain.storedelete.DeleteReasonType;
@@ -103,6 +104,7 @@ class StoreControllerTest extends AbstractControllerTest {
     void 특정_가게정보를_수정하는_API_호출시_200_OK() throws Exception {
         // given
         Store store = StoreCreator.create(testUser.getId(), "storeName");
+        store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
         storeRepository.save(store);
 
         Double latitude = 34.0;

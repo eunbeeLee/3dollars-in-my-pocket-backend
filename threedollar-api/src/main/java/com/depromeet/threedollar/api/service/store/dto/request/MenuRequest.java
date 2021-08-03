@@ -5,7 +5,6 @@ import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @ToString
@@ -14,10 +13,10 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MenuRequest {
 
-    @NotBlank(message = "{menu.name.notBlank}")
+    @NotNull(message = "{menu.name.notnull}")
     private String name;
 
-    @NotBlank(message = "{menu.price.notBlank}")
+    @NotNull(message = "{menu.price.notnull}")
     private String price;
 
     @NotNull(message = "{menu.category.notnull}")

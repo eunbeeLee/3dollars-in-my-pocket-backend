@@ -8,6 +8,7 @@ import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
 import com.depromeet.threedollar.domain.domain.common.Location;
 import com.depromeet.threedollar.domain.domain.menu.Menu;
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
+import com.depromeet.threedollar.domain.domain.menu.MenuCreator;
 import com.depromeet.threedollar.domain.domain.menu.MenuRepository;
 import com.depromeet.threedollar.domain.domain.store.*;
 import org.junit.jupiter.api.AfterEach;
@@ -165,6 +166,7 @@ class StoreServiceTest extends UserSetUpTest {
     void 가게의_정보를_수정하며_기존_가게정보_데이터들이_수정된다() {
         // given
         Store store = StoreCreator.create(userId, "storeName");
+        store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
         storeRepository.save(store);
 
         Double latitude = 34.0;
@@ -215,6 +217,7 @@ class StoreServiceTest extends UserSetUpTest {
     void 가게의_결제방법을_수정한다(Set<PaymentMethodType> paymentMethodTypes) {
         // given
         Store store = StoreCreator.create(userId, "storeName");
+        store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
         store.addPaymentMethods(Set.of(PaymentMethodType.CARD));
         storeRepository.save(store);
 
@@ -250,6 +253,7 @@ class StoreServiceTest extends UserSetUpTest {
     void 가게의_개시일을_수정한다(Set<DayOfTheWeek> appearanceDays) {
         // given
         Store store = StoreCreator.create(userId, "storeName");
+        store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
         store.addAppearanceDays(Set.of(DayOfTheWeek.TUESDAY, DayOfTheWeek.WEDNESDAY));
         storeRepository.save(store);
 
