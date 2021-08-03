@@ -3,6 +3,7 @@ package com.depromeet.threedollar.domain.domain.store.repository;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreStatus;
 import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 import static com.depromeet.threedollar.domain.domain.menu.QMenu.menu;
@@ -84,6 +86,42 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
             .orderBy(store.id.desc())
             .fetch();
         return new PageImpl<>(stores, pageRequest, totalCount);
+    }
+
+    /**
+     * 캐싱 적용 필요
+     */
+    @Override
+    public long findCountsByUserId(Long userId) {
+        return queryFactory.select(store.id)
+            .from(store)
+            .where(
+                store.userId.eq(userId)
+            )
+            .fetchCount();
+    }
+
+    /**
+     * NoOffset 방식의 스크롤 기반 페이지네이션
+     */
+    @Override
+    public List<Store> findAllByUserIdWithPagination(Long userId, @Nullable Long lastStoreId, int size) {
+        return queryFactory.selectFrom(store).distinct()
+            .innerJoin(store.menus, menu).fetchJoin()
+            .where(
+                store.userId.eq(userId),
+                lessThanId(lastStoreId)
+            )
+            .orderBy(store.id.desc())
+            .limit(size)
+            .fetch();
+    }
+
+    private BooleanExpression lessThanId(Long lastStoreId) {
+        if (lastStoreId == null) {
+            return null;
+        }
+        return store.id.lt(lastStoreId);
     }
 
     /**
