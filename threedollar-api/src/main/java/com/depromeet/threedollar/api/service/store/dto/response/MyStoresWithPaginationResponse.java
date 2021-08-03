@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,21 +15,25 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MyStoresWithPaginationResponse {
 
-    private List<StoreInfoResponse> content = new ArrayList<>();
-    private long totalElements;
-    private long totalPages;
+    private List<StoreInfoResponse> contents = new ArrayList<>();
+    private Long totalElements;
+    private Long nextCursor;
 
-    private MyStoresWithPaginationResponse(List<StoreInfoResponse> content, long totalElements, long totalPages) {
-        this.content = content;
+    private MyStoresWithPaginationResponse(List<StoreInfoResponse> contents, Long totalElements, Long nextCursor) {
+        this.contents = contents;
         this.totalElements = totalElements;
-        this.totalPages = totalPages;
+        this.nextCursor = nextCursor;
     }
 
-    public static MyStoresWithPaginationResponse of(Page<Store> stores, double latitude, double longitude) {
-        List<StoreInfoResponse> responses = stores.getContent().stream()
-            .map(store -> StoreInfoResponse.of(store, latitude, longitude))
+    public static MyStoresWithPaginationResponse newLastPageInstance(List<Store> stores, long totalElements) {
+        return of(stores, totalElements, null);
+    }
+
+    public static MyStoresWithPaginationResponse of(List<Store> stores, Long totalElements, Long nextCursor) {
+        List<StoreInfoResponse> contents = stores.stream()
+            .map(StoreInfoResponse::of)
             .collect(Collectors.toList());
-        return new MyStoresWithPaginationResponse(responses, stores.getTotalElements(), stores.getTotalPages());
+        return new MyStoresWithPaginationResponse(contents, totalElements, nextCursor);
     }
 
 }

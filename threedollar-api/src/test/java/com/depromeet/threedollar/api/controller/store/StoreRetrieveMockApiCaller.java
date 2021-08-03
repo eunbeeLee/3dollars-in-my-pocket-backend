@@ -63,7 +63,8 @@ public class StoreRetrieveMockApiCaller extends MockMvcUtils {
         MockHttpServletRequestBuilder builder = get("/api/v2/stores/me")
             .header(HttpHeaders.AUTHORIZATION, token)
             .param("size", String.valueOf(request.getSize()))
-            .param("page", String.valueOf(request.getPage()))
+            .param("cursor", request.getCursor() == null ? null : String.valueOf(request.getCursor()))
+            .param("totalElements", request.getTotalElements() == null ? null : String.valueOf(request.getTotalElements()))
             .param("latitude", String.valueOf(request.getLatitude()))
             .param("longitude", String.valueOf(request.getLongitude()));
 

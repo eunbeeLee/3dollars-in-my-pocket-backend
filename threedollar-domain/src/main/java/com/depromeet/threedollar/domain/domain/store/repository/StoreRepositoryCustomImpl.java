@@ -8,9 +8,6 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -53,47 +50,9 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
             ).fetchOne();
     }
 
-    /**
-     * TODO 차후 스크롤 방식 페이지네이션 고려 필요.
-     * 기존의 offset 방식의 페이지네이션을 사용하고 있어서 호환성을 위해 유지하는 중.
-     * 성능 최적화를 위해서 커버링 인덱싱을 이용한 방식으로 개선중인데 쿼리가 세번 나가는 중.
-     * offset 없이 가능한 페이징 정책인 경우 교체 필요.
-     */
-    @Override
-    public Page<Store> findAllByUserIdWithPagination(Long userId, PageRequest pageRequest) {
-        long totalCount = queryFactory.select(store.id)
-            .from(store)
-            .where(
-                store.userId.eq(userId)
-            )
-            .fetchCount();
-
-        List<Long> storeIds = queryFactory.select(store.id)
-            .from(store)
-            .where(
-                store.userId.eq(userId)
-            )
-            .orderBy(store.id.desc())
-            .offset(pageRequest.getOffset())
-            .limit(pageRequest.getPageSize())
-            .fetch();
-
-        List<Store> stores = queryFactory.selectFrom(store).distinct()
-            .innerJoin(store.menus, menu).fetchJoin()
-            .where(
-                store.id.in(storeIds)
-            )
-            .orderBy(store.id.desc())
-            .fetch();
-        return new PageImpl<>(stores, pageRequest, totalCount);
-    }
-
-    /**
-     * 캐싱 적용 필요
-     */
     @Override
     public long findCountsByUserId(Long userId) {
-        return queryFactory.select(store.id)
+        return queryFactory.select(store.id.count())
             .from(store)
             .where(
                 store.userId.eq(userId)
@@ -103,17 +62,29 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
 
     /**
      * NoOffset 방식의 스크롤 기반 페이지네이션
+     * -
+     * 1:N 관계에서 fetchJoin을 하게 되면, limit를 사용할 수 없어 메모리 상에서 계산하게 됨. (firstResult/maxResults specified with collection fetch; applying in memory)
+     * 이 문제를 해결하기 위해서 StoreId 리스트 조회 후 페치조인하는 방식으로 조회.
      */
     @Override
-    public List<Store> findAllByUserIdWithPagination(Long userId, @Nullable Long lastStoreId, int size) {
-        return queryFactory.selectFrom(store).distinct()
-            .innerJoin(store.menus, menu).fetchJoin()
+    public List<Store> findAllByUserIdWithScroll(Long userId, @Nullable Long lastStoreId, int size) {
+        List<Long> storeIds = queryFactory.select(store.id)
+            .from(store)
+            .innerJoin(store.menus, menu)
             .where(
                 store.userId.eq(userId),
                 lessThanId(lastStoreId)
             )
             .orderBy(store.id.desc())
             .limit(size)
+            .fetch();
+
+        return queryFactory.selectFrom(store).distinct()
+            .innerJoin(store.menus, menu).fetchJoin()
+            .where(
+                store.id.in(storeIds)
+            )
+            .orderBy(store.id.desc())
             .fetch();
     }
 

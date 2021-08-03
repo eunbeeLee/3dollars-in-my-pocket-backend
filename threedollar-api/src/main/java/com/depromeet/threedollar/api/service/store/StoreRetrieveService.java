@@ -12,8 +12,6 @@ import com.depromeet.threedollar.domain.domain.store.StoreRepository;
 import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,10 +54,26 @@ public class StoreRetrieveService {
             .collect(Collectors.toList());
     }
 
+    /**
+     * 스크롤 방식으로 사용자가 작성한 가게 정보를 조회한다. (서버에서 다음 스크롤를 반환해줘야한다. 이떄 더이상 가게가 없는 경우 null을 반환)
+     * 쿼리를 두 번 날려서 체크하지 않고, 한 번에 처리하기 위해 요청한 가게 갯수 + 1로 조회해서 마지막 1개의 여부에 따라 다음 스크롤 존재 여부를 확인한다.
+     */
     @Transactional(readOnly = true)
     public MyStoresWithPaginationResponse retrieveMyStores(RetrieveMyStoresRequest request, Long userId) {
-        Page<Store> stores = storeRepository.findAllByUserIdWithPagination(userId, PageRequest.of(request.getPage(), request.getSize()));
-        return MyStoresWithPaginationResponse.of(stores, request.getLatitude(), request.getLongitude());
+        List<Store> currentAndNextScrollStores = storeRepository.findAllByUserIdWithScroll(userId, request.getCursor(), request.getSize() + 1);
+        if (currentAndNextScrollStores.size() <= request.getSize()) {
+            return MyStoresWithPaginationResponse.newLastPageInstance(
+                currentAndNextScrollStores,
+                request.getCachingTotalElements() == null ? storeRepository.findCountsByUserId(userId) : request.getCachingTotalElements()
+            );
+        }
+
+        List<Store> currentScrollStores = currentAndNextScrollStores.subList(0, request.getSize());
+        return MyStoresWithPaginationResponse.of(
+            currentScrollStores,
+            request.getCachingTotalElements() == null ? storeRepository.findCountsByUserId(userId) : request.getCachingTotalElements(),
+            currentScrollStores.get(request.getSize() - 1).getId()
+        );
     }
 
     @Transactional(readOnly = true)

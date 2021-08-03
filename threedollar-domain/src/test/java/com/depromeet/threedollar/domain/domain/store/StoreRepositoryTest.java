@@ -7,8 +7,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -72,28 +70,6 @@ class StoreRepositoryTest {
     }
 
     @Test
-    void 사용자가_등록한_가게들을_페이지네이션으로_조회한다() {
-        // given
-        Long userId = 100L;
-
-        for (int i = 0; i < 30; i++) {
-            Store store = StoreCreator.create(userId, String.format("%s번 가게", i + 1));
-            store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
-            storeRepository.save(store);
-        }
-
-        // when
-        Page<Store> stores = storeRepository.findAllByUserIdWithPagination(userId, PageRequest.of(1, 2));
-
-        // then
-        assertThat(stores.getTotalElements()).isEqualTo(30);
-        assertThat(stores.getTotalPages()).isEqualTo(15);
-        assertThat(stores.getContent()).hasSize(2);
-        assertThat(stores.getContent().get(0).getName()).isEqualTo("28번 가게");
-        assertThat(stores.getContent().get(1).getName()).isEqualTo("27번 가게");
-    }
-
-    @Test
     void 사용자가_등록한_가게들의_총_개수를_조회한다() {
         // given
         Long userId = 100L;
@@ -133,7 +109,7 @@ class StoreRepositoryTest {
         storeRepository.saveAll(Arrays.asList(store1, store2, store3));
 
         // when
-        List<Store> stores = storeRepository.findAllByUserIdWithPagination(userId, null, 2);
+        List<Store> stores = storeRepository.findAllByUserIdWithScroll(userId, null, 2);
 
         // then
         assertThat(stores).hasSize(2);
@@ -158,7 +134,7 @@ class StoreRepositoryTest {
         storeRepository.saveAll(Arrays.asList(store1, store2, store3));
 
         // when
-        List<Store> stores = storeRepository.findAllByUserIdWithPagination(userId, store2.getId(), 2);
+        List<Store> stores = storeRepository.findAllByUserIdWithScroll(userId, store2.getId(), 2);
 
         // then
         assertThat(stores).hasSize(1);
