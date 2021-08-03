@@ -17,10 +17,10 @@ public class RetrieveMyStoresRequest {
     @Min(value = 0, message = "{common.page.min}")
     private int page;
 
-    @NotNull(message = "{store.latitude.notnull}")
+    @NotNull(message = "{store.latitude.notNull}")
     private Double latitude;
 
-    @NotNull(message = "{store.longitude.notnull}")
+    @NotNull(message = "{store.longitude.notNull}")
     private Double longitude;
 
     public static RetrieveMyStoresRequest testInstance(int size, int page, double latitude, double longitude) {

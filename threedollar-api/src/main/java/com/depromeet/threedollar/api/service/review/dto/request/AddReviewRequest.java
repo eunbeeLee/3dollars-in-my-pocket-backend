@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AddReviewRequest {
 
-    @NotNull(message = "{store.storeId.notnull}")
+    @NotNull(message = "{store.storeId.notNull}")
     private Long storeId;
 
     @NotBlank(message = "{review.content.notBlank}")

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AddStoreImageRequest {
 
-    @NotNull(message = "{store.storeId.notnull}")
+    @NotNull(message = "{store.storeId.notNull}")
     private Long storeId;
 
     public static AddStoreImageRequest testInstance(Long storeId) {

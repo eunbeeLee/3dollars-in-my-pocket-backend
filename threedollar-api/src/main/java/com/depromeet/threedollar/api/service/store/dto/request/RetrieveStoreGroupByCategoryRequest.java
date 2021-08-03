@@ -11,19 +11,19 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RetrieveStoreGroupByCategoryRequest {
 
-    @NotNull(message = "{store.latitude.notnull}")
+    @NotNull(message = "{store.latitude.notNull}")
     private Double latitude;
 
-    @NotNull(message = "{store.longitude.notnull}")
+    @NotNull(message = "{store.longitude.notNull}")
     private Double longitude;
 
-    @NotNull(message = "{store.mapLatitude.notnull}")
+    @NotNull(message = "{store.mapLatitude.notNull}")
     private Double mapLatitude;
 
-    @NotNull(message = "{store.mapLongitude.notnull}")
+    @NotNull(message = "{store.mapLongitude.notNull}")
     private Double mapLongitude;
 
-    @NotNull(message = "{menu.category.notnull}")
+    @NotNull(message = "{menu.category.notNull}")
     private MenuCategoryType category;
 
 }

@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DeleteStoreRequest {
 
-    @NotNull(message = "{store.delete.reason.notnull}")
+    @NotNull(message = "{store.delete.reason.notNull}")
     private DeleteReasonType deleteReasonType;
 
     public static DeleteStoreRequest testInstance(DeleteReasonType reasonType) {

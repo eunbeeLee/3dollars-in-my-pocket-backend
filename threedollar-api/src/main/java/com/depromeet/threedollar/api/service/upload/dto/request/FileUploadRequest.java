@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FileUploadRequest {
 
-    @NotNull(message = "{image.type.notnull}")
+    @NotNull(message = "{image.type.notNull}")
     private ImageType type;
 
     public static FileUploadRequest of(ImageType type) {

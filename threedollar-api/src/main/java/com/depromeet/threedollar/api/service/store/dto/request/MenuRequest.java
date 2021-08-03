@@ -13,13 +13,13 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MenuRequest {
 
-    @NotNull(message = "{menu.name.notnull}")
+    @NotNull(message = "{menu.name.notNull}")
     private String name;
 
-    @NotNull(message = "{menu.price.notnull}")
+    @NotNull(message = "{menu.price.notNull}")
     private String price;
 
-    @NotNull(message = "{menu.category.notnull}")
+    @NotNull(message = "{menu.category.notNull}")
     private MenuCategoryType category;
 
     public static MenuRequest of(String name, String price, MenuCategoryType category) {
