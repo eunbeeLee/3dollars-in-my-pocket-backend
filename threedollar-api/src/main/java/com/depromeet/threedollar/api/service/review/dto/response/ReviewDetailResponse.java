@@ -2,9 +2,14 @@ package com.depromeet.threedollar.api.service.review.dto.response;
 
 import com.depromeet.threedollar.api.common.dto.AuditingTimeResponse;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
+import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.review.ReviewStatus;
 import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithStoreAndCreatorProjection;
+import com.depromeet.threedollar.domain.domain.store.Store;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ToString
 @Getter
@@ -18,9 +23,10 @@ public class ReviewDetailResponse extends AuditingTimeResponse {
     private Long storeId;
     private String storeName;
     private UserInfoResponse user;
+    private final List<MenuCategoryType> categories = new ArrayList<>();
 
     @Builder
-    private ReviewDetailResponse(Long reviewId, int rating, String contents, ReviewStatus status, Long storeId, String storeName, UserInfoResponse user) {
+    private ReviewDetailResponse(Long reviewId, int rating, String contents, ReviewStatus status, Long storeId, String storeName, UserInfoResponse user, List<MenuCategoryType> categories) {
         this.reviewId = reviewId;
         this.rating = rating;
         this.contents = contents;
@@ -28,17 +34,19 @@ public class ReviewDetailResponse extends AuditingTimeResponse {
         this.storeId = storeId;
         this.storeName = storeName;
         this.user = user;
+        this.categories.addAll(categories);
     }
 
-    public static ReviewDetailResponse of(ReviewWithStoreAndCreatorProjection review) {
+    public static ReviewDetailResponse of(ReviewWithStoreAndCreatorProjection review, Store store) {
         ReviewDetailResponse response = ReviewDetailResponse.builder()
             .reviewId(review.getId())
             .rating(review.getRating())
             .contents(review.getContents())
             .status(review.getStatus())
             .storeId(review.getStoreId())
-            .storeName(review.getStoreName())
+            .storeName(store.getName())
             .user(UserInfoResponse.of(review.getUserId(), review.getUserName(), review.getUserSocialType()))
+            .categories(store.getMenuCategories())
             .build();
         response.setBaseTime(review.getCreatedAt(), review.getUpdatedAt());
         return response;

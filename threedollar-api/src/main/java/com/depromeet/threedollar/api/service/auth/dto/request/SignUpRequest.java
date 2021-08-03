@@ -14,14 +14,13 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SignUpRequest {
 
-    @NotBlank
+    @NotBlank(message = "{auth.token.notBlank}")
     private String token;
 
-    @NotBlank
     @NickName
     private String name;
 
-    @NotNull
+    @NotNull(message = "{user.socialType.notNull}")
     private UserSocialType socialType;
 
     public static SignUpRequest testInstance(String token, String name, UserSocialType socialType) {

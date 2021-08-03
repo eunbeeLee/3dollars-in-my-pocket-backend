@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SignOutRequest {
 
-    @NotNull
+    @NotNull(message = "{user.socialType.notNull}")
     private UserSocialType socialType;
 
 }

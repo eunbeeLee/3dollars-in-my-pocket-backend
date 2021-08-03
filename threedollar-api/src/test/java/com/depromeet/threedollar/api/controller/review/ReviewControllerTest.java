@@ -9,6 +9,9 @@ import com.depromeet.threedollar.api.service.review.dto.request.UpdateReviewRequ
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewDetailResponse;
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewDetailWithPaginationResponse;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
+import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
+import com.depromeet.threedollar.domain.domain.menu.MenuCreator;
+import com.depromeet.threedollar.domain.domain.menu.MenuRepository;
 import com.depromeet.threedollar.domain.domain.review.Review;
 import com.depromeet.threedollar.domain.domain.review.ReviewCreator;
 import com.depromeet.threedollar.domain.domain.review.ReviewRepository;
@@ -24,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,6 +43,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         reviewMockApiCaller = new ReviewMockApiCaller(mockMvc, objectMapper);
 
         store = StoreCreator.create(testUser.getId(), "디프만 붕어빵");
+        store.addMenus(Collections.singletonList(MenuCreator.create(store, "메뉴", "가격", MenuCategoryType.BUNGEOPPANG)));
         storeRepository.save(store);
     }
 
@@ -48,11 +53,15 @@ class ReviewControllerTest extends AbstractControllerTest {
     @Autowired
     private StoreRepository storeRepository;
 
+    @Autowired
+    private MenuRepository menuRepository;
+
     @AfterEach
     void cleanUp() {
         super.cleanup();
         reviewRepository.deleteAll();
-        storeRepository.deleteAll();
+        menuRepository.deleteAllInBatch();
+        storeRepository.deleteAllInBatch();
     }
 
     @DisplayName("POST /api/v2/store/review 200 OK")

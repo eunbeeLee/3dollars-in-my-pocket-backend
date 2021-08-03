@@ -99,14 +99,12 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
             review.createdAt,
             review.updatedAt,
             review.storeId,
-            store.name,
             user.id,
             user.name,
             user.socialInfo.socialType
         ))
             .from(review)
             .innerJoin(user).on(review.userId.eq(user.id))
-            .innerJoin(store).on(review.storeId.eq(store.id))
             .where(
                 review.id.in(reviewIds)
             )

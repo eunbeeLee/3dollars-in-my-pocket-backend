@@ -53,8 +53,8 @@ public class Review extends AuditingTimeEntity {
         this.status = ReviewStatus.DELETED;
     }
 
-    public void update(String content, int rating) {
-        this.contents = content;
+    public void update(String contents, int rating) {
+        this.contents = contents;
         this.rating = Rating.of(rating);
     }
 

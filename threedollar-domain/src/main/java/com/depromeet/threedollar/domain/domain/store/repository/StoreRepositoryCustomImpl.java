@@ -79,13 +79,7 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
             .limit(size)
             .fetch();
 
-        return queryFactory.selectFrom(store).distinct()
-            .innerJoin(store.menus, menu).fetchJoin()
-            .where(
-                store.id.in(storeIds)
-            )
-            .orderBy(store.id.desc())
-            .fetch();
+        return findAllByIds(storeIds);
     }
 
     private BooleanExpression lessThanId(Long lastStoreId) {
@@ -93,6 +87,17 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
             return null;
         }
         return store.id.lt(lastStoreId);
+    }
+
+    @Override
+    public List<Store> findAllByIds(List<Long> storeIds) {
+        return queryFactory.selectFrom(store).distinct()
+            .innerJoin(store.menus, menu).fetchJoin()
+            .where(
+                store.id.in(storeIds)
+            )
+            .orderBy(store.id.desc())
+            .fetch();
     }
 
     /**

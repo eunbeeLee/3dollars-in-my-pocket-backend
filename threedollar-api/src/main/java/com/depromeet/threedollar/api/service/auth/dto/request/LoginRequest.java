@@ -12,10 +12,10 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginRequest {
 
-    @NotBlank
+    @NotBlank(message = "{auth.token.notBlank}")
     private String token;
 
-    @NotNull
+    @NotNull(message = "{user.socialType.notNull}")
     private UserSocialType socialType;
 
     public static LoginRequest testInstance(String token, UserSocialType socialType) {

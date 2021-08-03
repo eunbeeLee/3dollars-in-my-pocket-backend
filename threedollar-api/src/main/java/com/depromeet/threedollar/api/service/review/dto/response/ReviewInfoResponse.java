@@ -7,7 +7,6 @@ import lombok.*;
 
 @ToString
 @Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReviewInfoResponse extends AuditingTimeResponse {
 
@@ -17,8 +16,23 @@ public class ReviewInfoResponse extends AuditingTimeResponse {
     private int rating;
     private ReviewStatus status;
 
+    @Builder
+    private ReviewInfoResponse(Long reviewId, Long storeId, String content, int rating, ReviewStatus status) {
+        this.reviewId = reviewId;
+        this.storeId = storeId;
+        this.content = content;
+        this.rating = rating;
+        this.status = status;
+    }
+
     public static ReviewInfoResponse of(Review review) {
-        ReviewInfoResponse response = new ReviewInfoResponse(review.getId(), review.getStoreId(), review.getContents(), review.getRating(), review.getStatus());
+        ReviewInfoResponse response = ReviewInfoResponse.builder()
+            .reviewId(review.getId())
+            .storeId(review.getStoreId())
+            .content(review.getContents())
+            .rating(review.getRating())
+            .status(review.getStatus())
+            .build();
         response.setBaseTime(review);
         return response;
     }

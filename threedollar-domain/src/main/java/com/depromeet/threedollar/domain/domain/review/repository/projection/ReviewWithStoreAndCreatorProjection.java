@@ -19,7 +19,6 @@ public class ReviewWithStoreAndCreatorProjection {
     private final LocalDateTime updatedAt;
 
     private final Long storeId;
-    private final String storeName;
 
     private final Long userId;
     private final String userName;
@@ -27,7 +26,7 @@ public class ReviewWithStoreAndCreatorProjection {
 
     @QueryProjection
     public ReviewWithStoreAndCreatorProjection(Long id, int rating, String contents, ReviewStatus status, LocalDateTime createdAt,
-                                               LocalDateTime updatedAt, Long storeId, String storeName, Long userId, String userName,
+                                               LocalDateTime updatedAt, Long storeId, Long userId, String userName,
                                                UserSocialType userSocialType) {
         this.id = id;
         this.rating = rating;
@@ -36,7 +35,6 @@ public class ReviewWithStoreAndCreatorProjection {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.storeId = storeId;
-        this.storeName = storeName;
         this.userId = userId;
         this.userName = userName;
         this.userSocialType = userSocialType;

@@ -14,6 +14,8 @@ public interface StoreRepositoryCustom {
 
     List<Store> findAllByUserIdWithScroll(Long userId, Long lastStoreId, int size);
 
+    List<Store> findAllByIds(List<Long> storeIds);
+
     List<Store> findStoresByLocationLessThanDistance(double latitude, double longitude, double distance);
 
 }

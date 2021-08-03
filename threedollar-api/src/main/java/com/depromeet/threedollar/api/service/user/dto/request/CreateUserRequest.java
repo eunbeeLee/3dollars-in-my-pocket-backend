@@ -20,7 +20,6 @@ public class CreateUserRequest {
     @NotNull(message = "{user.socialType.notnull}")
     private UserSocialType socialType;
 
-    @NotBlank(message = "{user.name.notBlank}")
     @NickName
     private String name;
 
