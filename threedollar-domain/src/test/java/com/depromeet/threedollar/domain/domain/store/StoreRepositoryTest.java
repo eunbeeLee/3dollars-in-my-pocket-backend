@@ -141,4 +141,23 @@ class StoreRepositoryTest {
         assertThat(stores.get(0).getName()).isEqualTo("1번 가게");
     }
 
+    @Test
+    void 메뉴가_없는_가게는_조회되지_않는다() {
+        // given
+        Long userId = 100L;
+
+        Store store1 = StoreCreator.create(userId, "1번 가게");
+        store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
+
+        Store store2 = StoreCreator.create(userId, "2번 가게");
+
+        storeRepository.saveAll(Arrays.asList(store1, store2));
+
+        // when
+        long counts = storeRepository.findCountsByUserId(userId);
+
+        // then
+        assertThat(counts).isEqualTo(1);
+    }
+
 }

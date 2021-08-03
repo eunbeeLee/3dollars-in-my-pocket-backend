@@ -9,7 +9,6 @@ import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 import static com.depromeet.threedollar.domain.domain.menu.QMenu.menu;
@@ -35,7 +34,7 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
      * OneToMany에서는 다중 FetchJoin 불가.
      * -
      * Store를 조회할때 [menu, appearanceDays, payments]를 oneToMany로 조회해서 N+1가 발생하는 이슈로
-     * menu만 fetchJoin을 걸어두고 (cuz menu만 필요한 쿼리들이 1/2로 존재하는 이유로 menu에 페치조인을 검)
+     * menu만 fetchJoin을 걸어두고 (menu만 필요한 쿼리들이 1/2로 존재하는 이유로 menu에 페치조인을 검)
      * -
      * default_batch_fetch_size: 1000 으로 설정하며
      * 1000개 칼럼씩 WHERE store_id IN (...)으로 조회해서 N+1 문제를 해결하는 중.
@@ -52,8 +51,9 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
 
     @Override
     public long findCountsByUserId(Long userId) {
-        return queryFactory.select(store.id.count())
+        return queryFactory.select(store.id)
             .from(store)
+            .innerJoin(menu).on(menu.store.id.eq(store.id))
             .where(
                 store.userId.eq(userId)
             )
@@ -67,10 +67,10 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
      * 이 문제를 해결하기 위해서 StoreId 리스트 조회 후 페치조인하는 방식으로 조회.
      */
     @Override
-    public List<Store> findAllByUserIdWithScroll(Long userId, @Nullable Long lastStoreId, int size) {
+    public List<Store> findAllByUserIdWithScroll(Long userId, Long lastStoreId, int size) {
         List<Long> storeIds = queryFactory.select(store.id)
             .from(store)
-            .innerJoin(store.menus, menu)
+            .innerJoin(menu).on(menu.store.id.eq(store.id))
             .where(
                 store.userId.eq(userId),
                 lessThanId(lastStoreId)
@@ -96,7 +96,7 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
     }
 
     /**
-     * TODO  B-Tree의 공간정보 인덱스 한계로, R-Tree 인덱스 리서치 필요.
+     * TODO B-Tree의 공간정보 인덱스 한계로, R-Tree 인덱스 리서치 필요.
      * 현재 인덱스 풀스캔 (커버링 인덱스) -> PK들을 통한 LEFT JOIN을 통해서 계산하고 있음.
      */
     @Override
