@@ -13,11 +13,15 @@ public class RetrieveMyReviewsRequest {
     @Min(value = 1, message = "{common.size.min}")
     private int size;
 
-    @Min(value = 0, message = "{common.page.min}")
-    private int page;
+    private Long cursor;
 
-    public static RetrieveMyReviewsRequest testInstance(int size, int page) {
-        return new RetrieveMyReviewsRequest(size, page);
+    /**
+     * 총 가게 수를 매번 서버에서 조회하지 않고, 캐싱하기 위한 필드. (Optional)
+     */
+    private Long cachingTotalElements;
+
+    public static RetrieveMyReviewsRequest testInstance(int size, Long cursor, Long cachingTotalElements) {
+        return new RetrieveMyReviewsRequest(size, cursor, cachingTotalElements);
     }
 
 }

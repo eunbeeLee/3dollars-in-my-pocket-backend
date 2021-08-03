@@ -75,7 +75,8 @@ public class ReviewMockApiCaller extends MockMvcUtils {
         MockHttpServletRequestBuilder builder = get("/api/v2/store/reviews/me")
             .header(HttpHeaders.AUTHORIZATION, token)
             .param("size", String.valueOf(request.getSize()))
-            .param("page", String.valueOf(request.getPage()));
+            .param("cursor", request.getCursor() == null ? null : String.valueOf(request.getCursor()))
+            .param("cachingTotalElements", request.getCachingTotalElements() == null ? null : String.valueOf(request.getCachingTotalElements()));
 
         return objectMapper.readValue(
             mockMvc.perform(builder)

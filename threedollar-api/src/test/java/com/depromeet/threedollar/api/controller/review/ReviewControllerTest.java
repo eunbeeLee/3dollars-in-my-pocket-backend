@@ -98,29 +98,136 @@ class ReviewControllerTest extends AbstractControllerTest {
         assertThat(response.getData()).isEqualTo("OK");
     }
 
-    @DisplayName("GET /api/v2/store/reviews/me 200 OK")
+    @DisplayName("GET /api/v2/store/reviews/me 200 OK - first scroll")
     @Test
-    void 사용자가_작성한_리뷰를_전체_조회하는_API_호출시_200_OK() throws Exception {
+    void 사용자가_작성한_리뷰를_전체_조회_첫스크롤_렌더링시_스크롤정보와_다음_커서를_반환한다() throws Exception {
         // given
-        Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요", 5);
-        Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요", 4);
-        reviewRepository.saveAll(Arrays.asList(review1, review2));
+        Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
+        Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
+        Review review3 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요3", 3);
+        Review review4 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요4", 2);
+        reviewRepository.saveAll(Arrays.asList(review1, review2, review3, review4));
 
-        RetrieveMyReviewsRequest request = RetrieveMyReviewsRequest.testInstance(2, 0);
+        RetrieveMyReviewsRequest request = RetrieveMyReviewsRequest.testInstance(2, null, null);
 
         // when
         ApiResponse<ReviewDetailWithPaginationResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
 
         // then
-        assertThat(response.getData().getTotalPages()).isEqualTo(1);
-        assertThat(response.getData().getTotalElements()).isEqualTo(2);
-        assertThat(response.getData().getContent()).hasSize(2);
+        assertThat(response.getData().getTotalElements()).isEqualTo(4);
+        assertThat(response.getData().getNextCursor()).isEqualTo(review3.getId());
+        assertThat(response.getData().getContents()).hasSize(2);
 
-        assertReviewInfoResponse(response.getData().getContent().get(0), review2.getId(), store.getId(), store.getName(), review2.getContents(), review2.getRating(), ReviewStatus.POSTED);
-        assertUserInfoResponse(response.getData().getContent().get(0).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
+        assertReviewInfoResponse(response.getData().getContents().get(0), review4.getId(), store.getId(), store.getName(), review4.getContents(), review4.getRating(), ReviewStatus.POSTED);
+        assertUserInfoResponse(response.getData().getContents().get(0).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
 
-        assertReviewInfoResponse(response.getData().getContent().get(1), review1.getId(), store.getId(), store.getName(), review1.getContents(), review1.getRating(), ReviewStatus.POSTED);
-        assertUserInfoResponse(response.getData().getContent().get(1).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
+        assertReviewInfoResponse(response.getData().getContents().get(1), review3.getId(), store.getId(), store.getName(), review3.getContents(), review3.getRating(), ReviewStatus.POSTED);
+        assertUserInfoResponse(response.getData().getContents().get(1).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
+    }
+
+    @DisplayName("GET /api/v2/store/reviews/me 200 OK - ongoing Scroll with cached total elements")
+    @Test
+    void 사용자가_작성한_리뷰를_전체_조회_중간_스크롤_렌더링시_스크롤정보와_다음_커서를_반환한다() throws Exception {
+        // given
+        Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
+        Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
+        Review review3 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요3", 3);
+        Review review4 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요4", 2);
+        reviewRepository.saveAll(Arrays.asList(review1, review2, review3, review4));
+
+        RetrieveMyReviewsRequest request = RetrieveMyReviewsRequest.testInstance(2, review4.getId(), 4L);
+
+        // when
+        ApiResponse<ReviewDetailWithPaginationResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
+
+        // then
+        assertThat(response.getData().getTotalElements()).isEqualTo(4);
+        assertThat(response.getData().getNextCursor()).isEqualTo(review2.getId());
+        assertThat(response.getData().getContents()).hasSize(2);
+
+        assertReviewInfoResponse(response.getData().getContents().get(0), review3.getId(), store.getId(), store.getName(), review3.getContents(), review3.getRating(), ReviewStatus.POSTED);
+        assertUserInfoResponse(response.getData().getContents().get(0).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
+
+        assertReviewInfoResponse(response.getData().getContents().get(1), review2.getId(), store.getId(), store.getName(), review2.getContents(), review2.getRating(), ReviewStatus.POSTED);
+        assertUserInfoResponse(response.getData().getContents().get(1).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
+    }
+
+    @DisplayName("GET /api/v2/store/reviews/me 200 OK - ongoing Scroll without cached total elements")
+    @Test
+    void 사용자가_작성한_리뷰를_전체_조회_총개수가_캐싱되지_않으면_계산되서_반환된다() throws Exception {
+        // given
+        Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
+        Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
+        Review review3 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요3", 3);
+        Review review4 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요4", 2);
+        reviewRepository.saveAll(Arrays.asList(review1, review2, review3, review4));
+
+        RetrieveMyReviewsRequest request = RetrieveMyReviewsRequest.testInstance(2, review4.getId(), null);
+
+        // when
+        ApiResponse<ReviewDetailWithPaginationResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
+
+        // then
+        assertThat(response.getData().getTotalElements()).isEqualTo(4);
+        assertThat(response.getData().getNextCursor()).isEqualTo(review2.getId());
+        assertThat(response.getData().getContents()).hasSize(2);
+
+        assertReviewInfoResponse(response.getData().getContents().get(0), review3.getId(), store.getId(), store.getName(), review3.getContents(), review3.getRating(), ReviewStatus.POSTED);
+        assertUserInfoResponse(response.getData().getContents().get(0).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
+
+        assertReviewInfoResponse(response.getData().getContents().get(1), review2.getId(), store.getId(), store.getName(), review2.getContents(), review2.getRating(), ReviewStatus.POSTED);
+        assertUserInfoResponse(response.getData().getContents().get(1).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
+    }
+
+    @DisplayName("GET /api/v2/store/reviews/me 200 OK - last Scroll without enough size")
+    @Test
+    void 사용자가_작성한_리뷰를_조회시_SIZE보다_적게_반환하면_마지막_스크롤로_판단해서_스크롤정보와_null_커서를_반환한다() throws Exception {
+        // given
+        Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
+        Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
+        Review review3 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요3", 3);
+        Review review4 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요4", 2);
+        reviewRepository.saveAll(Arrays.asList(review1, review2, review3, review4));
+
+        RetrieveMyReviewsRequest request = RetrieveMyReviewsRequest.testInstance(2, review3.getId(), null);
+
+        // when
+        ApiResponse<ReviewDetailWithPaginationResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
+
+        // then
+        assertThat(response.getData().getTotalElements()).isEqualTo(4);
+        assertThat(response.getData().getNextCursor()).isNull();
+        assertThat(response.getData().getContents()).hasSize(2);
+
+        assertReviewInfoResponse(response.getData().getContents().get(0), review2.getId(), store.getId(), store.getName(), review2.getContents(), review2.getRating(), ReviewStatus.POSTED);
+        assertUserInfoResponse(response.getData().getContents().get(0).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
+
+        assertReviewInfoResponse(response.getData().getContents().get(1), review1.getId(), store.getId(), store.getName(), review1.getContents(), review1.getRating(), ReviewStatus.POSTED);
+        assertUserInfoResponse(response.getData().getContents().get(1).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
+    }
+
+    @DisplayName("GET /api/v2/store/reviews/me 200 OK - last Scroll with return enough size")
+    @Test
+    void 사용자가_작성한_리뷰를_조회시_SIZE만큼_반환하지만_다음_커서에_아무것도_없는경우_마지막_스크롤로_판단해서_스크롤정보와_null_커서를_반환한다() throws Exception {
+        // given
+        Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
+        Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
+        Review review3 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요3", 3);
+        Review review4 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요4", 2);
+        reviewRepository.saveAll(Arrays.asList(review1, review2, review3, review4));
+
+        RetrieveMyReviewsRequest request = RetrieveMyReviewsRequest.testInstance(2, review2.getId(), null);
+
+        // when
+        ApiResponse<ReviewDetailWithPaginationResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
+
+        // then
+        assertThat(response.getData().getTotalElements()).isEqualTo(4);
+        assertThat(response.getData().getNextCursor()).isNull();
+        assertThat(response.getData().getContents()).hasSize(1);
+
+        assertReviewInfoResponse(response.getData().getContents().get(0), review1.getId(), store.getId(), store.getName(), review1.getContents(), review1.getRating(), ReviewStatus.POSTED);
+        assertUserInfoResponse(response.getData().getContents().get(0).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
     }
 
     @DisplayName("GET /api/v2/store/reviews/me 삭제된 리뷰는 조회되지 않는다.")
@@ -131,15 +238,15 @@ class ReviewControllerTest extends AbstractControllerTest {
         review.delete();
         reviewRepository.save(review);
 
-        RetrieveMyReviewsRequest request = RetrieveMyReviewsRequest.testInstance(2, 0);
+        RetrieveMyReviewsRequest request = RetrieveMyReviewsRequest.testInstance(2, null, null);
 
         // when
         ApiResponse<ReviewDetailWithPaginationResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
 
         // then
-        assertThat(response.getData().getTotalPages()).isEqualTo(0);
         assertThat(response.getData().getTotalElements()).isEqualTo(0);
-        assertThat(response.getData().getContent()).isEmpty();
+        assertThat(response.getData().getNextCursor()).isNull();
+        assertThat(response.getData().getContents()).isEmpty();
     }
 
     private void assertUserInfoResponse(UserInfoResponse user, Long id, String name, UserSocialType socialType) {

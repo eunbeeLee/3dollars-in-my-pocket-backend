@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class MyStoresWithPaginationResponse {
 
     private List<StoreInfoResponse> contents = new ArrayList<>();
-    private Long totalElements;
+    private long totalElements;
     private Long nextCursor;
 
     private MyStoresWithPaginationResponse(List<StoreInfoResponse> contents, Long totalElements, Long nextCursor) {
@@ -25,7 +25,7 @@ public class MyStoresWithPaginationResponse {
         this.nextCursor = nextCursor;
     }
 
-    public static MyStoresWithPaginationResponse newLastPageInstance(List<Store> stores, long totalElements) {
+    public static MyStoresWithPaginationResponse newLastScroll(List<Store> stores, long totalElements) {
         return of(stores, totalElements, null);
     }
 

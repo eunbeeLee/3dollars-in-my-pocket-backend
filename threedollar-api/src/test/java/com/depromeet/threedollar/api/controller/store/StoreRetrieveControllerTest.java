@@ -181,7 +181,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertStoreInfoResponse(response.getData().getContents().get(1), store3);
     }
 
-    @DisplayName("GET /api/v2/stores/me 200 OK - ongoing Scoll")
+    @DisplayName("GET /api/v2/stores/me 200 OK - ongoing Scroll with cached total elements")
     @Test
     void 사용자가_작성한_가게조회_중간_페이지_조회시_다음_커서가_반환된다() throws Exception {
         // given
@@ -212,9 +212,9 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertStoreInfoResponse(response.getData().getContents().get(1), store2);
     }
 
-    @DisplayName("GET /api/v2/stores/me 200 OK - ongoing Scoll")
+    @DisplayName("GET /api/v2/stores/me 200 OK - ongoing Scroll without cached total elements")
     @Test
-    void 사용자가_작성한_가게조회_중간_페이지_조회시_다음_커서가_반환된다_따로_totalElements_캐싱하지_않으면_계산되서_반환() throws Exception {
+    void 사용자가_작성한_가게조회_중간_페이지_조회시_다음_커서가_반환된다_총개수가_캐싱되지_않으면_계산되서_반환() throws Exception {
         // given
         Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
         store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));

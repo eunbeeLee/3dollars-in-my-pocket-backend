@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,21 +15,25 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReviewDetailWithPaginationResponse {
 
-    private final List<ReviewDetailResponse> content = new ArrayList<>();
+    private List<ReviewDetailResponse> contents = new ArrayList<>();
     private long totalElements;
-    private long totalPages;
+    private Long nextCursor;
 
-    private ReviewDetailWithPaginationResponse(List<ReviewDetailResponse> reviews, long totalElements, long totalPages) {
-        this.content.addAll(reviews);
+    private ReviewDetailWithPaginationResponse(List<ReviewDetailResponse> contents, long totalElements, Long nextCursor) {
+        this.contents = contents;
         this.totalElements = totalElements;
-        this.totalPages = totalPages;
+        this.nextCursor = nextCursor;
     }
 
-    public static ReviewDetailWithPaginationResponse of(Page<ReviewWithStoreAndCreatorProjection> reviewDto) {
-        List<ReviewDetailResponse> responses = reviewDto.getContent().stream()
+    public static ReviewDetailWithPaginationResponse of(List<ReviewWithStoreAndCreatorProjection> reviews, long totalElements, Long nextCursor) {
+        List<ReviewDetailResponse> contents = reviews.stream()
             .map(ReviewDetailResponse::of)
             .collect(Collectors.toList());
-        return new ReviewDetailWithPaginationResponse(responses, reviewDto.getTotalElements(), reviewDto.getTotalPages());
+        return new ReviewDetailWithPaginationResponse(contents, totalElements, nextCursor);
+    }
+
+    public static ReviewDetailWithPaginationResponse newLastScroll(List<ReviewWithStoreAndCreatorProjection> reviews, long totalElements) {
+        return of(reviews, totalElements, null);
     }
 
 }

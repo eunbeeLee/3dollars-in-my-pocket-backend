@@ -11,10 +11,10 @@ import com.depromeet.threedollar.domain.domain.review.ReviewRepository;
 import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithStoreAndCreatorProjection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -47,8 +47,20 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewDetailWithPaginationResponse retrieveMyReviews(RetrieveMyReviewsRequest request, Long userId) {
-        Page<ReviewWithStoreAndCreatorProjection> result = reviewRepository.findAllWithCreatorByUserId(userId, PageRequest.of(request.getPage(), request.getSize()));
-        return ReviewDetailWithPaginationResponse.of(result);
+        List<ReviewWithStoreAndCreatorProjection> currentAndNextScrollReviews = reviewRepository.findAllByUserIdWithScroll(userId, request.getCursor(), request.getSize() + 1);
+        if (currentAndNextScrollReviews.size() <= request.getSize()) {
+            return ReviewDetailWithPaginationResponse.newLastScroll(
+                currentAndNextScrollReviews,
+                request.getCachingTotalElements() == null ? reviewRepository.findCountsByUserId(userId) : request.getCachingTotalElements()
+            );
+        }
+
+        List<ReviewWithStoreAndCreatorProjection> currentScrollReviews = currentAndNextScrollReviews.subList(0, request.getSize());
+        return ReviewDetailWithPaginationResponse.of(
+            currentScrollReviews,
+            request.getCachingTotalElements() == null ? reviewRepository.findCountsByUserId(userId) : request.getCachingTotalElements(),
+            currentScrollReviews.get(request.getSize() - 1).getId()
+        );
     }
 
 }

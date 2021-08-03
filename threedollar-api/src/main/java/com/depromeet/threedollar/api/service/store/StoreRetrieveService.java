@@ -62,7 +62,7 @@ public class StoreRetrieveService {
     public MyStoresWithPaginationResponse retrieveMyStores(RetrieveMyStoresRequest request, Long userId) {
         List<Store> currentAndNextScrollStores = storeRepository.findAllByUserIdWithScroll(userId, request.getCursor(), request.getSize() + 1);
         if (currentAndNextScrollStores.size() <= request.getSize()) {
-            return MyStoresWithPaginationResponse.newLastPageInstance(
+            return MyStoresWithPaginationResponse.newLastScroll(
                 currentAndNextScrollStores,
                 request.getCachingTotalElements() == null ? storeRepository.findCountsByUserId(userId) : request.getCachingTotalElements()
             );
