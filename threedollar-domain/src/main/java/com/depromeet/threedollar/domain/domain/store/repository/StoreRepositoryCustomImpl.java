@@ -68,7 +68,7 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
      */
     @Override
     public List<Store> findAllByUserIdWithScroll(Long userId, Long lastStoreId, int size) {
-        List<Long> storeIds = queryFactory.select(store.id)
+        List<Long> storeIds = queryFactory.select(store.id).distinct()
             .from(store)
             .innerJoin(menu).on(menu.store.id.eq(store.id))
             .where(
