@@ -75,7 +75,7 @@ class StoreServiceTest extends UserSetUpTest {
             .storeType(storeType)
             .appearanceDays(appearanceDays)
             .paymentMethods(paymentMethods)
-            .menu(menu)
+            .menus(menu)
             .build();
 
         // when
@@ -99,7 +99,7 @@ class StoreServiceTest extends UserSetUpTest {
             .storeType(StoreType.STORE)
             .appearanceDays(appearanceDays)
             .paymentMethods(Collections.emptySet())
-            .menu(Collections.emptyList())
+            .menus(Collections.emptyList())
             .build();
 
         // when
@@ -123,7 +123,7 @@ class StoreServiceTest extends UserSetUpTest {
             .storeType(StoreType.STORE)
             .appearanceDays(Collections.emptySet())
             .paymentMethods(paymentMethods)
-            .menu(Collections.emptyList())
+            .menus(Collections.emptyList())
             .build();
 
         // when
@@ -150,7 +150,7 @@ class StoreServiceTest extends UserSetUpTest {
             .storeType(StoreType.STORE)
             .appearanceDays(Collections.emptySet())
             .paymentMethods(Collections.emptySet())
-            .menu(menus)
+            .menus(menus)
             .build();
 
         // when
@@ -188,7 +188,7 @@ class StoreServiceTest extends UserSetUpTest {
             .storeType(storeType)
             .appearanceDays(appearanceDays)
             .paymentMethods(paymentMethods)
-            .menu(menu)
+            .menus(menu)
             .build();
 
         // when
@@ -228,7 +228,7 @@ class StoreServiceTest extends UserSetUpTest {
             .storeType(StoreType.STORE)
             .appearanceDays(Collections.emptySet())
             .paymentMethods(paymentMethodTypes)
-            .menu(Collections.emptyList())
+            .menus(Collections.emptyList())
             .build();
 
         // when
@@ -264,7 +264,7 @@ class StoreServiceTest extends UserSetUpTest {
             .storeType(StoreType.STORE)
             .appearanceDays(appearanceDays)
             .paymentMethods(Collections.emptySet())
-            .menu(Collections.emptyList())
+            .menus(Collections.emptyList())
             .build();
 
         // when
@@ -303,7 +303,7 @@ class StoreServiceTest extends UserSetUpTest {
             .storeType(StoreType.STORE)
             .appearanceDays(Collections.emptySet())
             .paymentMethods(Collections.emptySet())
-            .menu(menus)
+            .menus(menus)
             .build();
 
         // when

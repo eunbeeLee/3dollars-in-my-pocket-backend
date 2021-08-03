@@ -10,6 +10,7 @@ import com.depromeet.threedollar.domain.domain.store.PaymentMethodType;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreType;
 import com.depromeet.threedollar.domain.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.*;
@@ -31,9 +32,15 @@ public class StoreDetailInfoResponse extends AuditingTimeResponse {
     private UserInfoResponse user;
     private final Set<DayOfTheWeek> appearanceDays = new HashSet<>();
     private final Set<PaymentMethodType> paymentMethods = new HashSet<>();
-    private final List<StoreImageResponse> image = new ArrayList<>();
-    private final List<MenuResponse> menu = new ArrayList<>();
-    private final List<ReviewResponse> review = new ArrayList<>();
+
+    @JsonProperty("image")
+    private final List<StoreImageResponse> images = new ArrayList<>();
+
+    @JsonProperty("menu")
+    private final List<MenuResponse> menus = new ArrayList<>();
+
+    @JsonProperty("review")
+    private final List<ReviewResponse> reviews = new ArrayList<>();
 
     @Builder
     private StoreDetailInfoResponse(Long storeId, Double latitude, Double longitude, String storeName,
@@ -65,11 +72,11 @@ public class StoreDetailInfoResponse extends AuditingTimeResponse {
             .build();
         response.appearanceDays.addAll(store.getAppearanceDaysType());
         response.paymentMethods.addAll(store.getPaymentMethodsType());
-        response.image.addAll(imageResponses);
-        response.menu.addAll(store.getMenus().stream()
+        response.images.addAll(imageResponses);
+        response.menus.addAll(store.getMenus().stream()
             .map(MenuResponse::of)
             .collect(Collectors.toList()));
-        response.review.addAll(reviewResponses);
+        response.reviews.addAll(reviewResponses);
         response.setBaseTime(store);
         return response;
     }

@@ -89,7 +89,7 @@ class StoreControllerTest extends AbstractControllerTest {
             .storeType(storeType)
             .appearanceDays(appearanceDays)
             .paymentMethods(paymentMethods)
-            .menu(menu)
+            .menus(menu)
             .build();
 
         // when
@@ -126,7 +126,7 @@ class StoreControllerTest extends AbstractControllerTest {
             .storeType(storeType)
             .appearanceDays(appearanceDays)
             .paymentMethods(paymentMethods)
-            .menu(menu)
+            .menus(menu)
             .build();
 
         // when

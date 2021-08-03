@@ -5,6 +5,7 @@ import com.depromeet.threedollar.domain.domain.menu.Menu;
 import com.depromeet.threedollar.domain.domain.store.PaymentMethodType;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.validation.Valid;
@@ -42,18 +43,19 @@ public class AddStoreRequest {
 
     @NotEmpty(message = "{store.menu.notEmpty}")
     @Valid
-    private List<MenuRequest> menu = new ArrayList<>();
+    @JsonProperty("menu")
+    private List<MenuRequest> menus = new ArrayList<>();
 
     @Builder(builderClassName = "TestBuilder", builderMethodName = "testBuilder")
     public AddStoreRequest(Double latitude, Double longitude, String storeName, StoreType storeType,
-                           Set<DayOfTheWeek> appearanceDays, Set<PaymentMethodType> paymentMethods, List<MenuRequest> menu) {
+                           Set<DayOfTheWeek> appearanceDays, Set<PaymentMethodType> paymentMethods, List<MenuRequest> menus) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.storeName = storeName;
         this.storeType = storeType;
         this.appearanceDays = appearanceDays;
         this.paymentMethods = paymentMethods;
-        this.menu = menu;
+        this.menus = menus;
     }
 
     public Store toStore(Long userId) {
@@ -65,7 +67,7 @@ public class AddStoreRequest {
     }
 
     private List<Menu> toMenus(Store store) {
-        return menu.stream()
+        return menus.stream()
             .map(menu -> menu.toEntity(store))
             .collect(Collectors.toList());
     }

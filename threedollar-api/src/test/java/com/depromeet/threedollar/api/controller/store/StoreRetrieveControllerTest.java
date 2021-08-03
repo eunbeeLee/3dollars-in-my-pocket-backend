@@ -120,8 +120,8 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertThat(data.getCategories()).hasSize(1);
         assertThat(data.getCategories().get(0)).isEqualTo(menu.getCategory());
 
-        assertThat(data.getMenu()).hasSize(1);
-        assertMenuResponse(data.getMenu().get(0), menu.getId(), menu.getCategory(), menu.getName(), menu.getPrice());
+        assertThat(data.getMenus()).hasSize(1);
+        assertMenuResponse(data.getMenus().get(0), menu.getId(), menu.getCategory(), menu.getName(), menu.getPrice());
 
         assertUserInfoResponse(data.getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
 
