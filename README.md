@@ -35,8 +35,8 @@ docker-compose up --build
 ## Tech Stacks
 ### Language & Framework
 - Java 11, Kotlin 1.5
-- Spring Boot 2.3 + Spring MVC
-- Spring Data JPA (Hibernate) + QueryDSL 4.3
+- Spring Boot 2.5 (Spring Framework, Spring MVC)
+- Spring Data JPA (Hibernate) + QueryDSL
 - Gradle 7.0
 - Junit 5
 
@@ -50,6 +50,6 @@ AWS 프리티어 내에서 비용 없이 구성하였습니다.
 - AWS RDS (MariaDB 10.4)
 - flyway
 - Nginx
-- Docker compose
+- Docker, Docker compose, AWS ECR
 - Redis
 - Github Actions CI/CD
