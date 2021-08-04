@@ -3,11 +3,13 @@ jar { enabled = true }
 
 dependencies {
     implementation project(':threedollar-common')
-    // spring webflux
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+    // spring webflux
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+
+    // spring cloud aws
     api group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
 
     // embedded s3
-    implementation 'io.findify:s3mock_2.13:0.2.6'
+    implementation("io.findify:s3mock_2.13:0.2.6")
 }

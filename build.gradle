@@ -48,14 +48,14 @@ subprojects {
     }
 
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-validation'
-        implementation 'org.springframework.boot:spring-boot-configuration-processor'
+        implementation("org.springframework.boot:spring-boot-starter-validation")
+        implementation("org.springframework.boot:spring-boot-configuration-processor")
 
         testImplementation('org.springframework.boot:spring-boot-starter-test')
 
         // Lombok
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
+        compileOnly("org.projectlombok:lombok")
+        annotationProcessor("org.projectlombok:lombok")
 
         // kotlin
         implementation("org.jetbrains.kotlin:kotlin-stdlib")

@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
-import reactor.netty.tcp.TcpClient;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,13 +19,9 @@ public class WebClientConfig {
     public WebClient webClient() {
         return WebClient.builder()
             .clientConnector(new ReactorClientHttpConnector(
-                HttpClient.from(
-                    TcpClient.create()
-                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, TIMEOUT_CONFIG)
-                        .doOnConnected(conn ->
-                            conn.addHandler(new ReadTimeoutHandler(TIMEOUT_CONFIG, TimeUnit.MILLISECONDS))
-                        )
-                )
+                HttpClient.create()
+                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, TIMEOUT_CONFIG)
+                    .doOnConnected(connection -> connection.addHandler(new ReadTimeoutHandler(TIMEOUT_CONFIG, TimeUnit.MILLISECONDS)))
             )).build();
     }
 

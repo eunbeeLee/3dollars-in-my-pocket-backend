@@ -10,7 +10,7 @@ dependencies {
     api project(':threedollar-common')
 
     // Spring Data JPA
-    api group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.3.8.RELEASE'
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: "${springBootVersion}"
 
     // H2
     implementation 'com.h2database:h2'

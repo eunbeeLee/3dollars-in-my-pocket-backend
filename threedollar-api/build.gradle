@@ -1,17 +1,23 @@
+buildscript {
+    ext {
+        swaggerVersion = '2.9.2'
+    }
+}
+
 dependencies {
     implementation project(':threedollar-domain')
     implementation project(':threedollar-external')
 
     // Spring MVC
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation("org.springframework.boot:spring-boot-starter-web")
 
     // swagger
-    implementation "io.springfox:springfox-swagger2:2.9.2"
-    implementation "io.springfox:springfox-swagger-ui:2.9.2"
-    implementation 'io.springfox:springfox-bean-validators:2.9.2'
+    implementation("io.springfox:springfox-swagger2:${swaggerVersion}")
+    implementation("io.springfox:springfox-swagger-ui:${swaggerVersion}")
+    implementation("io.springfox:springfox-bean-validators:${swaggerVersion}")
 
     // Spring Session (Redis)
-    implementation 'org.springframework.session:spring-session-data-redis'
+    implementation("org.springframework.session:spring-session-data-redis")
 
     // Spring actuator
     implementation("org.springframework.boot:spring-boot-starter-actuator")
