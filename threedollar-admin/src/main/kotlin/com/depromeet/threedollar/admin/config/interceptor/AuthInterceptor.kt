@@ -6,7 +6,7 @@ import com.depromeet.threedollar.domain.domain.admin.AdminRepository
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
 import org.springframework.util.StringUtils
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter
+import org.springframework.web.servlet.HandlerInterceptor
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse
 class AuthInterceptor(
     private val tokenService: TokenService,
     private val adminRepository: AdminRepository
-) : HandlerInterceptorAdapter() {
+) : HandlerInterceptor {
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         val header = request.getHeader(HttpHeaders.AUTHORIZATION)

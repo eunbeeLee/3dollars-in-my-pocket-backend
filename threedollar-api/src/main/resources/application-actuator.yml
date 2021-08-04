@@ -3,7 +3,10 @@ management:
     web:
       base-path: /monitoring
       exposure:
-        include: health,metrics,logfile
+        include:
+          - health
+          - metrics
+          - logfile
   endpoint:
     health:
       show-details: always

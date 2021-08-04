@@ -53,7 +53,7 @@ public final class ProcessUtils {
         } catch (Exception e) {
             throw new IllegalArgumentException("사용가능한 포트를 찾는 중 에러가 발생하였습니다.");
         }
-        return !StringUtils.isEmpty(pidInfo.toString());
+        return StringUtils.hasLength(pidInfo.toString());
     }
 
 }
