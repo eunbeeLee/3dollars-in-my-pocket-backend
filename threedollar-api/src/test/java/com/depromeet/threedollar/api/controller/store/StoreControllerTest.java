@@ -8,7 +8,6 @@ import com.depromeet.threedollar.api.service.store.dto.request.MenuRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreDeleteResponse;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
-import com.depromeet.threedollar.common.exception.ErrorCode;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.menu.MenuCreator;
@@ -28,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import static com.depromeet.threedollar.common.exception.ErrorCode.NOT_FOUND_STORE_EXCEPTION;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class StoreControllerTest extends AbstractControllerTest {
@@ -184,8 +184,8 @@ class StoreControllerTest extends AbstractControllerTest {
         ApiResponse<StoreDeleteResponse> response = storeMockApiCaller.deleteStore(999L, request, token, 404);
 
         // then
-        assertThat(response.getResultCode()).isEqualTo(ErrorCode.NOT_FOUND_STORE_EXCEPTION.getCode());
-        assertThat(response.getMessage()).isEqualTo(ErrorCode.NOT_FOUND_STORE_EXCEPTION.getMessage());
+        assertThat(response.getResultCode()).isEqualTo(NOT_FOUND_STORE_EXCEPTION.getCode());
+        assertThat(response.getMessage()).isEqualTo(NOT_FOUND_STORE_EXCEPTION.getMessage());
         assertThat(response.getData()).isNull();
     }
 

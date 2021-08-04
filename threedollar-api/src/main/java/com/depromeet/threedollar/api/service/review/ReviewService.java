@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -52,14 +53,14 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewDetailWithPaginationResponse retrieveMyReviews(RetrieveMyReviewsRequest request, Long userId) {
-        List<ReviewWithStoreAndCreatorProjection> currentAndNextScrollReviews = reviewRepository.findAllByUserIdWithScroll(userId, request.getCursor(), request.getSize() + 1);
-
+        List<ReviewWithStoreAndCreatorProjection> currentAndNextScrollReviews =
+            reviewRepository.findAllByUserIdWithScroll(userId, request.getCursor(), request.getSize() + 1);
         Map<Long, Store> cachedStores = findStoreMaps(currentAndNextScrollReviews);
 
         if (currentAndNextScrollReviews.size() <= request.getSize()) {
             return ReviewDetailWithPaginationResponse.newLastScroll(
                 currentAndNextScrollReviews,
-                request.getCachingTotalElements() == null ? reviewRepository.findCountsByUserId(userId) : request.getCachingTotalElements(),
+                Objects.requireNonNullElseGet(request.getCachingTotalElements(), () -> reviewRepository.findCountsByUserId(userId)),
                 cachedStores
             );
         }
@@ -67,7 +68,7 @@ public class ReviewService {
         List<ReviewWithStoreAndCreatorProjection> currentScrollReviews = currentAndNextScrollReviews.subList(0, request.getSize());
         return ReviewDetailWithPaginationResponse.of(
             currentScrollReviews,
-            request.getCachingTotalElements() == null ? reviewRepository.findCountsByUserId(userId) : request.getCachingTotalElements(),
+            Objects.requireNonNullElseGet(request.getCachingTotalElements(), () -> reviewRepository.findCountsByUserId(userId)),
             currentScrollReviews.get(request.getSize() - 1).getId(),
             cachedStores
         );
@@ -77,7 +78,6 @@ public class ReviewService {
         List<Long> storeIds = reviews.stream()
             .map(ReviewWithStoreAndCreatorProjection::getStoreId)
             .collect(Collectors.toList());
-
         return storeRepository.findAllByIds(storeIds).stream()
             .collect(Collectors.toMap(Store::getId, store -> store));
     }

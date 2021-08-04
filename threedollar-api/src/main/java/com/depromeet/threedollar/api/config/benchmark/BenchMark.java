@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.api.config.aop;
+package com.depromeet.threedollar.api.config.benchmark;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

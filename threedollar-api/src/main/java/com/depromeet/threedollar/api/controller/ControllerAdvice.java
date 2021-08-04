@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Objects;
 
+import static com.depromeet.threedollar.common.exception.ErrorCode.*;
+
 @Slf4j
 @RestControllerAdvice
 public class ControllerAdvice {
@@ -27,28 +29,28 @@ public class ControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ApiResponse<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
-        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
+        return ApiResponse.error(VALIDATION_EXCEPTION, Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
     protected ApiResponse<Object> handleBadRequest(BindException e) {
         log.error(e.getMessage(), e);
-        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
+        return ApiResponse.error(VALIDATION_EXCEPTION, Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MissingRequestHeaderException.class)
     protected ApiResponse<Object> handleMissingRequestHeaderException(MissingRequestHeaderException e) {
         log.error(e.getMessage(), e);
-        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, e.getMessage());
+        return ApiResponse.error(VALIDATION_EXCEPTION, e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(InvalidFormatException.class)
     protected ApiResponse<Object> handleMethodArgumentTypeMismatchException(InvalidFormatException e) {
         log.error(e.getMessage(), e);
-        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION);
+        return ApiResponse.error(VALIDATION_EXCEPTION);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -99,7 +101,7 @@ public class ControllerAdvice {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     protected ApiResponse<Object> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         log.error(e.getMessage(), e);
-        return ApiResponse.error(ErrorCode.METHOD_NOT_ALLOWED_EXCEPTION);
+        return ApiResponse.error(METHOD_NOT_ALLOWED_EXCEPTION);
     }
 
     /**
@@ -143,7 +145,7 @@ public class ControllerAdvice {
     @ExceptionHandler(Exception.class)
     protected ApiResponse<Object> handleException(final Exception exception) {
         log.error(exception.getMessage(), exception);
-        return ApiResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        return ApiResponse.error(INTERNAL_SERVER_EXCEPTION);
     }
 
 }

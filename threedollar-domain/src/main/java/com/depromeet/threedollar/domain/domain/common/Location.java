@@ -1,14 +1,13 @@
 package com.depromeet.threedollar.domain.domain.common;
 
-import com.depromeet.threedollar.common.exception.ErrorCode;
 import com.depromeet.threedollar.common.exception.ValidationException;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.util.Objects;
+
+import static com.depromeet.threedollar.common.exception.ErrorCode.VALIDATION_LATITUDE_EXCEPTION;
+import static com.depromeet.threedollar.common.exception.ErrorCode.VALIDATION_LONGITUDE_EXCEPTION;
 
 /**
  * 대한민국의 위도 / 경도
@@ -17,6 +16,7 @@ import java.util.Objects;
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode
 @Embeddable
 public class Location {
 
@@ -40,28 +40,17 @@ public class Location {
 
     private void validateIsScopeOfKorea(double latitude, double longitude) {
         if (latitude < KOREA_MIN_LATITUDE || latitude > KOREA_MAX_LATITUDE) {
-            throw new ValidationException(String.format("잘못된 위도 (%s)가 입력되었습니다. (33 ~ 43) 사이의 범위만 허용됩니다)", latitude), ErrorCode.VALIDATION_LATITUDE_EXCEPTION);
+            throw new ValidationException(
+                String.format("잘못된 위도 (%s)가 입력되었습니다. (33 ~ 43) 사이의 범위만 허용됩니다)", latitude), VALIDATION_LATITUDE_EXCEPTION);
         }
         if (longitude < KOREA_MIN_LONGITUDE || longitude > KOREA_MAX_LONGITUDE) {
-            throw new ValidationException(String.format("잘못된 경도 (%s)가 입력되었습니다. (124 ~ 132) 사이의 범위만 허용됩니다)", longitude), ErrorCode.VALIDATION_LONGITUDE_EXCEPTION);
+            throw new ValidationException(
+                String.format("잘못된 경도 (%s)가 입력되었습니다. (124 ~ 132) 사이의 범위만 허용됩니다)", longitude), VALIDATION_LONGITUDE_EXCEPTION);
         }
     }
 
     public static Location of(double latitude, double longitude) {
         return new Location(latitude, longitude);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Location location = (Location) o;
-        return Objects.equals(latitude, location.latitude) && Objects.equals(longitude, location.longitude);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(latitude, longitude);
     }
 
 }

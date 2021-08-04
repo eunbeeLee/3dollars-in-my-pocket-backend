@@ -3,6 +3,7 @@ package com.depromeet.threedollar.admin.controller
 import com.depromeet.threedollar.admin.ThreeDollarAdminApplication
 import com.depromeet.threedollar.admin.common.dto.ApiResponse
 import com.depromeet.threedollar.common.exception.*
+import com.depromeet.threedollar.common.exception.ErrorCode.*
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import mu.KotlinLogging
 import org.springframework.http.HttpStatus
@@ -26,28 +27,28 @@ class ControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException::class)
     private fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ApiResponse<Nothing> {
         logger.info { e }
-        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, e.bindingResult.allErrors[0].defaultMessage)
+        return ApiResponse.error(VALIDATION_EXCEPTION, e.bindingResult.allErrors[0].defaultMessage)
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException::class)
     private fun handleBadRequest(e: BindException): ApiResponse<Nothing> {
         logger.info { e }
-        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, e.bindingResult.allErrors[0].defaultMessage)
+        return ApiResponse.error(VALIDATION_EXCEPTION, e.bindingResult.allErrors[0].defaultMessage)
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MissingRequestHeaderException::class)
     private fun handleMissingRequestHeaderException(e: MissingRequestHeaderException): ApiResponse<Nothing> {
         logger.info { e }
-        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, e.message)
+        return ApiResponse.error(VALIDATION_EXCEPTION, e.message)
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(InvalidFormatException::class)
     private fun handleInvalidFormatException(e: InvalidFormatException): ApiResponse<Nothing> {
         logger.info { e }
-        return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION)
+        return ApiResponse.error(VALIDATION_EXCEPTION)
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -94,7 +95,7 @@ class ControllerAdvice {
     @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
     private fun handleHttpRequestMethodNotSupportedException(e: HttpRequestMethodNotSupportedException): ApiResponse<Nothing> {
         logger.info { e }
-        return ApiResponse.error(ErrorCode.METHOD_NOT_ALLOWED_EXCEPTION)
+        return ApiResponse.error(METHOD_NOT_ALLOWED_EXCEPTION)
     }
 
     /**
@@ -134,7 +135,7 @@ class ControllerAdvice {
     @ExceptionHandler(Exception::class)
     private fun handleInternalServerException(e: Exception): ApiResponse<Nothing> {
         logger.info { e }
-        return ApiResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION)
+        return ApiResponse.error(INTERNAL_SERVER_EXCEPTION)
     }
 
 }

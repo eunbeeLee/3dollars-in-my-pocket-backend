@@ -49,13 +49,13 @@ public class Review extends AuditingTimeEntity {
         return new Review(storeId, userId, contents, rating);
     }
 
-    public void delete() {
-        this.status = ReviewStatus.DELETED;
-    }
-
     public void update(String contents, int rating) {
         this.contents = contents;
         this.rating = Rating.of(rating);
+    }
+
+    public void delete() {
+        this.status = ReviewStatus.DELETED;
     }
 
     public int getRating() {

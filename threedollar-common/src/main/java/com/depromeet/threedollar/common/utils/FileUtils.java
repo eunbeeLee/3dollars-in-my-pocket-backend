@@ -1,12 +1,13 @@
 package com.depromeet.threedollar.common.utils;
 
-import com.depromeet.threedollar.common.exception.ErrorCode;
 import com.depromeet.threedollar.common.exception.ValidationException;
 import com.depromeet.threedollar.common.utils.type.ImageType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
+
+import static com.depromeet.threedollar.common.exception.ErrorCode.VALIDATION_FILE_TYPE_EXCEPTION;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FileUtils {
@@ -23,7 +24,7 @@ public class FileUtils {
         try {
             return fileName.substring(fileName.lastIndexOf("."));
         } catch (StringIndexOutOfBoundsException e) {
-            throw new ValidationException(String.format("잘못된 형식의 파일 (%s) 입니다", fileName), ErrorCode.VALIDATION_FILE_TYPE_EXCEPTION);
+            throw new ValidationException(String.format("잘못된 형식의 파일 (%s) 입니다", fileName), VALIDATION_FILE_TYPE_EXCEPTION);
         }
     }
 
@@ -31,7 +32,7 @@ public class FileUtils {
         if (contentType != null && contentType.contains(SEPARATOR) && contentType.split(SEPARATOR)[0].equals(IMAGE_CONTENT_TYPE_TYPE)) {
             return;
         }
-        throw new ValidationException(String.format("허용되지 않은 파일 형식 (%s) 입니다", contentType), ErrorCode.VALIDATION_FILE_TYPE_EXCEPTION);
+        throw new ValidationException(String.format("허용되지 않은 파일 형식 (%s) 입니다", contentType), VALIDATION_FILE_TYPE_EXCEPTION);
     }
 
 }

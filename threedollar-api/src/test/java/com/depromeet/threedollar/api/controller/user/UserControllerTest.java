@@ -5,7 +5,6 @@ import com.depromeet.threedollar.api.controller.AbstractControllerTest;
 import com.depromeet.threedollar.api.service.user.dto.request.CheckDuplicateNameRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
-import com.depromeet.threedollar.common.exception.ErrorCode;
 import com.depromeet.threedollar.domain.domain.user.UserCreator;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
 import org.junit.jupiter.api.AfterEach;
@@ -13,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.depromeet.threedollar.common.exception.ErrorCode.CONFLICT_EXCEPTION;
+import static com.depromeet.threedollar.common.exception.ErrorCode.UNAUTHORIZED_EXCEPTION;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class UserControllerTest extends AbstractControllerTest {
@@ -44,8 +45,8 @@ class UserControllerTest extends AbstractControllerTest {
         ApiResponse<UserInfoResponse> response = userMockApiCaller.getMyUserInfo("wrong token", 401);
 
         // then
-        assertThat(response.getResultCode()).isEqualTo(ErrorCode.UNAUTHORIZED_EXCEPTION.getCode());
-        assertThat(response.getMessage()).isEqualTo(ErrorCode.UNAUTHORIZED_EXCEPTION.getMessage());
+        assertThat(response.getResultCode()).isEqualTo(UNAUTHORIZED_EXCEPTION.getCode());
+        assertThat(response.getMessage()).isEqualTo(UNAUTHORIZED_EXCEPTION.getMessage());
         assertThat(response.getData()).isNull();
     }
 
@@ -77,8 +78,8 @@ class UserControllerTest extends AbstractControllerTest {
         ApiResponse<UserInfoResponse> response = userMockApiCaller.updateMyUserInfo(request, token, 409);
 
         // then
-        assertThat(response.getResultCode()).isEqualTo(ErrorCode.CONFLICT_EXCEPTION.getCode());
-        assertThat(response.getMessage()).isEqualTo(ErrorCode.CONFLICT_EXCEPTION.getMessage());
+        assertThat(response.getResultCode()).isEqualTo(CONFLICT_EXCEPTION.getCode());
+        assertThat(response.getMessage()).isEqualTo(CONFLICT_EXCEPTION.getMessage());
         assertThat(response.getData()).isNull();
     }
 
@@ -92,8 +93,8 @@ class UserControllerTest extends AbstractControllerTest {
         ApiResponse<UserInfoResponse> response = userMockApiCaller.updateMyUserInfo(request, "wrong token", 401);
 
         // then
-        assertThat(response.getResultCode()).isEqualTo(ErrorCode.UNAUTHORIZED_EXCEPTION.getCode());
-        assertThat(response.getMessage()).isEqualTo(ErrorCode.UNAUTHORIZED_EXCEPTION.getMessage());
+        assertThat(response.getResultCode()).isEqualTo(UNAUTHORIZED_EXCEPTION.getCode());
+        assertThat(response.getMessage()).isEqualTo(UNAUTHORIZED_EXCEPTION.getMessage());
         assertThat(response.getData()).isNull();
     }
 
@@ -123,8 +124,8 @@ class UserControllerTest extends AbstractControllerTest {
         ApiResponse<String> response = userMockApiCaller.checkAvailableName(request, 409);
 
         // then
-        assertThat(response.getResultCode()).isEqualTo(ErrorCode.CONFLICT_EXCEPTION.getCode());
-        assertThat(response.getMessage()).isEqualTo(ErrorCode.CONFLICT_EXCEPTION.getMessage());
+        assertThat(response.getResultCode()).isEqualTo(CONFLICT_EXCEPTION.getCode());
+        assertThat(response.getMessage()).isEqualTo(CONFLICT_EXCEPTION.getMessage());
         assertThat(response.getData()).isNull();
     }
 

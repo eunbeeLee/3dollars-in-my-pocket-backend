@@ -1,6 +1,7 @@
 package com.depromeet.threedollar.domain.domain.user;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,10 +9,10 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode
 @Embeddable
 public class SocialInfo {
 
@@ -29,19 +30,6 @@ public class SocialInfo {
 
     public static SocialInfo of(String socialId, UserSocialType socialType) {
         return new SocialInfo(socialId, socialType);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SocialInfo that = (SocialInfo) o;
-        return Objects.equals(socialId, that.socialId) && socialType == that.socialType;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(socialId, socialType);
     }
 
 }

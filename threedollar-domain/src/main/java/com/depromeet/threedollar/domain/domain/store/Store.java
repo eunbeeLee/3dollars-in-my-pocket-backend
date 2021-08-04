@@ -73,15 +73,15 @@ public class Store extends AuditingTimeEntity {
         return new Store(userId, latitude, longitude, storeName, storeType);
     }
 
-    private void addPaymentMethod(PaymentMethodType type) {
-        PaymentMethod paymentMethod = PaymentMethod.of(this, type);
-        this.paymentMethods.add(paymentMethod);
-    }
-
     public void addPaymentMethods(Set<PaymentMethodType> types) {
         for (PaymentMethodType type : types) {
             this.addPaymentMethod(type);
         }
+    }
+
+    private void addPaymentMethod(PaymentMethodType type) {
+        PaymentMethod paymentMethod = PaymentMethod.of(this, type);
+        this.paymentMethods.add(paymentMethod);
     }
 
     public void updatePaymentMethods(Set<PaymentMethodType> paymentMethodTypes) {
@@ -99,15 +99,15 @@ public class Store extends AuditingTimeEntity {
             .collect(Collectors.toSet());
     }
 
-    private void addAppearanceDay(DayOfTheWeek dayOfTheWeek) {
-        AppearanceDay appearanceDay = AppearanceDay.of(this, dayOfTheWeek);
-        this.appearanceDays.add(appearanceDay);
-    }
-
     public void addAppearanceDays(Set<DayOfTheWeek> dayOfTheWeeks) {
         for (DayOfTheWeek dayOfTheWeek : dayOfTheWeeks) {
             addAppearanceDay(dayOfTheWeek);
         }
+    }
+
+    private void addAppearanceDay(DayOfTheWeek dayOfTheWeek) {
+        AppearanceDay appearanceDay = AppearanceDay.of(this, dayOfTheWeek);
+        this.appearanceDays.add(appearanceDay);
     }
 
     public void updateAppearanceDays(Set<DayOfTheWeek> dayOfTheWeeks) {
@@ -125,14 +125,14 @@ public class Store extends AuditingTimeEntity {
             .collect(Collectors.toSet());
     }
 
-    private void addMenu(Menu menu) {
-        this.menus.add(menu);
-    }
-
     public void addMenus(List<Menu> menus) {
         for (Menu menu : menus) {
             this.addMenu(menu);
         }
+    }
+
+    private void addMenu(Menu menu) {
+        this.menus.add(menu);
     }
 
     public void updateMenu(List<Menu> menus) {
@@ -150,16 +150,20 @@ public class Store extends AuditingTimeEntity {
         this.userId = userId;
     }
 
+    public void updateAverageRating(double average) {
+        this.rating = average;
+    }
+
+    public void delete() {
+        this.status = StoreStatus.DELETED;
+    }
+
     public Double getLatitude() {
         return this.location.getLatitude();
     }
 
     public Double getLongitude() {
         return this.location.getLongitude();
-    }
-
-    public void delete() {
-        this.status = StoreStatus.DELETED;
     }
 
     public List<MenuCategoryType> getMenuCategories() {
@@ -188,8 +192,8 @@ public class Store extends AuditingTimeEntity {
             .collect(Collectors.toSet());
     }
 
-    public void updateAverageRating(double average) {
-        this.rating = average;
+    public boolean hasCategory(MenuCategoryType category) {
+        return this.getMenuCategories().contains(category);
     }
 
 }

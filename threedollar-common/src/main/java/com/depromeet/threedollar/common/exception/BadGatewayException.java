@@ -1,5 +1,7 @@
 package com.depromeet.threedollar.common.exception;
 
+import static com.depromeet.threedollar.common.exception.ErrorCode.BAD_GATEWAY_EXCEPTION;
+
 public class BadGatewayException extends BaseException {
 
     public BadGatewayException(String message, ErrorCode errorCode) {
@@ -7,7 +9,7 @@ public class BadGatewayException extends BaseException {
     }
 
     public BadGatewayException(String message) {
-        super(message, ErrorCode.BAD_GATEWAY_EXCEPTION);
+        super(message, BAD_GATEWAY_EXCEPTION);
     }
 
 }
