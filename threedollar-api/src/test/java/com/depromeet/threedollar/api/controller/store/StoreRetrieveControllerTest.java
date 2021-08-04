@@ -2,12 +2,12 @@ package com.depromeet.threedollar.api.controller.store;
 
 import com.depromeet.threedollar.api.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.controller.AbstractControllerTest;
-import com.depromeet.threedollar.api.service.store.dto.request.RetrieveAroundStoresRequest;
+import com.depromeet.threedollar.api.service.store.dto.request.RetrieveNearStoresRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveMyStoresRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreDetailInfoRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.MenuResponse;
-import com.depromeet.threedollar.api.service.store.dto.response.MyStoresWithPaginationResponse;
-import com.depromeet.threedollar.api.service.store.dto.response.StoreDetailInfoResponse;
+import com.depromeet.threedollar.api.service.store.dto.response.StoresScrollResponse;
+import com.depromeet.threedollar.api.service.store.dto.response.StoreDetailResponse;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
@@ -74,7 +74,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
         storeRepository.saveAll(Arrays.asList(store1, store2));
 
-        RetrieveAroundStoresRequest request = RetrieveAroundStoresRequest.testInstance(34, 124, 34, 124, 1000);
+        RetrieveNearStoresRequest request = RetrieveNearStoresRequest.testInstance(34, 124, 34, 124, 1000);
 
         // when
         ApiResponse<List<StoreInfoResponse>> response = storeRetrieveMockApiCaller.getNearStores(request, 200);
@@ -111,10 +111,10 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         RetrieveStoreDetailInfoRequest request = RetrieveStoreDetailInfoRequest.testInstance(store.getId(), 34, 124);
 
         // when
-        ApiResponse<StoreDetailInfoResponse> response = storeRetrieveMockApiCaller.getStoreDetailInfo(request, 200);
+        ApiResponse<StoreDetailResponse> response = storeRetrieveMockApiCaller.getStoreDetailInfo(request, 200);
 
         // then
-        StoreDetailInfoResponse data = response.getData();
+        StoreDetailResponse data = response.getData();
         assertStoreDetailInfoResponse(data, store.getId(), store.getLatitude(), store.getLongitude(), store.getName(), store.getType(), store.getRating());
 
         assertThat(data.getCategories()).hasSize(1);
@@ -143,10 +143,10 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         RetrieveStoreDetailInfoRequest request = RetrieveStoreDetailInfoRequest.testInstance(store.getId(), 34, 124);
 
         // when
-        ApiResponse<StoreDetailInfoResponse> response = storeRetrieveMockApiCaller.getStoreDetailInfo(request, 200);
+        ApiResponse<StoreDetailResponse> response = storeRetrieveMockApiCaller.getStoreDetailInfo(request, 200);
 
         // then
-        StoreDetailInfoResponse data = response.getData();
+        StoreDetailResponse data = response.getData();
         assertUserInfoResponse(data.getUser(), null, "사라진 제보자", null);
     }
 
@@ -171,7 +171,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, null, null, 34, 124);
 
         // when
-        ApiResponse<MyStoresWithPaginationResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
+        ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
 
         // then
         assertThat(response.getData().getTotalElements()).isEqualTo(4);
@@ -202,7 +202,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store4.getId(), 4L, 34, 124);
 
         // when
-        ApiResponse<MyStoresWithPaginationResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
+        ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
 
         // then
         assertThat(response.getData().getTotalElements()).isEqualTo(4);
@@ -233,7 +233,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store4.getId(), null, 34, 124);
 
         // when
-        ApiResponse<MyStoresWithPaginationResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
+        ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
 
         // then
         assertThat(response.getData().getTotalElements()).isEqualTo(4);
@@ -264,7 +264,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store3.getId(), null, 34, 124);
 
         // when
-        ApiResponse<MyStoresWithPaginationResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
+        ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
 
         // then
         assertThat(response.getData().getTotalElements()).isEqualTo(4);
@@ -292,7 +292,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store2.getId(), 3L, 34, 124);
 
         // when
-        ApiResponse<MyStoresWithPaginationResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
+        ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
 
         // then
         assertThat(response.getData().getTotalElements()).isEqualTo(3);
@@ -322,7 +322,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertThat(respose.getPrice()).isEqualTo(price);
     }
 
-    private void assertStoreDetailInfoResponse(StoreDetailInfoResponse response, Long storeId, Double latitude, Double longitude, String name, StoreType type, double rating) {
+    private void assertStoreDetailInfoResponse(StoreDetailResponse response, Long storeId, Double latitude, Double longitude, String name, StoreType type, double rating) {
         assertThat(response.getStoreId()).isEqualTo(storeId);
         assertThat(response.getLatitude()).isEqualTo(latitude);
         assertThat(response.getLongitude()).isEqualTo(longitude);

@@ -4,6 +4,7 @@ import com.depromeet.threedollar.api.service.store.dto.request.AddStoreImageRequ
 import com.depromeet.threedollar.api.service.store.dto.response.StoreImageResponse;
 import com.depromeet.threedollar.api.service.upload.FileUploadService;
 import com.depromeet.threedollar.api.service.upload.dto.request.FileUploadRequest;
+import com.depromeet.threedollar.common.exception.NotFoundException;
 import com.depromeet.threedollar.common.utils.type.ImageType;
 import com.depromeet.threedollar.domain.domain.store.StoreImage;
 import com.depromeet.threedollar.domain.domain.store.StoreImageRepository;
@@ -15,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.depromeet.threedollar.common.exception.ErrorCode.NOT_FOUND_STORE_IMAGE_EXCEPTION;
 
 @RequiredArgsConstructor
 @Service
@@ -32,10 +35,19 @@ public class StoreImageService {
 
     @Transactional
     public void deleteStoreImage(Long imageId) {
-        StoreImage storeImage = StoreImageServiceUtils.findStoreImageById(storeImageRepository, imageId);
+        StoreImage storeImage = findStoreImageById(imageId);
         storeImage.delete();
         // TODO 트랜잭션 커밋시 변경감지가 작동안하는데 이유 찾아봐야함
         storeImageRepository.save(storeImage);
+    }
+
+    private StoreImage findStoreImageById(Long storeImageId) {
+        StoreImage storeImage = storeImageRepository.findStoreImageById(storeImageId);
+        if (storeImage == null) {
+            throw new NotFoundException(
+                String.format("해당하는 가게 이미지 (%s)는 존재하지 않습니다", storeImageId), NOT_FOUND_STORE_IMAGE_EXCEPTION);
+        }
+        return storeImage;
     }
 
     @Transactional(readOnly = true)

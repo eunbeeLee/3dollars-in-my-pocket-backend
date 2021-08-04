@@ -4,7 +4,7 @@ import com.depromeet.threedollar.api.config.interceptor.Auth;
 import com.depromeet.threedollar.api.config.resolver.UserId;
 import com.depromeet.threedollar.api.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.service.store.StoreRetrieveService;
-import com.depromeet.threedollar.api.service.store.dto.request.RetrieveAroundStoresRequest;
+import com.depromeet.threedollar.api.service.store.dto.request.RetrieveNearStoresRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveMyStoresRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreGroupByCategoryRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreDetailInfoRequest;
@@ -26,13 +26,13 @@ public class StoreRetrieveController {
 
     @ApiOperation("위도, 경도 주위 가게 목록을 조회합니다.")
     @GetMapping("/api/v2/stores/near")
-    public ApiResponse<List<StoreInfoResponse>> getNearStores(@Valid RetrieveAroundStoresRequest request) {
+    public ApiResponse<List<StoreInfoResponse>> getNearStores(@Valid RetrieveNearStoresRequest request) {
         return ApiResponse.success(storeRetrieveService.getNearStores(request));
     }
 
     @ApiOperation("특정 가게의 정보를 조회합니다.")
     @GetMapping("/api/v2/store")
-    public ApiResponse<StoreDetailInfoResponse> getStoreDetailInfo(@Valid RetrieveStoreDetailInfoRequest request) {
+    public ApiResponse<StoreDetailResponse> getStoreDetailInfo(@Valid RetrieveStoreDetailInfoRequest request) {
         return ApiResponse.success(storeRetrieveService.getDetailStoreInfo(request));
     }
 
@@ -40,7 +40,7 @@ public class StoreRetrieveController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @GetMapping("/api/v2/stores/me")
-    public ApiResponse<MyStoresWithPaginationResponse> getMyStores(@Valid RetrieveMyStoresRequest request, @UserId Long userId) {
+    public ApiResponse<StoresScrollResponse> getMyStores(@Valid RetrieveMyStoresRequest request, @UserId Long userId) {
         return ApiResponse.success(storeRetrieveService.retrieveMyStores(request, userId));
     }
 

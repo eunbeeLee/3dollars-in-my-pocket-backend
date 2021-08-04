@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class StoreDetailInfoResponse extends AuditingTimeResponse {
+public class StoreDetailResponse extends AuditingTimeResponse {
 
     private Long storeId;
     private Double latitude;
@@ -37,8 +37,8 @@ public class StoreDetailInfoResponse extends AuditingTimeResponse {
     private final List<ReviewResponse> reviews = new ArrayList<>();
 
     @Builder
-    private StoreDetailInfoResponse(Long storeId, Double latitude, Double longitude, String storeName, StoreType storeType,
-                                    Double rating, Integer distance, UserInfoResponse user) {
+    private StoreDetailResponse(Long storeId, Double latitude, Double longitude, String storeName, StoreType storeType,
+                                Double rating, Integer distance, UserInfoResponse user) {
         this.storeId = storeId;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -49,9 +49,9 @@ public class StoreDetailInfoResponse extends AuditingTimeResponse {
         this.user = user;
     }
 
-    public static StoreDetailInfoResponse of(Store store, List<StoreImageResponse> imageResponses, Double latitude,
-                                             Double longitude, User user, List<ReviewWithCreatorProjection> reviews) {
-        StoreDetailInfoResponse response = StoreDetailInfoResponse.builder()
+    public static StoreDetailResponse of(Store store, List<StoreImageResponse> imageResponses, Double latitude,
+                                         Double longitude, User user, List<ReviewWithCreatorProjection> reviews) {
+        StoreDetailResponse response = StoreDetailResponse.builder()
             .storeId(store.getId())
             .latitude(store.getLatitude())
             .longitude(store.getLongitude())

@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.store;
 
-import com.depromeet.threedollar.api.service.store.dto.request.RetrieveAroundStoresRequest;
+import com.depromeet.threedollar.api.service.store.dto.request.RetrieveNearStoresRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveMyStoresRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreGroupByCategoryRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreDetailInfoRequest;
@@ -32,7 +32,7 @@ public class StoreRetrieveService {
     private final ReviewRepository reviewRepository;
 
     @Transactional(readOnly = true)
-    public List<StoreInfoResponse> getNearStores(RetrieveAroundStoresRequest request) {
+    public List<StoreInfoResponse> getNearStores(RetrieveNearStoresRequest request) {
         List<Store> stores = storeRepository.findStoresByLocationLessThanDistance(
             request.getMapLatitude(), request.getMapLongitude(), Math.min(request.getDistance(), LIMIT_DISTANCE)
         );
@@ -43,10 +43,10 @@ public class StoreRetrieveService {
     }
 
     @Transactional(readOnly = true)
-    public StoreDetailInfoResponse getDetailStoreInfo(RetrieveStoreDetailInfoRequest request) {
+    public StoreDetailResponse getDetailStoreInfo(RetrieveStoreDetailInfoRequest request) {
         Store store = StoreServiceUtils.findStoreByIdFetchJoinMenu(storeRepository, request.getStoreId());
         User creator = userRepository.findUserById(store.getUserId());
-        return StoreDetailInfoResponse.of(store, storeImageService.getStoreImages(request.getStoreId()), request.getLatitude(),
+        return StoreDetailResponse.of(store, storeImageService.getStoreImages(request.getStoreId()), request.getLatitude(),
             request.getLongitude(), creator, reviewRepository.findAllWithCreatorByStoreId(request.getStoreId()));
     }
 
@@ -55,19 +55,19 @@ public class StoreRetrieveService {
      * 쿼리를 두 번 날려서 체크하지 않고, 한 번에 처리하기 위해 요청한 가게 갯수 + 1로 조회해서 마지막 1개의 여부에 따라 다음 스크롤 존재 여부를 확인한다.
      */
     @Transactional(readOnly = true)
-    public MyStoresWithPaginationResponse retrieveMyStores(RetrieveMyStoresRequest request, Long userId) {
+    public StoresScrollResponse retrieveMyStores(RetrieveMyStoresRequest request, Long userId) {
         List<Store> currentAndNextScrollStores =
             storeRepository.findAllByUserIdWithScroll(userId, request.getCursor(), request.getSize() + 1);
 
         if (currentAndNextScrollStores.size() <= request.getSize()) {
-            return MyStoresWithPaginationResponse.newLastScroll(
+            return StoresScrollResponse.newLastScroll(
                 currentAndNextScrollStores,
                 Objects.requireNonNullElseGet(request.getCachingTotalElements(), () -> storeRepository.findCountsByUserId(userId))
             );
         }
 
         List<Store> currentScrollStores = currentAndNextScrollStores.subList(0, request.getSize());
-        return MyStoresWithPaginationResponse.of(
+        return StoresScrollResponse.of(
             currentScrollStores,
             Objects.requireNonNullElseGet(request.getCachingTotalElements(), () -> storeRepository.findCountsByUserId(userId)),
             currentScrollStores.get(request.getSize() - 1).getId()

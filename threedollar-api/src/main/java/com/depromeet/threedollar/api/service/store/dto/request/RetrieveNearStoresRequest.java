@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class RetrieveAroundStoresRequest {
+public class RetrieveNearStoresRequest {
 
     @NotNull(message = "{store.latitude.notNull}")
     private Double latitude;
@@ -25,8 +25,8 @@ public class RetrieveAroundStoresRequest {
     @NotNull(message = "{store.distance.notNull}")
     private Double distance;
 
-    public static RetrieveAroundStoresRequest testInstance(double latitude, double longitude, double mapLatitude, double mapLongitude, double distance) {
-        return new RetrieveAroundStoresRequest(latitude, longitude, mapLatitude, mapLongitude, distance);
+    public static RetrieveNearStoresRequest testInstance(double latitude, double longitude, double mapLatitude, double mapLongitude, double distance) {
+        return new RetrieveNearStoresRequest(latitude, longitude, mapLatitude, mapLongitude, distance);
     }
 
     public Double getDistance() {

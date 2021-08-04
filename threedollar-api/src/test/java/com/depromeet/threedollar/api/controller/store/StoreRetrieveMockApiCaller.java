@@ -2,7 +2,7 @@ package com.depromeet.threedollar.api.controller.store;
 
 import com.depromeet.threedollar.api.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.controller.MockMvcUtils;
-import com.depromeet.threedollar.api.service.store.dto.request.RetrieveAroundStoresRequest;
+import com.depromeet.threedollar.api.service.store.dto.request.RetrieveNearStoresRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveMyStoresRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreDetailInfoRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreGroupByCategoryRequest;
@@ -25,7 +25,7 @@ public class StoreRetrieveMockApiCaller extends MockMvcUtils {
         super(mockMvc, objectMapper);
     }
 
-    public ApiResponse<List<StoreInfoResponse>> getNearStores(RetrieveAroundStoresRequest request, int expectedStatus) throws Exception {
+    public ApiResponse<List<StoreInfoResponse>> getNearStores(RetrieveNearStoresRequest request, int expectedStatus) throws Exception {
         MockHttpServletRequestBuilder builder = get("/api/v2/stores/near")
             .param("latitude", String.valueOf(request.getLatitude()))
             .param("longitude", String.valueOf(request.getLongitude()))
@@ -43,7 +43,7 @@ public class StoreRetrieveMockApiCaller extends MockMvcUtils {
         );
     }
 
-    public ApiResponse<StoreDetailInfoResponse> getStoreDetailInfo(RetrieveStoreDetailInfoRequest request, int expectedStatus) throws Exception {
+    public ApiResponse<StoreDetailResponse> getStoreDetailInfo(RetrieveStoreDetailInfoRequest request, int expectedStatus) throws Exception {
         MockHttpServletRequestBuilder builder = get("/api/v2/store")
             .param("latitude", String.valueOf(request.getLatitude()))
             .param("longitude", String.valueOf(request.getLongitude()))
@@ -59,7 +59,7 @@ public class StoreRetrieveMockApiCaller extends MockMvcUtils {
         );
     }
 
-    public ApiResponse<MyStoresWithPaginationResponse> getMyStores(RetrieveMyStoresRequest request, String token, int expectedStatus) throws Exception {
+    public ApiResponse<StoresScrollResponse> getMyStores(RetrieveMyStoresRequest request, String token, int expectedStatus) throws Exception {
         MockHttpServletRequestBuilder builder = get("/api/v2/stores/me")
             .header(HttpHeaders.AUTHORIZATION, token)
             .param("size", String.valueOf(request.getSize()))
