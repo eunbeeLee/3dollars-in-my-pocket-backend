@@ -23,7 +23,6 @@ class FileUtilsTest {
         assertThat(result.endsWith(".png")).isTrue();
     }
 
-
     @Test
     void 파일명을_생성할때_잘못된_파일형식일경우_VALIDATION_에러가_발생한다() {
         // given
@@ -35,7 +34,7 @@ class FileUtilsTest {
     }
 
     @Test
-    void ContentType을_확인해서_허용된_파일_형식이_아닌경우_VALIDATION_에러가_발생한다() {
+    void ContentType이_허용되지_아닌경우_VALIDATION_에러가_발생한다() {
         // given
         String contentType = "video/mp4";
 
@@ -44,7 +43,13 @@ class FileUtilsTest {
     }
 
     @Test
-    void ContentType을_확인해서_허용된_파일_형식일_경우_정상적으로_반환된다() {
+    void ContentType이_널인경우_VALIDATION_에러가_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> FileUtils.validateImageFile(null)).isInstanceOf(ValidationException.class);
+    }
+
+    @Test
+    void 허용된_ContentType_경우_정상적으로_반환된다_jpeg() {
         // given
         String contentType = "image/jpeg";
 
@@ -53,7 +58,7 @@ class FileUtilsTest {
     }
 
     @Test
-    void ContentType을_확인해서_허용된_파일_형식일_경우_정상적으로_반환된다2() {
+    void 허용된_ContentType_경우_정상적으로_반환된다_png() {
         // given
         String contentType = "image/png";
 

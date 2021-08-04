@@ -4,7 +4,6 @@ import com.depromeet.threedollar.admin.service.faq.dto.request.AddFaqRequest
 import com.depromeet.threedollar.admin.service.faq.dto.request.RetrieveFaqRequest
 import com.depromeet.threedollar.admin.service.faq.dto.request.UpdateFaqRequest
 import com.depromeet.threedollar.admin.service.faq.dto.response.FaqResponse
-import com.depromeet.threedollar.domain.domain.faq.FaqCategory
 import com.depromeet.threedollar.domain.domain.faq.FaqRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

@@ -4,6 +4,7 @@ import com.depromeet.threedollar.api.service.UserSetUpTest;
 import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.MenuRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
+import com.depromeet.threedollar.common.exception.NotFoundException;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
 import com.depromeet.threedollar.domain.domain.common.Location;
 import com.depromeet.threedollar.domain.domain.menu.Menu;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class StoreServiceTest extends UserSetUpTest {
@@ -313,6 +315,23 @@ class StoreServiceTest extends UserSetUpTest {
         List<Menu> findMenus = menuRepository.findAll();
         assertThat(findMenus).hasSize(1);
         assertMenu(findMenus.get(0), menuName, price, type);
+    }
+
+    @Test
+    void 가게의_정보를_수정할떄_해당하는_가게가_존재하지_않으면_NOT_FOUND_EXCEPTION() {
+        // given
+        UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
+            .latitude(34.0)
+            .longitude(130.0)
+            .storeName("붕어빵")
+            .storeType(StoreType.STORE)
+            .appearanceDays(Set.of(DayOfTheWeek.TUESDAY))
+            .paymentMethods(Set.of(PaymentMethodType.CARD))
+            .menus(Collections.singletonList(MenuRequest.of("메뉴 이름", "메뉴 가격", MenuCategoryType.BUNGEOPPANG)))
+            .build();
+
+        // when & then
+        assertThatThrownBy(() -> storeService.updateStore(999L, request, userId)).isInstanceOf(NotFoundException.class);
     }
 
     private List<DayOfTheWeek> getDayOfTheWeeks(List<AppearanceDay> appearanceDays) {

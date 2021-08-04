@@ -65,6 +65,15 @@ class StoreImageServiceTest extends UserSetUpTest {
     }
 
     @Test
+    void 가게에_새로운_이미지를_등록할때_해당하는_가게가_없는경우_NotFoundException_이_발생한댜() {
+        // given
+        AddStoreImageRequest request = AddStoreImageRequest.testInstance(999L);
+
+        // when & then
+        assertThatThrownBy(() -> storeImageService.addStoreImage(request, new MockMultipartFile("name", new byte[]{}), userId)).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
     void 가게에_게시되어있는_특정_이미지를_삭제하면_해당_이미지가_INACTIVE로_변경된다() {
         // given
         StoreImage storeImage = StoreImage.newInstance(store.getId(), userId, IMAGE_URL);
