@@ -5,15 +5,12 @@ import com.depromeet.threedollar.domain.domain.menu.Menu;
 import com.depromeet.threedollar.domain.domain.store.PaymentMethodType;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreType;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,19 +29,17 @@ public class UpdateStoreRequest {
     @NotBlank(message = "{store.name.notBlank}")
     private String storeName;
 
-    @NotNull(message = "{store.type.notNull}")
     private StoreType storeType;
 
     @NotNull(message = "{store.appearanceDays.notNull}")
-    private Set<DayOfTheWeek> appearanceDays = new HashSet<>();
+    private Set<DayOfTheWeek> appearanceDays;
 
     @NotNull(message = "{store.paymentMethods.notNull}")
-    private Set<PaymentMethodType> paymentMethods = new HashSet<>();
+    private Set<PaymentMethodType> paymentMethods;
 
-    @JsonProperty("menu")
-    @NotEmpty(message = "{store.menu.notEmpty}")
     @Valid
-    private List<MenuRequest> menus = new ArrayList<>();
+    @NotEmpty(message = "{store.menu.notEmpty}")
+    private List<MenuRequest> menus;
 
     @Builder(builderClassName = "TestBuilder", builderMethodName = "testBuilder")
     public UpdateStoreRequest(Double latitude, Double longitude, String storeName, StoreType storeType,

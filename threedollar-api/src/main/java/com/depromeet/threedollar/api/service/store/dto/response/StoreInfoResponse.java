@@ -23,8 +23,7 @@ public class StoreInfoResponse extends AuditingTimeResponse {
     private final List<MenuCategoryType> categories = new ArrayList<>();
 
     @Builder
-    private StoreInfoResponse(Long storeId, Double latitude, Double longitude, String storeName,
-                              Double rating, Integer distance) {
+    private StoreInfoResponse(Long storeId, Double latitude, Double longitude, String storeName, Double rating, Integer distance) {
         this.storeId = storeId;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -48,10 +47,17 @@ public class StoreInfoResponse extends AuditingTimeResponse {
     }
 
     public static StoreInfoResponse of(Store store) {
-        StoreInfoResponse storeInfoResponse = new StoreInfoResponse(store.getId(), store.getLatitude(), store.getLongitude(), store.getName(), store.getRating(), null);
-        storeInfoResponse.categories.addAll(store.getMenuCategories());
-        storeInfoResponse.setBaseTime(store);
-        return storeInfoResponse;
+        StoreInfoResponse response = StoreInfoResponse.builder()
+            .storeId(store.getId())
+            .latitude(store.getLatitude())
+            .longitude(store.getLongitude())
+            .storeName(store.getName())
+            .rating(store.getRating())
+            .distance(null)
+            .build();
+        response.categories.addAll(store.getMenuCategories());
+        response.setBaseTime(store);
+        return response;
     }
 
 }

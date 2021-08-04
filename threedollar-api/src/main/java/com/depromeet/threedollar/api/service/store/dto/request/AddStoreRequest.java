@@ -1,19 +1,15 @@
 package com.depromeet.threedollar.api.service.store.dto.request;
 
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
-import com.depromeet.threedollar.domain.domain.menu.Menu;
 import com.depromeet.threedollar.domain.domain.store.PaymentMethodType;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreType;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,19 +28,17 @@ public class AddStoreRequest {
     @NotBlank(message = "{store.name.notBlank}")
     private String storeName;
 
-    @NotNull(message = "{store.type.notNull}")
     private StoreType storeType;
 
     @NotNull(message = "{store.appearanceDays.notNull}")
-    private Set<DayOfTheWeek> appearanceDays = new HashSet<>();
+    private Set<DayOfTheWeek> appearanceDays;
 
     @NotNull(message = "{store.paymentMethods.notNull}")
-    private Set<PaymentMethodType> paymentMethods = new HashSet<>();
+    private Set<PaymentMethodType> paymentMethods;
 
-    @NotEmpty(message = "{store.menu.notEmpty}")
     @Valid
-    @JsonProperty("menu")
-    private List<MenuRequest> menus = new ArrayList<>();
+    @NotEmpty(message = "{store.menu.notEmpty}")
+    private List<MenuRequest> menus;
 
     @Builder(builderClassName = "TestBuilder", builderMethodName = "testBuilder")
     public AddStoreRequest(Double latitude, Double longitude, String storeName, StoreType storeType,
@@ -62,14 +56,11 @@ public class AddStoreRequest {
         Store store = Store.newInstance(userId, latitude, longitude, storeName, storeType);
         store.addPaymentMethods(paymentMethods);
         store.addAppearanceDays(appearanceDays);
-        store.addMenus(toMenus(store));
-        return store;
-    }
-
-    private List<Menu> toMenus(Store store) {
-        return menus.stream()
+        store.addMenus(this.menus.stream()
             .map(menu -> menu.toEntity(store))
-            .collect(Collectors.toList());
+            .collect(Collectors.toList())
+        );
+        return store;
     }
 
 }

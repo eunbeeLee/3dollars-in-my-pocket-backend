@@ -69,8 +69,8 @@ public class ReviewService {
         return ReviewDetailWithPaginationResponse.of(
             currentScrollReviews,
             Objects.requireNonNullElseGet(request.getCachingTotalElements(), () -> reviewRepository.findCountsByUserId(userId)),
-            currentScrollReviews.get(request.getSize() - 1).getId(),
-            cachedStores
+            cachedStores,
+            currentScrollReviews.get(request.getSize() - 1).getId()
         );
     }
 

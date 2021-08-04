@@ -16,10 +16,7 @@ public class RetrieveMyStoresRequest {
 
     private Long cursor;
 
-    /**
-     * 총 가게 수를 매번 서버에서 조회하지 않고, 캐싱하기 위한 필드. (Optional)
-     */
-    private Long cachingTotalElements;
+    private Long cachingTotalElements; // 총 가게 수를 매번 서버에서 조회하지 않고, 캐싱하기 위한 필드. (Optional)
 
     @NotNull(message = "{store.latitude.notNull}")
     private Double latitude;

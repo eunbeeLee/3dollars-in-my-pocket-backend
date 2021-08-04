@@ -10,7 +10,7 @@ Authorization: {{AUTHORIZATION}}
     ],
     "latitude": 33.00001,
     "longitude": 124,
-    "menu": [
+    "menus": [
         {
             "category": "BUNGEOPPANG",
             "name": "붕어빵 10개에 3000원",
@@ -119,7 +119,7 @@ Authorization: {{AUTHORIZATION}}
     ],
     "latitude": 33.123,
     "longitude": 124.234,
-    "menu": [
+    "menus": [
         {
             "category": "EOMUK",
             "name": "어묵",
