@@ -106,7 +106,7 @@ class StoreDeleteServiceTest extends UserSetUpTest {
     }
 
     @Test
-    void 해당_사용자가_해당하는_가게에_대해_이미_삭제요청_한경우_에러가_발생한다() {
+    void 해당_사용자가_해당하는_가게에_대해_이미_삭제요청_한경우_CONFLICT_EXCEPTION() {
         // given
         Store store = StoreCreator.create(userId, "storeName");
         storeRepository.save(store);
@@ -114,7 +114,8 @@ class StoreDeleteServiceTest extends UserSetUpTest {
         storeDeleteRequestRepository.save(StoreDeleteRequestCreator.create(store.getId(), userId, DeleteReasonType.NOSTORE));
 
         // when & then
-        assertThatThrownBy(() -> storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId)).isInstanceOf(ConflictException.class);
+        assertThatThrownBy(() -> storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId))
+            .isInstanceOf(ConflictException.class);
     }
 
     private void assertStoreDeleteRequest(StoreDeleteRequest storeDeleteRequest, Long storeId, Long userId, DeleteReasonType type) {

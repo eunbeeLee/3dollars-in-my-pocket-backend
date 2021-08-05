@@ -42,7 +42,7 @@ class S3FileUploadServiceTest {
     }
 
     @Test
-    void 파일을_업로드시_잘못된_파일명인경우_Validation_Exception이_발생한다() {
+    void 파일을_업로드시_잘못된_파일명인경우_Validation_Exception() {
         // given
         MultipartFile multipartFile = new MockMultipartFile("fileName.jpeg", "fileName", "image/jpeg", new byte[]{});
 
@@ -53,7 +53,7 @@ class S3FileUploadServiceTest {
     }
 
     @Test
-    void 파일을_업로드시_잘못된_ContentType인경우_Validation_Exception이_발생한다() {
+    void 파일을_업로드시_잘못된_ContentType인경우_Validation_Exception() {
         // given
         MultipartFile multipartFile = new MockMultipartFile("fileName.jpeg", "fileName.jpeg", "wrong type", new byte[]{});
 
@@ -64,15 +64,16 @@ class S3FileUploadServiceTest {
     }
 
     private static class StubS3Service implements S3Service {
+
         @Override
         public void uploadFile(InputStream inputStream, ObjectMetadata objectMetadata, String fileName) {
-
         }
 
         @Override
         public String getFileUrl(String fileName) {
             return fileName;
         }
+
     }
 
 }

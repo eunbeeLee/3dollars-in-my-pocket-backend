@@ -55,7 +55,7 @@ class StoreServiceTest extends UserSetUpTest {
     }
 
     @Test
-    void 새로운_가게를_등록하면_새로운_가게_데이터가_추가된다() {
+    void 새로운_가게를_등록하면_새로운_가게_데이터가_DB에_추가된다() {
         // given
         Double latitude = 34.0;
         Double longitude = 130.0;
@@ -90,7 +90,7 @@ class StoreServiceTest extends UserSetUpTest {
     }
 
     @Test
-    void 새로운_가게를_등록하면_게시일_정보도_함께_추가된다() {
+    void 새로운_가게를_등록하면_게시일_테이블에_새로운_게시일_정보도_추가된다() {
         // given
         Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY, DayOfTheWeek.WEDNESDAY);
 
@@ -114,7 +114,7 @@ class StoreServiceTest extends UserSetUpTest {
     }
 
     @Test
-    void 새로운_가게를_등록하면_결제_방법도_함께_추가된다() {
+    void 새로운_가게를_등록하면_결제방법_테이블에_결제_방법도_추가된다() {
         // given
         Set<PaymentMethodType> paymentMethods = Set.of(PaymentMethodType.CARD, PaymentMethodType.CASH);
 
@@ -138,7 +138,7 @@ class StoreServiceTest extends UserSetUpTest {
     }
 
     @Test
-    void 새로운_가게를_등록하면_메뉴들도_함께_추가된다() {
+    void 새로운_가게를_등록하면_메뉴_테이블에_메뉴들도_함께_추가된다() {
         // given
         String menuName = "메뉴 이름";
         String price = "10000";
@@ -168,6 +168,56 @@ class StoreServiceTest extends UserSetUpTest {
     void 가게의_정보를_수정하며_기존_가게정보_데이터들이_수정된다() {
         // given
         Store store = StoreCreator.create(userId, "storeName");
+        store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
+        storeRepository.save(store);
+
+        Double latitude = 34.0;
+        Double longitude = 130.0;
+        String storeName = "붕어빵";
+        StoreType storeType = StoreType.STORE;
+        Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);
+        Set<PaymentMethodType> paymentMethods = Set.of(PaymentMethodType.CARD);
+
+        String menuName = "메뉴 이름";
+        String price = "10000";
+        MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
+        List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
+
+        UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
+            .latitude(latitude)
+            .longitude(longitude)
+            .storeName(storeName)
+            .storeType(storeType)
+            .appearanceDays(appearanceDays)
+            .paymentMethods(paymentMethods)
+            .menus(menu)
+            .build();
+
+        // when
+        storeService.updateStore(store.getId(), request, userId);
+
+        // then
+        List<Store> stores = storeRepository.findAll();
+        assertThat(stores).hasSize(1);
+        assertStore(stores.get(0), latitude, longitude, storeName, storeType, userId);
+
+        List<AppearanceDay> appearanceDayList = appearanceDayRepository.findAll();
+        assertThat(appearanceDayList).hasSize(1);
+        assertAppearanceDay(appearanceDayList.get(0), DayOfTheWeek.TUESDAY, stores.get(0).getId());
+
+        List<PaymentMethod> paymentMethodsList = paymentMethodRepository.findAll();
+        assertThat(paymentMethodsList).hasSize(1);
+        assertPaymentMethod(paymentMethodsList.get(0), PaymentMethodType.CARD, stores.get(0).getId());
+
+        List<Menu> menus = menuRepository.findAll();
+        assertThat(menus).hasSize(1);
+        assertMenu(menus.get(0), menuName, price, type);
+    }
+
+    @Test
+    void 사용자가_작성하지_않은_가게_정보도_수정할_수있다() {
+        // given
+        Store store = StoreCreator.create(100L, "storeName");
         store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
         storeRepository.save(store);
 
@@ -314,7 +364,7 @@ class StoreServiceTest extends UserSetUpTest {
         // then
         List<Menu> findMenus = menuRepository.findAll();
         assertThat(findMenus).hasSize(1);
-        assertMenu(findMenus.get(0), menuName, price, type);
+        assertMenu(findMenus.get(0), store.getId(), menuName, price, type);
     }
 
     @Test
@@ -347,6 +397,13 @@ class StoreServiceTest extends UserSetUpTest {
     }
 
     private void assertMenu(Menu menu, String menuName, String price, MenuCategoryType type) {
+        assertThat(menu.getName()).isEqualTo(menuName);
+        assertThat(menu.getPrice()).isEqualTo(price);
+        assertThat(menu.getCategory()).isEqualTo(type);
+    }
+
+    private void assertMenu(Menu menu, Long storeId, String menuName, String price, MenuCategoryType type) {
+        assertThat(menu.getStore().getId()).isEqualTo(storeId);
         assertThat(menu.getName()).isEqualTo(menuName);
         assertThat(menu.getPrice()).isEqualTo(price);
         assertThat(menu.getCategory()).isEqualTo(type);

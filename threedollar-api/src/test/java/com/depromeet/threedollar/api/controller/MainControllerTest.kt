@@ -18,7 +18,7 @@ class MainControllerTest(
 ) {
 
     @Test
-    fun ping() {
+    fun healthCheck() {
         this.mockMvc.perform(get("/ping"))
             .andExpect(status().isOk)
     }

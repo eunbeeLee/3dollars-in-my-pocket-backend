@@ -66,7 +66,7 @@ class ReviewControllerTest extends AbstractControllerTest {
 
     @DisplayName("POST /api/v2/store/review 200 OK")
     @Test
-    void 가게에_새로운_리뷰를_등록합니다() throws Exception {
+    void 가게에_새로운_리뷰를_등록한다() throws Exception {
         // given
         AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), "content", 5);
 
@@ -79,7 +79,7 @@ class ReviewControllerTest extends AbstractControllerTest {
 
     @DisplayName("PUT /api/v2/store/review 200 OK")
     @Test
-    void 사용자가_작성한_리뷰를_수정하는_API_호출시_200_OK() throws Exception {
+    void 사용자가_작성한_리뷰를_수정한다() throws Exception {
         // given
         Review review = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요", 5);
         reviewRepository.save(review);
@@ -95,7 +95,7 @@ class ReviewControllerTest extends AbstractControllerTest {
 
     @DisplayName("DELETE /api/v2/store/review 200 OK")
     @Test
-    void 사용자가_작성한_리뷰를_삭제하는_API_호출시_200_OK() throws Exception {
+    void 사용자가_작성한_리뷰를_삭제한다() throws Exception {
         // given
         Review review = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요", 5);
         reviewRepository.save(review);
@@ -107,9 +107,9 @@ class ReviewControllerTest extends AbstractControllerTest {
         assertThat(response.getData()).isEqualTo("OK");
     }
 
-    @DisplayName("GET /api/v2/store/reviews/me 200 OK - first scroll")
+    @DisplayName("GET /api/v2/store/reviews/me 200 OK - 첫페이지")
     @Test
-    void 사용자가_작성한_리뷰를_전체_조회_첫스크롤_렌더링시_스크롤정보와_다음_커서를_반환한다() throws Exception {
+    void 사용자가_작성한_리뷰를_조회한다_첫번째_스크롤() throws Exception {
         // given
         Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
         Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
@@ -134,9 +134,9 @@ class ReviewControllerTest extends AbstractControllerTest {
         assertUserInfoResponse(response.getData().getContents().get(1).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
     }
 
-    @DisplayName("GET /api/v2/store/reviews/me 200 OK - ongoing Scroll with cached total elements")
+    @DisplayName("GET /api/v2/store/reviews/me 200 OK - 중간 페이지")
     @Test
-    void 사용자가_작성한_리뷰를_전체_조회_중간_스크롤_렌더링시_스크롤정보와_다음_커서를_반환한다() throws Exception {
+    void 사용자가_작성한_리뷰를_조회한다_중간_스크롤() throws Exception {
         // given
         Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
         Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
@@ -161,9 +161,9 @@ class ReviewControllerTest extends AbstractControllerTest {
         assertUserInfoResponse(response.getData().getContents().get(1).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
     }
 
-    @DisplayName("GET /api/v2/store/reviews/me 200 OK - ongoing Scroll without cached total elements")
+    @DisplayName("GET /api/v2/store/reviews/me 200 OK - 중간 페이지 (캐시 X)")
     @Test
-    void 사용자가_작성한_리뷰를_전체_조회_총개수가_캐싱되지_않으면_계산되서_반환된다() throws Exception {
+    void 사용자가_작성한_리뷰를_조회시_전체_리뷰수가_반환된다() throws Exception {
         // given
         Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
         Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
@@ -188,9 +188,9 @@ class ReviewControllerTest extends AbstractControllerTest {
         assertUserInfoResponse(response.getData().getContents().get(1).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
     }
 
-    @DisplayName("GET /api/v2/store/reviews/me 200 OK - last Scroll without enough size")
+    @DisplayName("GET /api/v2/store/reviews/me 200 OK - 마지막 페이지")
     @Test
-    void 사용자가_작성한_리뷰를_조회시_SIZE보다_적게_반환하면_마지막_스크롤로_판단해서_스크롤정보와_null_커서를_반환한다() throws Exception {
+    void 사용자가_작성한_리뷰를_조회한다_마지막_스크롤1() throws Exception {
         // given
         Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
         Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
@@ -215,9 +215,9 @@ class ReviewControllerTest extends AbstractControllerTest {
         assertUserInfoResponse(response.getData().getContents().get(1).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
     }
 
-    @DisplayName("GET /api/v2/store/reviews/me 200 OK - last Scroll with return enough size")
+    @DisplayName("GET /api/v2/store/reviews/me 200 OK - 마지막 페이지")
     @Test
-    void 사용자가_작성한_리뷰를_조회시_SIZE만큼_반환하지만_다음_커서에_아무것도_없는경우_마지막_스크롤로_판단해서_스크롤정보와_null_커서를_반환한다() throws Exception {
+    void 사용자가_작성한_리뷰를_조회한다_마지막_스크롤2() throws Exception {
         // given
         Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
         Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
@@ -239,9 +239,9 @@ class ReviewControllerTest extends AbstractControllerTest {
         assertUserInfoResponse(response.getData().getContents().get(0).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
     }
 
-    @DisplayName("GET /api/v2/store/reviews/me 삭제된 리뷰는 조회되지 않는다.")
+    @DisplayName("GET /api/v2/store/reviews/me 200 Ok - 삭제된 리뷰는 조회되지 않음")
     @Test
-    void 사용자가_작성한_리뷰를_전체조회시_삭제된_리뷰는_조회되지_않는다() throws Exception {
+    void 사용자가_작성한_리뷰를_조회시_삭제된_리뷰는_조회되지_않는다() throws Exception {
         // given
         Review review = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요", 5);
         review.delete();

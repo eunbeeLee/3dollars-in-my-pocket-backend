@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class LocationTest {
 
     @Test
-    void 위도와_경도를_저장한다() {
+    void 위도와_경도로_이루어진_위치_값_객체를_생성한다() {
         // given
         double latitude = 38.12313;
         double longitude = 125.432;
@@ -23,39 +23,39 @@ class LocationTest {
     }
 
     @Test
-    void 대한민국_위도를_벗어나면_에러가_발생한다_허용된_위도보다_작은경우() {
+    void 허용된_위도보다_작은경우_VALIDATION_EXEPTION() {
         // given
         double latitude = 32.999;
-        double longitude = 125.432;
+        double longitude = 125;
 
         // when & then
         assertThatThrownBy(() -> Location.of(latitude, longitude)).isInstanceOf(ValidationException.class);
     }
 
     @Test
-    void 대한민국_위도를_벗어나면_에러가_발생한다_허용된_위도보다_큰경우() {
+    void 허용된_위도보다_큰경우_VALIDATION_EXEPTION() {
         // given
-        double latitude = 38.12313;
-        double longitude = 43.1;
+        double latitude = 43.1;
+        double longitude = 125;
 
         // when & then
         assertThatThrownBy(() -> Location.of(latitude, longitude)).isInstanceOf(ValidationException.class);
     }
 
     @Test
-    void 대한민국_경도를_벗어나면_에러가_발생한다_허용된_위도보다_작은경우() {
+    void 허용된_경도보다_작은경우_VALIDATION_EXEPTION() {
         // given
-        double latitude = 34;
-        double longitude = 123.9999;
+        double latitude = 40;
+        double longitude = 123.9;
 
         // when & then
         assertThatThrownBy(() -> Location.of(latitude, longitude)).isInstanceOf(ValidationException.class);
     }
 
     @Test
-    void 대한민국_경도를_벗어나면_에러가_발생한다_허용된_위도보다_큰경우() {
+    void 허용된_경도보다_큰경우_VALIDATION_EXEPTION() {
         // given
-        double latitude = 34;
+        double latitude = 40;
         double longitude = 132.1;
 
         // when & then
@@ -63,7 +63,7 @@ class LocationTest {
     }
 
     @Test
-    void 동등성_테스트_같은경우_true() {
+    void Location_동등성_테스트_같은경우_같은_객체로_판단() {
         // given
         double latitude = 38.12313;
         double longitude = 125.432;
@@ -79,7 +79,7 @@ class LocationTest {
     }
 
     @Test
-    void 동등성_테스트_위도가_다른경우_false() {
+    void Location_동등성_테스트_위도가_다른경우_다른_객체로_판단() {
         // given
         double longitude = 125.432;
 
@@ -94,7 +94,7 @@ class LocationTest {
     }
 
     @Test
-    void 동등성_테스트_경도가_다른경우_false() {
+    void Location_동등성_테스트_경도가_다른경우_다른_객체로_판단() {
         // given
         double latitude = 38.12313;
 

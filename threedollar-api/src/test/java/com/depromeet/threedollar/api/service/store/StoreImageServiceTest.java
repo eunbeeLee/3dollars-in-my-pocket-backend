@@ -74,7 +74,7 @@ class StoreImageServiceTest extends UserSetUpTest {
     }
 
     @Test
-    void 가게에_게시되어있는_특정_이미지를_삭제하면_해당_이미지가_INACTIVE로_변경된다() {
+    void 가게에_등록된_특정_이미지를_삭제하면_해당_이미지가_INACTIVE로_변경된다() {
         // given
         StoreImage storeImage = StoreImage.newInstance(store.getId(), userId, IMAGE_URL);
         storeImageRepository.save(storeImage);
@@ -89,13 +89,13 @@ class StoreImageServiceTest extends UserSetUpTest {
     }
 
     @Test
-    void 가게_이미지_삭제시_해당하는_가게_이미지가_존재하지_않을경우_NOT_FOUND_EXCEPTION_가_발생한다() {
+    void 가게_이미지_삭제시_해당하는_가게_이미지가_존재하지_않을경우_NOT_FOUND_EXCEPTION() {
         // when & then
         assertThatThrownBy(() -> storeImageService.deleteStoreImage(999L)).isInstanceOf(NotFoundException.class);
     }
 
     @Test
-    void 가게_이미지_삭제시_해당하는_가게_이미지가_INACTIVE_삭제일경우__NOT_FOUND_EXCEPTION_가_발생한다() {
+    void 가게_이미지_삭제시_해당하는_가게_이미지가_INACTIVE_삭제일경우_NOT_FOUND_EXCEPTION() {
         // given
         StoreImage storeImage = StoreImage.newInstance(store.getId(), userId, IMAGE_URL);
         storeImage.delete();
@@ -146,10 +146,12 @@ class StoreImageServiceTest extends UserSetUpTest {
     }
 
     private static class StubFileUploadService implements FileUploadService {
+
         @Override
         public String uploadImage(FileUploadRequest request, MultipartFile file) {
             return IMAGE_URL;
         }
+
     }
 
 }

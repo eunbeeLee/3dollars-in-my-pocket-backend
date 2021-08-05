@@ -37,7 +37,7 @@ class ReviewRepositoryTest {
     }
 
     @Test
-    void 리뷰정보와_함께_작성자_정보가_함께_가져온다() {
+    void 가게_리뷰와_함께_리뷰_작성자_정보를_함께_조회한다() {
         User user = UserCreator.create("social-id", UserSocialType.KAKAO, "닉네임");
         userRepository.save(user);
 

@@ -62,7 +62,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
     @DisplayName("GET /api/v2/stores/near 200 OK")
     @Test
-    void 사용자_주위의_가게들을_조회한다() throws Exception {
+    void 사용자_주변의_가게들을_조회한다() throws Exception {
         // given
         Store store1 = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
         Menu menu1 = MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG);
@@ -134,7 +134,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
     @DisplayName("GET /api/v2/store 200 OK")
     @Test
-    void 특정_가게에_대한_상세_정보를_조회할때_회원탈퇴한_유저의경우_사라진_제보자라고_보인다() throws Exception {
+    void 특정_가게에_대한_상세_정보를_조회할때_회원탈퇴한_유저의경우_사라진_제보자라고_표기된다() throws Exception {
         // given
         Store store = StoreCreator.create(999L, "storeName", 34, 124);
         store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
@@ -150,7 +150,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertUserInfoResponse(data.getUser(), null, "사라진 제보자", null);
     }
 
-    @DisplayName("GET /api/v2/stores/me 200 OK - first scroll")
+    @DisplayName("GET /api/v2/stores/me 200 OK - 첫 페이지")
     @Test
     void 사용자가_작성한_가게조회_첫_페이지_조회시_다음_커서가_반환된다() throws Exception {
         // given
@@ -181,7 +181,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertStoreInfoResponse(response.getData().getContents().get(1), store3);
     }
 
-    @DisplayName("GET /api/v2/stores/me 200 OK - ongoing Scroll with cached total elements")
+    @DisplayName("GET /api/v2/stores/me 200 OK - 중간 페이지")
     @Test
     void 사용자가_작성한_가게조회_중간_페이지_조회시_다음_커서가_반환된다() throws Exception {
         // given
@@ -212,7 +212,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertStoreInfoResponse(response.getData().getContents().get(1), store2);
     }
 
-    @DisplayName("GET /api/v2/stores/me 200 OK - ongoing Scroll without cached total elements")
+    @DisplayName("GET /api/v2/stores/me 200 OK - 중간 페이지 캐시 없는 경우")
     @Test
     void 사용자가_작성한_가게조회_중간_페이지_조회시_다음_커서가_반환된다_총개수가_캐싱되지_않으면_계산되서_반환() throws Exception {
         // given
@@ -243,7 +243,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertStoreInfoResponse(response.getData().getContents().get(1), store2);
     }
 
-    @DisplayName("GET /api/v2/stores/me 200 OK - last Scroll")
+    @DisplayName("GET /api/v2/stores/me 200 OK - 마지막 페이지")
     @Test
     void 사용자가_작성한_가게조회_contents가_size_와_동일하면_다음_스크롤에_해당하는_가게들을_조회하고_없으면_마지막_페이지로_판단하고_커서가_null을_반환한다() throws Exception {
         // given
@@ -274,7 +274,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertStoreInfoResponse(response.getData().getContents().get(1), store1);
     }
 
-    @DisplayName("GET /api/v2/stores/me 200 OK - last Scroll")
+    @DisplayName("GET /api/v2/stores/me 200 OK - 마지막 페이지")
     @Test
     void 사용자가_작성한_contents가_size보다_적으면_마지막_페이지로_판단하고_Cursor가_null로_반환된다() throws Exception {
         // given

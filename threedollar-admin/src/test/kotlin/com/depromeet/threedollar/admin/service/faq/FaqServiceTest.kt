@@ -31,7 +31,7 @@ internal class FaqServiceTest(
     }
 
     @Test
-    fun 새로운_FAQ_를_등록한다() {
+    fun 새로운_FAQ_를_등록하면_FAQ_데이터가_추가된다() {
         // give
         val question = "이름이 뭔가요?"
         val answer = "가슴속 삼천원"
@@ -49,7 +49,7 @@ internal class FaqServiceTest(
     }
 
     @Test
-    fun 등록된_FAQ를_수정한다() {
+    fun 등록된_FAQ를_수정하면_FAQ_데이터가_수정된다() {
         // give
         val question = "질문"
         val answer = "답변"
@@ -70,7 +70,7 @@ internal class FaqServiceTest(
     }
 
     @Test
-    fun 등록된_FAQ를_수정할때_해당하는_id_를가진_Faq_가_없으면_NotFOUND_EXCEPTION() {
+    fun 등록된_FAQ를_수정할때_해당하는_FAQ가_없으면_NotFOUND_EXCEPTION() {
         // given
         val request = UpdateFaqRequest("question", "answer", FaqCategory.CATEGORY)
 
@@ -79,7 +79,7 @@ internal class FaqServiceTest(
     }
 
     @Test
-    fun 등록된_특정_FAQ_를_삭제한다() {
+    fun 특정_FAQ_를_삭제하면_해당_데이터가_삭제된다() {
         // given
         val faq = FaqCreator.create("question", "answer", FaqCategory.CATEGORY)
         faqRepository.save(faq)
@@ -93,7 +93,7 @@ internal class FaqServiceTest(
     }
 
     @Test
-    fun 등록된_특정_FAQ_를_삭제할때__해당하는_id_를가진_Faq_가_없으면_NotFOUND_EXCEPTION() {
+    fun 특정_FAQ_를_삭제시_해당_FAQ가_없으면_NOTFOUND_EXCEPTION() {
         // when & then
         assertThatThrownBy { faqService.deleteFaq(999L) }.isInstanceOf(NotFoundException::class.java)
     }

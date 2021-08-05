@@ -42,7 +42,7 @@ class AppleAuthServiceTest {
     }
 
     @Test
-    void 애플_로그인_요청시_회원이면_멤버의_PK_가_반환된다() {
+    void 애플_로그인시_가입한_유저면_멤버의_PK_가_반환된다() {
         // given
         User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
         userRepository.save(user);
@@ -57,7 +57,7 @@ class AppleAuthServiceTest {
     }
 
     @Test
-    void 애플_로그인_요청시_회원이_아니면_404_에러가_발생한다() {
+    void 애플_로그인시_가입한_유저가_아니면_NOT_FOUND_EXCEPTION() {
         // given
         LoginRequest request = LoginRequest.testInstance("token", UserSocialType.APPLE);
 
@@ -66,7 +66,7 @@ class AppleAuthServiceTest {
     }
 
     @Test
-    void 새로운_유저가_애플로_회원가입요청하면_멤버정보가_DB에_저장된다() {
+    void 새로운_유저가_애플로_회원가입시_새로운_유저정보가_저장된다() {
         // given
         SignUpRequest request = SignUpRequest.testInstance("token", "가슴속 삼천원", UserSocialType.APPLE);
 
@@ -79,7 +79,7 @@ class AppleAuthServiceTest {
     }
 
     @Test
-    void 애플로_가입한_유저가_회원탈퇴를_요청하면_해당하는_USER_데이터가_삭제된다() {
+    void 애플로_가입한_유저가_회원탈퇴시_해당하는_유저정보가_삭제된다() {
         // given
         User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
         userRepository.save(user);
@@ -93,7 +93,7 @@ class AppleAuthServiceTest {
     }
 
     @Test
-    void 카카오로_가입한_유저가_애플_회원탈퇴_요청을하면_NOT_FOUND_EXCEPTION() {
+    void 카카오로_가입한_유저가_애플_회원탈퇴_요청시_NOT_FOUND_EXCEPTION() {
         // given
         User user = UserCreator.create(socialId, UserSocialType.KAKAO, "닉네임");
         userRepository.save(user);

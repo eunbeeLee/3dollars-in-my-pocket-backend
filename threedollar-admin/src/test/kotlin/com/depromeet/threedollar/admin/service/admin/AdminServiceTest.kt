@@ -26,7 +26,7 @@ internal class AdminServiceTest(
     }
 
     @Test
-    fun 나의_관리자_정보를_조회한다() {
+    fun 자신의_관리자_정보를_조회한다() {
         // given
         val email = "will.seungho@gmail.com"
         val name = "강승호"
@@ -40,7 +40,7 @@ internal class AdminServiceTest(
     }
 
     @Test
-    fun 해당하는_관리자가_없는경우_NOT_FOUND_EXCEPTION() {
+    fun 자신의_관리자_정보를_조회시_해당하는_관리자가_없는경우_NOT_FOUND_EXCEPTION() {
         // when & then
         assertThatThrownBy { adminService.getMyAdminInfo(999L) }.isInstanceOf(NotFoundException::class.java)
     }

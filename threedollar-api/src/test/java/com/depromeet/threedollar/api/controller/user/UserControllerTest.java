@@ -38,9 +38,9 @@ class UserControllerTest extends AbstractControllerTest {
         assertUserInfoResponse(response.getData(), testUser.getId(), testUser.getName(), testUser.getSocialType());
     }
 
-    @DisplayName("GET /api/v2/user/me 잘못된 세션일 경우 401 Error")
+    @DisplayName("GET /api/v2/user/me 잘못된 세션일 경우 401 UnAuthorized")
     @Test
-    void 자신의_회원정보를_조회하는_API_호출시_잘못된_세션이면_401_에러가_발생한다() throws Exception {
+    void 자신의_회원정보를_조회하는_API_호출시_잘못된_세션이면_401_에러() throws Exception {
         // when
         ApiResponse<UserInfoResponse> response = userMockApiCaller.getMyUserInfo("wrong token", 401);
 
@@ -65,9 +65,9 @@ class UserControllerTest extends AbstractControllerTest {
         assertUserInfoResponse(response.getData(), testUser.getId(), name, testUser.getSocialType());
     }
 
-    @DisplayName("PUT /api/v2/user/me 중복된 닉네임일 경우 409 Error")
+    @DisplayName("PUT /api/v2/user/me 중복된 닉네임일 경우 409 Conflict")
     @Test
-    void 자신의_회원정보를_수정하는_API_호출시_닉네임이_중복되는경우_409_에러가_발생한다() throws Exception {
+    void 자신의_회원정보를_수정하는_API_호출시_닉네임이_중복되는경우_409_에러() throws Exception {
         // given
         String name = "디프만";
         userRepository.save(UserCreator.create("social-social-id", UserSocialType.APPLE, name));
@@ -83,9 +83,9 @@ class UserControllerTest extends AbstractControllerTest {
         assertThat(response.getData()).isNull();
     }
 
-    @DisplayName("PUT /api/v2/user/me 잘못된 세션일 경우 401 Error")
+    @DisplayName("PUT /api/v2/user/me 잘못된 세션일 경우 401 UnAuthorized")
     @Test
-    void 자신의_회원정보를_수정하는_API_호출시_잘못된_세션일경우_401_에러가_발생한다() throws Exception {
+    void 자신의_회원정보를_수정하는_API_호출시_잘못된_세션일경우_401_에러() throws Exception {
         // given
         UpdateUserInfoRequest request = UpdateUserInfoRequest.testInstance("디프만");
 
@@ -112,9 +112,9 @@ class UserControllerTest extends AbstractControllerTest {
         assertThat(response.getData()).isEqualTo("OK");
     }
 
-    @DisplayName("GET /api/v2/user/me/name/check 중복된 이름인경우 409 Error")
+    @DisplayName("GET /api/v2/user/me/name/check 중복된 이름인경우 409 Conflict")
     @Test
-    void 사용가능한_닉네임인지_확인하는_API_호출시_중복된_이름인경우_409_에러가_발생한다() throws Exception {
+    void 사용가능한_닉네임인지_확인하는_API_호출시_중복된_이름인경우_409_에러() throws Exception {
         // given
         String name = "디프만";
         userRepository.save(UserCreator.create("social-social-id", UserSocialType.APPLE, name));

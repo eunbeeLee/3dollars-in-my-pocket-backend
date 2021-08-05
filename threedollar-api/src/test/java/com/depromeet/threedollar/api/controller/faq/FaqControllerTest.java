@@ -40,7 +40,7 @@ class FaqControllerTest extends AbstractControllerTest {
 
     @DisplayName("GET /api/v2/faqs 200 OK")
     @Test
-    void FAQ_리스트를_조회하는_API_호출시_200OK() throws Exception {
+    void FAQ_리스트를_조회한다() throws Exception {
         // given
         Faq faq1 = FaqCreator.create("question1", "answer1", FaqCategory.CATEGORY);
         Faq faq2 = FaqCreator.create("question2", "answer2", FaqCategory.BOARD);
@@ -57,7 +57,7 @@ class FaqControllerTest extends AbstractControllerTest {
 
     @DisplayName("GET /api/v2/faqs?category=BOARD 200 OK")
     @Test
-    void 특정_카테고리의_FAQ_리스트를_조회하는_API_호출시_200OK() throws Exception {
+    void 특정_카테고리의_FAQ_리스트를_조회한다() throws Exception {
         // given
         Faq faq1 = FaqCreator.create("question1", "answer1", FaqCategory.CATEGORY);
         Faq faq2 = FaqCreator.create("question2", "answer2", FaqCategory.BOARD);
@@ -78,8 +78,9 @@ class FaqControllerTest extends AbstractControllerTest {
         assertThat(faqResponse.getCategory()).isEqualTo(category);
     }
 
+    @DisplayName("GET /api/v2/faq/categories 200 OK")
     @Test
-    void FAQ_카테고리_리스트를_조회하는_API_호출시_200OK() throws Exception {
+    void FAQ_카테고리_리스트를_조회한다K() throws Exception {
         // when
         ApiResponse<List<FaqCategoryResponse>> response = faqMockApiCaller.retrieveAllFaqCategories(200);
 

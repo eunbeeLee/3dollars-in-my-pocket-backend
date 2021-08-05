@@ -67,7 +67,7 @@ class StoreControllerTest extends AbstractControllerTest {
 
     @DisplayName("POST /api/v2/store 200 OK")
     @Test
-    void 새로운_가게정보를_등록하는_API_호출시_200_OK() throws Exception {
+    void 새로운_가게정보를_등록한다() throws Exception {
         // given
         Double latitude = 34.0;
         Double longitude = 130.0;
@@ -101,7 +101,7 @@ class StoreControllerTest extends AbstractControllerTest {
 
     @DisplayName("PUT /api/v2/store 200 OK")
     @Test
-    void 특정_가게정보를_수정하는_API_호출시_200_OK() throws Exception {
+    void 특정_가게정보를_수정한다K() throws Exception {
         // given
         Store store = StoreCreator.create(testUser.getId(), "storeName");
         store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
@@ -137,9 +137,9 @@ class StoreControllerTest extends AbstractControllerTest {
         assertStoreInfoResponse(response.getData(), latitude, longitude, storeName, Collections.singletonList(MenuCategoryType.BUNGEOPPANG));
     }
 
-    @DisplayName("DELETE /api/v2/store 200 OK 삭제 요청만 쌓이는 경우")
+    @DisplayName("DELETE /api/v2/store 200 OK")
     @Test
-    void 특정_가게정보를_삭제하는_API_호출시_200_OK() throws Exception {
+    void 특정_가게정보를_삭제할때_실제로_삭제되지_않으면_False를_반환한다() throws Exception {
         // given
         Store store = StoreCreator.create(testUser.getId(), "storeName");
         storeRepository.save(store);
@@ -153,9 +153,9 @@ class StoreControllerTest extends AbstractControllerTest {
         assertThat(response.getData().getIsDeleted()).isFalse();
     }
 
-    @DisplayName("DELETE /api/v2/store 200 OK 실제 삭제되는 경우")
+    @DisplayName("DELETE /api/v2/store 200 OK")
     @Test
-    void 특정_가게정보를_삭제하는_API_호출시_3개가_되면_실제로_삭제되고_true_를_반환한다_200OK() throws Exception {
+    void 특정_가게정보를_삭제할때_실제로_삭제되면_True를_반환한다() throws Exception {
         // given
         Store store = StoreCreator.create(testUser.getId(), "storeName");
         storeRepository.save(store);
@@ -174,9 +174,9 @@ class StoreControllerTest extends AbstractControllerTest {
         assertThat(response.getData().getIsDeleted()).isTrue();
     }
 
-    @DisplayName("DELETE /api/v2/store 존재하지 않는 가게인경우 404 Error")
+    @DisplayName("DELETE /api/v2/store 404 NOT FOUND")
     @Test
-    void 존재하지_않는_특정_가게정보를_삭제하는_API_호출시_404_NOT_FOUND() throws Exception {
+    void 존재하지_않는_특정_가게정보를_삭제요청시_404_NOT_FOUND() throws Exception {
         // given
         DeleteStoreRequest request = DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE);
 

@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.domain.domain.store;
 
+import com.depromeet.threedollar.domain.domain.menu.Menu;
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.menu.MenuCreator;
 import com.depromeet.threedollar.domain.domain.menu.MenuRepository;
@@ -30,7 +31,7 @@ class StoreRepositoryTest {
     }
 
     @Test
-    void 반경_3KM의_Store를_조회한다() {
+    void 반경_3KM의_가게들을_조회한다() {
         // given
         Store store = Store.builder()
             .userId(100L)
@@ -50,7 +51,7 @@ class StoreRepositoryTest {
     }
 
     @Test
-    void 반경_3KM의_Store를_조회한다1() {
+    void 반경_3KM의_가게들을_조회할떄_아무_가게가_없는경우_빈_리스트를_반환한다() {
         // given
         Store store = Store.builder()
             .userId(100L)
@@ -59,7 +60,9 @@ class StoreRepositoryTest {
             .name("storeName")
             .type(StoreType.STORE)
             .build();
-        store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
+
+        Menu menu = MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG);
+        store.addMenus(Collections.singletonList(menu));
         storeRepository.save(store);
 
         // when
@@ -94,7 +97,7 @@ class StoreRepositoryTest {
     }
 
     @Test
-    void 사용자가_등록한_가게들을_스크롤_기반_페이지네이션으로_조회한다_첫페이지() {
+    void 사용자가_등록한_가게_첫페이지_조회() {
         // given
         Long userId = 100L;
 
@@ -119,7 +122,7 @@ class StoreRepositoryTest {
     }
 
     @Test
-    void 사용자가_등록한_가게들을_스크롤_기반_페이지네이션으로_조회한다_두번쨰_페이지() {
+    void 사용자가_등록한_가게_두번째_페이지_조회() {
         // given
         Long userId = 100L;
 

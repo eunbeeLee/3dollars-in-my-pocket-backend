@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class StoreTest {
 
     @Test
-    void 대표_카테고리를_선택한다() {
+    void 가게의_카테고리_조회시_가게_메뉴_카테고리의_수로_정렬해서_반환한다() {
         // given
         Store store = StoreCreator.create(100L, "가게");
         store.addMenus(Arrays.asList(
@@ -30,7 +30,7 @@ public class StoreTest {
     }
 
     @Test
-    void 아무런_메뉴도_없을경우_빈_리스트을_반환한다() {
+    void 가게에_아무런_메뉴도_없을경우_빈_리스트을_반환한다() {
         // given
         Store store = StoreCreator.create(100L, "가게");
 

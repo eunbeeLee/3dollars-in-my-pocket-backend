@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface StoreDeleteRequestRepositoryCustom {
 
-    StoreDeleteRequest findByStoreIdAndUserId(Long storeId, Long userId);
-
     List<StoreDeleteRequest> findAllByStoreId(Long storeId);
 
     List<ReportedStoreProjection> findStoreHasDeleteRequestMoreThanCnt(int minCount);

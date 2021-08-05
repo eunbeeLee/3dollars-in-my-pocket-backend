@@ -45,7 +45,7 @@ class KaKaoAuthServiceTest {
     }
 
     @Test
-    void 카카오_로그인_요청시_회원이면_멤버의_PK_가_반환된다() {
+    void 카카오_로그인_요청시_회원이면_멤버의_식별키가_반환된다() {
         // given
         User user = UserCreator.create(socialId, UserSocialType.KAKAO, "닉네임");
         userRepository.save(user);
@@ -60,7 +60,7 @@ class KaKaoAuthServiceTest {
     }
 
     @Test
-    void 카카오_로그인_요청시_회원이_아니면_404_에러가_발생한다() {
+    void 카카오_로그인시_가입한_유저가_아니면_NOT_FOUND_EXCEPTION() {
         // given
         LoginRequest request = LoginRequest.testInstance("token", UserSocialType.KAKAO);
 
@@ -69,7 +69,7 @@ class KaKaoAuthServiceTest {
     }
 
     @Test
-    void 새로운_유저가_카카오로_회원가입시_회원정보가_DB_에_저장된다() {
+    void 카카오로_회원가입시_새로운_유저정보가_저장된다() {
         // given
         SignUpRequest request = SignUpRequest.testInstance("token", "가슴속 삼천원", UserSocialType.KAKAO);
 
@@ -83,7 +83,7 @@ class KaKaoAuthServiceTest {
     }
 
     @Test
-    void 카카오로_가입한_유저가_회원탈퇴를_요청하면_해당하는_USER_데이터가_삭제된다() {
+    void 카카오로_가입한_유저가_회원탈퇴를_요청하면_해당_유저정보가_삭제된다() {
         // given
         User user = UserCreator.create(socialId, UserSocialType.KAKAO, "닉네임");
         userRepository.save(user);
@@ -97,7 +97,7 @@ class KaKaoAuthServiceTest {
     }
 
     @Test
-    void 애플로_가입한_유저가_카카오_회원탈퇴_요청을하면_NOT_FOUND_EXCEPTION() {
+    void 애플로_가입한_유저가_카카오_회원탈퇴시_NOT_FOUND_EXCEPTION() {
         // given
         User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
         userRepository.save(user);

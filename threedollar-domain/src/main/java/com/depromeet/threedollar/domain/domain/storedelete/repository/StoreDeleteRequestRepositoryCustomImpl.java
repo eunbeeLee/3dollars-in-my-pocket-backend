@@ -18,15 +18,6 @@ public class StoreDeleteRequestRepositoryCustomImpl implements StoreDeleteReques
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public StoreDeleteRequest findByStoreIdAndUserId(Long storeId, Long userId) {
-        return queryFactory.selectFrom(storeDeleteRequest)
-            .where(
-                storeDeleteRequest.storeId.eq(storeId),
-                storeDeleteRequest.userId.eq(userId)
-            ).fetchOne();
-    }
-
-    @Override
     public List<StoreDeleteRequest> findAllByStoreId(Long storeId) {
         return queryFactory.selectFrom(storeDeleteRequest)
             .where(

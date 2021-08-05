@@ -13,7 +13,7 @@ internal class JwtTokenServiceTest(
 ) {
 
     @Test
-    fun 새로운_토큰을_생성한다() {
+    fun 관리자_PK로_새로운_토큰을_생성한다() {
         // given
         val tokenDto = AdminTokenDto(1L)
 
@@ -26,7 +26,7 @@ internal class JwtTokenServiceTest(
     }
 
     @Test
-    fun 생성된_토큰을_디코딩하면_원본의_데이터가_디코딩된다() {
+    fun 생성된_토큰을_디코딩하면_원본의_관리자_PK가_디코딩된다() {
         // given
         val tokenDto = AdminTokenDto(1L)
         val token = jwtTokenService.encode(tokenDto)

@@ -31,7 +31,7 @@ class StoreDeleteRequestRepositoryTest {
     }
 
     @Test
-    void 삭제_요청이_N_이상인_Store_정보를_조회한다() {
+    void N개_이상_삭제요청된_가게들을_조회한다() {
         // given
         Store store1 = StoreCreator.create(100L, "123");
         Store store2 = StoreCreator.create(100L, "123");
