@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.domain.domain.store.repository;
 
+import com.depromeet.threedollar.domain.config.querydsl.OrderByNull;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreStatus;
 import com.querydsl.core.types.Ops;
@@ -110,6 +111,7 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
             .from(store)
             .groupBy(store.id, store.location.latitude, store.location.longitude)
             .having(Expressions.predicate(Ops.LOE, Expressions.asNumber(getDistanceExpression(latitude, longitude)), Expressions.asNumber(distance)))
+            .orderBy(OrderByNull.DEFAULT)
             .fetch();
 
         return queryFactory.selectFrom(store).distinct()
