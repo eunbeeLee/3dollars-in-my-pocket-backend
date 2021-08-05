@@ -3,12 +3,13 @@ package com.depromeet.threedollar.api.controller.review;
 import com.depromeet.threedollar.api.config.interceptor.Auth;
 import com.depromeet.threedollar.api.config.resolver.UserId;
 import com.depromeet.threedollar.api.common.dto.ApiResponse;
+import com.depromeet.threedollar.api.service.review.ReviewRetrieveService;
 import com.depromeet.threedollar.api.service.review.ReviewService;
 import com.depromeet.threedollar.api.service.review.dto.request.AddReviewRequest;
 import com.depromeet.threedollar.api.service.review.dto.request.RetrieveMyReviewsRequest;
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewInfoResponse;
 import com.depromeet.threedollar.api.service.review.dto.request.UpdateReviewRequest;
-import com.depromeet.threedollar.api.service.review.dto.response.ReviewDetailWithPaginationResponse;
+import com.depromeet.threedollar.api.service.review.dto.response.ReviewScrollResponse;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final ReviewRetrieveService reviewRetrieveService;
 
     @ApiOperation("[인증] 가게에 새로운 리뷰를 등록합니다.")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
@@ -54,9 +56,9 @@ public class ReviewController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @GetMapping("/api/v2/store/reviews/me")
-    public ApiResponse<ReviewDetailWithPaginationResponse> retrieveMyStoreReviews(@Valid RetrieveMyReviewsRequest request,
-                                                                                  @UserId Long userId) {
-        return ApiResponse.success(reviewService.retrieveMyReviews(request, userId));
+    public ApiResponse<ReviewScrollResponse> retrieveMyStoreReviews(@Valid RetrieveMyReviewsRequest request,
+                                                                    @UserId Long userId) {
+        return ApiResponse.success(reviewRetrieveService.retrieveMyReviews(request, userId));
     }
 
 }

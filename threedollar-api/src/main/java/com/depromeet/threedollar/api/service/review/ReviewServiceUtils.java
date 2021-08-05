@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import static com.depromeet.threedollar.common.exception.ErrorCode.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ReviewServiceUtils {
+class ReviewServiceUtils {
 
     static Review findReviewByIdAndUserId(ReviewRepository reviewRepository, Long reviewId, Long userId) {
         Review review = reviewRepository.findReviewByIdAndUserId(reviewId, userId);

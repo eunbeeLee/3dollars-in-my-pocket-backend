@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @ToString
 @Getter
-public class ReviewWithCreatorProjection {
+public class ReviewWithWriterProjection {
 
     private final Long id;
     private final int rating;
@@ -21,8 +21,8 @@ public class ReviewWithCreatorProjection {
     private final UserSocialType userSocialType;
 
     @QueryProjection
-    public ReviewWithCreatorProjection(Long id, int rating, String contents, LocalDateTime createdAt,
-                                       LocalDateTime updatedAt, Long userId, String userName, UserSocialType userSocialType) {
+    public ReviewWithWriterProjection(Long id, int rating, String contents, LocalDateTime createdAt,
+                                      LocalDateTime updatedAt, Long userId, String userName, UserSocialType userSocialType) {
         this.id = id;
         this.rating = rating;
         this.contents = contents;
@@ -32,5 +32,5 @@ public class ReviewWithCreatorProjection {
         this.userName = userName;
         this.userSocialType = userSocialType;
     }
-    
+
 }

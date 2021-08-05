@@ -19,7 +19,7 @@ import static com.depromeet.threedollar.api.config.session.SessionConstants.USER
 @Profile({"local", "local-will", "dev"})
 @RequiredArgsConstructor
 @RestController
-public class TestController {
+public class LocalTestController {
 
     private static final User testUser = User.newInstance("test-uid", UserSocialType.KAKAO, "관리자 계정");
 

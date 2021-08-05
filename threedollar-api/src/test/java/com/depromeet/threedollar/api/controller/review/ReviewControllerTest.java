@@ -7,7 +7,7 @@ import com.depromeet.threedollar.api.service.review.dto.request.RetrieveMyReview
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewInfoResponse;
 import com.depromeet.threedollar.api.service.review.dto.request.UpdateReviewRequest;
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewDetailResponse;
-import com.depromeet.threedollar.api.service.review.dto.response.ReviewDetailWithPaginationResponse;
+import com.depromeet.threedollar.api.service.review.dto.response.ReviewScrollResponse;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.menu.MenuCreator;
@@ -120,7 +120,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         RetrieveMyReviewsRequest request = RetrieveMyReviewsRequest.testInstance(2, null, null);
 
         // when
-        ApiResponse<ReviewDetailWithPaginationResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
+        ApiResponse<ReviewScrollResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
 
         // then
         assertThat(response.getData().getTotalElements()).isEqualTo(4);
@@ -147,7 +147,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         RetrieveMyReviewsRequest request = RetrieveMyReviewsRequest.testInstance(2, review4.getId(), 4L);
 
         // when
-        ApiResponse<ReviewDetailWithPaginationResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
+        ApiResponse<ReviewScrollResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
 
         // then
         assertThat(response.getData().getTotalElements()).isEqualTo(4);
@@ -174,7 +174,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         RetrieveMyReviewsRequest request = RetrieveMyReviewsRequest.testInstance(2, review4.getId(), null);
 
         // when
-        ApiResponse<ReviewDetailWithPaginationResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
+        ApiResponse<ReviewScrollResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
 
         // then
         assertThat(response.getData().getTotalElements()).isEqualTo(4);
@@ -201,7 +201,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         RetrieveMyReviewsRequest request = RetrieveMyReviewsRequest.testInstance(2, review3.getId(), null);
 
         // when
-        ApiResponse<ReviewDetailWithPaginationResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
+        ApiResponse<ReviewScrollResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
 
         // then
         assertThat(response.getData().getTotalElements()).isEqualTo(4);
@@ -228,7 +228,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         RetrieveMyReviewsRequest request = RetrieveMyReviewsRequest.testInstance(2, review2.getId(), null);
 
         // when
-        ApiResponse<ReviewDetailWithPaginationResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
+        ApiResponse<ReviewScrollResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
 
         // then
         assertThat(response.getData().getTotalElements()).isEqualTo(4);
@@ -250,7 +250,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         RetrieveMyReviewsRequest request = RetrieveMyReviewsRequest.testInstance(2, null, null);
 
         // when
-        ApiResponse<ReviewDetailWithPaginationResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
+        ApiResponse<ReviewScrollResponse> response = reviewMockApiCaller.retrieveMyStoreReviews(request, token, 200);
 
         // then
         assertThat(response.getData().getTotalElements()).isEqualTo(0);

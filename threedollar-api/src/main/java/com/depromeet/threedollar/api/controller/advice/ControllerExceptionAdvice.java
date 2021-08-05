@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.api.controller;
+package com.depromeet.threedollar.api.controller.advice;
 
 import com.depromeet.threedollar.api.common.dto.ApiResponse;
 import com.depromeet.threedollar.common.exception.*;
@@ -19,7 +19,7 @@ import static com.depromeet.threedollar.common.exception.ErrorCode.*;
 
 @Slf4j
 @RestControllerAdvice
-public class ControllerAdvice {
+public class ControllerExceptionAdvice {
 
     /**
      * 400 BadRequest

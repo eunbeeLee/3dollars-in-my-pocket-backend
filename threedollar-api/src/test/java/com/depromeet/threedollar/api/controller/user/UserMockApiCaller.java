@@ -3,7 +3,7 @@ package com.depromeet.threedollar.api.controller.user;
 import com.depromeet.threedollar.api.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.controller.MockMvcUtils;
 import com.depromeet.threedollar.api.service.auth.dto.response.LoginResponse;
-import com.depromeet.threedollar.api.service.user.dto.request.CheckDuplicateNameRequest;
+import com.depromeet.threedollar.api.service.user.dto.request.CheckAvailableNameRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -67,7 +67,7 @@ public class UserMockApiCaller extends MockMvcUtils {
         );
     }
 
-    public ApiResponse<String> checkAvailableName(CheckDuplicateNameRequest request, int expectedStatus) throws Exception {
+    public ApiResponse<String> checkAvailableName(CheckAvailableNameRequest request, int expectedStatus) throws Exception {
         MockHttpServletRequestBuilder builder = get("/api/v2/user/name/check")
             .param("name", request.getName());
         return objectMapper.readValue(

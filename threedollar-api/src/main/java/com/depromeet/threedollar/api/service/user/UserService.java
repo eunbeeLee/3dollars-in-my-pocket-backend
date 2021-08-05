@@ -1,11 +1,10 @@
 package com.depromeet.threedollar.api.service.user;
 
-import com.depromeet.threedollar.api.service.user.dto.request.CheckDuplicateNameRequest;
+import com.depromeet.threedollar.api.service.user.dto.request.CheckAvailableNameRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.CreateUserRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import com.depromeet.threedollar.domain.domain.user.*;
-import com.depromeet.threedollar.common.exception.ConflictException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +19,7 @@ public class UserService {
     @Transactional
     public Long createUser(CreateUserRequest request) {
         UserServiceUtils.validateNotExistsUserName(userRepository, request.getName());
-        User user = userRepository.findUserBySocialIdAndSocialType(request.getSocialId(), request.getSocialType());
-        if (user == null) {
-            return signUp(request);
-        }
-        throw new ConflictException(String.format("이미 존재하는 유저 (%s - %s) 입니다", request.getSocialId(), request.getSocialType()));
-    }
-
-    private Long signUp(CreateUserRequest request) {
+        UserServiceUtils.validateNotExistsUser(userRepository, request.getSocialId(), request.getSocialType());
         return userRepository.save(request.toEntity()).getId();
     }
 
@@ -38,7 +30,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public void checkDuplicateName(CheckDuplicateNameRequest request) {
+    public void checkAvailableName(CheckAvailableNameRequest request) {
         UserServiceUtils.validateNotExistsUserName(userRepository, request.getName());
     }
 

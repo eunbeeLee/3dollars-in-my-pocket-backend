@@ -6,7 +6,7 @@ import com.depromeet.threedollar.api.service.review.dto.request.AddReviewRequest
 import com.depromeet.threedollar.api.service.review.dto.request.RetrieveMyReviewsRequest;
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewInfoResponse;
 import com.depromeet.threedollar.api.service.review.dto.request.UpdateReviewRequest;
-import com.depromeet.threedollar.api.service.review.dto.response.ReviewDetailWithPaginationResponse;
+import com.depromeet.threedollar.api.service.review.dto.response.ReviewScrollResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpHeaders;
@@ -71,7 +71,7 @@ public class ReviewMockApiCaller extends MockMvcUtils {
         );
     }
 
-    public ApiResponse<ReviewDetailWithPaginationResponse> retrieveMyStoreReviews(RetrieveMyReviewsRequest request, String token, int expectedStatus) throws Exception {
+    public ApiResponse<ReviewScrollResponse> retrieveMyStoreReviews(RetrieveMyReviewsRequest request, String token, int expectedStatus) throws Exception {
         MockHttpServletRequestBuilder builder = get("/api/v2/store/reviews/me")
             .header(HttpHeaders.AUTHORIZATION, token)
             .param("size", String.valueOf(request.getSize()))

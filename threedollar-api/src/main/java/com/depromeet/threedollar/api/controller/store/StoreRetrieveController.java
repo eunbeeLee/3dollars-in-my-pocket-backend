@@ -32,7 +32,7 @@ public class StoreRetrieveController {
 
     @ApiOperation("특정 가게의 정보를 조회합니다.")
     @GetMapping("/api/v2/store")
-    public ApiResponse<StoreDetailResponse> getStoreDetailInfo(@Valid RetrieveStoreDetailInfoRequest request) {
+    public ApiResponse<StoreDetailResponse> getDetailStoreInfo(@Valid RetrieveStoreDetailInfoRequest request) {
         return ApiResponse.success(storeRetrieveService.getDetailStoreInfo(request));
     }
 
@@ -46,13 +46,13 @@ public class StoreRetrieveController {
 
     @ApiOperation("거리순으로 특정 카테고리의 가게 정보를 조회합니다.")
     @GetMapping("/api/v2/stores/distance")
-    public ApiResponse<StoresGroupByDistanceResponse> getStoresByCategory(@Valid RetrieveStoreGroupByCategoryRequest request) {
+    public ApiResponse<StoresGroupByDistanceResponse> getStoresGroupByDistance(@Valid RetrieveStoreGroupByCategoryRequest request) {
         return ApiResponse.success(storeRetrieveService.retrieveStoresGroupByDistance(request));
     }
 
     @ApiOperation("리뷰순으로 특정 카테고리의 가게 정보를 조회합니다.")
     @GetMapping("/api/v2/stores/review")
-    public ApiResponse<StoresGroupByReviewResponse> getStoresByReview(@Valid RetrieveStoreGroupByCategoryRequest request) {
+    public ApiResponse<StoresGroupByReviewResponse> getStoresGroupByReview(@Valid RetrieveStoreGroupByCategoryRequest request) {
         return ApiResponse.success(storeRetrieveService.retrieveStoresGroupByRating(request));
     }
 

@@ -37,7 +37,6 @@ public class StoreImageService {
     public void deleteStoreImage(Long imageId) {
         StoreImage storeImage = findStoreImageById(imageId);
         storeImage.delete();
-        // TODO 트랜잭션 커밋시 변경감지가 작동안하는데 이유 찾아봐야함
         storeImageRepository.save(storeImage);
     }
 

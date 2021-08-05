@@ -1,12 +1,12 @@
 package com.depromeet.threedollar.api.service.store.dto.response;
 
 import com.depromeet.threedollar.api.common.dto.AuditingTimeResponse;
-import com.depromeet.threedollar.api.service.review.dto.response.ReviewResponse;
+import com.depromeet.threedollar.api.service.review.dto.response.ReviewWithWriterResponse;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import com.depromeet.threedollar.common.utils.LocationDistanceUtils;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
-import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithCreatorProjection;
+import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithWriterProjection;
 import com.depromeet.threedollar.domain.domain.store.PaymentMethodType;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreType;
@@ -34,7 +34,7 @@ public class StoreDetailResponse extends AuditingTimeResponse {
     private final Set<PaymentMethodType> paymentMethods = new HashSet<>();
     private final List<StoreImageResponse> images = new ArrayList<>();
     private final List<MenuResponse> menus = new ArrayList<>();
-    private final List<ReviewResponse> reviews = new ArrayList<>();
+    private final List<ReviewWithWriterResponse> reviews = new ArrayList<>();
 
     @Builder
     private StoreDetailResponse(Long storeId, Double latitude, Double longitude, String storeName, StoreType storeType,
@@ -50,7 +50,7 @@ public class StoreDetailResponse extends AuditingTimeResponse {
     }
 
     public static StoreDetailResponse of(Store store, List<StoreImageResponse> imageResponses, Double latitude,
-                                         Double longitude, User user, List<ReviewWithCreatorProjection> reviews) {
+                                         Double longitude, User user, List<ReviewWithWriterProjection> reviews) {
         StoreDetailResponse response = StoreDetailResponse.builder()
             .storeId(store.getId())
             .latitude(store.getLatitude())
@@ -69,7 +69,7 @@ public class StoreDetailResponse extends AuditingTimeResponse {
             .map(MenuResponse::of)
             .collect(Collectors.toList()));
         response.reviews.addAll(reviews.stream()
-            .map(ReviewResponse::of)
+            .map(ReviewWithWriterResponse::of)
             .collect(Collectors.toList())
         );
         response.setBaseTime(store);

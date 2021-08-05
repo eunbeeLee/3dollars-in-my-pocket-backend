@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.user;
 
-import com.depromeet.threedollar.api.service.user.dto.request.CheckDuplicateNameRequest;
+import com.depromeet.threedollar.api.service.user.dto.request.CheckAvailableNameRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.CreateUserRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
@@ -130,10 +130,10 @@ class UserServiceTest {
         User user = UserCreator.create("social-id", UserSocialType.KAKAO, name);
         userRepository.save(user);
 
-        CheckDuplicateNameRequest request = CheckDuplicateNameRequest.testInstance(name);
+        CheckAvailableNameRequest request = CheckAvailableNameRequest.testInstance(name);
 
         // when & then
-        assertThatThrownBy(() -> userService.checkDuplicateName(request)).isInstanceOf(ConflictException.class);
+        assertThatThrownBy(() -> userService.checkAvailableName(request)).isInstanceOf(ConflictException.class);
     }
 
     @Test
@@ -141,10 +141,10 @@ class UserServiceTest {
         // given
         String name = "가슴속 삼천원";
 
-        CheckDuplicateNameRequest request = CheckDuplicateNameRequest.testInstance(name);
+        CheckAvailableNameRequest request = CheckAvailableNameRequest.testInstance(name);
 
         // when
-        userService.checkDuplicateName(request);
+        userService.checkAvailableName(request);
     }
 
     @Test

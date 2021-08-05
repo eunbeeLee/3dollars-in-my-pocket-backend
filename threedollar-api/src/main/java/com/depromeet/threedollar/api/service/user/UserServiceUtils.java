@@ -20,7 +20,14 @@ public class UserServiceUtils {
         }
     }
 
-    public static User findUserById(UserRepository userRepository, Long userId) {
+    static void validateNotExistsUser(UserRepository userRepository, String socialId, UserSocialType socialType) {
+        User user = userRepository.findUserBySocialIdAndSocialType(socialId, socialType);
+        if (user != null) {
+            throw new ConflictException(String.format("이미 존재하는 유저 (%s - %s) 입니다", socialId, socialType));
+        }
+    }
+
+    static User findUserById(UserRepository userRepository, Long userId) {
         User user = userRepository.findUserById(userId);
         if (user == null) {
             throw new NotFoundException(String.format("존재하지 않는 유저 (%s) 입니다", userId), NOT_FOUND_USER_EXCEPTION);
@@ -28,7 +35,7 @@ public class UserServiceUtils {
         return user;
     }
 
-    public static User findUserByIdAndSocialType(UserRepository userRepository, Long userId, UserSocialType socialType) {
+    static User findUserByIdAndSocialType(UserRepository userRepository, Long userId, UserSocialType socialType) {
         User user = userRepository.findUserByIdAndSocialType(userId, socialType);
         if (user == null) {
             throw new NotFoundException(String.format("존재하지 않는 유저 (%s-%s) 입니다", userId, socialType), NOT_FOUND_USER_EXCEPTION);

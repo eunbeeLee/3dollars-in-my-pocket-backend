@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class MainController {
+class HealthController {
 
     @ApiOperation("헬스 체크를 요청합니다.")
     @GetMapping("/ping")

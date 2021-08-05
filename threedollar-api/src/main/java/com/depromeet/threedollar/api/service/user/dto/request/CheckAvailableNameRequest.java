@@ -7,13 +7,13 @@ import lombok.*;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CheckDuplicateNameRequest {
+public class CheckAvailableNameRequest {
 
     @NickName
     private String name;
 
-    public static CheckDuplicateNameRequest testInstance(String name) {
-        return new CheckDuplicateNameRequest(name);
+    public static CheckAvailableNameRequest testInstance(String name) {
+        return new CheckAvailableNameRequest(name);
     }
 
 }

@@ -2,7 +2,7 @@ package com.depromeet.threedollar.api.controller.user;
 
 import com.depromeet.threedollar.api.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.controller.AbstractControllerTest;
-import com.depromeet.threedollar.api.service.user.dto.request.CheckDuplicateNameRequest;
+import com.depromeet.threedollar.api.service.user.dto.request.CheckAvailableNameRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import com.depromeet.threedollar.domain.domain.user.UserCreator;
@@ -103,7 +103,7 @@ class UserControllerTest extends AbstractControllerTest {
     void 사용가능한_닉네임인지_확인하는_API_호출시_사용가능하면_200_OK() throws Exception {
         // given
         String name = "디프만";
-        CheckDuplicateNameRequest request = CheckDuplicateNameRequest.testInstance(name);
+        CheckAvailableNameRequest request = CheckAvailableNameRequest.testInstance(name);
 
         // when
         ApiResponse<String> response = userMockApiCaller.checkAvailableName(request, 200);
@@ -118,7 +118,7 @@ class UserControllerTest extends AbstractControllerTest {
         // given
         String name = "디프만";
         userRepository.save(UserCreator.create("social-social-id", UserSocialType.APPLE, name));
-        CheckDuplicateNameRequest request = CheckDuplicateNameRequest.testInstance(name);
+        CheckAvailableNameRequest request = CheckAvailableNameRequest.testInstance(name);
 
         // when
         ApiResponse<String> response = userMockApiCaller.checkAvailableName(request, 409);

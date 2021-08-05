@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.faq
 
-import com.depromeet.threedollar.api.service.faq.dto.request.RetrieveFaqRequest
+import com.depromeet.threedollar.api.service.faq.dto.request.RetrieveFaqsRequest
 import com.depromeet.threedollar.api.service.faq.dto.response.FaqResponse
 import com.depromeet.threedollar.domain.domain.faq.FaqRepository
 import org.springframework.stereotype.Service
@@ -12,7 +12,7 @@ class FaqService(
 ) {
 
     @Transactional(readOnly = true)
-    fun retrieveAllFaqs(request: RetrieveFaqRequest): List<FaqResponse> {
+    fun retrieveAllFaqs(request: RetrieveFaqsRequest): List<FaqResponse> {
         return faqRepository.findAllByCategory(request.category).asSequence()
             .sortedBy { it.category.displayOrder }
             .map { FaqResponse.of(it) }

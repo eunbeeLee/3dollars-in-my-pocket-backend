@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.domain.domain.review;
 
-import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithCreatorProjection;
+import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithWriterProjection;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreCreator;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
@@ -48,14 +48,14 @@ class ReviewRepositoryTest {
         reviewRepository.save(review);
 
         // when
-        List<ReviewWithCreatorProjection> reviews = reviewRepository.findAllWithCreatorByStoreId(store.getId());
+        List<ReviewWithWriterProjection> reviews = reviewRepository.findAllWithCreatorByStoreId(store.getId());
 
         // then
         assertThat(reviews).hasSize(1);
         assertReviewWithCreatorDto(reviews.get(0), review.getId(), review.getRating(), review.getContents(), user.getId(), user.getName(), user.getSocialType());
     }
 
-    private void assertReviewWithCreatorDto(ReviewWithCreatorProjection review, Long id, int rating, String contents, Long userId, String name, UserSocialType socialType) {
+    private void assertReviewWithCreatorDto(ReviewWithWriterProjection review, Long id, int rating, String contents, Long userId, String name, UserSocialType socialType) {
         assertThat(review.getId()).isEqualTo(id);
         assertThat(review.getRating()).isEqualTo(rating);
         assertThat(review.getContents()).isEqualTo(contents);
