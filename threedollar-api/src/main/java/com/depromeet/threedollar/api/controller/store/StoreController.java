@@ -11,7 +11,7 @@ import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreReques
 import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreDeleteResponse;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreImageResponse;
-import com.depromeet.threedollar.api.service.store.dto.response.StoreSummaryResponse;
+import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +31,8 @@ public class StoreController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PostMapping("/api/v2/store")
-    public ApiResponse<StoreSummaryResponse> addStore(@Valid @RequestBody AddStoreRequest request,
-                                                      @UserId Long userId) {
+    public ApiResponse<StoreInfoResponse> addStore(@Valid @RequestBody AddStoreRequest request,
+                                                   @UserId Long userId) {
         return ApiResponse.success(storeService.addStore(request, userId));
     }
 
@@ -40,7 +40,7 @@ public class StoreController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PutMapping("/api/v2/store/{storeId}")
-    public ApiResponse<StoreSummaryResponse> updateStore(@PathVariable Long storeId,
+    public ApiResponse<StoreInfoResponse> updateStore(@PathVariable Long storeId,
                                                       @Valid @RequestBody UpdateStoreRequest request,
                                                       @UserId Long userId) {
         return ApiResponse.success(storeService.updateStore(storeId, request, userId));

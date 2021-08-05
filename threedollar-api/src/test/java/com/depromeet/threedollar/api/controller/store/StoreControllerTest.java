@@ -7,7 +7,7 @@ import com.depromeet.threedollar.api.service.store.dto.request.DeleteStoreReques
 import com.depromeet.threedollar.api.service.store.dto.request.MenuRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreDeleteResponse;
-import com.depromeet.threedollar.api.service.store.dto.response.StoreSummaryResponse;
+import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.menu.MenuCreator;
@@ -93,11 +93,10 @@ class StoreControllerTest extends AbstractControllerTest {
             .build();
 
         // when
-        ApiResponse<StoreSummaryResponse> response = storeMockApiCaller.addStore(request, token, 200);
+        ApiResponse<StoreInfoResponse> response = storeMockApiCaller.addStore(request, token, 200);
 
         // then
-        assertStoreSummaryResponse(response.getData(), latitude, longitude, storeName, appearanceDays, paymentMethods,
-            Collections.singletonList(MenuCategoryType.BUNGEOPPANG));
+        assertStoreInfoResponse(response.getData(), latitude, longitude, storeName, Collections.singletonList(MenuCategoryType.BUNGEOPPANG));
     }
 
     @DisplayName("PUT /api/v2/store 200 OK")
@@ -131,12 +130,11 @@ class StoreControllerTest extends AbstractControllerTest {
             .build();
 
         // when
-        ApiResponse<StoreSummaryResponse> response = storeMockApiCaller.updateStore(store.getId(), request, token, 200);
+        ApiResponse<StoreInfoResponse> response = storeMockApiCaller.updateStore(store.getId(), request, token, 200);
 
         // then
         assertThat(response.getData().getStoreId()).isEqualTo(store.getId());
-        assertStoreSummaryResponse(response.getData(), latitude, longitude, storeName, appearanceDays, paymentMethods,
-            Collections.singletonList(MenuCategoryType.BUNGEOPPANG));
+        assertStoreInfoResponse(response.getData(), latitude, longitude, storeName, Collections.singletonList(MenuCategoryType.BUNGEOPPANG));
     }
 
     @DisplayName("DELETE /api/v2/store 200 OK 삭제 요청만 쌓이는 경우")
@@ -191,13 +189,10 @@ class StoreControllerTest extends AbstractControllerTest {
         assertThat(response.getData()).isNull();
     }
 
-    private void assertStoreSummaryResponse(StoreSummaryResponse response, Double latitude, Double longitude, String storeName,
-                                            Set<DayOfTheWeek> appearanceDays, Set<PaymentMethodType> paymentMethods, List<MenuCategoryType> categories) {
+    private void assertStoreInfoResponse(StoreInfoResponse response, Double latitude, Double longitude, String storeName, List<MenuCategoryType> categories) {
         assertThat(response.getLatitude()).isEqualTo(latitude);
         assertThat(response.getLongitude()).isEqualTo(longitude);
         assertThat(response.getStoreName()).isEqualTo(storeName);
-        assertThat(response.getAppearanceDays()).isEqualTo(appearanceDays);
-        assertThat(response.getPaymentMethods()).isEqualTo(paymentMethods);
         assertThat(response.getCategories()).isEqualTo(categories);
     }
 

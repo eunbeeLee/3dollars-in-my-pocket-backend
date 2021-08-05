@@ -6,7 +6,7 @@ import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.DeleteStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreDeleteResponse;
-import com.depromeet.threedollar.api.service.store.dto.response.StoreSummaryResponse;
+import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpHeaders;
@@ -25,7 +25,7 @@ public class StoreMockApiCaller extends MockMvcUtils {
         super(mockMvc, objectMapper);
     }
 
-    public ApiResponse<StoreSummaryResponse> addStore(AddStoreRequest request, String token, int expectedStatus) throws Exception {
+    public ApiResponse<StoreInfoResponse> addStore(AddStoreRequest request, String token, int expectedStatus) throws Exception {
         MockHttpServletRequestBuilder builder = post("/api/v2/store")
             .header(HttpHeaders.AUTHORIZATION, token)
             .contentType(MediaType.APPLICATION_JSON)
@@ -41,7 +41,7 @@ public class StoreMockApiCaller extends MockMvcUtils {
         );
     }
 
-    public ApiResponse<StoreSummaryResponse> updateStore(Long storeId, UpdateStoreRequest request, String token, int expectedStatus) throws Exception {
+    public ApiResponse<StoreInfoResponse> updateStore(Long storeId, UpdateStoreRequest request, String token, int expectedStatus) throws Exception {
         MockHttpServletRequestBuilder builder = put("/api/v2/store/".concat(String.valueOf(storeId)))
             .header(HttpHeaders.AUTHORIZATION, token)
             .contentType(MediaType.APPLICATION_JSON)
