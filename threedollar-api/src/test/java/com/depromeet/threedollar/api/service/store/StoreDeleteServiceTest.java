@@ -12,6 +12,7 @@ import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequestCre
 import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequestRepository;
 import com.depromeet.threedollar.common.exception.ConflictException;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,81 +42,86 @@ class StoreDeleteServiceTest extends UserSetUpTest {
         storeDeleteRequestRepository.deleteAll();
     }
 
-    @Test
-    void 가게_삭제_요청이_1개_쌓이면_실제로_가게정보가_삭제되지_않는다() {
-        // given
-        Store store = StoreCreator.create(userId, "storeName");
-        storeRepository.save(store);
+    @Nested
+    class 가게_삭제_요청 {
 
-        DeleteReasonType type = DeleteReasonType.NOSTORE;
+        @Test
+        void 가게_삭제_요청이_1개_쌓이면_실제로_가게정보가_삭제되지_않는다() {
+            // given
+            Store store = StoreCreator.create(userId, "storeName");
+            storeRepository.save(store);
 
-        // when
-        boolean result = storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
+            DeleteReasonType type = DeleteReasonType.NOSTORE;
 
-        // then
-        List<StoreDeleteRequest> storeDeleteRequestList = storeDeleteRequestRepository.findAll();
-        assertThat(storeDeleteRequestList).hasSize(1);
-        assertStoreDeleteRequest(storeDeleteRequestList.get(0), store.getId(), userId, type);
+            // when
+            boolean result = storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
 
-        assertThat(result).isFalse();
-    }
+            // then
+            List<StoreDeleteRequest> storeDeleteRequestList = storeDeleteRequestRepository.findAll();
+            assertThat(storeDeleteRequestList).hasSize(1);
+            assertStoreDeleteRequest(storeDeleteRequestList.get(0), store.getId(), userId, type);
 
-    @Test
-    void 가게_삭제_요청이_2개_쌓이면_실제로_가게정보가_삭제되지_않는다() {
-        // given
-        Store store = StoreCreator.create(userId, "storeName");
-        storeRepository.save(store);
+            assertThat(result).isFalse();
+        }
 
-        storeDeleteRequestRepository.save(StoreDeleteRequestCreator.create(store.getId(), 90L, DeleteReasonType.WRONG_CONTENT));
+        @Test
+        void 가게_삭제_요청이_2개_쌓이면_실제로_가게정보가_삭제되지_않는다() {
+            // given
+            Store store = StoreCreator.create(userId, "storeName");
+            storeRepository.save(store);
 
-        // when
-        boolean result = storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
+            storeDeleteRequestRepository.save(StoreDeleteRequestCreator.create(store.getId(), 90L, DeleteReasonType.WRONG_CONTENT));
 
-        // then
-        List<StoreDeleteRequest> storeDeleteRequestList = storeDeleteRequestRepository.findAll();
-        assertThat(storeDeleteRequestList).hasSize(2);
-        assertStoreDeleteRequest(storeDeleteRequestList.get(0), store.getId(), 90L, DeleteReasonType.WRONG_CONTENT);
-        assertStoreDeleteRequest(storeDeleteRequestList.get(1), store.getId(), userId, DeleteReasonType.NOSTORE);
+            // when
+            boolean result = storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
 
-        assertThat(result).isFalse();
-    }
+            // then
+            List<StoreDeleteRequest> storeDeleteRequestList = storeDeleteRequestRepository.findAll();
+            assertThat(storeDeleteRequestList).hasSize(2);
+            assertStoreDeleteRequest(storeDeleteRequestList.get(0), store.getId(), 90L, DeleteReasonType.WRONG_CONTENT);
+            assertStoreDeleteRequest(storeDeleteRequestList.get(1), store.getId(), userId, DeleteReasonType.NOSTORE);
 
-    @Test
-    void 가게_삭제_요청이_3개_쌓이면_실제로_가게정보가_실제로_삭제된다() {
-        // given
-        Store store = StoreCreator.create(userId, "storeName");
-        storeRepository.save(store);
+            assertThat(result).isFalse();
+        }
 
-        storeDeleteRequestRepository.saveAll(Arrays.asList(
-            StoreDeleteRequestCreator.create(store.getId(), 90L, DeleteReasonType.NOSTORE),
-            StoreDeleteRequestCreator.create(store.getId(), 91L, DeleteReasonType.NOSTORE))
-        );
+        @Test
+        void 가게_삭제_요청이_3개_쌓이면_실제로_가게정보가_실제로_삭제된다() {
+            // given
+            Store store = StoreCreator.create(userId, "storeName");
+            storeRepository.save(store);
 
-        // when
-        boolean result = storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
+            storeDeleteRequestRepository.saveAll(Arrays.asList(
+                StoreDeleteRequestCreator.create(store.getId(), 90L, DeleteReasonType.NOSTORE),
+                StoreDeleteRequestCreator.create(store.getId(), 91L, DeleteReasonType.NOSTORE))
+            );
 
-        // then
-        List<Store> stores = storeRepository.findAll();
-        assertThat(stores).hasSize(1);
-        assertThat(stores.get(0).getStatus()).isEqualTo(StoreStatus.DELETED);
+            // when
+            boolean result = storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId);
 
-        List<StoreDeleteRequest> storeDeleteRequestList = storeDeleteRequestRepository.findAll();
-        assertThat(storeDeleteRequestList).hasSize(3);
+            // then
+            List<Store> stores = storeRepository.findAll();
+            assertThat(stores).hasSize(1);
+            assertThat(stores.get(0).getStatus()).isEqualTo(StoreStatus.DELETED);
 
-        assertThat(result).isTrue();
-    }
+            List<StoreDeleteRequest> storeDeleteRequestList = storeDeleteRequestRepository.findAll();
+            assertThat(storeDeleteRequestList).hasSize(3);
 
-    @Test
-    void 해당_사용자가_해당하는_가게에_대해_이미_삭제요청_한경우_CONFLICT_EXCEPTION() {
-        // given
-        Store store = StoreCreator.create(userId, "storeName");
-        storeRepository.save(store);
+            assertThat(result).isTrue();
+        }
 
-        storeDeleteRequestRepository.save(StoreDeleteRequestCreator.create(store.getId(), userId, DeleteReasonType.NOSTORE));
+        @Test
+        void 해당_사용자가_해당하는_가게에_대해_이미_삭제요청_한경우_CONFLICT_EXCEPTION() {
+            // given
+            Store store = StoreCreator.create(userId, "storeName");
+            storeRepository.save(store);
 
-        // when & then
-        assertThatThrownBy(() -> storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId))
-            .isInstanceOf(ConflictException.class);
+            storeDeleteRequestRepository.save(StoreDeleteRequestCreator.create(store.getId(), userId, DeleteReasonType.NOSTORE));
+
+            // when & then
+            assertThatThrownBy(() -> storeDeleteRequestService.delete(store.getId(), DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE), userId))
+                .isInstanceOf(ConflictException.class);
+        }
+
     }
 
     private void assertStoreDeleteRequest(StoreDeleteRequest storeDeleteRequest, Long storeId, Long userId, DeleteReasonType type) {

@@ -7,10 +7,7 @@ import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequ
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import com.depromeet.threedollar.domain.domain.user.UserCreator;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static com.depromeet.threedollar.common.exception.ErrorCode.CONFLICT_EXCEPTION;
 import static com.depromeet.threedollar.common.exception.ErrorCode.UNAUTHORIZED_EXCEPTION;
@@ -28,105 +25,116 @@ class UserControllerTest extends AbstractControllerTest {
         super.cleanup();
     }
 
-    @DisplayName("GET /api/v2/user/me 200 OK")
-    @Test
-    void 자신의_회원정보를_조회하는_API_호출시_정상적으로_회원정보가_조회된다() throws Exception {
-        // when
-        ApiResponse<UserInfoResponse> response = userMockApiCaller.getMyUserInfo(token, 200);
+    @DisplayName("GET /api/v2/user/me")
+    @Nested
+    class 회원_정보_조회 {
 
-        // then
-        assertUserInfoResponse(response.getData(), testUser.getId(), testUser.getName(), testUser.getSocialType());
+        @Test
+        void 자신의_회원정보를_조회하는_API_호출시_정상적으로_회원정보가_조회된다() throws Exception {
+            // when
+            ApiResponse<UserInfoResponse> response = userMockApiCaller.getMyUserInfo(token, 200);
+
+            // then
+            assertUserInfoResponse(response.getData(), testUser.getId(), testUser.getName(), testUser.getSocialType());
+        }
+
+        @Test
+        void 자신의_회원정보를_조회하는_API_호출시_잘못된_세션이면_401_에러() throws Exception {
+            // when
+            ApiResponse<UserInfoResponse> response = userMockApiCaller.getMyUserInfo("wrong token", 401);
+
+            // then
+            assertThat(response.getResultCode()).isEqualTo(UNAUTHORIZED_EXCEPTION.getCode());
+            assertThat(response.getMessage()).isEqualTo(UNAUTHORIZED_EXCEPTION.getMessage());
+            assertThat(response.getData()).isNull();
+        }
+
     }
 
-    @DisplayName("GET /api/v2/user/me 잘못된 세션일 경우 401 UnAuthorized")
-    @Test
-    void 자신의_회원정보를_조회하는_API_호출시_잘못된_세션이면_401_에러() throws Exception {
-        // when
-        ApiResponse<UserInfoResponse> response = userMockApiCaller.getMyUserInfo("wrong token", 401);
+    @DisplayName("PUT /api/v2/user/me")
+    @Nested
+    class 회원_정보_수정 {
 
-        // then
-        assertThat(response.getResultCode()).isEqualTo(UNAUTHORIZED_EXCEPTION.getCode());
-        assertThat(response.getMessage()).isEqualTo(UNAUTHORIZED_EXCEPTION.getMessage());
-        assertThat(response.getData()).isNull();
+        @Test
+        void 자신의_회원정보를_수정하는_API_호출시_정상적으로_수정된다() throws Exception {
+            // given
+            String name = "디프만";
+
+            UpdateUserInfoRequest request = UpdateUserInfoRequest.testInstance(name);
+
+            // when
+            ApiResponse<UserInfoResponse> response = userMockApiCaller.updateMyUserInfo(request, token, 200);
+
+            // then
+            assertUserInfoResponse(response.getData(), testUser.getId(), name, testUser.getSocialType());
+        }
+
+        @Test
+        void 자신의_회원정보를_수정하는_API_호출시_닉네임이_중복되는경우_409_에러() throws Exception {
+            // given
+            String name = "디프만";
+            userRepository.save(UserCreator.create("social-social-id", UserSocialType.APPLE, name));
+
+            UpdateUserInfoRequest request = UpdateUserInfoRequest.testInstance(name);
+
+            // when
+            ApiResponse<UserInfoResponse> response = userMockApiCaller.updateMyUserInfo(request, token, 409);
+
+            // then
+            assertThat(response.getResultCode()).isEqualTo(CONFLICT_EXCEPTION.getCode());
+            assertThat(response.getMessage()).isEqualTo(CONFLICT_EXCEPTION.getMessage());
+            assertThat(response.getData()).isNull();
+        }
+
+        @Test
+        void 자신의_회원정보를_수정하는_API_호출시_잘못된_세션일경우_401_에러() throws Exception {
+            // given
+            UpdateUserInfoRequest request = UpdateUserInfoRequest.testInstance("디프만");
+
+            // when
+            ApiResponse<UserInfoResponse> response = userMockApiCaller.updateMyUserInfo(request, "wrong token", 401);
+
+            // then
+            assertThat(response.getResultCode()).isEqualTo(UNAUTHORIZED_EXCEPTION.getCode());
+            assertThat(response.getMessage()).isEqualTo(UNAUTHORIZED_EXCEPTION.getMessage());
+            assertThat(response.getData()).isNull();
+        }
+
     }
 
-    @DisplayName("PUT /api/v2/user/me 200 OK")
-    @Test
-    void 자신의_회원정보를_수정하는_API_호출시_정상적으로_수정된다() throws Exception {
-        // given
-        String name = "디프만";
+    @DisplayName("GET /api/v2/user/me/name/check")
+    @Nested
+    class 사용가능한_닉네임_체크 {
 
-        UpdateUserInfoRequest request = UpdateUserInfoRequest.testInstance(name);
+        @Test
+        void 사용가능한_닉네임인지_확인하는_API_호출시_사용가능하면_200_OK() throws Exception {
+            // given
+            String name = "디프만";
+            CheckAvailableNameRequest request = CheckAvailableNameRequest.testInstance(name);
 
-        // when
-        ApiResponse<UserInfoResponse> response = userMockApiCaller.updateMyUserInfo(request, token, 200);
+            // when
+            ApiResponse<String> response = userMockApiCaller.checkAvailableName(request, 200);
 
-        // then
-        assertUserInfoResponse(response.getData(), testUser.getId(), name, testUser.getSocialType());
-    }
+            // then
+            assertThat(response.getData()).isEqualTo("OK");
+        }
 
-    @DisplayName("PUT /api/v2/user/me 중복된 닉네임일 경우 409 Conflict")
-    @Test
-    void 자신의_회원정보를_수정하는_API_호출시_닉네임이_중복되는경우_409_에러() throws Exception {
-        // given
-        String name = "디프만";
-        userRepository.save(UserCreator.create("social-social-id", UserSocialType.APPLE, name));
+        @Test
+        void 사용가능한_닉네임인지_확인하는_API_호출시_중복된_이름인경우_409_에러() throws Exception {
+            // given
+            String name = "디프만";
+            userRepository.save(UserCreator.create("social-social-id", UserSocialType.APPLE, name));
+            CheckAvailableNameRequest request = CheckAvailableNameRequest.testInstance(name);
 
-        UpdateUserInfoRequest request = UpdateUserInfoRequest.testInstance(name);
+            // when
+            ApiResponse<String> response = userMockApiCaller.checkAvailableName(request, 409);
 
-        // when
-        ApiResponse<UserInfoResponse> response = userMockApiCaller.updateMyUserInfo(request, token, 409);
+            // then
+            assertThat(response.getResultCode()).isEqualTo(CONFLICT_EXCEPTION.getCode());
+            assertThat(response.getMessage()).isEqualTo(CONFLICT_EXCEPTION.getMessage());
+            assertThat(response.getData()).isNull();
+        }
 
-        // then
-        assertThat(response.getResultCode()).isEqualTo(CONFLICT_EXCEPTION.getCode());
-        assertThat(response.getMessage()).isEqualTo(CONFLICT_EXCEPTION.getMessage());
-        assertThat(response.getData()).isNull();
-    }
-
-    @DisplayName("PUT /api/v2/user/me 잘못된 세션일 경우 401 UnAuthorized")
-    @Test
-    void 자신의_회원정보를_수정하는_API_호출시_잘못된_세션일경우_401_에러() throws Exception {
-        // given
-        UpdateUserInfoRequest request = UpdateUserInfoRequest.testInstance("디프만");
-
-        // when
-        ApiResponse<UserInfoResponse> response = userMockApiCaller.updateMyUserInfo(request, "wrong token", 401);
-
-        // then
-        assertThat(response.getResultCode()).isEqualTo(UNAUTHORIZED_EXCEPTION.getCode());
-        assertThat(response.getMessage()).isEqualTo(UNAUTHORIZED_EXCEPTION.getMessage());
-        assertThat(response.getData()).isNull();
-    }
-
-    @DisplayName("GET /api/v2/user/me/name/check 사용가능한 닉네임인경우 200 OK")
-    @Test
-    void 사용가능한_닉네임인지_확인하는_API_호출시_사용가능하면_200_OK() throws Exception {
-        // given
-        String name = "디프만";
-        CheckAvailableNameRequest request = CheckAvailableNameRequest.testInstance(name);
-
-        // when
-        ApiResponse<String> response = userMockApiCaller.checkAvailableName(request, 200);
-
-        // then
-        assertThat(response.getData()).isEqualTo("OK");
-    }
-
-    @DisplayName("GET /api/v2/user/me/name/check 중복된 이름인경우 409 Conflict")
-    @Test
-    void 사용가능한_닉네임인지_확인하는_API_호출시_중복된_이름인경우_409_에러() throws Exception {
-        // given
-        String name = "디프만";
-        userRepository.save(UserCreator.create("social-social-id", UserSocialType.APPLE, name));
-        CheckAvailableNameRequest request = CheckAvailableNameRequest.testInstance(name);
-
-        // when
-        ApiResponse<String> response = userMockApiCaller.checkAvailableName(request, 409);
-
-        // then
-        assertThat(response.getResultCode()).isEqualTo(CONFLICT_EXCEPTION.getCode());
-        assertThat(response.getMessage()).isEqualTo(CONFLICT_EXCEPTION.getMessage());
-        assertThat(response.getData()).isNull();
     }
 
     private void assertUserInfoResponse(UserInfoResponse response, Long userId, String name, UserSocialType socialType) {

@@ -13,6 +13,7 @@ import com.depromeet.threedollar.domain.domain.store.StoreRepository;
 import com.depromeet.threedollar.common.exception.NotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,175 +51,191 @@ class ReviewServiceTest extends UserSetUpTest {
         storeRepository.save(store);
     }
 
-    @Test
-    void 가게에_새로운_리뷰를_등록하면_새로운_리뷰_데이터가_추가된다() {
-        // given
-        String contents = "우와 맛있어요";
-        int rating = 4;
-        AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), contents, rating);
+    @Nested
+    class 가게_리뷰_등록 {
 
-        // when
-        reviewService.addReview(request, userId);
 
-        // then
-        List<Review> reviewList = reviewRepository.findAll();
-        assertThat(reviewList).hasSize(1);
-        assertReview(reviewList.get(0), store.getId(), contents, rating, userId);
+        @Test
+        void 가게에_새로운_리뷰를_등록하면_새로운_리뷰_데이터가_추가된다() {
+            // given
+            String contents = "우와 맛있어요";
+            int rating = 4;
+            AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), contents, rating);
+
+            // when
+            reviewService.addReview(request, userId);
+
+            // then
+            List<Review> reviewList = reviewRepository.findAll();
+            assertThat(reviewList).hasSize(1);
+            assertReview(reviewList.get(0), store.getId(), contents, rating, userId);
+        }
+
+        @Test
+        void 가게에_새로운_리뷰를_등록할때_해당하는_가게가_없는경우_NOT_FOUND_EXCEPTION() {
+            // given
+            Long storeId = 999L;
+            AddReviewRequest request = AddReviewRequest.testInstance(storeId, "리뷰", 3);
+
+            // when & then
+            assertThatThrownBy(() -> reviewService.addReview(request, userId)).isInstanceOf(NotFoundException.class);
+        }
+
+        @Test
+        void 가게에_새로운_첫_리뷰를_등록하면_가게의_평균_리뷰_점수가_갱신된다() {
+            // given
+            String contents = "우와 맛있어요";
+            int rating = 4;
+
+            AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), contents, rating);
+
+            // when
+            reviewService.addReview(request, userId);
+
+            // then
+            List<Store> stores = storeRepository.findAll();
+            assertThat(stores).hasSize(1);
+            assertThat(stores.get(0).getRating()).isEqualTo(4.0);
+        }
+
+        @Test
+        void 가게에_새로운_리뷰를_등록하면_가게의_평균_리뷰_점수가_갱신된다() {
+            // given
+            String contents = "우와 맛있어요";
+            int rating = 4;
+
+            reviewRepository.save(ReviewCreator.create(store.getId(), userId, "맛 없어요", 1));
+
+            // when
+            AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), contents, rating);
+
+            // when
+            reviewService.addReview(request, userId);
+
+            // then
+            List<Store> stores = storeRepository.findAll();
+            assertThat(stores).hasSize(1);
+            assertThat(stores.get(0).getRating()).isEqualTo(2.5); // (4 + 1) / 2 = 2.5
+        }
+
     }
 
-    @Test
-    void 가게에_새로운_리뷰를_등록할때_해당하는_가게가_없는경우_NOT_FOUND_EXCEPTION() {
-        // given
-        Long storeId = 999L;
-        AddReviewRequest request = AddReviewRequest.testInstance(storeId, "리뷰", 3);
+    @Nested
+    class 가게_리뷰_수정 {
 
-        // when & then
-        assertThatThrownBy(() -> reviewService.addReview(request, userId)).isInstanceOf(NotFoundException.class);
+        @Test
+        void 가게에_작성한_리뷰를_수정하면_해당_리뷰_정보가_수정된다() {
+            // given
+            String contents = "우와 맛있어요";
+            int rating = 4;
+
+            Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
+            reviewRepository.save(review);
+
+            UpdateReviewRequest request = UpdateReviewRequest.testInstance(contents, rating);
+
+            // when
+            reviewService.updateReview(review.getId(), request, userId);
+
+            // then
+            List<Review> reviewList = reviewRepository.findAll();
+            assertThat(reviewList).hasSize(1);
+            assertReview(reviewList.get(0), store.getId(), contents, rating, userId);
+        }
+
+        @Test
+        void 가게에_작성한_리뷰를_수정하면_가게의_평균_리뷰_점수가_갱신된다() {
+            // given
+            String contents = "우와 맛있어요";
+            int rating = 4;
+
+            Review review = ReviewCreator.create(store.getId(), userId, "맛 없어요", 1);
+            reviewRepository.saveAll(Arrays.asList(ReviewCreator.create(store.getId(), userId, "맛 없어요", 2), review));
+
+            // when
+            UpdateReviewRequest request = UpdateReviewRequest.testInstance(contents, rating);
+
+            // when
+            reviewService.updateReview(review.getId(), request, userId);
+
+            // then
+            List<Store> stores = storeRepository.findAll();
+            assertThat(stores).hasSize(1);
+            assertThat(stores.get(0).getRating()).isEqualTo(3); // (2 + 4 / 2 = 3)
+        }
+
+        @Test
+        void 가게에_작성한_리뷰를_수정시_해당하는_리뷰가_존재하지_않으면_NOT_FOUND_EXCEPTION() {
+            // given
+            UpdateReviewRequest request = UpdateReviewRequest.testInstance("content", 5);
+
+            // when & then
+            assertThatThrownBy(() -> reviewService.updateReview(999L, request, userId)).isInstanceOf(NotFoundException.class);
+        }
+
+        @Test
+        void 작성한_리뷰_수정시_해당하는_리뷰가_사용자가_작성하지_않았을경우_NOT_FOUND_EXCEPTION() {
+            // given
+            Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
+            reviewRepository.save(review);
+
+            UpdateReviewRequest request = UpdateReviewRequest.testInstance("content", 5);
+
+            // when & then
+            assertThatThrownBy(() -> reviewService.updateReview(review.getId(), request, 999L)).isInstanceOf(NotFoundException.class);
+        }
+
     }
 
-    @Test
-    void 가게에_새로운_첫_리뷰를_등록하면_가게의_평균_리뷰_점수가_갱신된다() {
-        // given
-        String contents = "우와 맛있어요";
-        int rating = 4;
+    @Nested
+    class 가게_리뷰_삭제 {
 
-        AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), contents, rating);
+        @Test
+        void 작성한_리뷰를_삭제하면_상태_필드가_DELETED로_수정된다() {
+            // given
+            Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
+            reviewRepository.save(review);
 
-        // when
-        reviewService.addReview(request, userId);
+            // when
+            reviewService.deleteReview(review.getId(), userId);
 
-        // then
-        List<Store> stores = storeRepository.findAll();
-        assertThat(stores).hasSize(1);
-        assertThat(stores.get(0).getRating()).isEqualTo(4.0);
-    }
+            // then
+            List<Review> reviewList = reviewRepository.findAll();
+            assertThat(reviewList).hasSize(1);
+            assertThat(reviewList.get(0).getStatus()).isEqualTo(ReviewStatus.DELETED);
+        }
 
-    @Test
-    void 가게에_새로운_리뷰를_등록하면_가게의_평균_리뷰_점수가_갱신된다() {
-        // given
-        String contents = "우와 맛있어요";
-        int rating = 4;
+        @Test
+        void 리뷰를_삭제하면_가게_평균_리뷰_점수가_갱신되며_아무_리뷰가_없는경우_0점이_된다() {
+            // given
+            Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
+            reviewRepository.save(review);
 
-        reviewRepository.save(ReviewCreator.create(store.getId(), userId, "맛 없어요", 1));
+            // when
+            reviewService.deleteReview(review.getId(), userId);
 
-        // when
-        AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), contents, rating);
+            // then
+            List<Store> stores = storeRepository.findAll();
+            assertThat(stores).hasSize(1);
+            assertThat(stores.get(0).getRating()).isEqualTo(0);
+        }
 
-        // when
-        reviewService.addReview(request, userId);
+        @Test
+        void 작성한_리뷰를_삭제시_해당하는_리뷰가_없을경우_NOT_FOUND_EXCEPTION() {
+            // when & then
+            assertThatThrownBy(() -> reviewService.deleteReview(999L, userId)).isInstanceOf(NotFoundException.class);
+        }
 
-        // then
-        List<Store> stores = storeRepository.findAll();
-        assertThat(stores).hasSize(1);
-        assertThat(stores.get(0).getRating()).isEqualTo(2.5); // (4 + 1) / 2 = 2.5
-    }
+        @Test
+        void 리뷰_삭제시_해당하는_리뷰가_사용자가_작성하지_않았을경우_NOT_FOUND_EXCEPTION() {
+            // given
+            Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
+            reviewRepository.save(review);
 
-    @Test
-    void 가게에_작성한_리뷰를_수정하면_해당_리뷰_정보가_수정된다() {
-        // given
-        String contents = "우와 맛있어요";
-        int rating = 4;
+            // when & then
+            assertThatThrownBy(() -> reviewService.deleteReview(review.getId(), 999L)).isInstanceOf(NotFoundException.class);
+        }
 
-        Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
-        reviewRepository.save(review);
-
-        UpdateReviewRequest request = UpdateReviewRequest.testInstance(contents, rating);
-
-        // when
-        reviewService.updateReview(review.getId(), request, userId);
-
-        // then
-        List<Review> reviewList = reviewRepository.findAll();
-        assertThat(reviewList).hasSize(1);
-        assertReview(reviewList.get(0), store.getId(), contents, rating, userId);
-    }
-
-    @Test
-    void 가게에_작성한_리뷰를_수정하면_가게의_평균_리뷰_점수가_갱신된다() {
-        // given
-        String contents = "우와 맛있어요";
-        int rating = 4;
-
-        Review review = ReviewCreator.create(store.getId(), userId, "맛 없어요", 1);
-        reviewRepository.saveAll(Arrays.asList(ReviewCreator.create(store.getId(), userId, "맛 없어요", 2), review));
-
-        // when
-        UpdateReviewRequest request = UpdateReviewRequest.testInstance(contents, rating);
-
-        // when
-        reviewService.updateReview(review.getId(), request, userId);
-
-        // then
-        List<Store> stores = storeRepository.findAll();
-        assertThat(stores).hasSize(1);
-        assertThat(stores.get(0).getRating()).isEqualTo(3); // (2 + 4 / 2 = 3)
-    }
-
-    @Test
-    void 가게에_작성한_리뷰를_수정시_해당하는_리뷰가_존재하지_않으면_NOT_FOUND_EXCEPTION() {
-        // given
-        UpdateReviewRequest request = UpdateReviewRequest.testInstance("content", 5);
-
-        // when & then
-        assertThatThrownBy(() -> reviewService.updateReview(999L, request, userId)).isInstanceOf(NotFoundException.class);
-    }
-
-    @Test
-    void 작성한_리뷰_수정시_해당하는_리뷰가_사용자가_작성하지_않았을경우_NOT_FOUND_EXCEPTION() {
-        // given
-        Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
-        reviewRepository.save(review);
-
-        UpdateReviewRequest request = UpdateReviewRequest.testInstance("content", 5);
-
-        // when & then
-        assertThatThrownBy(() -> reviewService.updateReview(review.getId(), request, 999L)).isInstanceOf(NotFoundException.class);
-    }
-
-    @Test
-    void 작성한_리뷰를_삭제하면_상태_필드가_DELETED로_수정된다() {
-        // given
-        Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
-        reviewRepository.save(review);
-
-        // when
-        reviewService.deleteReview(review.getId(), userId);
-
-        // then
-        List<Review> reviewList = reviewRepository.findAll();
-        assertThat(reviewList).hasSize(1);
-        assertThat(reviewList.get(0).getStatus()).isEqualTo(ReviewStatus.DELETED);
-    }
-
-    @Test
-    void 리뷰를_삭제하면_가게_평균_리뷰_점수가_갱신되며_아무_리뷰가_없는경우_0점이_된다() {
-        // given
-        Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
-        reviewRepository.save(review);
-
-        // when
-        reviewService.deleteReview(review.getId(), userId);
-
-        // then
-        List<Store> stores = storeRepository.findAll();
-        assertThat(stores).hasSize(1);
-        assertThat(stores.get(0).getRating()).isEqualTo(0);
-    }
-
-    @Test
-    void 작성한_리뷰를_삭제시_해당하는_리뷰가_없을경우_NOT_FOUND_EXCEPTION() {
-        // when & then
-        assertThatThrownBy(() -> reviewService.deleteReview(999L, userId)).isInstanceOf(NotFoundException.class);
-    }
-
-    @Test
-    void 리뷰_삭제시_해당하는_리뷰가_사용자가_작성하지_않았을경우_NOT_FOUND_EXCEPTION() {
-        // given
-        Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
-        reviewRepository.save(review);
-
-        // when & then
-        assertThatThrownBy(() -> reviewService.deleteReview(review.getId(), 999L)).isInstanceOf(NotFoundException.class);
     }
 
     private void assertReview(Review review, Long storeId, String contents, int rating, Long userId) {

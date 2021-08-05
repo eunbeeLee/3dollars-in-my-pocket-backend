@@ -17,10 +17,7 @@ import com.depromeet.threedollar.domain.domain.menu.MenuCreator;
 import com.depromeet.threedollar.domain.domain.menu.MenuRepository;
 import com.depromeet.threedollar.domain.domain.store.*;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
@@ -60,245 +57,255 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         storeRepository.deleteAllInBatch();
     }
 
-    @DisplayName("GET /api/v2/stores/near 200 OK")
-    @Test
-    void 사용자_주변의_가게들을_조회한다() throws Exception {
-        // given
-        Store store1 = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
-        Menu menu1 = MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG);
-        Menu menu2 = MenuCreator.create(store1, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG);
-        Menu menu3 = MenuCreator.create(store1, "메뉴3", "가격3", MenuCategoryType.EOMUK);
-        store1.addMenus(Arrays.asList(menu1, menu2, menu3));
+    @DisplayName("GET /api/v2/stores/near")
+    @Nested
+    class 사용자_주변의_가게_조회 {
 
-        Store store2 = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
-        store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
-        storeRepository.saveAll(Arrays.asList(store1, store2));
+        @Test
+        void 사용자_주변의_가게들을_조회한다() throws Exception {
+            // given
+            Store store1 = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
+            Menu menu1 = MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG);
+            Menu menu2 = MenuCreator.create(store1, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG);
+            Menu menu3 = MenuCreator.create(store1, "메뉴3", "가격3", MenuCategoryType.EOMUK);
+            store1.addMenus(Arrays.asList(menu1, menu2, menu3));
 
-        RetrieveNearStoresRequest request = RetrieveNearStoresRequest.testInstance(34, 124, 34, 124, 1000);
+            Store store2 = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
+            store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
+            storeRepository.saveAll(Arrays.asList(store1, store2));
 
-        // when
-        ApiResponse<List<StoreInfoResponse>> response = storeRetrieveMockApiCaller.getNearStores(request, 200);
+            RetrieveNearStoresRequest request = RetrieveNearStoresRequest.testInstance(34, 124, 34, 124, 1000);
 
-        // then
-        assertThat(response.getData()).hasSize(2);
-        assertStoreInfoResponse(response.getData().get(0), store1.getId(), store1.getLatitude(), store1.getLongitude(), store1.getName(), store1.getRating());
-        assertThat(response.getData().get(0).getCategories()).hasSize(2);
-        assertThat(response.getData().get(0).getCategories().get(0)).isEqualTo(MenuCategoryType.BUNGEOPPANG);
-        assertThat(response.getData().get(0).getCategories().get(1)).isEqualTo(MenuCategoryType.EOMUK);
+            // when
+            ApiResponse<List<StoreInfoResponse>> response = storeRetrieveMockApiCaller.getNearStores(request, 200);
 
-        assertStoreInfoResponse(response.getData().get(1), store2.getId(), store2.getLatitude(), store2.getLongitude(), store2.getName(), store2.getRating());
-        assertThat(response.getData().get(1).getCategories()).hasSize(1);
-        assertThat(response.getData().get(1).getCategories().get(0)).isEqualTo(MenuCategoryType.BUNGEOPPANG);
+            // then
+            assertThat(response.getData()).hasSize(2);
+            assertStoreInfoResponse(response.getData().get(0), store1.getId(), store1.getLatitude(), store1.getLongitude(), store1.getName(), store1.getRating());
+            assertThat(response.getData().get(0).getCategories()).hasSize(2);
+            assertThat(response.getData().get(0).getCategories().get(0)).isEqualTo(MenuCategoryType.BUNGEOPPANG);
+            assertThat(response.getData().get(0).getCategories().get(1)).isEqualTo(MenuCategoryType.EOMUK);
+
+            assertStoreInfoResponse(response.getData().get(1), store2.getId(), store2.getLatitude(), store2.getLongitude(), store2.getName(), store2.getRating());
+            assertThat(response.getData().get(1).getCategories()).hasSize(1);
+            assertThat(response.getData().get(1).getCategories().get(0)).isEqualTo(MenuCategoryType.BUNGEOPPANG);
+        }
+
     }
 
-    @DisplayName("GET /api/v2/store 200 OK")
-    @Test
-    void 특정_가게에_대한_상세_정보를_조회한다() throws Exception {
-        // given
-        Store store = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
+    @DisplayName("GET /api/v2/store")
+    @Nested
+    class 특정_가게_상세_정보_조회 {
 
-        Menu menu = MenuCreator.create(store, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG);
-        store.addMenus(Collections.singletonList(menu));
+        @Test
+        void 특정_가게에_대한_상세_정보를_조회한다() throws Exception {
+            // given
+            Store store = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
 
-        DayOfTheWeek day = DayOfTheWeek.FRIDAY;
-        store.addAppearanceDays(Collections.singleton(day));
+            Menu menu = MenuCreator.create(store, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG);
+            store.addMenus(Collections.singletonList(menu));
 
-        PaymentMethodType paymentMethodType = PaymentMethodType.CASH;
-        store.addPaymentMethods(Collections.singleton(paymentMethodType));
+            DayOfTheWeek day = DayOfTheWeek.FRIDAY;
+            store.addAppearanceDays(Collections.singleton(day));
 
-        storeRepository.save(store);
+            PaymentMethodType paymentMethodType = PaymentMethodType.CASH;
+            store.addPaymentMethods(Collections.singleton(paymentMethodType));
 
-        RetrieveStoreDetailInfoRequest request = RetrieveStoreDetailInfoRequest.testInstance(store.getId(), 34, 124);
+            storeRepository.save(store);
 
-        // when
-        ApiResponse<StoreDetailResponse> response = storeRetrieveMockApiCaller.getStoreDetailInfo(request, 200);
+            RetrieveStoreDetailInfoRequest request = RetrieveStoreDetailInfoRequest.testInstance(store.getId(), 34, 124);
 
-        // then
-        StoreDetailResponse data = response.getData();
-        assertStoreDetailInfoResponse(data, store.getId(), store.getLatitude(), store.getLongitude(), store.getName(), store.getType(), store.getRating());
+            // when
+            ApiResponse<StoreDetailResponse> response = storeRetrieveMockApiCaller.getStoreDetailInfo(request, 200);
 
-        assertThat(data.getCategories()).hasSize(1);
-        assertThat(data.getCategories().get(0)).isEqualTo(menu.getCategory());
+            // then
+            StoreDetailResponse data = response.getData();
+            assertStoreDetailInfoResponse(data, store.getId(), store.getLatitude(), store.getLongitude(), store.getName(), store.getType(), store.getRating());
 
-        assertThat(data.getMenus()).hasSize(1);
-        assertMenuResponse(data.getMenus().get(0), menu.getId(), menu.getCategory(), menu.getName(), menu.getPrice());
+            assertThat(data.getCategories()).hasSize(1);
+            assertThat(data.getCategories().get(0)).isEqualTo(menu.getCategory());
 
-        assertUserInfoResponse(data.getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
+            assertThat(data.getMenus()).hasSize(1);
+            assertMenuResponse(data.getMenus().get(0), menu.getId(), menu.getCategory(), menu.getName(), menu.getPrice());
 
-        assertThat(data.getAppearanceDays()).hasSize(1);
-        assertThat(data.getAppearanceDays().contains(day)).isTrue();
+            assertUserInfoResponse(data.getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
 
-        assertThat(data.getPaymentMethods()).hasSize(1);
-        assertThat(data.getPaymentMethods().contains(paymentMethodType)).isTrue();
+            assertThat(data.getAppearanceDays()).hasSize(1);
+            assertThat(data.getAppearanceDays().contains(day)).isTrue();
+
+            assertThat(data.getPaymentMethods()).hasSize(1);
+            assertThat(data.getPaymentMethods().contains(paymentMethodType)).isTrue();
+        }
+
+        @Test
+        void 특정_가게에_대한_상세_정보를_조회할때_회원탈퇴한_유저의경우_사라진_제보자라고_표기된다() throws Exception {
+            // given
+            Store store = StoreCreator.create(999L, "storeName", 34, 124);
+            store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
+            storeRepository.save(store);
+
+            RetrieveStoreDetailInfoRequest request = RetrieveStoreDetailInfoRequest.testInstance(store.getId(), 34, 124);
+
+            // when
+            ApiResponse<StoreDetailResponse> response = storeRetrieveMockApiCaller.getStoreDetailInfo(request, 200);
+
+            // then
+            StoreDetailResponse data = response.getData();
+            assertUserInfoResponse(data.getUser(), null, "사라진 제보자", null);
+        }
+
     }
 
-    @DisplayName("GET /api/v2/store 200 OK")
-    @Test
-    void 특정_가게에_대한_상세_정보를_조회할때_회원탈퇴한_유저의경우_사라진_제보자라고_표기된다() throws Exception {
-        // given
-        Store store = StoreCreator.create(999L, "storeName", 34, 124);
-        store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
-        storeRepository.save(store);
+    @DisplayName("GET /api/v2/stores/me")
+    @Nested
+    class 사용자가_작성한_가게들_조회 {
 
-        RetrieveStoreDetailInfoRequest request = RetrieveStoreDetailInfoRequest.testInstance(store.getId(), 34, 124);
+        @Test
+        void 사용자가_작성한_가게조회_첫_페이지_조회시_다음_커서가_반환된다() throws Exception {
+            // given
+            Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
+            store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
 
-        // when
-        ApiResponse<StoreDetailResponse> response = storeRetrieveMockApiCaller.getStoreDetailInfo(request, 200);
+            Store store2 = StoreCreator.create(testUser.getId(), "가게2", 34, 124);
+            store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG)));
 
-        // then
-        StoreDetailResponse data = response.getData();
-        assertUserInfoResponse(data.getUser(), null, "사라진 제보자", null);
-    }
+            Store store3 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
+            store3.addMenus(Collections.singletonList(MenuCreator.create(store3, "메뉴3", "가격3", MenuCategoryType.BUNGEOPPANG)));
 
-    @DisplayName("GET /api/v2/stores/me 200 OK - 첫 페이지")
-    @Test
-    void 사용자가_작성한_가게조회_첫_페이지_조회시_다음_커서가_반환된다() throws Exception {
-        // given
-        Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
-        store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
+            Store store4 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
+            store4.addMenus(Collections.singletonList(MenuCreator.create(store4, "메뉴4", "가격4", MenuCategoryType.BUNGEOPPANG)));
 
-        Store store2 = StoreCreator.create(testUser.getId(), "가게2", 34, 124);
-        store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG)));
+            storeRepository.saveAll(Arrays.asList(store1, store2, store3, store4));
 
-        Store store3 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
-        store3.addMenus(Collections.singletonList(MenuCreator.create(store3, "메뉴3", "가격3", MenuCategoryType.BUNGEOPPANG)));
+            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, null, null, 34, 124);
 
-        Store store4 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
-        store4.addMenus(Collections.singletonList(MenuCreator.create(store4, "메뉴4", "가격4", MenuCategoryType.BUNGEOPPANG)));
+            // when
+            ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
 
-        storeRepository.saveAll(Arrays.asList(store1, store2, store3, store4));
+            // then
+            assertThat(response.getData().getTotalElements()).isEqualTo(4);
+            assertThat(response.getData().getNextCursor()).isEqualTo(store3.getId());
+            assertThat(response.getData().getContents()).hasSize(2);
+            assertStoreInfoResponse(response.getData().getContents().get(0), store4);
+            assertStoreInfoResponse(response.getData().getContents().get(1), store3);
+        }
 
-        RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, null, null, 34, 124);
+        @Test
+        void 사용자가_작성한_가게조회_중간_페이지_조회시_다음_커서가_반환된다() throws Exception {
+            // given
+            Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
+            store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
 
-        // when
-        ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
+            Store store2 = StoreCreator.create(testUser.getId(), "가게2", 34, 124);
+            store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG)));
 
-        // then
-        assertThat(response.getData().getTotalElements()).isEqualTo(4);
-        assertThat(response.getData().getNextCursor()).isEqualTo(store3.getId());
-        assertThat(response.getData().getContents()).hasSize(2);
-        assertStoreInfoResponse(response.getData().getContents().get(0), store4);
-        assertStoreInfoResponse(response.getData().getContents().get(1), store3);
-    }
+            Store store3 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
+            store3.addMenus(Collections.singletonList(MenuCreator.create(store3, "메뉴3", "가격3", MenuCategoryType.BUNGEOPPANG)));
 
-    @DisplayName("GET /api/v2/stores/me 200 OK - 중간 페이지")
-    @Test
-    void 사용자가_작성한_가게조회_중간_페이지_조회시_다음_커서가_반환된다() throws Exception {
-        // given
-        Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
-        store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
+            Store store4 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
+            store4.addMenus(Collections.singletonList(MenuCreator.create(store4, "메뉴4", "가격4", MenuCategoryType.BUNGEOPPANG)));
 
-        Store store2 = StoreCreator.create(testUser.getId(), "가게2", 34, 124);
-        store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG)));
+            storeRepository.saveAll(Arrays.asList(store1, store2, store3, store4));
 
-        Store store3 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
-        store3.addMenus(Collections.singletonList(MenuCreator.create(store3, "메뉴3", "가격3", MenuCategoryType.BUNGEOPPANG)));
+            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store4.getId(), 4L, 34, 124);
 
-        Store store4 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
-        store4.addMenus(Collections.singletonList(MenuCreator.create(store4, "메뉴4", "가격4", MenuCategoryType.BUNGEOPPANG)));
+            // when
+            ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
 
-        storeRepository.saveAll(Arrays.asList(store1, store2, store3, store4));
+            // then
+            assertThat(response.getData().getTotalElements()).isEqualTo(4);
+            assertThat(response.getData().getNextCursor()).isEqualTo(store2.getId());
+            assertThat(response.getData().getContents()).hasSize(2);
+            assertStoreInfoResponse(response.getData().getContents().get(0), store3);
+            assertStoreInfoResponse(response.getData().getContents().get(1), store2);
+        }
 
-        RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store4.getId(), 4L, 34, 124);
+        @Test
+        void 사용자가_작성한_가게조회_중간_페이지_조회시_다음_커서가_반환된다_총개수가_캐싱되지_않으면_계산되서_반환() throws Exception {
+            // given
+            Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
+            store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
 
-        // when
-        ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
+            Store store2 = StoreCreator.create(testUser.getId(), "가게2", 34, 124);
+            store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG)));
 
-        // then
-        assertThat(response.getData().getTotalElements()).isEqualTo(4);
-        assertThat(response.getData().getNextCursor()).isEqualTo(store2.getId());
-        assertThat(response.getData().getContents()).hasSize(2);
-        assertStoreInfoResponse(response.getData().getContents().get(0), store3);
-        assertStoreInfoResponse(response.getData().getContents().get(1), store2);
-    }
+            Store store3 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
+            store3.addMenus(Collections.singletonList(MenuCreator.create(store3, "메뉴3", "가격3", MenuCategoryType.BUNGEOPPANG)));
 
-    @DisplayName("GET /api/v2/stores/me 200 OK - 중간 페이지 캐시 없는 경우")
-    @Test
-    void 사용자가_작성한_가게조회_중간_페이지_조회시_다음_커서가_반환된다_총개수가_캐싱되지_않으면_계산되서_반환() throws Exception {
-        // given
-        Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
-        store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
+            Store store4 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
+            store4.addMenus(Collections.singletonList(MenuCreator.create(store4, "메뉴4", "가격4", MenuCategoryType.BUNGEOPPANG)));
 
-        Store store2 = StoreCreator.create(testUser.getId(), "가게2", 34, 124);
-        store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG)));
+            storeRepository.saveAll(Arrays.asList(store1, store2, store3, store4));
 
-        Store store3 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
-        store3.addMenus(Collections.singletonList(MenuCreator.create(store3, "메뉴3", "가격3", MenuCategoryType.BUNGEOPPANG)));
+            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store4.getId(), null, 34, 124);
 
-        Store store4 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
-        store4.addMenus(Collections.singletonList(MenuCreator.create(store4, "메뉴4", "가격4", MenuCategoryType.BUNGEOPPANG)));
+            // when
+            ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
 
-        storeRepository.saveAll(Arrays.asList(store1, store2, store3, store4));
+            // then
+            assertThat(response.getData().getTotalElements()).isEqualTo(4);
+            assertThat(response.getData().getNextCursor()).isEqualTo(store2.getId());
+            assertThat(response.getData().getContents()).hasSize(2);
+            assertStoreInfoResponse(response.getData().getContents().get(0), store3);
+            assertStoreInfoResponse(response.getData().getContents().get(1), store2);
+        }
 
-        RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store4.getId(), null, 34, 124);
+        @Test
+        void 사용자가_작성한_가게조회_contents가_size_와_동일하면_다음_스크롤에_해당하는_가게들을_조회하고_없으면_마지막_페이지로_판단하고_커서가_null을_반환한다() throws Exception {
+            // given
+            Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
+            store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
 
-        // when
-        ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
+            Store store2 = StoreCreator.create(testUser.getId(), "가게2", 34, 124);
+            store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG)));
 
-        // then
-        assertThat(response.getData().getTotalElements()).isEqualTo(4);
-        assertThat(response.getData().getNextCursor()).isEqualTo(store2.getId());
-        assertThat(response.getData().getContents()).hasSize(2);
-        assertStoreInfoResponse(response.getData().getContents().get(0), store3);
-        assertStoreInfoResponse(response.getData().getContents().get(1), store2);
-    }
+            Store store3 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
+            store3.addMenus(Collections.singletonList(MenuCreator.create(store3, "메뉴3", "가격3", MenuCategoryType.BUNGEOPPANG)));
 
-    @DisplayName("GET /api/v2/stores/me 200 OK - 마지막 페이지")
-    @Test
-    void 사용자가_작성한_가게조회_contents가_size_와_동일하면_다음_스크롤에_해당하는_가게들을_조회하고_없으면_마지막_페이지로_판단하고_커서가_null을_반환한다() throws Exception {
-        // given
-        Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
-        store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
+            Store store4 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
+            store4.addMenus(Collections.singletonList(MenuCreator.create(store4, "메뉴4", "가격4", MenuCategoryType.BUNGEOPPANG)));
 
-        Store store2 = StoreCreator.create(testUser.getId(), "가게2", 34, 124);
-        store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG)));
+            storeRepository.saveAll(Arrays.asList(store1, store2, store3, store4));
 
-        Store store3 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
-        store3.addMenus(Collections.singletonList(MenuCreator.create(store3, "메뉴3", "가격3", MenuCategoryType.BUNGEOPPANG)));
+            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store3.getId(), null, 34, 124);
 
-        Store store4 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
-        store4.addMenus(Collections.singletonList(MenuCreator.create(store4, "메뉴4", "가격4", MenuCategoryType.BUNGEOPPANG)));
+            // when
+            ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
 
-        storeRepository.saveAll(Arrays.asList(store1, store2, store3, store4));
+            // then
+            assertThat(response.getData().getTotalElements()).isEqualTo(4);
+            assertThat(response.getData().getNextCursor()).isNull();
+            assertThat(response.getData().getContents()).hasSize(2);
+            assertStoreInfoResponse(response.getData().getContents().get(0), store2);
+            assertStoreInfoResponse(response.getData().getContents().get(1), store1);
+        }
 
-        RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store3.getId(), null, 34, 124);
+        @Test
+        void 사용자가_작성한_contents가_size보다_적으면_마지막_페이지로_판단하고_Cursor가_null로_반환된다() throws Exception {
+            // given
+            Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
+            store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
 
-        // when
-        ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
+            Store store2 = StoreCreator.create(testUser.getId(), "가게2", 34, 124);
+            store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG)));
 
-        // then
-        assertThat(response.getData().getTotalElements()).isEqualTo(4);
-        assertThat(response.getData().getNextCursor()).isNull();
-        assertThat(response.getData().getContents()).hasSize(2);
-        assertStoreInfoResponse(response.getData().getContents().get(0), store2);
-        assertStoreInfoResponse(response.getData().getContents().get(1), store1);
-    }
+            Store store3 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
+            store3.addMenus(Collections.singletonList(MenuCreator.create(store3, "메뉴3", "가격3", MenuCategoryType.BUNGEOPPANG)));
 
-    @DisplayName("GET /api/v2/stores/me 200 OK - 마지막 페이지")
-    @Test
-    void 사용자가_작성한_contents가_size보다_적으면_마지막_페이지로_판단하고_Cursor가_null로_반환된다() throws Exception {
-        // given
-        Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
-        store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
+            storeRepository.saveAll(Arrays.asList(store1, store2, store3));
 
-        Store store2 = StoreCreator.create(testUser.getId(), "가게2", 34, 124);
-        store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG)));
+            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store2.getId(), 3L, 34, 124);
 
-        Store store3 = StoreCreator.create(testUser.getId(), "가게3", 34, 124);
-        store3.addMenus(Collections.singletonList(MenuCreator.create(store3, "메뉴3", "가격3", MenuCategoryType.BUNGEOPPANG)));
+            // when
+            ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
 
-        storeRepository.saveAll(Arrays.asList(store1, store2, store3));
+            // then
+            assertThat(response.getData().getTotalElements()).isEqualTo(3);
+            assertThat(response.getData().getNextCursor()).isNull();
+            assertThat(response.getData().getContents()).hasSize(1);
+            assertStoreInfoResponse(response.getData().getContents().get(0), store1);
+        }
 
-        RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store2.getId(), 3L, 34, 124);
-
-        // when
-        ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
-
-        // then
-        assertThat(response.getData().getTotalElements()).isEqualTo(3);
-        assertThat(response.getData().getNextCursor()).isNull();
-        assertThat(response.getData().getContents()).hasSize(1);
-        assertStoreInfoResponse(response.getData().getContents().get(0), store1);
     }
 
     private void assertStoreInfoResponse(StoreInfoResponse response, Store store) {

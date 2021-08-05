@@ -8,10 +8,7 @@ import com.depromeet.threedollar.domain.domain.faq.Faq;
 import com.depromeet.threedollar.domain.domain.faq.FaqCategory;
 import com.depromeet.threedollar.domain.domain.faq.FaqCreator;
 import com.depromeet.threedollar.domain.domain.faq.FaqRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
@@ -38,37 +35,47 @@ class FaqControllerTest extends AbstractControllerTest {
         faqRepository.deleteAll();
     }
 
-    @DisplayName("GET /api/v2/faqs 200 OK")
-    @Test
-    void FAQ_리스트를_조회한다() throws Exception {
-        // given
-        Faq faq1 = FaqCreator.create("question1", "answer1", FaqCategory.CATEGORY);
-        Faq faq2 = FaqCreator.create("question2", "answer2", FaqCategory.BOARD);
-        faqRepository.saveAll(Arrays.asList(faq1, faq2));
+    @DisplayName("GET /api/v2/faqs")
+    @Nested
+    class FAQ_조회 {
 
-        // when
-        ApiResponse<List<FaqResponse>> response = faqMockApiCaller.retrieveAllFaqs(200);
+        @Test
+        void FAQ_리스트를_조회한다() throws Exception {
+            // given
+            Faq faq1 = FaqCreator.create("question1", "answer1", FaqCategory.CATEGORY);
+            Faq faq2 = FaqCreator.create("question2", "answer2", FaqCategory.BOARD);
+            faqRepository.saveAll(Arrays.asList(faq1, faq2));
 
-        // then
-        assertThat(response.getData()).hasSize(2);
-        assertFaqResponse(response.getData().get(0), faq2.getId(), faq2.getQuestion(), faq2.getAnswer(), faq2.getCategory());
-        assertFaqResponse(response.getData().get(1), faq1.getId(), faq1.getQuestion(), faq1.getAnswer(), faq1.getCategory());
+            // when
+            ApiResponse<List<FaqResponse>> response = faqMockApiCaller.retrieveAllFaqs(200);
+
+            // then
+            assertThat(response.getData()).hasSize(2);
+            assertFaqResponse(response.getData().get(0), faq2.getId(), faq2.getQuestion(), faq2.getAnswer(), faq2.getCategory());
+            assertFaqResponse(response.getData().get(1), faq1.getId(), faq1.getQuestion(), faq1.getAnswer(), faq1.getCategory());
+        }
+
     }
 
-    @DisplayName("GET /api/v2/faqs?category=BOARD 200 OK")
-    @Test
-    void 특정_카테고리의_FAQ_리스트를_조회한다() throws Exception {
-        // given
-        Faq faq1 = FaqCreator.create("question1", "answer1", FaqCategory.CATEGORY);
-        Faq faq2 = FaqCreator.create("question2", "answer2", FaqCategory.BOARD);
-        faqRepository.saveAll(Arrays.asList(faq1, faq2));
+    @DisplayName("GET /api/v2/faqs?category=BOARD")
+    @Nested
+    class FAQ_특정_카테고리_조회 {
 
-        // when
-        ApiResponse<List<FaqResponse>> response = faqMockApiCaller.retrieveAllFaqs(FaqCategory.CATEGORY, 200);
+        @Test
+        void 특정_카테고리의_FAQ_리스트를_조회한다() throws Exception {
+            // given
+            Faq faq1 = FaqCreator.create("question1", "answer1", FaqCategory.CATEGORY);
+            Faq faq2 = FaqCreator.create("question2", "answer2", FaqCategory.BOARD);
+            faqRepository.saveAll(Arrays.asList(faq1, faq2));
 
-        // then
-        assertThat(response.getData()).hasSize(1);
-        assertFaqResponse(response.getData().get(0), faq1.getId(), faq1.getQuestion(), faq1.getAnswer(), faq1.getCategory());
+            // when
+            ApiResponse<List<FaqResponse>> response = faqMockApiCaller.retrieveAllFaqs(FaqCategory.CATEGORY, 200);
+
+            // then
+            assertThat(response.getData()).hasSize(1);
+            assertFaqResponse(response.getData().get(0), faq1.getId(), faq1.getQuestion(), faq1.getAnswer(), faq1.getCategory());
+        }
+
     }
 
     private void assertFaqResponse(FaqResponse faqResponse, Long id, String question, String answer, FaqCategory category) {

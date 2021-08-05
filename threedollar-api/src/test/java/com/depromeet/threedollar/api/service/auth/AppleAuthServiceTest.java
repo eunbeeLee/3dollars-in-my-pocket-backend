@@ -9,6 +9,7 @@ import com.depromeet.threedollar.external.external.auth.apple.AppleTokenDecoder;
 import com.depromeet.threedollar.external.external.auth.apple.dto.response.IdTokenPayload;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,65 +42,80 @@ class AppleAuthServiceTest {
         userRepository.deleteAll();
     }
 
-    @Test
-    void 애플_로그인시_가입한_유저면_멤버의_PK_가_반환된다() {
-        // given
-        User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
-        userRepository.save(user);
+    @Nested
+    class 애플_로그인 {
 
-        LoginRequest request = LoginRequest.testInstance("token", UserSocialType.APPLE);
+        @Test
+        void 애플_로그인시_가입한_유저면_멤버의_PK_가_반환된다() {
+            // given
+            User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
+            userRepository.save(user);
 
-        // when
-        Long userId = authService.login(request);
+            LoginRequest request = LoginRequest.testInstance("token", UserSocialType.APPLE);
 
-        // then
-        assertThat(userId).isEqualTo(user.getId());
+            // when
+            Long userId = authService.login(request);
+
+            // then
+            assertThat(userId).isEqualTo(user.getId());
+        }
+
+        @Test
+        void 애플_로그인시_가입한_유저가_아니면_NOT_FOUND_EXCEPTION() {
+            // given
+            LoginRequest request = LoginRequest.testInstance("token", UserSocialType.APPLE);
+
+            // when & then
+            assertThatThrownBy(() -> authService.login(request)).isInstanceOf(NotFoundException.class);
+        }
+
     }
 
-    @Test
-    void 애플_로그인시_가입한_유저가_아니면_NOT_FOUND_EXCEPTION() {
-        // given
-        LoginRequest request = LoginRequest.testInstance("token", UserSocialType.APPLE);
+    @Nested
+    class 애플_회원가입 {
 
-        // when & then
-        assertThatThrownBy(() -> authService.login(request)).isInstanceOf(NotFoundException.class);
+        @Test
+        void 새로운_유저가_애플로_회원가입시_새로운_유저정보가_저장된다() {
+            // given
+            SignUpRequest request = SignUpRequest.testInstance("token", "가슴속 삼천원", UserSocialType.APPLE);
+
+            authService.signUp(request);
+
+            // then
+            List<User> users = userRepository.findAll();
+            assertThat(users).hasSize(1);
+            assertUser(users.get(0), socialId, request.getName(), request.getSocialType());
+        }
+
     }
 
-    @Test
-    void 새로운_유저가_애플로_회원가입시_새로운_유저정보가_저장된다() {
-        // given
-        SignUpRequest request = SignUpRequest.testInstance("token", "가슴속 삼천원", UserSocialType.APPLE);
+    @Nested
+    class 애플_회원탈퇴 {
 
-        authService.signUp(request);
+        @Test
+        void 애플로_가입한_유저가_회원탈퇴시_해당하는_유저정보가_삭제된다() {
+            // given
+            User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
+            userRepository.save(user);
 
-        // then
-        List<User> users = userRepository.findAll();
-        assertThat(users).hasSize(1);
-        assertUser(users.get(0), socialId, request.getName(), request.getSocialType());
-    }
+            // when
+            authService.signOut(user.getId());
 
-    @Test
-    void 애플로_가입한_유저가_회원탈퇴시_해당하는_유저정보가_삭제된다() {
-        // given
-        User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
-        userRepository.save(user);
+            // then
+            List<User> users = userRepository.findAll();
+            assertThat(users).isEmpty();
+        }
 
-        // when
-        authService.signOut(user.getId());
+        @Test
+        void 카카오로_가입한_유저가_애플_회원탈퇴_요청시_NOT_FOUND_EXCEPTION() {
+            // given
+            User user = UserCreator.create(socialId, UserSocialType.KAKAO, "닉네임");
+            userRepository.save(user);
 
-        // then
-        List<User> users = userRepository.findAll();
-        assertThat(users).isEmpty();
-    }
+            // when & then
+            assertThatThrownBy(() -> authService.signOut(user.getId())).isInstanceOf(NotFoundException.class);
+        }
 
-    @Test
-    void 카카오로_가입한_유저가_애플_회원탈퇴_요청시_NOT_FOUND_EXCEPTION() {
-        // given
-        User user = UserCreator.create(socialId, UserSocialType.KAKAO, "닉네임");
-        userRepository.save(user);
-
-        // when & then
-        assertThatThrownBy(() -> authService.signOut(user.getId())).isInstanceOf(NotFoundException.class);
     }
 
     private static class StubAppleTokenDecoder implements AppleTokenDecoder {

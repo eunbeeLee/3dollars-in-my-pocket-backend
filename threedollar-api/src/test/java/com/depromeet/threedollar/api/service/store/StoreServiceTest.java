@@ -13,7 +13,9 @@ import com.depromeet.threedollar.domain.domain.menu.MenuCreator;
 import com.depromeet.threedollar.domain.domain.menu.MenuRepository;
 import com.depromeet.threedollar.domain.domain.store.*;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -54,334 +56,345 @@ class StoreServiceTest extends UserSetUpTest {
         storeRepository.deleteAllInBatch();
     }
 
-    @Test
-    void 새로운_가게를_등록하면_새로운_가게_데이터가_DB에_추가된다() {
-        // given
-        Double latitude = 34.0;
-        Double longitude = 130.0;
+    @Nested
+    class 가게_정보_등록 {
 
-        String storeName = "붕어빵";
-        StoreType storeType = StoreType.STORE;
-        Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);
-        Set<PaymentMethodType> paymentMethods = Set.of(PaymentMethodType.CARD);
+        @Test
+        void 새로운_가게를_등록하면_새로운_가게_데이터가_DB에_추가된다() {
+            // given
+            Double latitude = 34.0;
+            Double longitude = 130.0;
 
-        String menuName = "메뉴 이름";
-        String price = "10000";
-        MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
-        List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
+            String storeName = "붕어빵";
+            StoreType storeType = StoreType.STORE;
+            Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);
+            Set<PaymentMethodType> paymentMethods = Set.of(PaymentMethodType.CARD);
 
-        AddStoreRequest request = AddStoreRequest.testBuilder()
-            .latitude(latitude)
-            .longitude(longitude)
-            .storeName(storeName)
-            .storeType(storeType)
-            .appearanceDays(appearanceDays)
-            .paymentMethods(paymentMethods)
-            .menus(menu)
-            .build();
+            String menuName = "메뉴 이름";
+            String price = "10000";
+            MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
+            List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
 
-        // when
-        storeService.addStore(request, userId);
+            AddStoreRequest request = AddStoreRequest.testBuilder()
+                .latitude(latitude)
+                .longitude(longitude)
+                .storeName(storeName)
+                .storeType(storeType)
+                .appearanceDays(appearanceDays)
+                .paymentMethods(paymentMethods)
+                .menus(menu)
+                .build();
 
-        // then
-        List<Store> stores = storeRepository.findAll();
-        assertThat(stores).hasSize(1);
-        assertStore(stores.get(0), latitude, longitude, storeName, storeType, userId);
+            // when
+            storeService.addStore(request, userId);
+
+            // then
+            List<Store> stores = storeRepository.findAll();
+            assertThat(stores).hasSize(1);
+            assertStore(stores.get(0), latitude, longitude, storeName, storeType, userId);
+        }
+
+        @Test
+        void 새로운_가게를_등록하면_게시일_테이블에_새로운_게시일_정보도_추가된다() {
+            // given
+            Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY, DayOfTheWeek.WEDNESDAY);
+
+            AddStoreRequest request = AddStoreRequest.testBuilder()
+                .latitude(34.0)
+                .longitude(130.0)
+                .storeName("붕어빵")
+                .storeType(StoreType.STORE)
+                .appearanceDays(appearanceDays)
+                .paymentMethods(Collections.emptySet())
+                .menus(Collections.emptyList())
+                .build();
+
+            // when
+            storeService.addStore(request, userId);
+
+            // then
+            List<AppearanceDay> appearanceDayList = appearanceDayRepository.findAll();
+            assertThat(appearanceDayList).hasSize(2);
+            assertThat(getDayOfTheWeeks(appearanceDayList)).containsAll(Arrays.asList(DayOfTheWeek.TUESDAY, DayOfTheWeek.WEDNESDAY));
+        }
+
+        @Test
+        void 새로운_가게를_등록하면_결제방법_테이블에_결제_방법도_추가된다() {
+            // given
+            Set<PaymentMethodType> paymentMethods = Set.of(PaymentMethodType.CARD, PaymentMethodType.CASH);
+
+            AddStoreRequest request = AddStoreRequest.testBuilder()
+                .latitude(34.0)
+                .longitude(130.0)
+                .storeName("붕어빵")
+                .storeType(StoreType.STORE)
+                .appearanceDays(Collections.emptySet())
+                .paymentMethods(paymentMethods)
+                .menus(Collections.emptyList())
+                .build();
+
+            // when
+            storeService.addStore(request, userId);
+
+            // then
+            List<PaymentMethod> paymentMethodsList = paymentMethodRepository.findAll();
+            assertThat(paymentMethodsList).hasSize(2);
+            assertThat(getPaymentMethodTypes(paymentMethodsList)).containsAll(Arrays.asList(PaymentMethodType.CARD, PaymentMethodType.CASH));
+        }
+
+        @Test
+        void 새로운_가게를_등록하면_메뉴_테이블에_메뉴들도_함께_추가된다() {
+            // given
+            String menuName = "메뉴 이름";
+            String price = "10000";
+            MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
+            List<MenuRequest> menus = Collections.singletonList(MenuRequest.of(menuName, price, type));
+
+            AddStoreRequest request = AddStoreRequest.testBuilder()
+                .latitude(34.0)
+                .longitude(130.0)
+                .storeName("붕어빵")
+                .storeType(StoreType.STORE)
+                .appearanceDays(Collections.emptySet())
+                .paymentMethods(Collections.emptySet())
+                .menus(menus)
+                .build();
+
+            // when
+            storeService.addStore(request, userId);
+
+            // then
+            List<Menu> menuList = menuRepository.findAll();
+            assertThat(menuList).hasSize(1);
+            assertMenu(menuList.get(0), menuName, price, type);
+        }
+
     }
 
-    @Test
-    void 새로운_가게를_등록하면_게시일_테이블에_새로운_게시일_정보도_추가된다() {
-        // given
-        Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY, DayOfTheWeek.WEDNESDAY);
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class 가게_정보_수정 {
 
-        AddStoreRequest request = AddStoreRequest.testBuilder()
-            .latitude(34.0)
-            .longitude(130.0)
-            .storeName("붕어빵")
-            .storeType(StoreType.STORE)
-            .appearanceDays(appearanceDays)
-            .paymentMethods(Collections.emptySet())
-            .menus(Collections.emptyList())
-            .build();
+        @Test
+        void 가게의_정보를_수정하며_기존_가게정보_데이터들이_수정된다() {
+            // given
+            Store store = StoreCreator.create(userId, "storeName");
+            store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
+            storeRepository.save(store);
 
-        // when
-        storeService.addStore(request, userId);
+            Double latitude = 34.0;
+            Double longitude = 130.0;
+            String storeName = "붕어빵";
+            StoreType storeType = StoreType.STORE;
+            Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);
+            Set<PaymentMethodType> paymentMethods = Set.of(PaymentMethodType.CARD);
 
-        // then
-        List<AppearanceDay> appearanceDayList = appearanceDayRepository.findAll();
-        assertThat(appearanceDayList).hasSize(2);
-        assertThat(getDayOfTheWeeks(appearanceDayList)).containsAll(Arrays.asList(DayOfTheWeek.TUESDAY, DayOfTheWeek.WEDNESDAY));
-    }
+            String menuName = "메뉴 이름";
+            String price = "10000";
+            MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
+            List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
 
-    @Test
-    void 새로운_가게를_등록하면_결제방법_테이블에_결제_방법도_추가된다() {
-        // given
-        Set<PaymentMethodType> paymentMethods = Set.of(PaymentMethodType.CARD, PaymentMethodType.CASH);
+            UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
+                .latitude(latitude)
+                .longitude(longitude)
+                .storeName(storeName)
+                .storeType(storeType)
+                .appearanceDays(appearanceDays)
+                .paymentMethods(paymentMethods)
+                .menus(menu)
+                .build();
 
-        AddStoreRequest request = AddStoreRequest.testBuilder()
-            .latitude(34.0)
-            .longitude(130.0)
-            .storeName("붕어빵")
-            .storeType(StoreType.STORE)
-            .appearanceDays(Collections.emptySet())
-            .paymentMethods(paymentMethods)
-            .menus(Collections.emptyList())
-            .build();
+            // when
+            storeService.updateStore(store.getId(), request, userId);
 
-        // when
-        storeService.addStore(request, userId);
+            // then
+            List<Store> stores = storeRepository.findAll();
+            assertThat(stores).hasSize(1);
+            assertStore(stores.get(0), latitude, longitude, storeName, storeType, userId);
 
-        // then
-        List<PaymentMethod> paymentMethodsList = paymentMethodRepository.findAll();
-        assertThat(paymentMethodsList).hasSize(2);
-        assertThat(getPaymentMethodTypes(paymentMethodsList)).containsAll(Arrays.asList(PaymentMethodType.CARD, PaymentMethodType.CASH));
-    }
+            List<AppearanceDay> appearanceDayList = appearanceDayRepository.findAll();
+            assertThat(appearanceDayList).hasSize(1);
+            assertAppearanceDay(appearanceDayList.get(0), DayOfTheWeek.TUESDAY, stores.get(0).getId());
 
-    @Test
-    void 새로운_가게를_등록하면_메뉴_테이블에_메뉴들도_함께_추가된다() {
-        // given
-        String menuName = "메뉴 이름";
-        String price = "10000";
-        MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
-        List<MenuRequest> menus = Collections.singletonList(MenuRequest.of(menuName, price, type));
+            List<PaymentMethod> paymentMethodsList = paymentMethodRepository.findAll();
+            assertThat(paymentMethodsList).hasSize(1);
+            assertPaymentMethod(paymentMethodsList.get(0), PaymentMethodType.CARD, stores.get(0).getId());
 
-        AddStoreRequest request = AddStoreRequest.testBuilder()
-            .latitude(34.0)
-            .longitude(130.0)
-            .storeName("붕어빵")
-            .storeType(StoreType.STORE)
-            .appearanceDays(Collections.emptySet())
-            .paymentMethods(Collections.emptySet())
-            .menus(menus)
-            .build();
+            List<Menu> menus = menuRepository.findAll();
+            assertThat(menus).hasSize(1);
+            assertMenu(menus.get(0), menuName, price, type);
+        }
 
-        // when
-        storeService.addStore(request, userId);
+        @Test
+        void 사용자가_작성하지_않은_가게_정보도_수정할_수있다() {
+            // given
+            Store store = StoreCreator.create(100L, "storeName");
+            store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
+            storeRepository.save(store);
 
-        // then
-        List<Menu> menuList = menuRepository.findAll();
-        assertThat(menuList).hasSize(1);
-        assertMenu(menuList.get(0), menuName, price, type);
-    }
+            Double latitude = 34.0;
+            Double longitude = 130.0;
+            String storeName = "붕어빵";
+            StoreType storeType = StoreType.STORE;
+            Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);
+            Set<PaymentMethodType> paymentMethods = Set.of(PaymentMethodType.CARD);
 
-    @Test
-    void 가게의_정보를_수정하며_기존_가게정보_데이터들이_수정된다() {
-        // given
-        Store store = StoreCreator.create(userId, "storeName");
-        store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
-        storeRepository.save(store);
+            String menuName = "메뉴 이름";
+            String price = "10000";
+            MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
+            List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
 
-        Double latitude = 34.0;
-        Double longitude = 130.0;
-        String storeName = "붕어빵";
-        StoreType storeType = StoreType.STORE;
-        Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);
-        Set<PaymentMethodType> paymentMethods = Set.of(PaymentMethodType.CARD);
+            UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
+                .latitude(latitude)
+                .longitude(longitude)
+                .storeName(storeName)
+                .storeType(storeType)
+                .appearanceDays(appearanceDays)
+                .paymentMethods(paymentMethods)
+                .menus(menu)
+                .build();
 
-        String menuName = "메뉴 이름";
-        String price = "10000";
-        MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
-        List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
+            // when
+            storeService.updateStore(store.getId(), request, userId);
 
-        UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
-            .latitude(latitude)
-            .longitude(longitude)
-            .storeName(storeName)
-            .storeType(storeType)
-            .appearanceDays(appearanceDays)
-            .paymentMethods(paymentMethods)
-            .menus(menu)
-            .build();
+            // then
+            List<Store> stores = storeRepository.findAll();
+            assertThat(stores).hasSize(1);
+            assertStore(stores.get(0), latitude, longitude, storeName, storeType, userId);
 
-        // when
-        storeService.updateStore(store.getId(), request, userId);
+            List<AppearanceDay> appearanceDayList = appearanceDayRepository.findAll();
+            assertThat(appearanceDayList).hasSize(1);
+            assertAppearanceDay(appearanceDayList.get(0), DayOfTheWeek.TUESDAY, stores.get(0).getId());
 
-        // then
-        List<Store> stores = storeRepository.findAll();
-        assertThat(stores).hasSize(1);
-        assertStore(stores.get(0), latitude, longitude, storeName, storeType, userId);
+            List<PaymentMethod> paymentMethodsList = paymentMethodRepository.findAll();
+            assertThat(paymentMethodsList).hasSize(1);
+            assertPaymentMethod(paymentMethodsList.get(0), PaymentMethodType.CARD, stores.get(0).getId());
 
-        List<AppearanceDay> appearanceDayList = appearanceDayRepository.findAll();
-        assertThat(appearanceDayList).hasSize(1);
-        assertAppearanceDay(appearanceDayList.get(0), DayOfTheWeek.TUESDAY, stores.get(0).getId());
+            List<Menu> menus = menuRepository.findAll();
+            assertThat(menus).hasSize(1);
+            assertMenu(menus.get(0), menuName, price, type);
+        }
 
-        List<PaymentMethod> paymentMethodsList = paymentMethodRepository.findAll();
-        assertThat(paymentMethodsList).hasSize(1);
-        assertPaymentMethod(paymentMethodsList.get(0), PaymentMethodType.CARD, stores.get(0).getId());
+        @MethodSource("source_update_payments")
+        @ParameterizedTest
+        void 가게의_결제방법을_수정한다(Set<PaymentMethodType> paymentMethodTypes) {
+            // given
+            Store store = StoreCreator.create(userId, "storeName");
+            store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
+            store.addPaymentMethods(Set.of(PaymentMethodType.CARD));
+            storeRepository.save(store);
 
-        List<Menu> menus = menuRepository.findAll();
-        assertThat(menus).hasSize(1);
-        assertMenu(menus.get(0), menuName, price, type);
-    }
+            UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
+                .latitude(34.0)
+                .longitude(130.0)
+                .storeName("붕어빵")
+                .storeType(StoreType.STORE)
+                .appearanceDays(Collections.emptySet())
+                .paymentMethods(paymentMethodTypes)
+                .menus(Collections.emptyList())
+                .build();
 
-    @Test
-    void 사용자가_작성하지_않은_가게_정보도_수정할_수있다() {
-        // given
-        Store store = StoreCreator.create(100L, "storeName");
-        store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
-        storeRepository.save(store);
+            // when
+            storeService.updateStore(store.getId(), request, userId);
 
-        Double latitude = 34.0;
-        Double longitude = 130.0;
-        String storeName = "붕어빵";
-        StoreType storeType = StoreType.STORE;
-        Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);
-        Set<PaymentMethodType> paymentMethods = Set.of(PaymentMethodType.CARD);
+            // then
+            List<PaymentMethod> paymentMethodsList = paymentMethodRepository.findAll();
+            assertThat(paymentMethodsList).hasSize(paymentMethodTypes.size());
+            assertThat(getPaymentMethodTypes(paymentMethodsList)).containsAll(paymentMethodTypes);
+        }
 
-        String menuName = "메뉴 이름";
-        String price = "10000";
-        MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
-        List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
+        private Stream<Arguments> source_update_payments() {
+            return Stream.of(
+                Arguments.of(Set.of(PaymentMethodType.CARD, PaymentMethodType.CASH)), // 거래 방식을 추가하는 경우.
+                Arguments.of(Collections.emptySet()), // 거래 방식을 없애는 경우
+                Arguments.of(Set.of(PaymentMethodType.CARD)) // 유지하는 경우
+            );
+        }
 
-        UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
-            .latitude(latitude)
-            .longitude(longitude)
-            .storeName(storeName)
-            .storeType(storeType)
-            .appearanceDays(appearanceDays)
-            .paymentMethods(paymentMethods)
-            .menus(menu)
-            .build();
+        @MethodSource("source_update_appearance_day")
+        @ParameterizedTest
+        void 가게의_개시일을_수정한다(Set<DayOfTheWeek> appearanceDays) {
+            // given
+            Store store = StoreCreator.create(userId, "storeName");
+            store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
+            store.addAppearanceDays(Set.of(DayOfTheWeek.TUESDAY, DayOfTheWeek.WEDNESDAY));
+            storeRepository.save(store);
 
-        // when
-        storeService.updateStore(store.getId(), request, userId);
+            UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
+                .latitude(34.0)
+                .longitude(130.0)
+                .storeName("붕어빵")
+                .storeType(StoreType.STORE)
+                .appearanceDays(appearanceDays)
+                .paymentMethods(Collections.emptySet())
+                .menus(Collections.emptyList())
+                .build();
 
-        // then
-        List<Store> stores = storeRepository.findAll();
-        assertThat(stores).hasSize(1);
-        assertStore(stores.get(0), latitude, longitude, storeName, storeType, userId);
+            // when
+            storeService.updateStore(store.getId(), request, userId);
 
-        List<AppearanceDay> appearanceDayList = appearanceDayRepository.findAll();
-        assertThat(appearanceDayList).hasSize(1);
-        assertAppearanceDay(appearanceDayList.get(0), DayOfTheWeek.TUESDAY, stores.get(0).getId());
+            // then
+            List<AppearanceDay> appearanceDayList = appearanceDayRepository.findAll();
+            assertThat(appearanceDayList).hasSize(appearanceDays.size());
+            assertThat(getDayOfTheWeeks(appearanceDayList)).containsAll(appearanceDays);
+        }
 
-        List<PaymentMethod> paymentMethodsList = paymentMethodRepository.findAll();
-        assertThat(paymentMethodsList).hasSize(1);
-        assertPaymentMethod(paymentMethodsList.get(0), PaymentMethodType.CARD, stores.get(0).getId());
+        private Stream<Arguments> source_update_appearance_day() {
+            return Stream.of(
+                Arguments.of(Set.of(DayOfTheWeek.MONDAY, DayOfTheWeek.TUESDAY, DayOfTheWeek.WEDNESDAY)), // 거래 방식을 추가하는 경우.
+                Arguments.of(Set.of(DayOfTheWeek.TUESDAY)), // 거래 방식을 없애는 경우
+                Arguments.of(Set.of(DayOfTheWeek.WEDNESDAY, DayOfTheWeek.TUESDAY)) // 유지하는 경우
+            );
+        }
 
-        List<Menu> menus = menuRepository.findAll();
-        assertThat(menus).hasSize(1);
-        assertMenu(menus.get(0), menuName, price, type);
-    }
+        @Test
+        void 가게의_메뉴를_수정한다() {
+            // given
+            Store store = StoreCreator.create(userId, "storeName");
+            store.addMenus(Collections.singletonList(Menu.of(store, "이름", "가격", MenuCategoryType.BUNGEOPPANG)));
+            storeRepository.save(store);
 
-    @MethodSource("source_update_payments")
-    @ParameterizedTest
-    void 가게의_결제방법을_수정한다(Set<PaymentMethodType> paymentMethodTypes) {
-        // given
-        Store store = StoreCreator.create(userId, "storeName");
-        store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
-        store.addPaymentMethods(Set.of(PaymentMethodType.CARD));
-        storeRepository.save(store);
+            String menuName = "메뉴 이름";
+            String price = "10000";
+            MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
+            List<MenuRequest> menus = Collections.singletonList(MenuRequest.of(menuName, price, type));
 
-        UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
-            .latitude(34.0)
-            .longitude(130.0)
-            .storeName("붕어빵")
-            .storeType(StoreType.STORE)
-            .appearanceDays(Collections.emptySet())
-            .paymentMethods(paymentMethodTypes)
-            .menus(Collections.emptyList())
-            .build();
+            UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
+                .latitude(34.0)
+                .longitude(130.0)
+                .storeName("붕어빵")
+                .storeType(StoreType.STORE)
+                .appearanceDays(Collections.emptySet())
+                .paymentMethods(Collections.emptySet())
+                .menus(menus)
+                .build();
 
-        // when
-        storeService.updateStore(store.getId(), request, userId);
+            // when
+            storeService.updateStore(store.getId(), request, userId);
 
-        // then
-        List<PaymentMethod> paymentMethodsList = paymentMethodRepository.findAll();
-        assertThat(paymentMethodsList).hasSize(paymentMethodTypes.size());
-        assertThat(getPaymentMethodTypes(paymentMethodsList)).containsAll(paymentMethodTypes);
-    }
+            // then
+            List<Menu> findMenus = menuRepository.findAll();
+            assertThat(findMenus).hasSize(1);
+            assertMenu(findMenus.get(0), store.getId(), menuName, price, type);
+        }
 
-    private static Stream<Arguments> source_update_payments() {
-        return Stream.of(
-            Arguments.of(Set.of(PaymentMethodType.CARD, PaymentMethodType.CASH)), // 거래 방식을 추가하는 경우.
-            Arguments.of(Collections.emptySet()), // 거래 방식을 없애는 경우
-            Arguments.of(Set.of(PaymentMethodType.CARD)) // 유지하는 경우
-        );
-    }
+        @Test
+        void 가게의_정보를_수정할떄_해당하는_가게가_존재하지_않으면_NOT_FOUND_EXCEPTION() {
+            // given
+            UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
+                .latitude(34.0)
+                .longitude(130.0)
+                .storeName("붕어빵")
+                .storeType(StoreType.STORE)
+                .appearanceDays(Set.of(DayOfTheWeek.TUESDAY))
+                .paymentMethods(Set.of(PaymentMethodType.CARD))
+                .menus(Collections.singletonList(MenuRequest.of("메뉴 이름", "메뉴 가격", MenuCategoryType.BUNGEOPPANG)))
+                .build();
 
-    @MethodSource("source_update_appearance_day")
-    @ParameterizedTest
-    void 가게의_개시일을_수정한다(Set<DayOfTheWeek> appearanceDays) {
-        // given
-        Store store = StoreCreator.create(userId, "storeName");
-        store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
-        store.addAppearanceDays(Set.of(DayOfTheWeek.TUESDAY, DayOfTheWeek.WEDNESDAY));
-        storeRepository.save(store);
+            // when & then
+            assertThatThrownBy(() -> storeService.updateStore(999L, request, userId)).isInstanceOf(NotFoundException.class);
+        }
 
-        UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
-            .latitude(34.0)
-            .longitude(130.0)
-            .storeName("붕어빵")
-            .storeType(StoreType.STORE)
-            .appearanceDays(appearanceDays)
-            .paymentMethods(Collections.emptySet())
-            .menus(Collections.emptyList())
-            .build();
-
-        // when
-        storeService.updateStore(store.getId(), request, userId);
-
-        // then
-        List<AppearanceDay> appearanceDayList = appearanceDayRepository.findAll();
-        assertThat(appearanceDayList).hasSize(appearanceDays.size());
-        assertThat(getDayOfTheWeeks(appearanceDayList)).containsAll(appearanceDays);
-    }
-
-    private static Stream<Arguments> source_update_appearance_day() {
-        return Stream.of(
-            Arguments.of(Set.of(DayOfTheWeek.MONDAY, DayOfTheWeek.TUESDAY, DayOfTheWeek.WEDNESDAY)), // 거래 방식을 추가하는 경우.
-            Arguments.of(Set.of(DayOfTheWeek.TUESDAY)), // 거래 방식을 없애는 경우
-            Arguments.of(Set.of(DayOfTheWeek.WEDNESDAY, DayOfTheWeek.TUESDAY)) // 유지하는 경우
-        );
-    }
-
-    @Test
-    void 가게의_메뉴를_수정한다() {
-        // given
-        Store store = StoreCreator.create(userId, "storeName");
-        store.addMenus(Collections.singletonList(Menu.of(store, "이름", "가격", MenuCategoryType.BUNGEOPPANG)));
-        storeRepository.save(store);
-
-        String menuName = "메뉴 이름";
-        String price = "10000";
-        MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
-        List<MenuRequest> menus = Collections.singletonList(MenuRequest.of(menuName, price, type));
-
-        UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
-            .latitude(34.0)
-            .longitude(130.0)
-            .storeName("붕어빵")
-            .storeType(StoreType.STORE)
-            .appearanceDays(Collections.emptySet())
-            .paymentMethods(Collections.emptySet())
-            .menus(menus)
-            .build();
-
-        // when
-        storeService.updateStore(store.getId(), request, userId);
-
-        // then
-        List<Menu> findMenus = menuRepository.findAll();
-        assertThat(findMenus).hasSize(1);
-        assertMenu(findMenus.get(0), store.getId(), menuName, price, type);
-    }
-
-    @Test
-    void 가게의_정보를_수정할떄_해당하는_가게가_존재하지_않으면_NOT_FOUND_EXCEPTION() {
-        // given
-        UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
-            .latitude(34.0)
-            .longitude(130.0)
-            .storeName("붕어빵")
-            .storeType(StoreType.STORE)
-            .appearanceDays(Set.of(DayOfTheWeek.TUESDAY))
-            .paymentMethods(Set.of(PaymentMethodType.CARD))
-            .menus(Collections.singletonList(MenuRequest.of("메뉴 이름", "메뉴 가격", MenuCategoryType.BUNGEOPPANG)))
-            .build();
-
-        // when & then
-        assertThatThrownBy(() -> storeService.updateStore(999L, request, userId)).isInstanceOf(NotFoundException.class);
     }
 
     private List<DayOfTheWeek> getDayOfTheWeeks(List<AppearanceDay> appearanceDays) {

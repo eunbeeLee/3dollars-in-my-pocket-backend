@@ -6,6 +6,7 @@ import com.depromeet.threedollar.common.exception.ValidationException;
 import com.depromeet.threedollar.common.utils.type.ImageType;
 import com.depromeet.threedollar.external.external.s3.S3Service;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
@@ -26,41 +27,46 @@ class S3FileUploadServiceTest {
         s3FileUploadService = new S3FileUploadService(new StubS3Service());
     }
 
-    @Test
-    void 파일이_정상적으로_업로드되면_업로드된_파일명이_반환된다() {
-        // given
-        MultipartFile multipartFile = new MockMultipartFile("fileName.jpeg", "fileName.jpeg", "image/jpeg", new byte[]{});
+    @Nested
+    class 이미지_파일_업로드 {
 
-        ImageType type = ImageType.STORE;
-        FileUploadRequest request = FileUploadRequest.of(type);
+        @Test
+        void 파일이_정상적으로_업로드되면_업로드된_파일명이_반환된다() {
+            // given
+            MultipartFile multipartFile = new MockMultipartFile("fileName.jpeg", "fileName.jpeg", "image/jpeg", new byte[]{});
 
-        // when
-        String result = s3FileUploadService.uploadImage(request, multipartFile);
+            ImageType type = ImageType.STORE;
+            FileUploadRequest request = FileUploadRequest.of(type);
 
-        // then
-        assertThat(result.endsWith(".jpeg")).isTrue();
-    }
+            // when
+            String result = s3FileUploadService.uploadImage(request, multipartFile);
 
-    @Test
-    void 파일을_업로드시_잘못된_파일명인경우_Validation_Exception() {
-        // given
-        MultipartFile multipartFile = new MockMultipartFile("fileName.jpeg", "fileName", "image/jpeg", new byte[]{});
+            // then
+            assertThat(result.endsWith(".jpeg")).isTrue();
+        }
 
-        FileUploadRequest request = FileUploadRequest.of(ImageType.STORE);
+        @Test
+        void 파일을_업로드시_잘못된_파일명인경우_Validation_Exception() {
+            // given
+            MultipartFile multipartFile = new MockMultipartFile("fileName.jpeg", "fileName", "image/jpeg", new byte[]{});
 
-        // when & then
-        assertThatThrownBy(() -> s3FileUploadService.uploadImage(request, multipartFile)).isInstanceOf(ValidationException.class);
-    }
+            FileUploadRequest request = FileUploadRequest.of(ImageType.STORE);
 
-    @Test
-    void 파일을_업로드시_잘못된_ContentType인경우_Validation_Exception() {
-        // given
-        MultipartFile multipartFile = new MockMultipartFile("fileName.jpeg", "fileName.jpeg", "wrong type", new byte[]{});
+            // when & then
+            assertThatThrownBy(() -> s3FileUploadService.uploadImage(request, multipartFile)).isInstanceOf(ValidationException.class);
+        }
 
-        FileUploadRequest request = FileUploadRequest.of(ImageType.STORE);
+        @Test
+        void 파일을_업로드시_잘못된_ContentType인경우_Validation_Exception() {
+            // given
+            MultipartFile multipartFile = new MockMultipartFile("fileName.jpeg", "fileName.jpeg", "wrong type", new byte[]{});
 
-        // when & then
-        assertThatThrownBy(() -> s3FileUploadService.uploadImage(request, multipartFile)).isInstanceOf(ValidationException.class);
+            FileUploadRequest request = FileUploadRequest.of(ImageType.STORE);
+
+            // when & then
+            assertThatThrownBy(() -> s3FileUploadService.uploadImage(request, multipartFile)).isInstanceOf(ValidationException.class);
+        }
+        
     }
 
     private static class StubS3Service implements S3Service {

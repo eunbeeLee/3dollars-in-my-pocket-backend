@@ -12,6 +12,7 @@ import com.depromeet.threedollar.external.external.auth.kakao.KaKaoApiCaller;
 import com.depromeet.threedollar.external.external.auth.kakao.dto.response.KaKaoProfileResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -44,73 +45,90 @@ class KaKaoAuthServiceTest {
         userRepository.deleteAll();
     }
 
-    @Test
-    void 카카오_로그인_요청시_회원이면_멤버의_식별키가_반환된다() {
-        // given
-        User user = UserCreator.create(socialId, UserSocialType.KAKAO, "닉네임");
-        userRepository.save(user);
+    @Nested
+    class 카카오_로그인 {
 
-        LoginRequest request = LoginRequest.testInstance("token", UserSocialType.KAKAO);
+        @Test
+        void 카카오_로그인_요청시_회원이면_멤버의_식별키가_반환된다() {
+            // given
+            User user = UserCreator.create(socialId, UserSocialType.KAKAO, "닉네임");
+            userRepository.save(user);
 
-        // when
-        Long userId = authService.login(request);
+            LoginRequest request = LoginRequest.testInstance("token", UserSocialType.KAKAO);
 
-        // then
-        assertThat(userId).isEqualTo(user.getId());
+            // when
+            Long userId = authService.login(request);
+
+            // then
+            assertThat(userId).isEqualTo(user.getId());
+        }
+
+        @Test
+        void 카카오_로그인시_가입한_유저가_아니면_NOT_FOUND_EXCEPTION() {
+            // given
+            LoginRequest request = LoginRequest.testInstance("token", UserSocialType.KAKAO);
+
+            // when & then
+            assertThatThrownBy(() -> authService.login(request)).isInstanceOf(NotFoundException.class);
+        }
+
     }
 
-    @Test
-    void 카카오_로그인시_가입한_유저가_아니면_NOT_FOUND_EXCEPTION() {
-        // given
-        LoginRequest request = LoginRequest.testInstance("token", UserSocialType.KAKAO);
+    @Nested
+    class 카카오_회원가입 {
 
-        // when & then
-        assertThatThrownBy(() -> authService.login(request)).isInstanceOf(NotFoundException.class);
+        @Test
+        void 카카오로_회원가입시_새로운_유저정보가_저장된다() {
+            // given
+            SignUpRequest request = SignUpRequest.testInstance("token", "가슴속 삼천원", UserSocialType.KAKAO);
+
+            // when
+            authService.signUp(request);
+
+            // then
+            List<User> users = userRepository.findAll();
+            assertThat(users).hasSize(1);
+            assertUser(users.get(0), socialId, request.getName(), request.getSocialType());
+        }
+
     }
 
-    @Test
-    void 카카오로_회원가입시_새로운_유저정보가_저장된다() {
-        // given
-        SignUpRequest request = SignUpRequest.testInstance("token", "가슴속 삼천원", UserSocialType.KAKAO);
+    @Nested
+    class 카카오_회원_탈퇴 {
 
-        // when
-        authService.signUp(request);
+        @Test
+        void 카카오로_가입한_유저가_회원탈퇴를_요청하면_해당_유저정보가_삭제된다() {
+            // given
+            User user = UserCreator.create(socialId, UserSocialType.KAKAO, "닉네임");
+            userRepository.save(user);
 
-        // then
-        List<User> users = userRepository.findAll();
-        assertThat(users).hasSize(1);
-        assertUser(users.get(0), socialId, request.getName(), request.getSocialType());
-    }
+            // when
+            authService.signOut(user.getId());
 
-    @Test
-    void 카카오로_가입한_유저가_회원탈퇴를_요청하면_해당_유저정보가_삭제된다() {
-        // given
-        User user = UserCreator.create(socialId, UserSocialType.KAKAO, "닉네임");
-        userRepository.save(user);
+            // then
+            List<User> users = userRepository.findAll();
+            assertThat(users).isEmpty();
+        }
 
-        // when
-        authService.signOut(user.getId());
+        @Test
+        void 애플로_가입한_유저가_카카오_회원탈퇴시_NOT_FOUND_EXCEPTION() {
+            // given
+            User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
+            userRepository.save(user);
 
-        // then
-        List<User> users = userRepository.findAll();
-        assertThat(users).isEmpty();
-    }
+            // when & then
+            assertThatThrownBy(() -> authService.signOut(user.getId())).isInstanceOf(NotFoundException.class);
+        }
 
-    @Test
-    void 애플로_가입한_유저가_카카오_회원탈퇴시_NOT_FOUND_EXCEPTION() {
-        // given
-        User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
-        userRepository.save(user);
-
-        // when & then
-        assertThatThrownBy(() -> authService.signOut(user.getId())).isInstanceOf(NotFoundException.class);
     }
 
     private static class StubKaKaoApiCaller implements KaKaoApiCaller {
+
         @Override
         public KaKaoProfileResponse getProfileInfo(String accessToken) {
             return KaKaoProfileResponse.testInstance(socialId);
         }
+
     }
 
     private void assertUser(User user, String socialId, String name, UserSocialType socialType) {

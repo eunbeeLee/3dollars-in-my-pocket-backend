@@ -16,10 +16,7 @@ import com.depromeet.threedollar.domain.domain.store.*;
 import com.depromeet.threedollar.domain.domain.storedelete.DeleteReasonType;
 import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequestCreator;
 import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequestRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
@@ -65,128 +62,141 @@ class StoreControllerTest extends AbstractControllerTest {
         storeDeleteRequestRepository.deleteAll();
     }
 
-    @DisplayName("POST /api/v2/store 200 OK")
-    @Test
-    void 새로운_가게정보를_등록한다() throws Exception {
-        // given
-        Double latitude = 34.0;
-        Double longitude = 130.0;
+    @DisplayName("POST /api/v2/store")
+    @Nested
+    class 가게_정보_등록 {
 
-        String storeName = "붕어빵";
-        StoreType storeType = StoreType.STORE;
-        Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);
-        Set<PaymentMethodType> paymentMethods = Set.of(PaymentMethodType.CARD);
+        @Test
+        void 새로운_가게정보를_등록한다() throws Exception {
+            // given
+            Double latitude = 34.0;
+            Double longitude = 130.0;
 
-        String menuName = "메뉴 이름";
-        String price = "10000";
-        MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
-        List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
+            String storeName = "붕어빵";
+            StoreType storeType = StoreType.STORE;
+            Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);
+            Set<PaymentMethodType> paymentMethods = Set.of(PaymentMethodType.CARD);
 
-        AddStoreRequest request = AddStoreRequest.testBuilder()
-            .latitude(latitude)
-            .longitude(longitude)
-            .storeName(storeName)
-            .storeType(storeType)
-            .appearanceDays(appearanceDays)
-            .paymentMethods(paymentMethods)
-            .menus(menu)
-            .build();
+            String menuName = "메뉴 이름";
+            String price = "10000";
+            MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
+            List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
 
-        // when
-        ApiResponse<StoreInfoResponse> response = storeMockApiCaller.addStore(request, token, 200);
+            AddStoreRequest request = AddStoreRequest.testBuilder()
+                .latitude(latitude)
+                .longitude(longitude)
+                .storeName(storeName)
+                .storeType(storeType)
+                .appearanceDays(appearanceDays)
+                .paymentMethods(paymentMethods)
+                .menus(menu)
+                .build();
 
-        // then
-        assertStoreInfoResponse(response.getData(), latitude, longitude, storeName, Collections.singletonList(MenuCategoryType.BUNGEOPPANG));
+            // when
+            ApiResponse<StoreInfoResponse> response = storeMockApiCaller.addStore(request, token, 200);
+
+            // then
+            assertStoreInfoResponse(response.getData(), latitude, longitude, storeName, Collections.singletonList(MenuCategoryType.BUNGEOPPANG));
+        }
+
     }
 
-    @DisplayName("PUT /api/v2/store 200 OK")
-    @Test
-    void 특정_가게정보를_수정한다K() throws Exception {
-        // given
-        Store store = StoreCreator.create(testUser.getId(), "storeName");
-        store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
-        storeRepository.save(store);
+    @DisplayName("PUT /api/v2/store")
+    @Nested
+    class 가게_정보_수정 {
 
-        Double latitude = 34.0;
-        Double longitude = 130.0;
-        String storeName = "붕어빵";
-        StoreType storeType = StoreType.STORE;
-        Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);
-        Set<PaymentMethodType> paymentMethods = Set.of(PaymentMethodType.CARD);
+        @Test
+        void 특정_가게정보를_수정한다K() throws Exception {
+            // given
+            Store store = StoreCreator.create(testUser.getId(), "storeName");
+            store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
+            storeRepository.save(store);
 
-        String menuName = "메뉴 이름";
-        String price = "10000";
-        MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
-        List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
+            Double latitude = 34.0;
+            Double longitude = 130.0;
+            String storeName = "붕어빵";
+            StoreType storeType = StoreType.STORE;
+            Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);
+            Set<PaymentMethodType> paymentMethods = Set.of(PaymentMethodType.CARD);
 
-        UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
-            .latitude(latitude)
-            .longitude(longitude)
-            .storeName(storeName)
-            .storeType(storeType)
-            .appearanceDays(appearanceDays)
-            .paymentMethods(paymentMethods)
-            .menus(menu)
-            .build();
+            String menuName = "메뉴 이름";
+            String price = "10000";
+            MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
+            List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
 
-        // when
-        ApiResponse<StoreInfoResponse> response = storeMockApiCaller.updateStore(store.getId(), request, token, 200);
+            UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
+                .latitude(latitude)
+                .longitude(longitude)
+                .storeName(storeName)
+                .storeType(storeType)
+                .appearanceDays(appearanceDays)
+                .paymentMethods(paymentMethods)
+                .menus(menu)
+                .build();
 
-        // then
-        assertThat(response.getData().getStoreId()).isEqualTo(store.getId());
-        assertStoreInfoResponse(response.getData(), latitude, longitude, storeName, Collections.singletonList(MenuCategoryType.BUNGEOPPANG));
+            // when
+            ApiResponse<StoreInfoResponse> response = storeMockApiCaller.updateStore(store.getId(), request, token, 200);
+
+            // then
+            assertThat(response.getData().getStoreId()).isEqualTo(store.getId());
+            assertStoreInfoResponse(response.getData(), latitude, longitude, storeName, Collections.singletonList(MenuCategoryType.BUNGEOPPANG));
+        }
+
     }
 
-    @DisplayName("DELETE /api/v2/store 200 OK")
-    @Test
-    void 특정_가게정보를_삭제할때_실제로_삭제되지_않으면_False를_반환한다() throws Exception {
-        // given
-        Store store = StoreCreator.create(testUser.getId(), "storeName");
-        storeRepository.save(store);
+    @DisplayName("DELETE /api/v2/store")
+    @Nested
+    class 가게_정보_삭제 {
 
-        DeleteStoreRequest request = DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE);
+        @Test
+        void 특정_가게정보를_삭제할때_실제로_삭제되지_않으면_False를_반환한다() throws Exception {
+            // given
+            Store store = StoreCreator.create(testUser.getId(), "storeName");
+            storeRepository.save(store);
 
-        // when
-        ApiResponse<StoreDeleteResponse> response = storeMockApiCaller.deleteStore(store.getId(), request, token, 200);
+            DeleteStoreRequest request = DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE);
 
-        // then
-        assertThat(response.getData().getIsDeleted()).isFalse();
-    }
+            // when
+            ApiResponse<StoreDeleteResponse> response = storeMockApiCaller.deleteStore(store.getId(), request, token, 200);
 
-    @DisplayName("DELETE /api/v2/store 200 OK")
-    @Test
-    void 특정_가게정보를_삭제할때_실제로_삭제되면_True를_반환한다() throws Exception {
-        // given
-        Store store = StoreCreator.create(testUser.getId(), "storeName");
-        storeRepository.save(store);
+            // then
+            assertThat(response.getData().getIsDeleted()).isFalse();
+        }
 
-        storeDeleteRequestRepository.saveAll(Arrays.asList(
-            StoreDeleteRequestCreator.create(store.getId(), 10L, DeleteReasonType.NOSTORE),
-            StoreDeleteRequestCreator.create(store.getId(), 11L, DeleteReasonType.NOSTORE)
-        ));
+        @Test
+        void 특정_가게정보를_삭제할때_실제로_삭제되면_True를_반환한다() throws Exception {
+            // given
+            Store store = StoreCreator.create(testUser.getId(), "storeName");
+            storeRepository.save(store);
 
-        DeleteStoreRequest request = DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE);
+            storeDeleteRequestRepository.saveAll(Arrays.asList(
+                StoreDeleteRequestCreator.create(store.getId(), 10L, DeleteReasonType.NOSTORE),
+                StoreDeleteRequestCreator.create(store.getId(), 11L, DeleteReasonType.NOSTORE)
+            ));
 
-        // when
-        ApiResponse<StoreDeleteResponse> response = storeMockApiCaller.deleteStore(store.getId(), request, token, 200);
+            DeleteStoreRequest request = DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE);
 
-        // then
-        assertThat(response.getData().getIsDeleted()).isTrue();
-    }
+            // when
+            ApiResponse<StoreDeleteResponse> response = storeMockApiCaller.deleteStore(store.getId(), request, token, 200);
 
-    @DisplayName("DELETE /api/v2/store 404 NOT FOUND")
-    @Test
-    void 존재하지_않는_특정_가게정보를_삭제요청시_404_NOT_FOUND() throws Exception {
-        // given
-        DeleteStoreRequest request = DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE);
+            // then
+            assertThat(response.getData().getIsDeleted()).isTrue();
+        }
 
-        // when
-        ApiResponse<StoreDeleteResponse> response = storeMockApiCaller.deleteStore(999L, request, token, 404);
+        @Test
+        void 존재하지_않는_특정_가게정보를_삭제요청시_404_NOT_FOUND() throws Exception {
+            // given
+            DeleteStoreRequest request = DeleteStoreRequest.testInstance(DeleteReasonType.NOSTORE);
 
-        // then
-        assertThat(response.getResultCode()).isEqualTo(NOT_FOUND_STORE_EXCEPTION.getCode());
-        assertThat(response.getMessage()).isEqualTo(NOT_FOUND_STORE_EXCEPTION.getMessage());
-        assertThat(response.getData()).isNull();
+            // when
+            ApiResponse<StoreDeleteResponse> response = storeMockApiCaller.deleteStore(999L, request, token, 404);
+
+            // then
+            assertThat(response.getResultCode()).isEqualTo(NOT_FOUND_STORE_EXCEPTION.getCode());
+            assertThat(response.getMessage()).isEqualTo(NOT_FOUND_STORE_EXCEPTION.getMessage());
+            assertThat(response.getData()).isNull();
+        }
+
     }
 
     private void assertStoreInfoResponse(StoreInfoResponse response, Double latitude, Double longitude, String storeName, List<MenuCategoryType> categories) {
