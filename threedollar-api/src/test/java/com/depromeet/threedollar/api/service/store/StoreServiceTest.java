@@ -275,7 +275,7 @@ class StoreServiceTest extends UserSetUpTest {
             assertMenu(menus.get(0), menuName, price, type);
         }
 
-        @MethodSource("source_update_payments")
+        @MethodSource
         @ParameterizedTest
         void 가게의_결제방법을_수정한다(Set<PaymentMethodType> paymentMethodTypes) {
             // given
@@ -303,7 +303,7 @@ class StoreServiceTest extends UserSetUpTest {
             assertThat(getPaymentMethodTypes(paymentMethodsList)).containsAll(paymentMethodTypes);
         }
 
-        private Stream<Arguments> source_update_payments() {
+        private Stream<Arguments> 가게의_결제방법을_수정한다() {
             return Stream.of(
                 Arguments.of(Set.of(PaymentMethodType.CARD, PaymentMethodType.CASH)), // 거래 방식을 추가하는 경우.
                 Arguments.of(Collections.emptySet()), // 거래 방식을 없애는 경우
@@ -311,7 +311,7 @@ class StoreServiceTest extends UserSetUpTest {
             );
         }
 
-        @MethodSource("source_update_appearance_day")
+        @MethodSource
         @ParameterizedTest
         void 가게의_개시일을_수정한다(Set<DayOfTheWeek> appearanceDays) {
             // given
@@ -339,7 +339,7 @@ class StoreServiceTest extends UserSetUpTest {
             assertThat(getDayOfTheWeeks(appearanceDayList)).containsAll(appearanceDays);
         }
 
-        private Stream<Arguments> source_update_appearance_day() {
+        private Stream<Arguments> 가게의_개시일을_수정한다() {
             return Stream.of(
                 Arguments.of(Set.of(DayOfTheWeek.MONDAY, DayOfTheWeek.TUESDAY, DayOfTheWeek.WEDNESDAY)), // 거래 방식을 추가하는 경우.
                 Arguments.of(Set.of(DayOfTheWeek.TUESDAY)), // 거래 방식을 없애는 경우

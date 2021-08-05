@@ -1,18 +1,22 @@
 package com.depromeet.threedollar.domain.domain.common;
 
-import com.depromeet.threedollar.common.exception.ValidationException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class LocationTest {
 
-    @Test
+    @MethodSource("latitude_longitude")
+    @ParameterizedTest
     void 위도와_경도로_이루어진_위치_값_객체를_생성한다() {
         // given
-        double latitude = 38.12313;
-        double longitude = 125.432;
+        double latitude = 33;
+        double longitude = 124;
 
         // when
         Location location = Location.of(latitude, longitude);
@@ -22,44 +26,35 @@ class LocationTest {
         assertThat(location.getLongitude()).isEqualTo(longitude);
     }
 
-    @Test
-    void 허용된_위도보다_작은경우_VALIDATION_EXEPTION() {
-        // given
-        double latitude = 32.999;
-        double longitude = 125;
-
-        // when & then
-        assertThatThrownBy(() -> Location.of(latitude, longitude)).isInstanceOf(ValidationException.class);
+    private static Stream<Arguments> latitude_longitude() {
+        return Stream.of(
+            Arguments.of(33, 124),
+            Arguments.of(43, 132)
+        );
     }
 
-    @Test
-    void 허용된_위도보다_큰경우_VALIDATION_EXEPTION() {
+    @MethodSource("wrong_latitude_longitude")
+    @ParameterizedTest
+    void 허용된_위도_경도_범위_밖인경우_VALIDATION_EXEPTION() {
         // given
-        double latitude = 43.1;
-        double longitude = 125;
+        double latitude = 33;
+        double longitude = 124;
 
-        // when & then
-        assertThatThrownBy(() -> Location.of(latitude, longitude)).isInstanceOf(ValidationException.class);
+        // when
+        Location location = Location.of(latitude, longitude);
+
+        // then
+        assertThat(location.getLatitude()).isEqualTo(latitude);
+        assertThat(location.getLongitude()).isEqualTo(longitude);
     }
 
-    @Test
-    void 허용된_경도보다_작은경우_VALIDATION_EXEPTION() {
-        // given
-        double latitude = 40;
-        double longitude = 123.9;
-
-        // when & then
-        assertThatThrownBy(() -> Location.of(latitude, longitude)).isInstanceOf(ValidationException.class);
-    }
-
-    @Test
-    void 허용된_경도보다_큰경우_VALIDATION_EXEPTION() {
-        // given
-        double latitude = 40;
-        double longitude = 132.1;
-
-        // when & then
-        assertThatThrownBy(() -> Location.of(latitude, longitude)).isInstanceOf(ValidationException.class);
+    private static Stream<Arguments> wrong_latitude_longitude() {
+        return Stream.of(
+            Arguments.of(32.999, 124),
+            Arguments.of(33, 132.1),
+            Arguments.of(43.1, 124),
+            Arguments.of(33, 123.9)
+        );
     }
 
     @Test

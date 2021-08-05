@@ -3,6 +3,8 @@ package com.depromeet.threedollar.common.utils;
 import com.depromeet.threedollar.common.exception.ValidationException;
 import com.depromeet.threedollar.common.utils.type.ImageType;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -23,23 +25,11 @@ class FileUtilsTest {
         assertThat(result.endsWith(".png")).isTrue();
     }
 
-    @Test
-    void 파일명을_생성할때_잘못된_파일형식일경우_VALIDATION_에러가_발생한다() {
-        // given
-        String originalFileName = "image";
-        ImageType type = ImageType.STORE;
-
+    @ParameterizedTest
+    @ValueSource(strings = {"image", "video/mp4"})
+    void 허용되지_ContentType_경우_VALIDATION(String contentType) {
         // when & then
-        assertThatThrownBy(() -> FileUtils.createFileUuidNameWithExtension(type, originalFileName)).isInstanceOf(ValidationException.class);
-    }
-
-    @Test
-    void ContentType이_허용되지_아닌경우_VALIDATION_에러가_발생한다() {
-        // given
-        String contentType = "video/mp4";
-
-        // when & then
-        assertThatThrownBy(() -> FileUtils.validateImageFile(contentType)).isInstanceOf(ValidationException.class);
+        assertThatThrownBy(() -> FileUtils.createFileUuidNameWithExtension(ImageType.STORE, contentType)).isInstanceOf(ValidationException.class);
     }
 
     @Test
@@ -48,20 +38,9 @@ class FileUtilsTest {
         assertThatThrownBy(() -> FileUtils.validateImageFile(null)).isInstanceOf(ValidationException.class);
     }
 
-    @Test
-    void 허용된_ContentType_경우_정상적으로_반환된다_jpeg() {
-        // given
-        String contentType = "image/jpeg";
-
-        // when & then
-        FileUtils.validateImageFile(contentType);
-    }
-
-    @Test
-    void 허용된_ContentType_경우_정상적으로_반환된다_png() {
-        // given
-        String contentType = "image/png";
-
+    @ParameterizedTest
+    @ValueSource(strings = {"image/jpeg", "image/png"})
+    void 허용된_ContentType_경우_정상적으로_반환된다(String contentType) {
         // when & then
         FileUtils.validateImageFile(contentType);
     }

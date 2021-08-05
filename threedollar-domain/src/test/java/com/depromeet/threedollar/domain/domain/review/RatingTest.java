@@ -2,17 +2,17 @@ package com.depromeet.threedollar.domain.domain.review;
 
 import com.depromeet.threedollar.common.exception.ValidationException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class RatingTest {
 
-    @Test
-    void 평가_점수_값_객체가_생성된다() {
-        // given
-        int value = 4;
-
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 3, 4, 5})
+    void 평가_점수_값_객체가_생성된다(int value) {
         // when
         Rating rating = Rating.of(value);
 
@@ -20,29 +20,16 @@ class RatingTest {
         assertThat(rating.getRating()).isEqualTo(value);
     }
 
-    @Test
-    void 점수가_1보다_작으면_VALIDATION_EXEPTION() {
-        // given
-        int rating = 0;
-
+    @ParameterizedTest
+    @ValueSource(ints = {0, 6})
+    void 점수가_1보다_작거나_5이상이면_VALIDATION_EXEPTION(int value) {
         // when & then
-        assertThatThrownBy(() -> Rating.of(rating)).isInstanceOf(ValidationException.class);
+        assertThatThrownBy(() -> Rating.of(value)).isInstanceOf(ValidationException.class);
     }
 
-    @Test
-    void 점수가_5보다_크면_VALIDATION_EXEPTION() {
-        // given
-        int rating = 6;
-
-        // when & then
-        assertThatThrownBy(() -> Rating.of(rating)).isInstanceOf(ValidationException.class);
-    }
-
-    @Test
-    void 평가점수_동등성_테스트() {
-        // given
-        int score = 3;
-
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 3, 4, 5})
+    void 평가점수_동등성_테스트(int score) {
         // when
         Rating rating = Rating.of(score);
 
