@@ -8,16 +8,15 @@ import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserCreator;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@DataJpaTest
 class ReviewRepositoryTest {
 
     @Autowired
@@ -28,13 +27,6 @@ class ReviewRepositoryTest {
 
     @Autowired
     private ReviewRepository reviewRepository;
-
-    @AfterEach
-    void cleanUp() {
-        userRepository.deleteAll();
-        storeRepository.deleteAll();
-        reviewRepository.deleteAll();
-    }
 
     @Test
     void 가게_리뷰와_함께_리뷰_작성자_정보를_함께_조회한다() {

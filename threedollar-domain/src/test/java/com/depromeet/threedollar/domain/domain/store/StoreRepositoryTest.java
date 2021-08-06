@@ -3,11 +3,9 @@ package com.depromeet.threedollar.domain.domain.store;
 import com.depromeet.threedollar.domain.domain.menu.Menu;
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.menu.MenuCreator;
-import com.depromeet.threedollar.domain.domain.menu.MenuRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,20 +13,11 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@DataJpaTest
 class StoreRepositoryTest {
 
     @Autowired
     private StoreRepository storeRepository;
-
-    @Autowired
-    private MenuRepository menuRepository;
-
-    @AfterEach
-    void cleanUp() {
-        menuRepository.deleteAllInBatch();
-        storeRepository.deleteAllInBatch();
-    }
 
     @Test
     void 반경_3KM의_가게들을_조회한다() {

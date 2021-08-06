@@ -5,17 +5,16 @@ import com.depromeet.threedollar.domain.domain.store.StoreCreator;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
 import com.depromeet.threedollar.domain.domain.store.StoreType;
 import com.depromeet.threedollar.domain.domain.storedelete.projection.ReportedStoreProjection;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@DataJpaTest
 class StoreDeleteRequestRepositoryTest {
 
     @Autowired
@@ -23,12 +22,6 @@ class StoreDeleteRequestRepositoryTest {
 
     @Autowired
     private StoreRepository storeRepository;
-
-    @AfterEach
-    void cleanUp() {
-        storeRepository.deleteAll();
-        storeDeleteRequestRepository.deleteAll();
-    }
 
     @Test
     void N개_이상_삭제요청된_가게들을_조회한다() {
