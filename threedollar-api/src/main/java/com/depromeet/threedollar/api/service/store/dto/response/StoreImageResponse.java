@@ -19,4 +19,8 @@ public class StoreImageResponse extends AuditingTimeResponse {
         return response;
     }
 
+    public static StoreImageResponse testInstance(Long imageId, String url) {
+        return new StoreImageResponse(imageId, url);
+    }
+
 }
