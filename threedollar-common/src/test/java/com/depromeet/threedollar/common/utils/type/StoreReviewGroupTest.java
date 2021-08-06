@@ -12,10 +12,7 @@ class StoreReviewGroupTest {
 
     @MethodSource("source_zero_to_one")
     @ParameterizedTest
-    void ZERO_TO_ONE_0점이상_1점미만() {
-        // given
-        double rating = -0.1;
-
+    void ZERO_TO_ONE_0점이상_1점미만(double rating) {
         // when
         StoreReviewGroup reviewGroup = StoreReviewGroup.of(rating);
 
@@ -33,15 +30,12 @@ class StoreReviewGroupTest {
 
     @MethodSource("source_one_to_two")
     @ParameterizedTest
-    void ZERO_TO_ONE_1점이상_2점미만() {
-        // given
-        double rating = -0.1;
-
+    void ZERO_TO_ONE_1점이상_2점미만(double rating) {
         // when
         StoreReviewGroup reviewGroup = StoreReviewGroup.of(rating);
 
         // then
-        assertThat(reviewGroup).isEqualTo(StoreReviewGroup.ZERO_TO_ONE);
+        assertThat(reviewGroup).isEqualTo(StoreReviewGroup.ONE_TO_TWO);
     }
 
     private static Stream<Arguments> source_one_to_two() {
@@ -53,15 +47,12 @@ class StoreReviewGroupTest {
 
     @MethodSource("source_two_to_three")
     @ParameterizedTest
-    void TWO_TO_THREE_2점이상_3점미만() {
-        // given
-        double rating = -0.1;
-
+    void TWO_TO_THREE_2점이상_3점미만(double rating) {
         // when
         StoreReviewGroup reviewGroup = StoreReviewGroup.of(rating);
 
         // then
-        assertThat(reviewGroup).isEqualTo(StoreReviewGroup.ZERO_TO_ONE);
+        assertThat(reviewGroup).isEqualTo(StoreReviewGroup.TWO_TO_THREE);
     }
 
     private static Stream<Arguments> source_two_to_three() {
@@ -73,15 +64,12 @@ class StoreReviewGroupTest {
 
     @MethodSource("source_three_to_four")
     @ParameterizedTest
-    void THREE_TO_FOUR_3점이상_4점미만() {
-        // given
-        double rating = -0.1;
-
+    void THREE_TO_FOUR_3점이상_4점미만(double rating) {
         // when
         StoreReviewGroup reviewGroup = StoreReviewGroup.of(rating);
 
         // then
-        assertThat(reviewGroup).isEqualTo(StoreReviewGroup.ZERO_TO_ONE);
+        assertThat(reviewGroup).isEqualTo(StoreReviewGroup.THREE_TO_FOUR);
     }
 
     private static Stream<Arguments> source_three_to_four() {
@@ -93,15 +81,12 @@ class StoreReviewGroupTest {
 
     @MethodSource("source_four_to_five")
     @ParameterizedTest
-    void FOUR_TO_FIVE_4점이상만() {
-        // given
-        double rating = -0.1;
-
+    void FOUR_TO_FIVE_4점이상만(double rating) {
         // when
         StoreReviewGroup reviewGroup = StoreReviewGroup.of(rating);
 
         // then
-        assertThat(reviewGroup).isEqualTo(StoreReviewGroup.ZERO_TO_ONE);
+        assertThat(reviewGroup).isEqualTo(StoreReviewGroup.FOUR_TO_FIVE);
     }
 
     private static Stream<Arguments> source_four_to_five() {

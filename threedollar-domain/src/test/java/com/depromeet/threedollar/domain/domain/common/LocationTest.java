@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.domain.domain.common;
 
+import com.depromeet.threedollar.common.exception.ValidationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -8,16 +9,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class LocationTest {
 
     @MethodSource("latitude_longitude")
     @ParameterizedTest
-    void 위도와_경도로_이루어진_위치_값_객체를_생성한다() {
-        // given
-        double latitude = 33;
-        double longitude = 124;
-
+    void 위도와_경도로_이루어진_위치_값_객체를_생성한다(double latitude, double longitude) {
         // when
         Location location = Location.of(latitude, longitude);
 
@@ -35,17 +33,9 @@ class LocationTest {
 
     @MethodSource("wrong_latitude_longitude")
     @ParameterizedTest
-    void 허용된_위도_경도_범위_밖인경우_VALIDATION_EXEPTION() {
-        // given
-        double latitude = 33;
-        double longitude = 124;
-
-        // when
-        Location location = Location.of(latitude, longitude);
-
-        // then
-        assertThat(location.getLatitude()).isEqualTo(latitude);
-        assertThat(location.getLongitude()).isEqualTo(longitude);
+    void 허용된_위도_경도_범위_밖인경우_VALIDATION_EXEPTION(double latitude, double longitude) {
+        // when & then
+        assertThatThrownBy(() -> Location.of(latitude, longitude)).isInstanceOf(ValidationException.class);
     }
 
     private static Stream<Arguments> wrong_latitude_longitude() {
