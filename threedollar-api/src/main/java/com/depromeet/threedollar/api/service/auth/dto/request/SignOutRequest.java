@@ -14,4 +14,8 @@ public class SignOutRequest {
     @NotNull(message = "{user.socialType.notNull}")
     private UserSocialType socialType;
 
+    public static SignOutRequest testInstance(UserSocialType socialType) {
+        return new SignOutRequest(socialType);
+    }
+
 }

@@ -17,9 +17,10 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.nio.charset.StandardCharsets;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ReviewMockApiCaller extends MockMvcUtils {
+class ReviewMockApiCaller extends MockMvcUtils {
 
     public ReviewMockApiCaller(MockMvc mockMvc, ObjectMapper objectMapper) {
         super(mockMvc, objectMapper);
@@ -34,6 +35,7 @@ public class ReviewMockApiCaller extends MockMvcUtils {
         return objectMapper.readValue(
             mockMvc.perform(builder)
                 .andExpect(status().is(expectedStatus))
+                .andDo(print())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
@@ -50,6 +52,7 @@ public class ReviewMockApiCaller extends MockMvcUtils {
         return objectMapper.readValue(
             mockMvc.perform(builder)
                 .andExpect(status().is(expectedStatus))
+                .andDo(print())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
@@ -64,6 +67,7 @@ public class ReviewMockApiCaller extends MockMvcUtils {
         return objectMapper.readValue(
             mockMvc.perform(builder)
                 .andExpect(status().is(expectedStatus))
+                .andDo(print())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
@@ -81,6 +85,7 @@ public class ReviewMockApiCaller extends MockMvcUtils {
         return objectMapper.readValue(
             mockMvc.perform(builder)
                 .andExpect(status().is(expectedStatus))
+                .andDo(print())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {

@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UserMockApiCaller extends MockMvcUtils {
@@ -30,6 +31,7 @@ public class UserMockApiCaller extends MockMvcUtils {
 
         return objectMapper.readValue(
             mockMvc.perform(builder)
+                .andDo(print())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
@@ -44,6 +46,7 @@ public class UserMockApiCaller extends MockMvcUtils {
         return objectMapper.readValue(
             mockMvc.perform(builder)
                 .andExpect(status().is(expectedStatus))
+                .andDo(print())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
@@ -60,6 +63,7 @@ public class UserMockApiCaller extends MockMvcUtils {
         return objectMapper.readValue(
             mockMvc.perform(builder)
                 .andExpect(status().is(expectedStatus))
+                .andDo(print())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
@@ -73,6 +77,7 @@ public class UserMockApiCaller extends MockMvcUtils {
         return objectMapper.readValue(
             mockMvc.perform(builder)
                 .andExpect(status().is(expectedStatus))
+                .andDo(print())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {

@@ -14,9 +14,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class FaqMockApiCaller extends MockMvcUtils {
+class FaqMockApiCaller extends MockMvcUtils {
 
     public FaqMockApiCaller(MockMvc mockMvc, ObjectMapper objectMapper) {
         super(mockMvc, objectMapper);
@@ -28,6 +29,7 @@ public class FaqMockApiCaller extends MockMvcUtils {
         return objectMapper.readValue(
             mockMvc.perform(builder)
                 .andExpect(status().is(expectedStatus))
+                .andDo(print())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
@@ -42,6 +44,7 @@ public class FaqMockApiCaller extends MockMvcUtils {
         return objectMapper.readValue(
             mockMvc.perform(builder)
                 .andExpect(status().is(expectedStatus))
+                .andDo(print())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
@@ -55,6 +58,7 @@ public class FaqMockApiCaller extends MockMvcUtils {
         return objectMapper.readValue(
             mockMvc.perform(builder)
                 .andExpect(status().is(expectedStatus))
+                .andDo(print())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
