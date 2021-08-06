@@ -46,7 +46,7 @@ class StoreDeleteServiceTest extends UserSetUpTest {
     class 가게_삭제_요청 {
 
         @Test
-        void 가게_삭제_요청이_1개_쌓이면_실제로_가게정보가_삭제되지_않는다() {
+        void 삭제_요청이_1개_쌓이면_실제로_가게정보가_삭제되지_않는다() {
             // given
             Store store = StoreCreator.create(userId, "storeName");
             storeRepository.save(store);
@@ -65,7 +65,7 @@ class StoreDeleteServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 가게_삭제_요청이_2개_쌓이면_실제로_가게정보가_삭제되지_않는다() {
+        void 삭제_요청이_2개_쌓이면_실제로_가게정보가_삭제되지_않는다() {
             // given
             Store store = StoreCreator.create(userId, "storeName");
             storeRepository.save(store);
@@ -85,7 +85,7 @@ class StoreDeleteServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 가게_삭제_요청이_3개_쌓이면_실제로_가게정보가_실제로_삭제된다() {
+        void 삭제_요청이_3개_쌓이면_실제로_가게정보가_실제로_삭제된다() {
             // given
             Store store = StoreCreator.create(userId, "storeName");
             storeRepository.save(store);

@@ -138,7 +138,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         }
 
         @Test
-        void 특정_가게에_대한_상세_정보를_조회할때_회원탈퇴한_유저의경우_사라진_제보자라고_표기된다() throws Exception {
+        void 회원탈퇴한_유저의경우_사라진_제보자라고_표기된다() throws Exception {
             // given
             Store store = StoreCreator.create(999L, "storeName", 34, 124);
             store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
@@ -161,7 +161,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
     class 사용자가_작성한_가게들_조회 {
 
         @Test
-        void 사용자가_작성한_가게조회_첫_페이지_조회시_다음_커서가_반환된다() throws Exception {
+        void 첫_페이지_조회시_다음_커서가_반환된다() throws Exception {
             // given
             Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
             store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
@@ -191,7 +191,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         }
 
         @Test
-        void 사용자가_작성한_가게조회_중간_페이지_조회시_다음_커서가_반환된다() throws Exception {
+        void 중간_페이지_조회시_다음_커서가_반환된다() throws Exception {
             // given
             Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
             store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
@@ -221,7 +221,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         }
 
         @Test
-        void 사용자가_작성한_가게조회_중간_페이지_조회시_다음_커서가_반환된다_총개수가_캐싱되지_않으면_계산되서_반환() throws Exception {
+        void 중간_페이지_조회시_다음_커서가_반환된다_총개수가_캐싱되지_않으면_계산되서_반환() throws Exception {
             // given
             Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
             store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
@@ -251,7 +251,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         }
 
         @Test
-        void 사용자가_작성한_가게조회_contents가_size_와_동일하면_다음_스크롤에_해당하는_가게들을_조회하고_없으면_마지막_페이지로_판단하고_커서가_null을_반환한다() throws Exception {
+        void contents가_size_와_동일하면_다음_스크롤에_해당하는_가게들을_조회하고_없으면_마지막_페이지로_판단하고_커서가_null을_반환한다() throws Exception {
             // given
             Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
             store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));

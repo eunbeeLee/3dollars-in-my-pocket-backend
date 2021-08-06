@@ -56,7 +56,7 @@ class ReviewServiceTest extends UserSetUpTest {
 
 
         @Test
-        void 가게에_새로운_리뷰를_등록하면_새로운_리뷰_데이터가_추가된다() {
+        void 새로운_리뷰_데이터가_추가된다() {
             // given
             String contents = "우와 맛있어요";
             int rating = 4;
@@ -72,7 +72,7 @@ class ReviewServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 가게에_새로운_리뷰를_등록할때_해당하는_가게가_없는경우_NOT_FOUND_EXCEPTION() {
+        void 해당하는_가게가_없는경우_NOT_FOUND_EXCEPTION() {
             // given
             Long storeId = 999L;
             AddReviewRequest request = AddReviewRequest.testInstance(storeId, "리뷰", 3);
@@ -82,7 +82,7 @@ class ReviewServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 가게에_새로운_첫_리뷰를_등록하면_가게의_평균_리뷰_점수가_갱신된다() {
+        void 가게의_평균_리뷰_점수가_갱신된다1() {
             // given
             String contents = "우와 맛있어요";
             int rating = 4;
@@ -99,7 +99,7 @@ class ReviewServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 가게에_새로운_리뷰를_등록하면_가게의_평균_리뷰_점수가_갱신된다() {
+        void 가게의_평균_리뷰_점수가_갱신된다2() {
             // given
             String contents = "우와 맛있어요";
             int rating = 4;
@@ -124,7 +124,7 @@ class ReviewServiceTest extends UserSetUpTest {
     class 가게_리뷰_수정 {
 
         @Test
-        void 가게에_작성한_리뷰를_수정하면_해당_리뷰_정보가_수정된다() {
+        void 성공시_해당_리뷰_정보가_수정된다() {
             // given
             String contents = "우와 맛있어요";
             int rating = 4;
@@ -144,7 +144,7 @@ class ReviewServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 가게에_작성한_리뷰를_수정하면_가게의_평균_리뷰_점수가_갱신된다() {
+        void 가게의_평균_리뷰_점수가_갱신된다() {
             // given
             String contents = "우와 맛있어요";
             int rating = 4;
@@ -165,7 +165,7 @@ class ReviewServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 가게에_작성한_리뷰를_수정시_해당하는_리뷰가_존재하지_않으면_NOT_FOUND_EXCEPTION() {
+        void 해당하는_리뷰가_존재하지_않으면_NOT_FOUND_EXCEPTION() {
             // given
             UpdateReviewRequest request = UpdateReviewRequest.testInstance("content", 5);
 
@@ -174,7 +174,7 @@ class ReviewServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 작성한_리뷰_수정시_해당하는_리뷰가_사용자가_작성하지_않았을경우_NOT_FOUND_EXCEPTION() {
+        void 해당하는_리뷰가_사용자가_작성하지_않았을경우_NOT_FOUND_EXCEPTION() {
             // given
             Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
             reviewRepository.save(review);
@@ -191,7 +191,7 @@ class ReviewServiceTest extends UserSetUpTest {
     class 가게_리뷰_삭제 {
 
         @Test
-        void 작성한_리뷰를_삭제하면_상태_필드가_DELETED로_수정된다() {
+        void 성공시_상태_필드가_DELETED로_수정된다() {
             // given
             Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
             reviewRepository.save(review);
@@ -206,7 +206,7 @@ class ReviewServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 리뷰를_삭제하면_가게_평균_리뷰_점수가_갱신되며_아무_리뷰가_없는경우_0점이_된다() {
+        void 가게_평균_리뷰_점수가_갱신되며_아무_리뷰가_없는경우_0점이_된다() {
             // given
             Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
             reviewRepository.save(review);
@@ -221,13 +221,13 @@ class ReviewServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 작성한_리뷰를_삭제시_해당하는_리뷰가_없을경우_NOT_FOUND_EXCEPTION() {
+        void 해당하는_리뷰가_없을경우_NOT_FOUND_EXCEPTION() {
             // when & then
             assertThatThrownBy(() -> reviewService.deleteReview(999L, userId)).isInstanceOf(NotFoundException.class);
         }
 
         @Test
-        void 리뷰_삭제시_해당하는_리뷰가_사용자가_작성하지_않았을경우_NOT_FOUND_EXCEPTION() {
+        void 해당하는_리뷰가_사용자가_작성하지_않았을경우_NOT_FOUND_EXCEPTION() {
             // given
             Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
             reviewRepository.save(review);

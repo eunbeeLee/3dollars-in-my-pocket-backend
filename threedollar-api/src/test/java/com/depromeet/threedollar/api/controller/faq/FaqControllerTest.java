@@ -78,21 +78,26 @@ class FaqControllerTest extends AbstractControllerTest {
 
     }
 
+    @DisplayName("GET /api/v2/faq/categories")
+    @Nested
+    class FAQ_카테고리_리스트_조회 {
+
+        @Test
+        void FAQ_카테고리_리스트를_조회한다K() throws Exception {
+            // when
+            ApiResponse<List<FaqCategoryResponse>> response = faqMockApiCaller.retrieveAllFaqCategories(200);
+
+            // then
+            assertThat(response.getData()).hasSize(FaqCategory.values().length);
+        }
+
+    }
+
     private void assertFaqResponse(FaqResponse faqResponse, Long id, String question, String answer, FaqCategory category) {
         assertThat(faqResponse.getFaqId()).isEqualTo(id);
         assertThat(faqResponse.getQuestion()).isEqualTo(question);
         assertThat(faqResponse.getAnswer()).isEqualTo(answer);
         assertThat(faqResponse.getCategory()).isEqualTo(category);
-    }
-
-    @DisplayName("GET /api/v2/faq/categories 200 OK")
-    @Test
-    void FAQ_카테고리_리스트를_조회한다K() throws Exception {
-        // when
-        ApiResponse<List<FaqCategoryResponse>> response = faqMockApiCaller.retrieveAllFaqCategories(200);
-
-        // then
-        assertThat(response.getData()).hasSize(FaqCategory.values().length);
     }
 
 }

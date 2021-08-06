@@ -32,6 +32,9 @@ class AppleAuthServiceTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private WithdrawalUserRepository withdrawalUserRepository;
+
     @BeforeEach
     void setUp() {
         authService = new AppleAuthService(new StubAppleTokenDecoder(), userRepository, userService);
@@ -39,6 +42,7 @@ class AppleAuthServiceTest {
 
     @AfterEach
     void cleanUp() {
+        withdrawalUserRepository.deleteAll();
         userRepository.deleteAll();
     }
 
@@ -46,7 +50,7 @@ class AppleAuthServiceTest {
     class 애플_로그인 {
 
         @Test
-        void 애플_로그인시_가입한_유저면_멤버의_PK_가_반환된다() {
+        void 성공시_멤버의_PK_가_반환된다() {
             // given
             User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
             userRepository.save(user);
@@ -61,7 +65,7 @@ class AppleAuthServiceTest {
         }
 
         @Test
-        void 애플_로그인시_가입한_유저가_아니면_NOT_FOUND_EXCEPTION() {
+        void 가입한_유저가_아니면_NOT_FOUND_EXCEPTION() {
             // given
             LoginRequest request = LoginRequest.testInstance("token", UserSocialType.APPLE);
 
@@ -75,7 +79,7 @@ class AppleAuthServiceTest {
     class 애플_회원가입 {
 
         @Test
-        void 새로운_유저가_애플로_회원가입시_새로운_유저정보가_저장된다() {
+        void 성공시_새로운_유저정보가_저장된다() {
             // given
             SignUpRequest request = SignUpRequest.testInstance("token", "가슴속 삼천원", UserSocialType.APPLE);
 
@@ -93,7 +97,7 @@ class AppleAuthServiceTest {
     class 애플_회원탈퇴 {
 
         @Test
-        void 애플로_가입한_유저가_회원탈퇴시_해당하는_유저정보가_삭제된다() {
+        void 성공시_해당하는_유저정보가_삭제된다() {
             // given
             User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
             userRepository.save(user);

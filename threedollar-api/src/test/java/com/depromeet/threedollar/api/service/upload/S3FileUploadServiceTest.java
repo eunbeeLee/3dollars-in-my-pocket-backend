@@ -31,7 +31,7 @@ class S3FileUploadServiceTest {
     class 이미지_파일_업로드 {
 
         @Test
-        void 파일이_정상적으로_업로드되면_업로드된_파일명이_반환된다() {
+        void 성공적으로_업로드되면_파일명이_반환된다() {
             // given
             MultipartFile multipartFile = new MockMultipartFile("fileName.jpeg", "fileName.jpeg", "image/jpeg", new byte[]{});
 
@@ -46,7 +46,7 @@ class S3FileUploadServiceTest {
         }
 
         @Test
-        void 파일을_업로드시_잘못된_파일명인경우_Validation_Exception() {
+        void 잘못된_파일명인경우_Validation_Exception() {
             // given
             MultipartFile multipartFile = new MockMultipartFile("fileName.jpeg", "fileName", "image/jpeg", new byte[]{});
 
@@ -57,7 +57,7 @@ class S3FileUploadServiceTest {
         }
 
         @Test
-        void 파일을_업로드시_잘못된_ContentType인경우_Validation_Exception() {
+        void 잘못된_ContentType인경우_Validation_Exception() {
             // given
             MultipartFile multipartFile = new MockMultipartFile("fileName.jpeg", "fileName.jpeg", "wrong type", new byte[]{});
 
@@ -66,7 +66,7 @@ class S3FileUploadServiceTest {
             // when & then
             assertThatThrownBy(() -> s3FileUploadService.uploadImage(request, multipartFile)).isInstanceOf(ValidationException.class);
         }
-        
+
     }
 
     private static class StubS3Service implements S3Service {

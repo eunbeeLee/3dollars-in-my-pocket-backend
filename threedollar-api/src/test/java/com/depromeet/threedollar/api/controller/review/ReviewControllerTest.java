@@ -66,7 +66,7 @@ class ReviewControllerTest extends AbstractControllerTest {
     class 가게_리뷰_등록 {
 
         @Test
-        void 가게에_새로운_리뷰를_등록한다() throws Exception {
+        void 성공시_리뷰_정보가_반환된다() throws Exception {
             // given
             AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), "content", 5);
 
@@ -84,7 +84,7 @@ class ReviewControllerTest extends AbstractControllerTest {
     class 가게_리뷰_수정 {
 
         @Test
-        void 사용자가_작성한_리뷰를_수정한다() throws Exception {
+        void 성공시_변경된_리뷰정보가_반환된다() throws Exception {
             // given
             Review review = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요", 5);
             reviewRepository.save(review);
@@ -124,7 +124,7 @@ class ReviewControllerTest extends AbstractControllerTest {
     class 사용자가_작성한_가게_리뷰_조회 {
 
         @Test
-        void 사용자가_작성한_리뷰를_조회한다_첫번째_스크롤() throws Exception {
+        void 첫번째_스크롤_조회시() throws Exception {
             // given
             Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
             Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
@@ -150,7 +150,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         }
 
         @Test
-        void 사용자가_작성한_리뷰를_조회한다_중간_스크롤() throws Exception {
+        void 중간_스크롤_조회시() throws Exception {
             // given
             Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
             Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
@@ -176,7 +176,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         }
 
         @Test
-        void 사용자가_작성한_리뷰를_조회시_전체_리뷰수가_반환된다() throws Exception {
+        void 조회시_전체_리뷰수가_반환된다() throws Exception {
             // given
             Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
             Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
@@ -202,7 +202,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         }
 
         @Test
-        void 사용자가_작성한_리뷰를_조회한다_마지막_스크롤1() throws Exception {
+        void 마지막_스크롤_조회() throws Exception {
             // given
             Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
             Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
@@ -228,7 +228,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         }
 
         @Test
-        void 사용자가_작성한_리뷰를_조회한다_마지막_스크롤2() throws Exception {
+        void 마지막_스크롤_조회2() throws Exception {
             // given
             Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
             Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
@@ -251,7 +251,7 @@ class ReviewControllerTest extends AbstractControllerTest {
         }
 
         @Test
-        void 사용자가_작성한_리뷰를_조회시_삭제된_리뷰는_조회되지_않는다() throws Exception {
+        void 삭제된_리뷰는_조회되지_않는다() throws Exception {
             // given
             Review review = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요", 5);
             review.delete();

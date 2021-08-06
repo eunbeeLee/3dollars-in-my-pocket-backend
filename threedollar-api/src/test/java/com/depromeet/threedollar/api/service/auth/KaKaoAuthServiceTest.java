@@ -3,10 +3,7 @@ package com.depromeet.threedollar.api.service.auth;
 import com.depromeet.threedollar.api.service.auth.dto.request.LoginRequest;
 import com.depromeet.threedollar.api.service.auth.dto.request.SignUpRequest;
 import com.depromeet.threedollar.api.service.user.UserService;
-import com.depromeet.threedollar.domain.domain.user.User;
-import com.depromeet.threedollar.domain.domain.user.UserCreator;
-import com.depromeet.threedollar.domain.domain.user.UserRepository;
-import com.depromeet.threedollar.domain.domain.user.UserSocialType;
+import com.depromeet.threedollar.domain.domain.user.*;
 import com.depromeet.threedollar.common.exception.NotFoundException;
 import com.depromeet.threedollar.external.external.auth.kakao.KaKaoApiCaller;
 import com.depromeet.threedollar.external.external.auth.kakao.dto.response.KaKaoProfileResponse;
@@ -35,6 +32,9 @@ class KaKaoAuthServiceTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private WithdrawalUserRepository withdrawalUserRepository;
+
     @BeforeEach
     void setUp() {
         authService = new KaKaoAuthService(new StubKaKaoApiCaller(), userService, userRepository);
@@ -42,6 +42,7 @@ class KaKaoAuthServiceTest {
 
     @AfterEach
     void cleanUp() {
+        withdrawalUserRepository.deleteAll();
         userRepository.deleteAll();
     }
 
@@ -49,7 +50,7 @@ class KaKaoAuthServiceTest {
     class 카카오_로그인 {
 
         @Test
-        void 카카오_로그인_요청시_회원이면_멤버의_식별키가_반환된다() {
+        void 성공시_멤버의_식별키가_반환된다() {
             // given
             User user = UserCreator.create(socialId, UserSocialType.KAKAO, "닉네임");
             userRepository.save(user);
@@ -64,7 +65,7 @@ class KaKaoAuthServiceTest {
         }
 
         @Test
-        void 카카오_로그인시_가입한_유저가_아니면_NOT_FOUND_EXCEPTION() {
+        void 가입한_유저가_아니면_NOT_FOUND_EXCEPTION() {
             // given
             LoginRequest request = LoginRequest.testInstance("token", UserSocialType.KAKAO);
 
@@ -78,7 +79,7 @@ class KaKaoAuthServiceTest {
     class 카카오_회원가입 {
 
         @Test
-        void 카카오로_회원가입시_새로운_유저정보가_저장된다() {
+        void 성공시_새로운_유저정보가_저장된다() {
             // given
             SignUpRequest request = SignUpRequest.testInstance("token", "가슴속 삼천원", UserSocialType.KAKAO);
 
@@ -97,7 +98,7 @@ class KaKaoAuthServiceTest {
     class 카카오_회원_탈퇴 {
 
         @Test
-        void 카카오로_가입한_유저가_회원탈퇴를_요청하면_해당_유저정보가_삭제된다() {
+        void 성공시_해당_유저정보가_삭제된다() {
             // given
             User user = UserCreator.create(socialId, UserSocialType.KAKAO, "닉네임");
             userRepository.save(user);
