@@ -3,7 +3,7 @@ package com.depromeet.threedollar.api.service.upload;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.depromeet.threedollar.api.service.upload.dto.request.FileUploadRequest;
 import com.depromeet.threedollar.common.exception.ValidationException;
-import com.depromeet.threedollar.common.utils.type.ImageType;
+import com.depromeet.threedollar.common.type.ImageType;
 import com.depromeet.threedollar.external.external.s3.S3Service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;

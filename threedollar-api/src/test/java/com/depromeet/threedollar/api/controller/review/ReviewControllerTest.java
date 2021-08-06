@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.controller.review;
 
-import com.depromeet.threedollar.api.common.dto.ApiResponse;
+import com.depromeet.threedollar.application.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.controller.AbstractControllerTest;
 import com.depromeet.threedollar.api.service.review.dto.request.AddReviewRequest;
 import com.depromeet.threedollar.api.service.review.dto.request.RetrieveMyReviewsRequest;

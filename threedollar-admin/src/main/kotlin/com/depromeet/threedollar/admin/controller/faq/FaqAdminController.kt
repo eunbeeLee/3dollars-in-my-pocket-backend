@@ -1,0 +1,60 @@
+package com.depromeet.threedollar.admin.controller.faq
+
+import com.depromeet.threedollar.admin.service.faq.FaqAdminService
+import com.depromeet.threedollar.admin.service.faq.dto.request.AddFaqRequest
+import com.depromeet.threedollar.admin.service.faq.dto.request.UpdateFaqRequest
+import com.depromeet.threedollar.application.common.dto.ApiResponse
+import com.depromeet.threedollar.application.service.faq.FaqService
+import com.depromeet.threedollar.application.service.faq.dto.request.RetrieveFaqsRequest
+import com.depromeet.threedollar.application.service.faq.dto.response.FaqCategoryResponse
+import com.depromeet.threedollar.application.service.faq.dto.response.FaqResponse
+import io.swagger.annotations.ApiOperation
+import org.springframework.web.bind.annotation.*
+
+@RestController
+class FaqAdminController(
+    private val faqAdminService: FaqAdminService,
+    private val faqService: FaqService
+) {
+
+    @ApiOperation("새로운 FAQ를 등록합니다.")
+    @PostMapping("/admin/v1/faq")
+    fun addFaq(
+        @RequestBody request: AddFaqRequest
+    ): ApiResponse<FaqResponse> {
+        return ApiResponse.success(faqAdminService.addFaq(request))
+    }
+
+    @ApiOperation("등록된 FAQ를 수정합니다.")
+    @PutMapping("/admin/v1/faq/{faqId}")
+    fun updateFaq(
+        @PathVariable faqId: Long,
+        @RequestBody request: UpdateFaqRequest
+    ): ApiResponse<FaqResponse> {
+        return ApiResponse.success(faqAdminService.updateFaq(faqId, request))
+    }
+
+    @ApiOperation("등록된 FAQ를 삭제합니다.")
+    @DeleteMapping("/admin/v1/faq/{faqId}")
+    fun deleteFaq(
+        @PathVariable faqId: Long
+    ): ApiResponse<String> {
+        faqAdminService.deleteFaq(faqId)
+        return ApiResponse.SUCCESS
+    }
+
+    @ApiOperation("등록된 FAQ들을 조회한다")
+    @GetMapping("/admin/v1/faqs")
+    fun retrieveFaqs(
+        request: RetrieveFaqsRequest
+    ): ApiResponse<List<FaqResponse>> {
+        return ApiResponse.success(faqService.retrieveAllFaqs(request))
+    }
+
+    @ApiOperation("등록된 FAQ 카테고리를 조회한다")
+    @GetMapping("/admin/v1/faq/categories")
+    fun retrieveFaqCategories(): ApiResponse<List<FaqCategoryResponse>> {
+       return ApiResponse.success(faqService.retrieveAllFaqCategories())
+    }
+
+}

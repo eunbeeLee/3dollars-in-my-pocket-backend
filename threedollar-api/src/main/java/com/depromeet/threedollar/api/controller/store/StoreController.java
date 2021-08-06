@@ -2,7 +2,7 @@ package com.depromeet.threedollar.api.controller.store;
 
 import com.depromeet.threedollar.api.config.interceptor.Auth;
 import com.depromeet.threedollar.api.config.resolver.UserId;
-import com.depromeet.threedollar.api.common.dto.ApiResponse;
+import com.depromeet.threedollar.application.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.service.store.StoreImageService;
 import com.depromeet.threedollar.api.service.store.StoreService;
 import com.depromeet.threedollar.api.service.store.dto.request.AddStoreImageRequest;

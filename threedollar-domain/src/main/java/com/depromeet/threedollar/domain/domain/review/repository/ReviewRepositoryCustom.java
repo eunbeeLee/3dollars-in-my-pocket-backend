@@ -1,8 +1,8 @@
 package com.depromeet.threedollar.domain.domain.review.repository;
 
 import com.depromeet.threedollar.domain.domain.review.Review;
-import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithWriterProjection;
-import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithStoreAndCreatorProjection;
+import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithWriterProjection;
+import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithStoreAndCreatorProjection;
 
 import java.util.List;
 

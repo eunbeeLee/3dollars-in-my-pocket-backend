@@ -2,7 +2,7 @@ package com.depromeet.threedollar.api.controller.review;
 
 import com.depromeet.threedollar.api.config.interceptor.Auth;
 import com.depromeet.threedollar.api.config.resolver.UserId;
-import com.depromeet.threedollar.api.common.dto.ApiResponse;
+import com.depromeet.threedollar.application.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.service.review.ReviewRetrieveService;
 import com.depromeet.threedollar.api.service.review.ReviewService;
 import com.depromeet.threedollar.api.service.review.dto.request.AddReviewRequest;

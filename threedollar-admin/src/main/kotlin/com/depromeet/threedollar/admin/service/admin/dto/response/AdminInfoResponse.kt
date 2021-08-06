@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.admin.service.admin.dto.response
 
-import com.depromeet.threedollar.admin.common.dto.AuditingTimeResponse
+import com.depromeet.threedollar.application.common.dto.AuditingTimeResponse
 import com.depromeet.threedollar.domain.domain.admin.Admin
 
 data class AdminInfoResponse(
@@ -11,7 +11,7 @@ data class AdminInfoResponse(
     companion object {
         fun of(admin: Admin): AdminInfoResponse {
             val response = AdminInfoResponse(admin.email, admin.name)
-            response.setAuditingTime(admin)
+            response.setBaseTime(admin)
             return response
         }
     }

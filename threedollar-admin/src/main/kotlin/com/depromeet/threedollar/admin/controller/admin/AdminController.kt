@@ -1,9 +1,9 @@
 package com.depromeet.threedollar.admin.controller.admin
 
-import com.depromeet.threedollar.admin.common.dto.ApiResponse
 import com.depromeet.threedollar.admin.config.resolver.AdminId
 import com.depromeet.threedollar.admin.service.admin.AdminService
 import com.depromeet.threedollar.admin.service.admin.dto.response.AdminInfoResponse
+import com.depromeet.threedollar.application.common.dto.ApiResponse
 import io.swagger.annotations.ApiOperation
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController

@@ -2,8 +2,8 @@ package com.depromeet.threedollar.domain.domain.storedelete.repository;
 
 import com.depromeet.threedollar.domain.domain.store.StoreStatus;
 import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequest;
-import com.depromeet.threedollar.domain.domain.storedelete.repository.projection.QReportedStoreProjection;
-import com.depromeet.threedollar.domain.domain.storedelete.repository.projection.ReportedStoreProjection;
+import com.depromeet.threedollar.domain.domain.storedelete.projection.QReportedStoreProjection;
+import com.depromeet.threedollar.domain.domain.storedelete.projection.ReportedStoreProjection;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 

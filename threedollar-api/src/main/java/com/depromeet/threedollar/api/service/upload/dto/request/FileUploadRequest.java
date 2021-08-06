@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.upload.dto.request;
 
-import com.depromeet.threedollar.common.utils.type.ImageType;
+import com.depromeet.threedollar.common.type.ImageType;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;

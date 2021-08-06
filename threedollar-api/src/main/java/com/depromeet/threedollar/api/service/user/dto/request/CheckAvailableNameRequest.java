@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.user.dto.request;
 
-import com.depromeet.threedollar.api.config.validator.NickName;
+import com.depromeet.threedollar.application.config.validator.NickName;
 import lombok.*;
 
 @ToString

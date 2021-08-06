@@ -1,11 +1,12 @@
 package com.depromeet.threedollar.api.service.store;
 
+import com.depromeet.threedollar.api.service.upload.FileUploadService;
 import com.depromeet.threedollar.api.service.store.dto.request.AddStoreImageRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreImageResponse;
-import com.depromeet.threedollar.api.service.upload.FileUploadService;
 import com.depromeet.threedollar.api.service.upload.dto.request.FileUploadRequest;
+import com.depromeet.threedollar.common.exception.ErrorCode;
 import com.depromeet.threedollar.common.exception.NotFoundException;
-import com.depromeet.threedollar.common.utils.type.ImageType;
+import com.depromeet.threedollar.common.type.ImageType;
 import com.depromeet.threedollar.domain.domain.store.StoreImage;
 import com.depromeet.threedollar.domain.domain.store.StoreImageRepository;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
@@ -16,8 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.depromeet.threedollar.common.exception.ErrorCode.NOT_FOUND_STORE_IMAGE_EXCEPTION;
 
 @RequiredArgsConstructor
 @Service
@@ -44,7 +43,7 @@ public class StoreImageService {
         StoreImage storeImage = storeImageRepository.findStoreImageById(storeImageId);
         if (storeImage == null) {
             throw new NotFoundException(
-                String.format("해당하는 가게 이미지 (%s)는 존재하지 않습니다", storeImageId), NOT_FOUND_STORE_IMAGE_EXCEPTION);
+                String.format("해당하는 가게 이미지 (%s)는 존재하지 않습니다", storeImageId), ErrorCode.NOT_FOUND_STORE_IMAGE_EXCEPTION);
         }
         return storeImage;
     }

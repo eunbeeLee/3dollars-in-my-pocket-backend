@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.store.dto.response;
 
-import com.depromeet.threedollar.common.utils.type.StoreDistanceGroup;
+import com.depromeet.threedollar.common.type.DistanceGroupType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ public class StoresGroupByDistanceResponse {
 
 	private StoresGroupByDistanceResponse(List<StoreInfoResponse> stores) {
 		for (StoreInfoResponse store : stores) {
-			StoreDistanceGroup group = StoreDistanceGroup.of(store.getDistance());
+			DistanceGroupType group = DistanceGroupType.of(store.getDistance());
 			switch (group) {
 				case UNDER_FIFTY:
 					storeList50.add(store);

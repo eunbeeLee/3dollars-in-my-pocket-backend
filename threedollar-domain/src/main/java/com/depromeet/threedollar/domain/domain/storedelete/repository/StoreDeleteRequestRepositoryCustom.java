@@ -1,7 +1,7 @@
 package com.depromeet.threedollar.domain.domain.storedelete.repository;
 
 import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequest;
-import com.depromeet.threedollar.domain.domain.storedelete.repository.projection.ReportedStoreProjection;
+import com.depromeet.threedollar.domain.domain.storedelete.projection.ReportedStoreProjection;
 
 import java.util.List;
 

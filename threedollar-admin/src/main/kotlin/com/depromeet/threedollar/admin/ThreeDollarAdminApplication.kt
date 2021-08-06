@@ -1,15 +1,15 @@
 package com.depromeet.threedollar.admin
 
+import com.depromeet.threedollar.application.ThreeDollarApplicationRoot
 import com.depromeet.threedollar.domain.ThreeDollarDomainRoot
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
-@SpringBootApplication(
-    scanBasePackageClasses = [
-        ThreeDollarAdminApplication::class,
-        ThreeDollarDomainRoot::class
-    ]
-)
+@SpringBootApplication(scanBasePackageClasses = [
+    ThreeDollarAdminApplication::class,
+    ThreeDollarApplicationRoot::class,
+    ThreeDollarDomainRoot::class
+])
 class ThreeDollarAdminApplication
 
 fun main(args: Array<String>) {

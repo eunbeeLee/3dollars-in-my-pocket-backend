@@ -5,13 +5,10 @@ buildscript {
 }
 
 dependencies {
-    implementation project(':threedollar-domain')
+    implementation project(':threedollar-application-service')
 
     // Spring MVC
     implementation("org.springframework.boot:spring-boot-starter-web")
-
-    // jwt
-    implementation("com.auth0:java-jwt:3.18.1")
 
     // kotlin logger
     implementation("io.github.microutils:kotlin-logging:1.12.5")
@@ -20,4 +17,7 @@ dependencies {
     implementation("io.springfox:springfox-swagger2:${swaggerVersion}")
     implementation("io.springfox:springfox-swagger-ui:${swaggerVersion}")
     implementation("io.springfox:springfox-bean-validators:${swaggerVersion}")
+
+    // jwt
+    implementation("com.auth0:java-jwt:3.18.1")
 }

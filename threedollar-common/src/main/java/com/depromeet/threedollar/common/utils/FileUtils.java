@@ -1,7 +1,7 @@
 package com.depromeet.threedollar.common.utils;
 
 import com.depromeet.threedollar.common.exception.ValidationException;
-import com.depromeet.threedollar.common.utils.type.ImageType;
+import com.depromeet.threedollar.common.type.ImageType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

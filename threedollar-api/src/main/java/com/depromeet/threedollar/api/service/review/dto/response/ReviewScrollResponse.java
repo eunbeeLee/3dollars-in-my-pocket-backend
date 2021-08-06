@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.review.dto.response;
 
-import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithStoreAndCreatorProjection;
+import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithStoreAndCreatorProjection;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import lombok.*;
 

@@ -1,8 +1,11 @@
 package com.depromeet.threedollar.api.controller.store;
 
-import com.depromeet.threedollar.api.common.dto.ApiResponse;
+import com.depromeet.threedollar.application.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.controller.AbstractControllerTest;
-import com.depromeet.threedollar.api.service.store.dto.request.*;
+import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
+import com.depromeet.threedollar.api.service.store.dto.request.DeleteStoreRequest;
+import com.depromeet.threedollar.api.service.store.dto.request.MenuRequest;
+import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreDeleteResponse;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;

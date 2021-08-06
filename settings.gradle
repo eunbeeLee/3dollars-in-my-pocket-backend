@@ -4,4 +4,5 @@ include 'threedollar-api'
 include 'threedollar-external'
 include 'threedollar-common'
 include 'threedollar-admin'
+include 'threedollar-application-service'
 

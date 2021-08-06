@@ -1,7 +1,7 @@
 package com.depromeet.threedollar.common.utils;
 
 import com.depromeet.threedollar.common.exception.ValidationException;
-import com.depromeet.threedollar.common.utils.type.ImageType;
+import com.depromeet.threedollar.common.type.ImageType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

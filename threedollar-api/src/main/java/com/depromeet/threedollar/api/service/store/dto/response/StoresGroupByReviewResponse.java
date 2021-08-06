@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.store.dto.response;
 
-import com.depromeet.threedollar.common.utils.type.StoreReviewGroup;
+import com.depromeet.threedollar.common.type.RatingGroupType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ public class StoresGroupByReviewResponse {
 
     private StoresGroupByReviewResponse(List<StoreInfoResponse> stores) {
         for (StoreInfoResponse store : stores) {
-            StoreReviewGroup group = StoreReviewGroup.of(store.getRating());
+            RatingGroupType group = RatingGroupType.of(store.getRating());
             switch (group) {
                 case ZERO_TO_ONE:
                     storeList0.add(store);

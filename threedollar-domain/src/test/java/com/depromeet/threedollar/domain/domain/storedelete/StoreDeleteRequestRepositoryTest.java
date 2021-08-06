@@ -4,7 +4,7 @@ import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreCreator;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
 import com.depromeet.threedollar.domain.domain.store.StoreType;
-import com.depromeet.threedollar.domain.domain.storedelete.repository.projection.ReportedStoreProjection;
+import com.depromeet.threedollar.domain.domain.storedelete.projection.ReportedStoreProjection;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
 package com.depromeet.threedollar.admin.service.store.dto.response
 
-import com.depromeet.threedollar.admin.common.dto.AuditingTimeResponse
+import com.depromeet.threedollar.application.common.dto.AuditingTimeResponse
 import com.depromeet.threedollar.domain.domain.store.StoreType
-import com.depromeet.threedollar.domain.domain.storedelete.repository.projection.ReportedStoreProjection
+import com.depromeet.threedollar.domain.domain.storedelete.projection.ReportedStoreProjection
 
 data class ReportedStoresResponse(
     val storeId: Long,
@@ -25,7 +25,7 @@ data class ReportedStoresResponse(
                 projection.rating,
                 projection.reportsCount
             )
-            response.setAuditingTime(projection.storeCreatedAt, projection.storeUpdatedAt)
+            response.setBaseTime(projection.storeCreatedAt, projection.storeUpdatedAt)
             return response
         }
     }

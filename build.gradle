@@ -75,8 +75,9 @@ subprojects {
 }
 
 def testProjects = [
-    project(':threedollar-admin'),
     project(':threedollar-api'),
+    project(':threedollar-admin'),
+    project(':threedollar-application-service'),
     project(':threedollar-domain'),
     project(':threedollar-common')
 ]

@@ -1,8 +1,8 @@
 package com.depromeet.threedollar.api.service.review.dto.response;
 
-import com.depromeet.threedollar.api.common.dto.AuditingTimeResponse;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
-import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithWriterProjection;
+import com.depromeet.threedollar.application.common.dto.AuditingTimeResponse;
+import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithWriterProjection;
 import lombok.*;
 
 @ToString

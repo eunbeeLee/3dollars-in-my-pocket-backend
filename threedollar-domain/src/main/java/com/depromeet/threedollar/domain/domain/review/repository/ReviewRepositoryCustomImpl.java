@@ -2,10 +2,10 @@ package com.depromeet.threedollar.domain.domain.review.repository;
 
 import com.depromeet.threedollar.domain.domain.review.Review;
 import com.depromeet.threedollar.domain.domain.review.ReviewStatus;
-import com.depromeet.threedollar.domain.domain.review.repository.projection.QReviewWithStoreAndCreatorProjection;
-import com.depromeet.threedollar.domain.domain.review.repository.projection.QReviewWithWriterProjection;
-import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithWriterProjection;
-import com.depromeet.threedollar.domain.domain.review.repository.projection.ReviewWithStoreAndCreatorProjection;
+import com.depromeet.threedollar.domain.domain.review.projection.QReviewWithStoreAndCreatorProjection;
+import com.depromeet.threedollar.domain.domain.review.projection.QReviewWithWriterProjection;
+import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithWriterProjection;
+import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithStoreAndCreatorProjection;
 import com.depromeet.threedollar.domain.domain.store.StoreStatus;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
