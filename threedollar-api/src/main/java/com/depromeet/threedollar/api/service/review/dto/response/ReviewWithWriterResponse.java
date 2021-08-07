@@ -31,6 +31,7 @@ public class ReviewWithWriterResponse extends AuditingTimeResponse {
             .reviewId(projection.getReviewId())
             .rating(projection.getRating())
             .contents(projection.getContents())
+            .status(projection.getStatus())
             .user(UserInfoResponse.of(projection.getUserId(), projection.getUserName(), projection.getUserSocialType()))
             .build();
         response.setBaseTime(projection.getCreatedAt(), projection.getUpdatedAt());

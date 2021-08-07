@@ -70,6 +70,7 @@ public class StoreDetailResponse extends AuditingTimeResponse {
             .collect(Collectors.toList()));
         response.reviews.addAll(reviews.stream()
             .map(ReviewWithWriterResponse::of)
+            .sorted(Comparator.comparing(ReviewWithWriterResponse::getReviewId).reversed())
             .collect(Collectors.toList())
         );
         response.setBaseTime(store);
