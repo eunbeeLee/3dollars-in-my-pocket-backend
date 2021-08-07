@@ -18,7 +18,7 @@ public class LoginCheckHandler {
 
     private final SessionRepository<? extends Session> sessionRepository;
 
-    public Long getUserId(HttpServletRequest request) {
+    Long getUserId(HttpServletRequest request) {
         final String sessionId = request.getHeader(HttpHeaders.AUTHORIZATION);
         final Session session = findSessionBySessionId(sessionId);
         final UserSession userSession = session.getAttribute(USER_SESSION);

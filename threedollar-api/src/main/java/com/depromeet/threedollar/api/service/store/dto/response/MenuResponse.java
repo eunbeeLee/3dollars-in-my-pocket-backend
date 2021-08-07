@@ -15,7 +15,7 @@ public class MenuResponse extends AuditingTimeResponse {
     private String name;
     private String price;
 
-    @Builder
+    @Builder(access = AccessLevel.PRIVATE)
     private MenuResponse(Long menuId, MenuCategoryType category, String name, String price) {
         this.menuId = menuId;
         this.category = category;

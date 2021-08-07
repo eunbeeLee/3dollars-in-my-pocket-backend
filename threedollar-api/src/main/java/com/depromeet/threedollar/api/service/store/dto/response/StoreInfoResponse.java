@@ -22,7 +22,7 @@ public class StoreInfoResponse extends AuditingTimeResponse {
     private Integer distance;
     private final List<MenuCategoryType> categories = new ArrayList<>();
 
-    @Builder
+    @Builder(access = AccessLevel.PRIVATE)
     private StoreInfoResponse(Long storeId, Double latitude, Double longitude, String storeName, Double rating, Integer distance) {
         this.storeId = storeId;
         this.latitude = latitude;

@@ -25,7 +25,7 @@ public class RetrieveStoreGroupByCategoryRequest {
     @NotNull(message = "{menu.category.notNull}")
     private MenuCategoryType category;
 
-    @Builder(builderMethodName = "testBuilder")
+    @Builder(builderClassName = "TestBuilder", builderMethodName = "testBuilder")
     public RetrieveStoreGroupByCategoryRequest(Double latitude, Double longitude, Double mapLatitude, Double mapLongitude, MenuCategoryType category) {
         this.latitude = latitude;
         this.longitude = longitude;

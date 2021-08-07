@@ -17,7 +17,7 @@ public class ReviewWithWriterResponse extends AuditingTimeResponse {
     private ReviewStatus status;
     private UserInfoResponse user;
 
-    @Builder
+    @Builder(access = AccessLevel.PRIVATE)
     private ReviewWithWriterResponse(Long reviewId, int rating, String contents, ReviewStatus status, UserInfoResponse user) {
         this.reviewId = reviewId;
         this.rating = rating;

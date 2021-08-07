@@ -2,7 +2,6 @@ package com.depromeet.threedollar.domain.domain.user;
 
 import com.depromeet.threedollar.domain.domain.common.AuditingTimeEntity;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,8 +28,7 @@ public class User extends AuditingTimeEntity {
     @Column(length = 50, nullable = false)
     private String name;
 
-    @Builder
-    User(String socialId, UserSocialType socialType, String name) {
+    private User(String socialId, UserSocialType socialType, String name) {
         this.socialInfo = SocialInfo.of(socialId, socialType);
         this.name = name;
     }

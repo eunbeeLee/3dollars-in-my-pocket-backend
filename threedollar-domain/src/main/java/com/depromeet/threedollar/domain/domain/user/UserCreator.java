@@ -7,11 +7,7 @@ import lombok.NoArgsConstructor;
 public class UserCreator {
 
     public static User create(String socialId, UserSocialType socialType, String name) {
-        return User.builder()
-            .socialId(socialId)
-            .socialType(socialType)
-            .name(name)
-            .build();
+        return User.newInstance(socialId, socialType, name);
     }
 
 }

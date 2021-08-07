@@ -25,7 +25,7 @@ public class ReviewDetailResponse extends AuditingTimeResponse {
     private UserInfoResponse user;
     private final List<MenuCategoryType> categories = new ArrayList<>();
 
-    @Builder
+    @Builder(access = AccessLevel.PRIVATE)
     private ReviewDetailResponse(Long reviewId, int rating, String contents, ReviewStatus status, Long storeId, String storeName, UserInfoResponse user, List<MenuCategoryType> categories) {
         this.reviewId = reviewId;
         this.rating = rating;

@@ -16,7 +16,7 @@ public class ReviewInfoResponse extends AuditingTimeResponse {
     private int rating;
     private ReviewStatus status;
 
-    @Builder
+    @Builder(access = AccessLevel.PRIVATE)
     private ReviewInfoResponse(Long reviewId, Long storeId, String contents, int rating, ReviewStatus status) {
         this.reviewId = reviewId;
         this.storeId = storeId;

@@ -36,7 +36,7 @@ public class StoreDetailResponse extends AuditingTimeResponse {
     private final List<MenuResponse> menus = new ArrayList<>();
     private final List<ReviewWithWriterResponse> reviews = new ArrayList<>();
 
-    @Builder
+    @Builder(access = AccessLevel.PRIVATE)
     private StoreDetailResponse(Long storeId, Double latitude, Double longitude, String storeName, StoreType storeType,
                                 Double rating, Integer distance, UserInfoResponse user) {
         this.storeId = storeId;
