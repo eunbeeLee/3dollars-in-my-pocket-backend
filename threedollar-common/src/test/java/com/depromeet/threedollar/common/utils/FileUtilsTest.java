@@ -35,14 +35,14 @@ class FileUtilsTest {
     @Test
     void ContentType이_널인경우_VALIDATION_에러가_발생한다() {
         // when & then
-        assertThatThrownBy(() -> FileUtils.validateImageFile(null)).isInstanceOf(ValidationException.class);
+        assertThatThrownBy(() -> FileUtils.validateAvailableImageFile(null)).isInstanceOf(ValidationException.class);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"image/jpeg", "image/png"})
     void 허용된_ContentType_경우_정상적으로_반환된다(String contentType) {
         // when & then
-        FileUtils.validateImageFile(contentType);
+        FileUtils.validateAvailableImageFile(contentType);
     }
 
 }

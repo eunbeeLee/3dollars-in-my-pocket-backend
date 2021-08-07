@@ -28,7 +28,7 @@ public class FileUtils {
         }
     }
 
-    public static void validateImageFile(String contentType) {
+    public static void validateAvailableImageFile(String contentType) {
         if (contentType != null && contentType.contains(SEPARATOR) && contentType.split(SEPARATOR)[0].equals(IMAGE_CONTENT_TYPE_TYPE)) {
             return;
         }

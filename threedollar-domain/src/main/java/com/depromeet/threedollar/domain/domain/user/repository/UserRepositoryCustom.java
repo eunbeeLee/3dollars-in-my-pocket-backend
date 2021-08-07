@@ -5,9 +5,11 @@ import com.depromeet.threedollar.domain.domain.user.UserSocialType;
 
 public interface UserRepositoryCustom {
 
-    User findUserBySocialIdAndSocialType(String socialId, UserSocialType type);
+    boolean existsByName(String name);
 
-    User findUserByName(String name);
+    boolean existsBySocialIdAndSocialType(String socialId, UserSocialType socialType);
+
+    User findUserBySocialIdAndSocialType(String socialId, UserSocialType type);
 
     User findUserById(Long userId);
 

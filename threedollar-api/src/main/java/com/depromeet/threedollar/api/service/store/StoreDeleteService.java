@@ -3,7 +3,6 @@ package com.depromeet.threedollar.api.service.store;
 import com.depromeet.threedollar.api.service.store.dto.request.DeleteStoreRequest;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
-import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequest;
 import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequestRepository;
 import com.depromeet.threedollar.common.exception.ConflictException;
 import lombok.RequiredArgsConstructor;
@@ -27,21 +26,14 @@ public class StoreDeleteService {
     @Transactional
     public boolean delete(Long storeId, DeleteStoreRequest request, Long userId) {
         Store store = StoreServiceUtils.findStoreById(storeRepository, storeId);
-        List<StoreDeleteRequest> storeDeleteRequests = storeDeleteRequestRepository.findAllByStoreId(storeId);
-        if (hasAlreadyExistUserDeleteRequest(storeDeleteRequests, userId)) {
+
+        List<Long> userIds = storeDeleteRequestRepository.findAllUserIdByStoreId(storeId);
+        if (userIds.contains(userId)) {
             throw new ConflictException(String.format("사용자 (%s)는 가게 (%s)에 대해 이미 삭제 요청을 하였습니다", userId, storeId));
         }
-        storeDeleteRequests.add(storeDeleteRequestRepository.save(request.toEntity(storeId, userId)));
-        return deleteStoreIfExcessLimit(storeDeleteRequests, store);
-    }
+        storeDeleteRequestRepository.save(request.toEntity(storeId, userId));
 
-    private boolean hasAlreadyExistUserDeleteRequest(List<StoreDeleteRequest> storeDeleteRequests, Long userId) {
-        return storeDeleteRequests.stream()
-            .anyMatch(storeDeleteRequest -> storeDeleteRequest.getUserId().equals(userId));
-    }
-
-    private boolean deleteStoreIfExcessLimit(List<StoreDeleteRequest> storeDeleteRequests, Store store) {
-        if (storeDeleteRequests.size() >= MAX_DELETE_REQUEST) {
+        if (userIds.size() + 1 >= MAX_DELETE_REQUEST) {
             store.delete();
             return true;
         }

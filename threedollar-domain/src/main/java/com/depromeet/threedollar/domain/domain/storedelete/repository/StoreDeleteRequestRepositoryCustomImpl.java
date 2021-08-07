@@ -1,7 +1,6 @@
 package com.depromeet.threedollar.domain.domain.storedelete.repository;
 
 import com.depromeet.threedollar.domain.domain.store.StoreStatus;
-import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequest;
 import com.depromeet.threedollar.domain.domain.storedelete.projection.QStoreDeleteRequestWithCountProjection;
 import com.depromeet.threedollar.domain.domain.storedelete.projection.StoreDeleteRequestWithCountProjection;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,8 +17,9 @@ public class StoreDeleteRequestRepositoryCustomImpl implements StoreDeleteReques
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<StoreDeleteRequest> findAllByStoreId(Long storeId) {
-        return queryFactory.selectFrom(storeDeleteRequest)
+    public List<Long> findAllUserIdByStoreId(Long storeId) {
+        return queryFactory.select(storeDeleteRequest.userId)
+            .from(storeDeleteRequest)
             .where(
                 storeDeleteRequest.storeId.eq(storeId)
             ).fetch();

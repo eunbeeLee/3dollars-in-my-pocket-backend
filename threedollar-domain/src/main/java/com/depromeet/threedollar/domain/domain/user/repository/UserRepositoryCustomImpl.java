@@ -13,6 +13,24 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
+    public boolean existsByName(String name) {
+        return queryFactory.selectOne()
+            .from(user)
+            .where(user.name.eq(name))
+            .fetchFirst() != null;
+    }
+
+    @Override
+    public boolean existsBySocialIdAndSocialType(String socialId, UserSocialType socialType) {
+        return queryFactory.selectOne()
+            .from(user)
+            .where(
+                user.socialInfo.socialId.eq(socialId),
+                user.socialInfo.socialType.eq(socialType)
+            ).fetchFirst() != null;
+    }
+
+    @Override
     public User findUserBySocialIdAndSocialType(String socialId, UserSocialType type) {
         return queryFactory.selectFrom(user)
             .where(
@@ -22,19 +40,10 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     }
 
     @Override
-    public User findUserByName(String name) {
-        return queryFactory.selectFrom(user)
-            .where(
-                user.name.eq(name)
-            ).fetchOne();
-    }
-
-    @Override
     public User findUserById(Long userId) {
         return queryFactory.selectFrom(user)
-            .where(
-                user.id.eq(userId)
-            ).fetchOne();
+            .where(user.id.eq(userId))
+            .fetchOne();
     }
 
     @Override

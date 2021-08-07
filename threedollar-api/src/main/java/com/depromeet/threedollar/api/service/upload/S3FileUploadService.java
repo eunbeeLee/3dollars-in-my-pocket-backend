@@ -19,7 +19,7 @@ public class S3FileUploadService implements FileUploadService {
 
     @Override
     public String uploadImage(FileUploadRequest request, MultipartFile file) {
-        FileUtils.validateImageFile(file.getContentType());
+        FileUtils.validateAvailableImageFile(file.getContentType());
         final String fileName = FileUtils.createFileUuidNameWithExtension(request.getType(), file.getOriginalFilename());
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
