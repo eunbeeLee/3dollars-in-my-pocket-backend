@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @ToString
 @Getter
-public class ReportedStoreProjection {
+public class StoreDeleteRequestWithCountProjection {
 
     private final Long storeId;
     private final String storeName;
@@ -21,8 +21,8 @@ public class ReportedStoreProjection {
     private final long reportsCount;
 
     @QueryProjection
-    public ReportedStoreProjection(Long storeId, String storeName, double latitude, double longitude, StoreType type,
-                                   double rating, LocalDateTime storeCreatedAt, LocalDateTime storeUpdatedAt, long reportsCount) {
+    public StoreDeleteRequestWithCountProjection(Long storeId, String storeName, double latitude, double longitude, StoreType type,
+                                                 double rating, LocalDateTime storeCreatedAt, LocalDateTime storeUpdatedAt, long reportsCount) {
         this.storeId = storeId;
         this.storeName = storeName;
         this.latitude = latitude;

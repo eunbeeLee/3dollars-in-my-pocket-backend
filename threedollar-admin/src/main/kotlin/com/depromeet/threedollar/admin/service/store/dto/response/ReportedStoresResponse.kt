@@ -2,7 +2,7 @@ package com.depromeet.threedollar.admin.service.store.dto.response
 
 import com.depromeet.threedollar.application.common.dto.AuditingTimeResponse
 import com.depromeet.threedollar.domain.domain.store.StoreType
-import com.depromeet.threedollar.domain.domain.storedelete.projection.ReportedStoreProjection
+import com.depromeet.threedollar.domain.domain.storedelete.projection.StoreDeleteRequestWithCountProjection
 
 data class ReportedStoresResponse(
     val storeId: Long,
@@ -15,7 +15,7 @@ data class ReportedStoresResponse(
 ) : AuditingTimeResponse() {
 
     companion object {
-        fun of(projection: ReportedStoreProjection): ReportedStoresResponse {
+        fun of(projection: StoreDeleteRequestWithCountProjection): ReportedStoresResponse {
             val response = ReportedStoresResponse(
                 projection.storeId,
                 projection.storeName,

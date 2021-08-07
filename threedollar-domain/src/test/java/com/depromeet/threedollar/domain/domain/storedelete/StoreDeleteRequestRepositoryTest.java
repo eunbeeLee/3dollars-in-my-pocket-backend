@@ -4,7 +4,7 @@ import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreCreator;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
 import com.depromeet.threedollar.domain.domain.store.StoreType;
-import com.depromeet.threedollar.domain.domain.storedelete.projection.ReportedStoreProjection;
+import com.depromeet.threedollar.domain.domain.storedelete.projection.StoreDeleteRequestWithCountProjection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -37,7 +37,7 @@ class StoreDeleteRequestRepositoryTest {
         ));
 
         // when
-        List<ReportedStoreProjection> stores = storeDeleteRequestRepository.findStoreHasDeleteRequestMoreThanCnt(1);
+        List<StoreDeleteRequestWithCountProjection> stores = storeDeleteRequestRepository.findStoreHasDeleteRequestMoreThanCnt(1);
 
         // then
         assertThat(stores).hasSize(2);
@@ -45,7 +45,7 @@ class StoreDeleteRequestRepositoryTest {
         assertStoreDeleteRequestReportDto(stores.get(1), store2.getId(), store2.getName(), store2.getLatitude(), store2.getLongitude(), store2.getType(), store2.getRating(), 1);
     }
 
-    private void assertStoreDeleteRequestReportDto(ReportedStoreProjection response, Long storeId, String name, Double latitude, Double longitude, StoreType type, double rating, int cnt) {
+    private void assertStoreDeleteRequestReportDto(StoreDeleteRequestWithCountProjection response, Long storeId, String name, Double latitude, Double longitude, StoreType type, double rating, int cnt) {
         assertThat(response.getStoreId()).isEqualTo(storeId);
         assertThat(response.getStoreName()).isEqualTo(name);
         assertThat(response.getLatitude()).isEqualTo(latitude);
