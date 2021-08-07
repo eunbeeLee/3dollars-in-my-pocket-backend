@@ -2,10 +2,8 @@ package com.depromeet.threedollar.domain.domain.review.repository;
 
 import com.depromeet.threedollar.domain.domain.review.Review;
 import com.depromeet.threedollar.domain.domain.review.ReviewStatus;
-import com.depromeet.threedollar.domain.domain.review.projection.QReviewWithStoreAndCreatorProjection;
 import com.depromeet.threedollar.domain.domain.review.projection.QReviewWithWriterProjection;
 import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithWriterProjection;
-import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithStoreAndCreatorProjection;
 import com.depromeet.threedollar.domain.domain.store.StoreStatus;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -33,26 +31,6 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     }
 
     @Override
-    public List<ReviewWithWriterProjection> findAllWithCreatorByStoreId(Long storeId) {
-        return queryFactory.select(new QReviewWithWriterProjection(
-            review.id,
-            review.rating.rating,
-            review.contents,
-            review.createdAt,
-            review.updatedAt,
-            user.id,
-            user.name,
-            user.socialInfo.socialType
-        ))
-            .from(review)
-            .leftJoin(user).on(review.userId.eq(user.id))
-            .where(
-                review.storeId.eq(storeId),
-                review.status.eq(ReviewStatus.POSTED)
-            ).fetch();
-    }
-
-    @Override
     public List<Review> findAllByStoreId(Long storeId) {
         return queryFactory.selectFrom(review)
             .where(
@@ -76,7 +54,29 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     }
 
     @Override
-    public List<ReviewWithStoreAndCreatorProjection> findAllByUserIdWithScroll(Long userId, Long lastStoreId, int size) {
+    public List<ReviewWithWriterProjection> findAllWithCreatorByStoreId(Long storeId) {
+        return queryFactory.select(new QReviewWithWriterProjection(
+            review.id,
+            review.rating.rating,
+            review.contents,
+            review.status,
+            review.createdAt,
+            review.updatedAt,
+            review.storeId,
+            user.id,
+            user.name,
+            user.socialInfo.socialType
+        ))
+            .from(review)
+            .leftJoin(user).on(review.userId.eq(user.id))
+            .where(
+                review.storeId.eq(storeId),
+                review.status.eq(ReviewStatus.POSTED)
+            ).fetch();
+    }
+
+    @Override
+    public List<ReviewWithWriterProjection> findAllByUserIdWithScroll(Long userId, Long lastStoreId, int size) {
         List<Long> reviewIds = queryFactory.select(review.id)
             .from(review)
             .innerJoin(user).on(review.userId.eq(user.id))
@@ -91,7 +91,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
             .limit(size)
             .fetch();
 
-        return queryFactory.select(new QReviewWithStoreAndCreatorProjection(
+        return queryFactory.select(new QReviewWithWriterProjection(
             review.id,
             review.rating.rating,
             review.contents,

@@ -3,7 +3,7 @@ package com.depromeet.threedollar.api.service.review;
 import com.depromeet.threedollar.api.service.review.dto.request.RetrieveMyReviewsRequest;
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewScrollResponse;
 import com.depromeet.threedollar.domain.domain.review.ReviewRepository;
-import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithStoreAndCreatorProjection;
+import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithWriterProjection;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class ReviewRetrieveService {
 
     @Transactional(readOnly = true)
     public ReviewScrollResponse retrieveMyReviews(RetrieveMyReviewsRequest request, Long userId) {
-        List<ReviewWithStoreAndCreatorProjection> currentAndNextScrollReviews =
+        List<ReviewWithWriterProjection> currentAndNextScrollReviews =
             reviewRepository.findAllByUserIdWithScroll(userId, request.getCursor(), request.getSize() + 1);
         Map<Long, Store> cachedStores = findStoreMaps(currentAndNextScrollReviews);
 
@@ -36,18 +36,18 @@ public class ReviewRetrieveService {
             );
         }
 
-        List<ReviewWithStoreAndCreatorProjection> currentScrollReviews = currentAndNextScrollReviews.subList(0, request.getSize());
+        List<ReviewWithWriterProjection> currentScrollReviews = currentAndNextScrollReviews.subList(0, request.getSize());
         return ReviewScrollResponse.of(
             currentScrollReviews,
             Objects.requireNonNullElseGet(request.getCachingTotalElements(), () -> reviewRepository.findCountsByUserId(userId)),
             cachedStores,
-            currentScrollReviews.get(request.getSize() - 1).getId()
+            currentScrollReviews.get(request.getSize() - 1).getReviewId()
         );
     }
 
-    private Map<Long, Store> findStoreMaps(List<ReviewWithStoreAndCreatorProjection> reviews) {
+    private Map<Long, Store> findStoreMaps(List<ReviewWithWriterProjection> reviews) {
         List<Long> storeIds = reviews.stream()
-            .map(ReviewWithStoreAndCreatorProjection::getStoreId)
+            .map(ReviewWithWriterProjection::getStoreId)
             .collect(Collectors.toList());
         return storeRepository.findAllByIds(storeIds).stream()
             .collect(Collectors.toMap(Store::getId, store -> store));

@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Service
 public class StoreRatingService {
@@ -24,8 +22,7 @@ public class StoreRatingService {
     }
 
     private double calculateAverageRating(Long storeId) {
-        List<Review> reviews = reviewRepository.findAllByStoreId(storeId);
-        return reviews.stream()
+        return reviewRepository.findAllByStoreId(storeId).stream()
             .mapToInt(Review::getRating)
             .average()
             .orElse(0);

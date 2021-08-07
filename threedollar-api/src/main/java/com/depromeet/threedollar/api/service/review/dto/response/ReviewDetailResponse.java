@@ -4,7 +4,7 @@ import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import com.depromeet.threedollar.application.common.dto.AuditingTimeResponse;
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.review.ReviewStatus;
-import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithStoreAndCreatorProjection;
+import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithWriterProjection;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import lombok.*;
 
@@ -37,9 +37,9 @@ public class ReviewDetailResponse extends AuditingTimeResponse {
         this.categories.addAll(categories);
     }
 
-    public static ReviewDetailResponse of(ReviewWithStoreAndCreatorProjection review, Store store) {
+    public static ReviewDetailResponse of(ReviewWithWriterProjection review, Store store) {
         ReviewDetailResponse response = ReviewDetailResponse.builder()
-            .reviewId(review.getId())
+            .reviewId(review.getReviewId())
             .rating(review.getRating())
             .contents(review.getContents())
             .status(review.getStatus())

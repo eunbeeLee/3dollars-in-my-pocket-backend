@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.review.dto.response;
 
-import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithStoreAndCreatorProjection;
+import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithWriterProjection;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import lombok.*;
 
@@ -24,7 +24,7 @@ public class ReviewScrollResponse {
         this.nextCursor = nextCursor;
     }
 
-    public static ReviewScrollResponse of(List<ReviewWithStoreAndCreatorProjection> reviews,
+    public static ReviewScrollResponse of(List<ReviewWithWriterProjection> reviews,
                                           long totalElements, Map<Long, Store> cachedStores, Long nextCursor) {
         List<ReviewDetailResponse> contents = reviews.stream()
             .map(review -> ReviewDetailResponse.of(review, cachedStores.get(review.getStoreId())))
@@ -32,7 +32,7 @@ public class ReviewScrollResponse {
         return new ReviewScrollResponse(contents, totalElements, nextCursor);
     }
 
-    public static ReviewScrollResponse newLastScroll(List<ReviewWithStoreAndCreatorProjection> reviews,
+    public static ReviewScrollResponse newLastScroll(List<ReviewWithWriterProjection> reviews,
                                                      long totalElements, Map<Long, Store> cachedStores) {
         return of(reviews, totalElements, cachedStores, null);
     }

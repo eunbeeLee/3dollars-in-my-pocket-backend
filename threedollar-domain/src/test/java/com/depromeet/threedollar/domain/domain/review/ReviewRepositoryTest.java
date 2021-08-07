@@ -47,8 +47,8 @@ class ReviewRepositoryTest {
         assertReviewWithCreatorDto(reviews.get(0), review.getId(), review.getRating(), review.getContents(), user.getId(), user.getName(), user.getSocialType());
     }
 
-    private void assertReviewWithCreatorDto(ReviewWithWriterProjection review, Long id, int rating, String contents, Long userId, String name, UserSocialType socialType) {
-        assertThat(review.getId()).isEqualTo(id);
+    private void assertReviewWithCreatorDto(ReviewWithWriterProjection review, Long reviewId, int rating, String contents, Long userId, String name, UserSocialType socialType) {
+        assertThat(review.getReviewId()).isEqualTo(reviewId);
         assertThat(review.getRating()).isEqualTo(rating);
         assertThat(review.getContents()).isEqualTo(contents);
         assertThat(review.getUserId()).isEqualTo(userId);
