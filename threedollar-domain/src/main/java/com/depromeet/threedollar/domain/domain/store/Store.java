@@ -59,18 +59,25 @@ public class Store extends AuditingTimeEntity {
     @Enumerated(EnumType.STRING)
     private StoreStatus status;
 
-    @Builder
-    private Store(Long userId, double latitude, double longitude, String name, StoreType type) {
+    @Builder(access = AccessLevel.PACKAGE)
+    private Store(Long userId, double latitude, double longitude, String name, StoreType type, double rating) {
         this.userId = userId;
         this.location = Location.of(latitude, longitude);
         this.name = name;
         this.type = type;
-        this.rating = 0.0;
+        this.rating = rating;
         this.status = StoreStatus.ACTIVE;
     }
 
     public static Store newInstance(Long userId, double latitude, double longitude, String storeName, StoreType storeType) {
-        return new Store(userId, latitude, longitude, storeName, storeType);
+        return Store.builder()
+            .userId(userId)
+            .latitude(latitude)
+            .longitude(longitude)
+            .name(storeName)
+            .type(storeType)
+            .rating(0.0)
+            .build();
     }
 
     public void addPaymentMethods(Set<PaymentMethodType> types) {

@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 
 @ToString
 @Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RetrieveStoreGroupByCategoryRequest {
 
@@ -25,5 +24,14 @@ public class RetrieveStoreGroupByCategoryRequest {
 
     @NotNull(message = "{menu.category.notNull}")
     private MenuCategoryType category;
+
+    @Builder(builderMethodName = "testBuilder")
+    public RetrieveStoreGroupByCategoryRequest(Double latitude, Double longitude, Double mapLatitude, Double mapLongitude, MenuCategoryType category) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.mapLatitude = mapLatitude;
+        this.mapLongitude = mapLongitude;
+        this.category = category;
+    }
 
 }
