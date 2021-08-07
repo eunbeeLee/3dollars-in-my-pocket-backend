@@ -356,6 +356,103 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
     }
 
+    @DisplayName("GET /api/v2/stores/distance")
+    @Nested
+    class 가게_리스트_거리수_그룹화_조회 {
+
+        @Test
+        void 특정_카테고리의_가게_리스트를_리뷰_평가_점수로_그룹화해서_보여준다() throws Exception {
+            // given
+            Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34.0001, 124, 1);
+            store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG)));
+
+            Store store2 = StoreCreator.create(testUser.getId(), "가게1", 34.001, 124, 1);
+            store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG)));
+
+            storeRepository.saveAll(Arrays.asList(store1, store2));
+
+            RetrieveStoreGroupByCategoryRequest request = RetrieveStoreGroupByCategoryRequest.testBuilder()
+                .category(MenuCategoryType.BUNGEOPPANG)
+                .latitude(34.0)
+                .longitude(124.0)
+                .mapLatitude(34.0)
+                .mapLongitude(124.0)
+                .build();
+
+            // when
+            ApiResponse<StoresGroupByDistanceResponse> response = storeRetrieveMockApiCaller.getStoresByDistance(request, 200);
+
+            assertThat(response.getData().getStoreList50()).hasSize(1);
+            assertThat(response.getData().getStoreList50().get(0).getStoreId()).isEqualTo(store1.getId());
+
+            assertThat(response.getData().getStoreList100()).isEmpty();
+
+            assertThat(response.getData().getStoreList500()).hasSize(1);
+            assertThat(response.getData().getStoreList500().get(0).getStoreId()).isEqualTo(store2.getId());
+
+            assertThat(response.getData().getStoreList1000()).isEmpty();
+            assertThat(response.getData().getStoreListOver1000()).isEmpty();
+        }
+
+        @Test
+        void 같은_그룹내에서_거리가_가까운_순서대로_조회된다() throws Exception {
+            // given
+            Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34.00015, 124, 1);
+            store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG)));
+
+            Store store2 = StoreCreator.create(testUser.getId(), "가게1", 34.0001, 124, 1);
+            store2.addMenus(Collections.singletonList(MenuCreator.create(store2, "메뉴2", "가격2", MenuCategoryType.BUNGEOPPANG)));
+
+            storeRepository.saveAll(Arrays.asList(store1, store2));
+
+            RetrieveStoreGroupByCategoryRequest request = RetrieveStoreGroupByCategoryRequest.testBuilder()
+                .category(MenuCategoryType.BUNGEOPPANG)
+                .latitude(34.0)
+                .longitude(124.0)
+                .mapLatitude(34.0)
+                .mapLongitude(124.0)
+                .build();
+
+            // when
+            ApiResponse<StoresGroupByDistanceResponse> response = storeRetrieveMockApiCaller.getStoresByDistance(request, 200);
+
+            assertThat(response.getData().getStoreList50()).hasSize(2);
+            assertThat(response.getData().getStoreList50().get(0).getStoreId()).isEqualTo(store2.getId());
+            assertThat(response.getData().getStoreList50().get(1).getStoreId()).isEqualTo(store1.getId());
+        }
+
+        @Test
+        void 다른_카테고리는_조회되지_않는다() throws Exception {
+            // given
+            Store store = StoreCreator.create(testUser.getId(), "가게1", 34, 124, 1.1);
+            store.addMenus(Arrays.asList(
+                MenuCreator.create(store, "메뉴1", "가격1", MenuCategoryType.EOMUK),
+                MenuCreator.create(store, "메뉴2", "가격2", MenuCategoryType.GUKWAPPANG),
+                MenuCreator.create(store, "메뉴3", "가격3", MenuCategoryType.GYERANPPANG)
+            ));
+            storeRepository.save(store);
+
+            RetrieveStoreGroupByCategoryRequest request = RetrieveStoreGroupByCategoryRequest.testBuilder()
+                .category(MenuCategoryType.BUNGEOPPANG)
+                .latitude(34.0)
+                .longitude(124.0)
+                .mapLatitude(34.0)
+                .mapLongitude(124.0)
+                .build();
+
+            // when
+            ApiResponse<StoresGroupByDistanceResponse> response = storeRetrieveMockApiCaller.getStoresByDistance(request, 200);
+
+            // then
+            assertThat(response.getData().getStoreList50()).isEmpty();
+            assertThat(response.getData().getStoreList100()).isEmpty();
+            assertThat(response.getData().getStoreList500()).isEmpty();
+            assertThat(response.getData().getStoreList1000()).isEmpty();
+            assertThat(response.getData().getStoreListOver1000()).isEmpty();
+        }
+
+    }
+
     @DisplayName("GET /api/v2/stores/review")
     @Nested
     class 가게_리스트_리뷰_평가_점수_그룹화_조회 {
@@ -462,6 +559,9 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
             // then
             assertThat(response.getData().getStoreList1()).isEmpty();
+            assertThat(response.getData().getStoreList2()).isEmpty();
+            assertThat(response.getData().getStoreList3()).isEmpty();
+            assertThat(response.getData().getStoreList4()).isEmpty();
         }
 
     }

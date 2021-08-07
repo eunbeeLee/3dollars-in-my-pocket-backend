@@ -82,7 +82,7 @@ class StoreRetrieveMockApiCaller extends MockMvcUtils {
         );
     }
 
-    public ApiResponse<StoresGroupByDistanceResponse> getStoresByCategory(RetrieveStoreGroupByCategoryRequest request, int expectedStatus) throws Exception {
+    public ApiResponse<StoresGroupByDistanceResponse> getStoresByDistance(RetrieveStoreGroupByCategoryRequest request, int expectedStatus) throws Exception {
         MockHttpServletRequestBuilder builder = get("/api/v2/stores/distance")
             .param("latitude", String.valueOf(request.getLatitude()))
             .param("longitude", String.valueOf(request.getLongitude()))
