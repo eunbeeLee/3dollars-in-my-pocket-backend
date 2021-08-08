@@ -20,8 +20,3 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
-  mvc:
-    log-request-details: true
-logging:
-  file:
-    path: logs/api/

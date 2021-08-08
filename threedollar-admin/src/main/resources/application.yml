@@ -10,8 +10,3 @@ spring:
       - domain
       - jwt
       - security
-  mvc:
-    log-request-details: true
-logging:
-  file:
-    path: logs/admin/

@@ -25,35 +25,35 @@ class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException::class)
     private fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ApiResponse<Nothing> {
-        logger.info { e }
+        logger.error { e }
         return ApiResponse.error(VALIDATION_EXCEPTION, e.bindingResult.allErrors[0].defaultMessage)
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException::class)
     private fun handleBadRequest(e: BindException): ApiResponse<Nothing> {
-        logger.info { e }
+        logger.error { e }
         return ApiResponse.error(VALIDATION_EXCEPTION, e.bindingResult.allErrors[0].defaultMessage)
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MissingRequestHeaderException::class)
     private fun handleMissingRequestHeaderException(e: MissingRequestHeaderException): ApiResponse<Nothing> {
-        logger.info { e }
+        logger.error { e }
         return ApiResponse.error(VALIDATION_EXCEPTION, e.message)
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(InvalidFormatException::class)
     private fun handleInvalidFormatException(e: InvalidFormatException): ApiResponse<Nothing> {
-        logger.info { e }
+        logger.error { e }
         return ApiResponse.error(VALIDATION_EXCEPTION)
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ValidationException::class)
     private fun handleValidationException(e: ValidationException): ApiResponse<Nothing> {
-        logger.info { e }
+        logger.error { e }
         return ApiResponse.error(e.errorCode)
     }
 
@@ -63,7 +63,7 @@ class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnAuthorizedException::class)
     private fun handleUnAuthorizedException(e: UnAuthorizedException): ApiResponse<Nothing> {
-        logger.info { e }
+        logger.error { e }
         return ApiResponse.error(e.errorCode)
     }
 
@@ -73,7 +73,7 @@ class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(ForbiddenException::class)
     private fun handleConflictException(e: ForbiddenException): ApiResponse<Nothing> {
-        logger.info { e }
+        logger.error { e }
         return ApiResponse.error(e.errorCode)
     }
 
@@ -83,7 +83,7 @@ class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException::class)
     private fun handleNotFoundException(e: NotFoundException): ApiResponse<Nothing> {
-        logger.info { e }
+        logger.error{ e }
         return ApiResponse.error(e.errorCode)
     }
 
@@ -93,7 +93,7 @@ class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
     private fun handleHttpRequestMethodNotSupportedException(e: HttpRequestMethodNotSupportedException): ApiResponse<Nothing> {
-        logger.info { e }
+        logger.error { e }
         return ApiResponse.error(METHOD_NOT_ALLOWED_EXCEPTION)
     }
 
@@ -103,7 +103,7 @@ class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ConflictException::class)
     private fun handleConflictException(e: ConflictException): ApiResponse<Nothing> {
-        logger.info { e }
+        logger.error { e }
         return ApiResponse.error(e.errorCode)
     }
 
@@ -113,7 +113,7 @@ class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_GATEWAY)
     @ExceptionHandler(BadGatewayException::class)
     private fun handleBadGatewayException(e: BadGatewayException): ApiResponse<Nothing> {
-        logger.info { e }
+        logger.error { e }
         return ApiResponse.error(e.errorCode)
     }
 
@@ -123,7 +123,7 @@ class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     @ExceptionHandler(ServiceUnAvailableException::class)
     private fun handleServiceUnAvailableException(e: ServiceUnAvailableException): ApiResponse<Nothing> {
-        logger.info { e }
+        logger.error { e }
         return ApiResponse.error(e.errorCode)
     }
 
@@ -133,7 +133,7 @@ class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception::class)
     private fun handleInternalServerException(e: Exception): ApiResponse<Nothing> {
-        logger.info { e }
+        logger.error { e }
         return ApiResponse.error(INTERNAL_SERVER_EXCEPTION)
     }
 
