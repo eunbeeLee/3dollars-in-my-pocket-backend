@@ -16,3 +16,5 @@ management:
   endpoint:
     health:
       show-details: always
+    logfile:
+      external-file: /logs/threedollar-api/info.log
