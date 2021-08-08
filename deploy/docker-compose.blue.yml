@@ -4,7 +4,7 @@ services:
     image: ${API_IMAGE}:${TAG}
     ports:
       - 5001:5000
-    command: java -jar /threedollar-api.jar
+    command: java -Xlog:gc*:file=logs/gc.log:time,uptime -XX:+HeapDumpOnOutOfMemoryError -jar /threedollar-api.jar
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
       - "ADMIN_SERVER_URL=http://admin:4000"
@@ -12,7 +12,7 @@ services:
       - "redis:redis"
       - "admin:admin"
     volumes:
-      - ~/logs/api:/logs/api
+      - ~/logs:/logs
   redis:
     image: redis
     command: redis-server --port 6379
@@ -26,4 +26,4 @@ services:
     environment:
       - "SPRING_PROFILES_ACTIVE=local"
     volumes:
-      - ~/logs/admin:/logs/admin
+      - ~/logs:/logs
