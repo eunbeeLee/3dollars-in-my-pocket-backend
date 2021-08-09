@@ -14,7 +14,6 @@ public class ReviewWithWriterProjection {
     private final Long reviewId;
     private final int rating;
     private final String contents;
-    private final ReviewStatus status;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
@@ -25,13 +24,11 @@ public class ReviewWithWriterProjection {
     private final UserSocialType userSocialType;
 
     @QueryProjection
-    public ReviewWithWriterProjection(Long reviewId, int rating, String contents, ReviewStatus status, LocalDateTime createdAt,
-                                      LocalDateTime updatedAt, Long storeId, Long userId, String userName,
-                                      UserSocialType userSocialType) {
+    public ReviewWithWriterProjection(Long reviewId, int rating, String contents, LocalDateTime createdAt, LocalDateTime updatedAt,
+                                      Long storeId, Long userId, String userName, UserSocialType userSocialType) {
         this.reviewId = reviewId;
         this.rating = rating;
         this.contents = contents;
-        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.storeId = storeId;

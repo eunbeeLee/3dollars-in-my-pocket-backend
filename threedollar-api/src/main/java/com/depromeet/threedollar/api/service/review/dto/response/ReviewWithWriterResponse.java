@@ -2,7 +2,6 @@ package com.depromeet.threedollar.api.service.review.dto.response;
 
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import com.depromeet.threedollar.application.common.dto.AuditingTimeResponse;
-import com.depromeet.threedollar.domain.domain.review.ReviewStatus;
 import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithWriterProjection;
 import lombok.*;
 
@@ -14,15 +13,13 @@ public class ReviewWithWriterResponse extends AuditingTimeResponse {
     private Long reviewId;
     private int rating;
     private String contents;
-    private ReviewStatus status;
     private UserInfoResponse user;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private ReviewWithWriterResponse(Long reviewId, int rating, String contents, ReviewStatus status, UserInfoResponse user) {
+    private ReviewWithWriterResponse(Long reviewId, int rating, String contents, UserInfoResponse user) {
         this.reviewId = reviewId;
         this.rating = rating;
         this.contents = contents;
-        this.status = status;
         this.user = user;
     }
 
@@ -31,7 +28,6 @@ public class ReviewWithWriterResponse extends AuditingTimeResponse {
             .reviewId(projection.getReviewId())
             .rating(projection.getRating())
             .contents(projection.getContents())
-            .status(projection.getStatus())
             .user(UserInfoResponse.of(projection.getUserId(), projection.getUserName(), projection.getUserSocialType()))
             .build();
         response.setBaseTime(projection.getCreatedAt(), projection.getUpdatedAt());

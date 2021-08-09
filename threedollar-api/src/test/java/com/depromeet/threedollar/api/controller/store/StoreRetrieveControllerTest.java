@@ -570,7 +570,6 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertThat(response.getReviewId()).isEqualTo(review.getId());
         assertThat(response.getContents()).isEqualTo(review.getContents());
         assertThat(response.getRating()).isEqualTo(review.getRating());
-        assertThat(response.getStatus()).isEqualTo(review.getStatus());
     }
 
     private void assertStoreInfoResponse(StoreInfoResponse response, Store store) {

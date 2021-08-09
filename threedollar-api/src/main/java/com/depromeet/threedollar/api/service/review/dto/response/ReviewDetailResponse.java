@@ -3,7 +3,6 @@ package com.depromeet.threedollar.api.service.review.dto.response;
 import com.depromeet.threedollar.api.service.user.dto.response.UserInfoResponse;
 import com.depromeet.threedollar.application.common.dto.AuditingTimeResponse;
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
-import com.depromeet.threedollar.domain.domain.review.ReviewStatus;
 import com.depromeet.threedollar.domain.domain.review.projection.ReviewWithWriterProjection;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import lombok.*;
@@ -19,18 +18,17 @@ public class ReviewDetailResponse extends AuditingTimeResponse {
     private Long reviewId;
     private int rating;
     private String contents;
-    private ReviewStatus status;
     private Long storeId;
     private String storeName;
     private UserInfoResponse user;
     private final List<MenuCategoryType> categories = new ArrayList<>();
 
     @Builder(access = AccessLevel.PRIVATE)
-    private ReviewDetailResponse(Long reviewId, int rating, String contents, ReviewStatus status, Long storeId, String storeName, UserInfoResponse user, List<MenuCategoryType> categories) {
+    private ReviewDetailResponse(Long reviewId, int rating, String contents, Long storeId, String storeName,
+                                 UserInfoResponse user, List<MenuCategoryType> categories) {
         this.reviewId = reviewId;
         this.rating = rating;
         this.contents = contents;
-        this.status = status;
         this.storeId = storeId;
         this.storeName = storeName;
         this.user = user;
@@ -42,7 +40,6 @@ public class ReviewDetailResponse extends AuditingTimeResponse {
             .reviewId(review.getReviewId())
             .rating(review.getRating())
             .contents(review.getContents())
-            .status(review.getStatus())
             .storeId(review.getStoreId())
             .storeName(store.getName())
             .user(UserInfoResponse.of(review.getUserId(), review.getUserName(), review.getUserSocialType()))
