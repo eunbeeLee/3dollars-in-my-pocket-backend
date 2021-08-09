@@ -16,11 +16,11 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60 * 60 * 24 * 15) // 15일 만료
 public class RedisSessionConfig {
 
-    private final RedisProperties redisProperties;
+    private final RedisProperties properties;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(redisProperties.getHost(), redisProperties.getPort());
+        return new LettuceConnectionFactory(properties.getHost(), properties.getPort());
     }
 
     @Bean

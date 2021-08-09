@@ -26,14 +26,20 @@ import static com.depromeet.threedollar.common.utils.ProcessUtils.isRunningPort;
 @Configuration
 public class EmbeddedS3Config {
 
-    @Value("${cloud.aws.region.static}")
-    private String region;
+    private final String region;
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+    private final String bucket;
 
-    @Value("${cloud.aws.s3.mock.port}")
     private int port;
+
+    public EmbeddedS3Config(
+        @Value("${cloud.aws.region.static}") String region,
+        @Value("${cloud.aws.s3.bucket}") String bucket,
+        @Value("${cloud.aws.s3.mock.port}") int port) {
+        this.region = region;
+        this.bucket = bucket;
+        this.port = port;
+    }
 
     @Bean
     public S3Mock s3Mock() {

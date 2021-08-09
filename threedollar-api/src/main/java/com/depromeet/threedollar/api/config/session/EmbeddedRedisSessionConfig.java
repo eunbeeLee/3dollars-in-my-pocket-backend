@@ -1,8 +1,6 @@
 package com.depromeet.threedollar.api.config.session;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -23,29 +21,31 @@ import static com.depromeet.threedollar.common.utils.ProcessUtils.isRunningPort;
  */
 @Slf4j
 @Profile({"local", "local-will"})
-@RequiredArgsConstructor
 @Configuration
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60 * 60 * 24 * 15) // 15일 만료
 public class EmbeddedRedisSessionConfig {
 
-    @Value("${spring.redis.host}")
-    private String host;
+    private final String host;
 
-    @Value("${spring.redis.port}")
-    private int redisPort;
+    private int port;
 
     private RedisServer redisServer;
 
+    public EmbeddedRedisSessionConfig(RedisProperties properties) {
+        this.host = properties.getHost();
+        this.port = properties.getPort();
+    }
+
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(host, redisPort);
+        return new LettuceConnectionFactory(host, port);
     }
 
     @PostConstruct
     public void redisServer() throws IOException {
-        redisPort = isRunningPort(redisPort) ? findAvailableRandomPort() : redisPort;
-        log.info("인메모리 레디스 서버가 기동되었습니다. port {}", redisPort);
-        redisServer = new RedisServer(redisPort);
+        port = isRunningPort(port) ? findAvailableRandomPort() : port;
+        log.info("인메모리 레디스 서버가 기동되었습니다. port {}", port);
+        redisServer = new RedisServer(port);
         redisServer.start();
     }
 
@@ -53,7 +53,7 @@ public class EmbeddedRedisSessionConfig {
     public void stopRedis() {
         if (redisServer != null) {
             redisServer.stop();
-            log.info("인메모리 레디스 서버가 종료됩니다. port: {}", redisPort);
+            log.info("인메모리 레디스 서버가 종료됩니다. port: {}", port);
         }
     }
 
