@@ -5,10 +5,11 @@ import com.depromeet.threedollar.common.exception.*;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingRequestHeaderException;
+import org.springframework.web.bind.*;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,38 +27,29 @@ public class ControllerExceptionAdvice {
      * 잘못된 입력이 들어왔을 경우 발생하는 Exception
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ApiResponse<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error(e.getMessage(), e);
-        return ApiResponse.error(VALIDATION_EXCEPTION, Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
-    protected ApiResponse<Object> handleBadRequest(BindException e) {
+    protected ApiResponse<Object> handleBadRequest(final BindException e) {
         log.error(e.getMessage(), e);
         return ApiResponse.error(VALIDATION_EXCEPTION, Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MissingRequestHeaderException.class)
-    protected ApiResponse<Object> handleMissingRequestHeaderException(MissingRequestHeaderException e) {
-        log.error(e.getMessage(), e);
-        return ApiResponse.error(VALIDATION_EXCEPTION, e.getMessage());
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(InvalidFormatException.class)
-    protected ApiResponse<Object> handleMethodArgumentTypeMismatchException(InvalidFormatException e) {
+    @ExceptionHandler({
+        HttpMessageNotReadableException.class,
+        InvalidFormatException.class,
+        MissingRequestValueException.class,
+        ServletRequestBindingException.class
+    })
+    protected ApiResponse<Object> handleInvalidFormatException(final Exception e) {
         log.error(e.getMessage(), e);
         return ApiResponse.error(VALIDATION_EXCEPTION);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ValidationException.class)
-    protected ApiResponse<Object> handleValidationException(final ValidationException exception) {
-        log.error(exception.getMessage(), exception);
-        return ApiResponse.error(exception.getErrorCode());
+    protected ApiResponse<Object> handleValidationException(final ValidationException e) {
+        log.error(e.getMessage(), e);
+        return ApiResponse.error(e.getErrorCode());
     }
 
     /**
@@ -100,7 +92,7 @@ public class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     protected ApiResponse<Object> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        log.error(e.getMessage(), e);
+        log.error(e.getMessage());
         return ApiResponse.error(METHOD_NOT_ALLOWED_EXCEPTION);
     }
 
@@ -113,6 +105,17 @@ public class ControllerExceptionAdvice {
     protected ApiResponse<Object> handleConflictException(final ConflictException exception) {
         log.error(exception.getMessage(), exception);
         return ApiResponse.error(exception.getErrorCode());
+    }
+
+    /**
+     * 415 UnSupported Media Type
+     * 지원하지 않는 미디어 타입인 경우 발생하는 Exception
+     */
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    @ExceptionHandler(HttpMediaTypeException.class)
+    protected ApiResponse<Object> handleHttpMediaTypeException(final HttpMediaTypeException e) {
+        log.error(e.getMessage(), e);
+        return ApiResponse.error(UNSUPPORTED_MEDIA_TYPE);
     }
 
     /**

@@ -18,6 +18,7 @@ public enum ErrorCode {
     METHOD_NOT_ALLOWED_EXCEPTION("C007", "지원하지 않는 메소드 입니다"),
     BAD_GATEWAY_EXCEPTION("C008", "외부 연동 중 에러가 발생하였습니다"),
     SERVICE_UNAVAILABLE_EXCEPTION("C009", "서비스를 이용하실 수 없습니다"),
+    UNSUPPORTED_MEDIA_TYPE("C010", "해당하는 미디어 타입을 지원하지 않습니다"),
 
     // Not Found Exception
     NOT_FOUND_USER_EXCEPTION("N001", "존재하지 않는 유저입니다"),
