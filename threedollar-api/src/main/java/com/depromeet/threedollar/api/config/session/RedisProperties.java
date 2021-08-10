@@ -1,18 +1,21 @@
 package com.depromeet.threedollar.api.config.session;
 
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConstructorBinding;
 
+@ToString
 @Getter
-@Setter
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@ConstructorBinding
 @ConfigurationProperties("spring.redis")
-@Component
 public class RedisProperties {
 
-    private String host;
+    private final String host;
 
-    private int port;
+    private final int port;
 
 }

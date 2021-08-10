@@ -35,7 +35,8 @@ public class EmbeddedS3Config {
     public EmbeddedS3Config(
         @Value("${cloud.aws.region.static}") String region,
         @Value("${cloud.aws.s3.bucket}") String bucket,
-        @Value("${cloud.aws.s3.mock.port}") int port) {
+        @Value("${cloud.aws.s3.mock.port}") int port
+    ) {
         this.region = region;
         this.bucket = bucket;
         this.port = port;

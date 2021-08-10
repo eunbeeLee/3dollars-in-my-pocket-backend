@@ -1,18 +1,16 @@
 package com.depromeet.threedollar.external.external.kakao.dto.component;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ToString
 @Getter
-@Setter
-@Component
-@ConfigurationProperties(prefix = "kakao.profile")
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@ConstructorBinding
+@ConfigurationProperties("kakao.profile")
 public class KaKaoProfileComponent {
 
-    private String url;
+    private final String url;
 
 }

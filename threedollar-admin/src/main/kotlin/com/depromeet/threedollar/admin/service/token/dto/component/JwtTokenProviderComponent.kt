@@ -1,11 +1,11 @@
 package com.depromeet.threedollar.admin.service.token.dto.component
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.context.annotation.Configuration
+import org.springframework.boot.context.properties.ConstructorBinding
 
+@ConstructorBinding
 @ConfigurationProperties(prefix = "jwt")
-@Configuration
-class JwtTokenProviderComponent {
-    lateinit var secretKey: String
-    lateinit var issuer: String
-}
+data class JwtTokenProviderComponent(
+    val secretKey: String,
+    val issuer: String
+)

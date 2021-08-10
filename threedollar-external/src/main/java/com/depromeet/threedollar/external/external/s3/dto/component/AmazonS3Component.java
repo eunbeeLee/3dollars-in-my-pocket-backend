@@ -1,16 +1,16 @@
 package com.depromeet.threedollar.external.external.s3.dto.component;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConstructorBinding;
 
+@ToString
 @Getter
-@Setter
-@ConfigurationProperties(prefix = "cloud.aws.s3")
-@Component
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@ConstructorBinding
+@ConfigurationProperties("cloud.aws.s3")
 public class AmazonS3Component {
 
-    private String bucket;
+    private final String bucket;
 
 }
