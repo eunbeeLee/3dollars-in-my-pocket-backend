@@ -3,7 +3,6 @@ package com.depromeet.threedollar.api.controller.auth;
 import com.depromeet.threedollar.api.config.interceptor.Auth;
 import com.depromeet.threedollar.api.config.resolver.UserId;
 import com.depromeet.threedollar.application.common.dto.ApiResponse;
-import com.depromeet.threedollar.api.config.session.UserSession;
 import com.depromeet.threedollar.api.service.auth.AuthService;
 import com.depromeet.threedollar.api.service.auth.dto.request.LoginRequest;
 import com.depromeet.threedollar.api.service.auth.dto.request.SignOutRequest;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import static com.depromeet.threedollar.api.config.session.SessionConstants.USER_SESSION;
+import static com.depromeet.threedollar.api.config.session.SessionConstants.USER_ID;
 
 @RequiredArgsConstructor
 @RestController
@@ -36,7 +35,7 @@ public class AuthController {
     @PostMapping("/api/v2/signup")
     public ApiResponse<LoginResponse> signUp(@Valid @RequestBody SignUpRequest request) {
         Long userId = signUpBySocialType(request);
-        httpSession.setAttribute(USER_SESSION, UserSession.of(userId));
+        httpSession.setAttribute(USER_ID, userId);
         return ApiResponse.success(LoginResponse.of(httpSession.getId()));
     }
 
@@ -54,7 +53,7 @@ public class AuthController {
     @PostMapping("/api/v2/login")
     public ApiResponse<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         Long userId = loginBySocialType(request);
-        httpSession.setAttribute(USER_SESSION, UserSession.of(userId));
+        httpSession.setAttribute(USER_ID, userId);
         return ApiResponse.success(LoginResponse.of(httpSession.getId()));
     }
 
@@ -95,7 +94,7 @@ public class AuthController {
     @Auth
     @PostMapping("/api/v2/logout")
     public ApiResponse<String> logout() {
-        httpSession.invalidate();
+        httpSession.removeAttribute(USER_ID);
         return ApiResponse.SUCCESS;
     }
 

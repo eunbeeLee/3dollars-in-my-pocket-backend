@@ -1,7 +1,6 @@
 package com.depromeet.threedollar.api.controller;
 
 import com.depromeet.threedollar.application.common.dto.ApiResponse;
-import com.depromeet.threedollar.api.config.session.UserSession;
 import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 
-import static com.depromeet.threedollar.api.config.session.SessionConstants.USER_SESSION;
+import static com.depromeet.threedollar.api.config.session.SessionConstants.USER_ID;
 
 @Profile({"local", "local-will", "dev"})
 @RequiredArgsConstructor
@@ -33,7 +32,7 @@ public class LocalTestController {
         if (user == null) {
             user = userRepository.save(testUser);
         }
-        httpSession.setAttribute(USER_SESSION, UserSession.of(user.getId()));
+        httpSession.setAttribute(USER_ID, user.getId());
         return ApiResponse.success(LoginResponse.of(httpSession.getId()));
     }
 
