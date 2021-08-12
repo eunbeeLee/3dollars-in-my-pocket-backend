@@ -206,6 +206,22 @@ class ReviewServiceTest extends UserSetUpTest {
         }
 
         @Test
+        void 리뷰가_삭제되면_남은_리뷰들로_평균_리뷰점수가_계산된다() {
+            // given
+            Review remainReview = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
+            Review deletedReview = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 5);
+            reviewRepository.saveAll(Arrays.asList(remainReview, deletedReview));
+
+            // when
+            reviewService.deleteReview(deletedReview.getId(), userId);
+
+            // then
+            List<Store> stores = storeRepository.findAll();
+            assertThat(stores).hasSize(1);
+            assertThat(stores.get(0).getRating()).isEqualTo(3);
+        }
+
+        @Test
         void 가게_평균_리뷰_점수가_갱신되며_아무_리뷰가_없는경우_0점이_된다() {
             // given
             Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
