@@ -11,7 +11,7 @@ jobs:
       - name: checkout@v2
         uses: actions/checkout@v2
 
-      - name: Create rds properties
+      - name: Create application-rds.properties
         env:
           PROFILES: dev
           DB_URI: ${{secrets.JDBC_URI}}
@@ -23,7 +23,7 @@ jobs:
         run: |
           echo -e "spring.config.activate.on-profile=$PROFILES\nspring.datasource.hikari.jdbc-url=$DB_URI\nspring.datasource.hikari.username=$DB_USERNAME\nspring.datasource.hikari.password=$DB_PASSWORD\nspring.datasource.hikari.driver-class-name=$DB_DRIVER" > $RESOURCE_PWD/application-rds.properties
 
-      - name: Create security properties
+      - name: Create application-security.properties
         env:
           USER_NAME: ${{secrets.SECURITY_USER_NAME}}
           USER_PASSWORD: ${{secrets.SECURITY_USER_PASSWORD}}
@@ -33,6 +33,15 @@ jobs:
         run: |
           echo -e "spring.security.user.name=$USER_NAME\nspring.security.user.password=$USER_PASSWORD" > $RESOURCE_PWD/application-security.properties
           echo -e "spring.security.user.name=$USER_NAME\nspring.security.user.password=$USER_PASSWORD" > $ADMIN_RESOURCE_PWD/application-security.properties
+
+      - name: Create application-jwt.properties
+        env:
+          JWT_ISSUER: ${{secrets.JWT_ISSUER}}
+          JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
+
+          RESOURCE_PWD: threedollar-admin/src/main/resources
+        run: |
+          echo -e "jwt.secret_key=$JWT_SECRET_KEY\njwt.issuer=$JWT_ISSUER" > $RESOURCE_PWD/application-jwt.properties
 
       - name: Get Semantic Versioning
         id: dev-version
