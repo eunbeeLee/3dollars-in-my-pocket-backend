@@ -15,7 +15,7 @@ public class UpdateReviewRequest {
     @NotBlank(message = "{review.content.notBlank}")
     private String contents;
 
-    @Min(value = 0, message = "{review.rating.min}")
+    @Min(value = 1, message = "{review.rating.min}")
     @Max(value = 5, message = "{review.rating.max}")
     private int rating;
 

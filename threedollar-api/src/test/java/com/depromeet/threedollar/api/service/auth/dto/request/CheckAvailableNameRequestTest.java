@@ -12,7 +12,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SignUpRequestTest {
+class CheckAvailableNameRequestTest {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
