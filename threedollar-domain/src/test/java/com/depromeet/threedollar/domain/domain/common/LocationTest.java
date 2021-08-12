@@ -1,6 +1,7 @@
 package com.depromeet.threedollar.domain.domain.common;
 
-import com.depromeet.threedollar.common.exception.ValidationException;
+import com.depromeet.threedollar.common.exception.validation.ValidationLatitudeException;
+import com.depromeet.threedollar.common.exception.validation.ValidationLongitudeException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -31,18 +32,30 @@ class LocationTest {
         );
     }
 
-    @MethodSource("wrong_latitude_longitude")
+    @MethodSource("wrong_latitude")
     @ParameterizedTest
-    void 허용된_위도_경도_범위_밖인경우_VALIDATION_EXEPTION(double latitude, double longitude) {
+    void 허용된_위도_범위_밖인경우_VALIDATION_LATITUDE_EXEPTION(double latitude, double longitude) {
         // when & then
-        assertThatThrownBy(() -> Location.of(latitude, longitude)).isInstanceOf(ValidationException.class);
+        assertThatThrownBy(() -> Location.of(latitude, longitude)).isInstanceOf(ValidationLatitudeException.class);
     }
 
-    private static Stream<Arguments> wrong_latitude_longitude() {
+    private static Stream<Arguments> wrong_latitude() {
         return Stream.of(
             Arguments.of(32.999, 124),
+            Arguments.of(43.1, 124)
+        );
+    }
+
+    @MethodSource("wrong_longitude")
+    @ParameterizedTest
+    void 허용된_경도_범위_밖인경우_VALIDATION_LATITUDE_EXEPTION(double latitude, double longitude) {
+        // when & then
+        assertThatThrownBy(() -> Location.of(latitude, longitude)).isInstanceOf(ValidationLongitudeException.class);
+    }
+
+    private static Stream<Arguments> wrong_longitude() {
+        return Stream.of(
             Arguments.of(33, 132.1),
-            Arguments.of(43.1, 124),
             Arguments.of(33, 123.9)
         );
     }

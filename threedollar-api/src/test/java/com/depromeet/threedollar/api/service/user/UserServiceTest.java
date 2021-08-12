@@ -5,7 +5,7 @@ import com.depromeet.threedollar.api.service.user.dto.request.CreateUserRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
 import com.depromeet.threedollar.domain.domain.user.*;
 import com.depromeet.threedollar.common.exception.ConflictException;
-import com.depromeet.threedollar.common.exception.NotFoundException;
+import com.depromeet.threedollar.common.exception.notfound.NotFoundUserException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -108,12 +108,12 @@ class UserServiceTest {
     class 회원_정보_조회 {
 
         @Test
-        void 존재하지_않는_유저면_NOT_FOUND_EXCEPTION() {
+        void 존재하지_않는_유저면_NOT_FOUND_USER_EXCEPTION() {
             // given
             Long userId = 999L;
 
             // when & then
-            assertThatThrownBy(() -> userService.getUserInfo(userId)).isInstanceOf(NotFoundException.class);
+            assertThatThrownBy(() -> userService.getUserInfo(userId)).isInstanceOf(NotFoundUserException.class);
         }
 
     }
@@ -171,13 +171,13 @@ class UserServiceTest {
         }
 
         @Test
-        void 존재하지_않는_유저면_NOT_FOUND_EXCEPTION() {
+        void 존재하지_않는_유저면_NOT_FOUND_USER_EXCEPTION() {
             // given
             Long userId = 999L;
             UpdateUserInfoRequest request = UpdateUserInfoRequest.testInstance("name");
 
             // when & then
-            assertThatThrownBy(() -> userService.updateUserInfo(request, userId)).isInstanceOf(NotFoundException.class);
+            assertThatThrownBy(() -> userService.updateUserInfo(request, userId)).isInstanceOf(NotFoundUserException.class);
         }
 
     }
@@ -224,9 +224,9 @@ class UserServiceTest {
         }
 
         @Test
-        void 해당하는_유저가_없으면_NOT_FOUND_EXCEPTION() {
+        void 해당하는_유저가_없으면_NOT_FOUND_USER_EXCEPTION() {
             // when & then
-            assertThatThrownBy(() -> userService.signOut(999L, UserSocialType.APPLE)).isInstanceOf(NotFoundException.class);
+            assertThatThrownBy(() -> userService.signOut(999L, UserSocialType.APPLE)).isInstanceOf(NotFoundUserException.class);
         }
 
     }

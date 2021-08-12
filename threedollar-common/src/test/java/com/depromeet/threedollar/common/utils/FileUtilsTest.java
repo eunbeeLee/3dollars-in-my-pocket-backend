@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.common.utils;
 
-import com.depromeet.threedollar.common.exception.ValidationException;
+import com.depromeet.threedollar.common.exception.validation.ValidationFileTypeException;
 import com.depromeet.threedollar.common.type.ImageType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,15 +27,15 @@ class FileUtilsTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"image", "video/mp4"})
-    void 허용되지_ContentType_경우_VALIDATION(String contentType) {
+    void 허용되지_ContentType_경우_VALIDATION_FILE_TYPE_EXCEPTION(String contentType) {
         // when & then
-        assertThatThrownBy(() -> FileUtils.createFileUuidNameWithExtension(ImageType.STORE, contentType)).isInstanceOf(ValidationException.class);
+        assertThatThrownBy(() -> FileUtils.createFileUuidNameWithExtension(ImageType.STORE, contentType)).isInstanceOf(ValidationFileTypeException.class);
     }
 
     @Test
-    void ContentType이_널인경우_VALIDATION_에러가_발생한다() {
+    void ContentType이_널인경우_VALIDATION_FILE_TYPE_EXCEPTION() {
         // when & then
-        assertThatThrownBy(() -> FileUtils.validateAvailableImageFile(null)).isInstanceOf(ValidationException.class);
+        assertThatThrownBy(() -> FileUtils.validateAvailableImageFile(null)).isInstanceOf(ValidationFileTypeException.class);
     }
 
     @ParameterizedTest

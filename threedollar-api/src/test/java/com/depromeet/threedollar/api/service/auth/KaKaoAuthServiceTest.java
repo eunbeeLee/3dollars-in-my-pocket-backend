@@ -4,7 +4,7 @@ import com.depromeet.threedollar.api.service.auth.dto.request.LoginRequest;
 import com.depromeet.threedollar.api.service.auth.dto.request.SignUpRequest;
 import com.depromeet.threedollar.api.service.user.UserService;
 import com.depromeet.threedollar.domain.domain.user.*;
-import com.depromeet.threedollar.common.exception.NotFoundException;
+import com.depromeet.threedollar.common.exception.notfound.NotFoundUserException;
 import com.depromeet.threedollar.external.external.kakao.KaKaoApiCaller;
 import com.depromeet.threedollar.external.external.kakao.dto.response.KaKaoProfileResponse;
 import org.junit.jupiter.api.AfterEach;
@@ -65,12 +65,12 @@ class KaKaoAuthServiceTest {
         }
 
         @Test
-        void 가입한_유저가_아니면_NOT_FOUND_EXCEPTION() {
+        void 가입한_유저가_아니면_NOT_FOUND_USER_EXCEPTION() {
             // given
             LoginRequest request = LoginRequest.testInstance("token", UserSocialType.KAKAO);
 
             // when & then
-            assertThatThrownBy(() -> authService.login(request)).isInstanceOf(NotFoundException.class);
+            assertThatThrownBy(() -> authService.login(request)).isInstanceOf(NotFoundUserException.class);
         }
 
     }
@@ -112,13 +112,13 @@ class KaKaoAuthServiceTest {
         }
 
         @Test
-        void 애플로_가입한_유저가_카카오_회원탈퇴시_NOT_FOUND_EXCEPTION() {
+        void 애플로_가입한_유저가_카카오_회원탈퇴시_NOT_FOUND_USER_EXCEPTION() {
             // given
             User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
             userRepository.save(user);
 
             // when & then
-            assertThatThrownBy(() -> authService.signOut(user.getId())).isInstanceOf(NotFoundException.class);
+            assertThatThrownBy(() -> authService.signOut(user.getId())).isInstanceOf(NotFoundUserException.class);
         }
 
     }

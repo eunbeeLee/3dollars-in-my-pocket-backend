@@ -2,7 +2,7 @@ package com.depromeet.threedollar.api.service.upload;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.depromeet.threedollar.api.service.upload.dto.request.FileUploadRequest;
-import com.depromeet.threedollar.common.exception.ValidationException;
+import com.depromeet.threedollar.common.exception.validation.ValidationFileTypeException;
 import com.depromeet.threedollar.common.type.ImageType;
 import com.depromeet.threedollar.external.external.s3.S3Service;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,25 +46,25 @@ class S3FileUploadServiceTest {
         }
 
         @Test
-        void 잘못된_파일명인경우_Validation_Exception() {
+        void 확장명자가_없는_파일명인경우_VALIDATION_FILE_TYPE_EXCEPTION() {
             // given
             MultipartFile multipartFile = new MockMultipartFile("fileName.jpeg", "fileName", "image/jpeg", new byte[]{});
 
             FileUploadRequest request = FileUploadRequest.of(ImageType.STORE);
 
             // when & then
-            assertThatThrownBy(() -> s3FileUploadService.uploadImage(request, multipartFile)).isInstanceOf(ValidationException.class);
+            assertThatThrownBy(() -> s3FileUploadService.uploadImage(request, multipartFile)).isInstanceOf(ValidationFileTypeException.class);
         }
 
         @Test
-        void 잘못된_ContentType인경우_Validation_Exception() {
+        void 허용되지않은_ContentType인경우_VALIDATION_FILE_TYPE_EXCEPTION() {
             // given
             MultipartFile multipartFile = new MockMultipartFile("fileName.jpeg", "fileName.jpeg", "wrong type", new byte[]{});
 
             FileUploadRequest request = FileUploadRequest.of(ImageType.STORE);
 
             // when & then
-            assertThatThrownBy(() -> s3FileUploadService.uploadImage(request, multipartFile)).isInstanceOf(ValidationException.class);
+            assertThatThrownBy(() -> s3FileUploadService.uploadImage(request, multipartFile)).isInstanceOf(ValidationFileTypeException.class);
         }
 
     }

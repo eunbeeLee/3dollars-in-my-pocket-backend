@@ -4,7 +4,6 @@ import com.depromeet.threedollar.api.service.UserSetUpTest;
 import com.depromeet.threedollar.api.service.store.dto.request.AddStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.MenuRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
-import com.depromeet.threedollar.common.exception.NotFoundException;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
 import com.depromeet.threedollar.domain.domain.common.Location;
 import com.depromeet.threedollar.domain.domain.menu.Menu;
@@ -12,6 +11,7 @@ import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.menu.MenuCreator;
 import com.depromeet.threedollar.domain.domain.menu.MenuRepository;
 import com.depromeet.threedollar.domain.domain.store.*;
+import com.depromeet.threedollar.common.exception.notfound.NotFoundStoreException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -226,7 +226,7 @@ class StoreServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 사용자가_작성하지_않은_가게_정보도_수정할_수있다() {
+        void 사용자가_작성하지_않은_가게_정보도_수정할수있다() {
             // given
             Store store = StoreCreator.create(100L, "storeName");
             store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
@@ -379,7 +379,7 @@ class StoreServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 해당하는_가게가_존재하지_않으면_NOT_FOUND_EXCEPTION() {
+        void 해당하는_가게가_존재하지_않으면_NOT_FOUND_STORE_EXCEPTION() {
             // given
             UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
                 .latitude(34.0)
@@ -392,7 +392,7 @@ class StoreServiceTest extends UserSetUpTest {
                 .build();
 
             // when & then
-            assertThatThrownBy(() -> storeService.updateStore(999L, request, userId)).isInstanceOf(NotFoundException.class);
+            assertThatThrownBy(() -> storeService.updateStore(999L, request, userId)).isInstanceOf(NotFoundStoreException.class);
         }
 
     }

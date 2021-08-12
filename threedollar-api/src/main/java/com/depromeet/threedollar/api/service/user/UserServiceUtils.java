@@ -1,11 +1,10 @@
 package com.depromeet.threedollar.api.service.user;
 
-import com.depromeet.threedollar.common.exception.ErrorCode;
+import com.depromeet.threedollar.common.exception.notfound.NotFoundUserException;
 import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
 import com.depromeet.threedollar.common.exception.ConflictException;
-import com.depromeet.threedollar.common.exception.NotFoundException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -27,7 +26,7 @@ public class UserServiceUtils {
     static User findUserById(UserRepository userRepository, Long userId) {
         User user = userRepository.findUserById(userId);
         if (user == null) {
-            throw new NotFoundException(String.format("존재하지 않는 유저 (%s) 입니다", userId), ErrorCode.NOT_FOUND_USER_EXCEPTION);
+            throw new NotFoundUserException(String.format("존재하지 않는 유저 (%s) 입니다", userId));
         }
         return user;
     }
@@ -35,7 +34,7 @@ public class UserServiceUtils {
     static User findUserByIdAndSocialType(UserRepository userRepository, Long userId, UserSocialType socialType) {
         User user = userRepository.findUserByIdAndSocialType(userId, socialType);
         if (user == null) {
-            throw new NotFoundException(String.format("존재하지 않는 유저 (%s-%s) 입니다", userId, socialType), ErrorCode.NOT_FOUND_USER_EXCEPTION);
+            throw new NotFoundUserException(String.format("존재하지 않는 유저 (%s-%s) 입니다", userId, socialType));
         }
         return user;
     }
@@ -43,7 +42,7 @@ public class UserServiceUtils {
     public static User findUserBySocialIdAndSocialType(UserRepository userRepository, String socialId, UserSocialType socialType) {
         User user = userRepository.findUserBySocialIdAndSocialType(socialId, socialType);
         if (user == null) {
-            throw new NotFoundException(String.format("존재하지 않는 유저 (%s - %s) 입니다", socialId, socialType), ErrorCode.NOT_FOUND_USER_EXCEPTION);
+            throw new NotFoundUserException(String.format("존재하지 않는 유저 (%s - %s) 입니다", socialId, socialType));
         }
         return user;
     }

@@ -22,7 +22,9 @@ class AuthInterceptor(
             val token = header.split(TOKEN_PREFIX)[1]
             val accountToken = tokenService.decode(token)
             val admin = adminRepository.findAdminById(accountToken.adminId)
-                ?: throw UnAuthorizedException("잘못된 토큰(${token})입니다 다시 로그인해주세요.")
+                ?: throw UnAuthorizedException(
+                    "잘못된 토큰(${token})입니다 다시 로그인해주세요."
+                )
             request.setAttribute("adminId", admin.id)
             return true
         }

@@ -35,7 +35,9 @@ class JwtTokenService(
                 .withIssuer(component.issuer)
                 .build()
                 .verify(token)
-            val claims = jwt.claims["adminId"] ?: throw UnAuthorizedException("잘못된 토큰입니다. 다시 로그인해주세요.")
+            val claims = jwt.claims["adminId"] ?: throw UnAuthorizedException(
+                "잘못된 토큰입니다. 다시 로그인해주세요."
+            )
             return AdminTokenDto(claims.asInt().toLong())
         } catch (e: RuntimeException) {
             throw UnAuthorizedException("잘못된 토큰입니다. 다시 로그인 해주세요")

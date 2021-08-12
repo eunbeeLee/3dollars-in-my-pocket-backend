@@ -5,8 +5,9 @@ import com.depromeet.threedollar.api.service.store.dto.request.AddStoreImageRequ
 import com.depromeet.threedollar.api.service.store.dto.response.StoreImageResponse;
 import com.depromeet.threedollar.api.service.upload.FileUploadService;
 import com.depromeet.threedollar.api.service.upload.dto.request.FileUploadRequest;
-import com.depromeet.threedollar.common.exception.NotFoundException;
 import com.depromeet.threedollar.domain.domain.store.*;
+import com.depromeet.threedollar.common.exception.notfound.NotFoundStoreException;
+import com.depromeet.threedollar.common.exception.notfound.NotFoundStoreImageException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -69,12 +70,12 @@ class StoreImageServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 해당하는_가게가_없는경우_NotFoundException_이_발생한댜() {
+        void 해당하는_가게가_없는경우_NOT_FOUND_STORE_EXCEPTION() {
             // given
             AddStoreImageRequest request = AddStoreImageRequest.testInstance(999L);
 
             // when & then
-            assertThatThrownBy(() -> storeImageService.addStoreImage(request, new MockMultipartFile("name", new byte[]{}), userId)).isInstanceOf(NotFoundException.class);
+            assertThatThrownBy(() -> storeImageService.addStoreImage(request, new MockMultipartFile("name", new byte[]{}), userId)).isInstanceOf(NotFoundStoreException.class);
         }
 
     }
@@ -98,20 +99,20 @@ class StoreImageServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 해당하는_가게_이미지가_존재하지_않을경우_NOT_FOUND_EXCEPTION() {
+        void 해당하는_가게_이미지가_존재하지_않을경우_NOT_FOUND_STORE_EXCEPTION() {
             // when & then
-            assertThatThrownBy(() -> storeImageService.deleteStoreImage(999L)).isInstanceOf(NotFoundException.class);
+            assertThatThrownBy(() -> storeImageService.deleteStoreImage(999L)).isInstanceOf(NotFoundStoreImageException.class);
         }
 
         @Test
-        void 해당하는_가게_이미지가_INACTIVE_삭제일경우_NOT_FOUND_EXCEPTION() {
+        void 해당하는_가게_이미지가_INACTIVE_삭제일경우_NOT_FOUND_STORE_EXCEPTION() {
             // given
             StoreImage storeImage = StoreImage.newInstance(store.getId(), userId, IMAGE_URL);
             storeImage.delete();
             storeImageRepository.save(storeImage);
 
             // when & then
-            assertThatThrownBy(() -> storeImageService.deleteStoreImage(storeImage.getId())).isInstanceOf(NotFoundException.class);
+            assertThatThrownBy(() -> storeImageService.deleteStoreImage(storeImage.getId())).isInstanceOf(NotFoundStoreImageException.class);
         }
 
     }

@@ -10,7 +10,8 @@ import com.depromeet.threedollar.domain.domain.review.ReviewStatus;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreCreator;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
-import com.depromeet.threedollar.common.exception.NotFoundException;
+import com.depromeet.threedollar.common.exception.notfound.NotFoundReviewException;
+import com.depromeet.threedollar.common.exception.notfound.NotFoundStoreException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -72,13 +73,13 @@ class ReviewServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 해당하는_가게가_없는경우_NOT_FOUND_EXCEPTION() {
+        void 해당하는_가게가_없는경우_NOT_FOUND_STORE_EXCEPTION() {
             // given
             Long storeId = 999L;
             AddReviewRequest request = AddReviewRequest.testInstance(storeId, "리뷰", 3);
 
             // when & then
-            assertThatThrownBy(() -> reviewService.addReview(request, userId)).isInstanceOf(NotFoundException.class);
+            assertThatThrownBy(() -> reviewService.addReview(request, userId)).isInstanceOf(NotFoundStoreException.class);
         }
 
         @Test
@@ -165,16 +166,16 @@ class ReviewServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 해당하는_리뷰가_존재하지_않으면_NOT_FOUND_EXCEPTION() {
+        void 해당하는_리뷰가_존재하지_않으면_NOT_FOUND_REVIEW_EXCEPTION() {
             // given
             UpdateReviewRequest request = UpdateReviewRequest.testInstance("content", 5);
 
             // when & then
-            assertThatThrownBy(() -> reviewService.updateReview(999L, request, userId)).isInstanceOf(NotFoundException.class);
+            assertThatThrownBy(() -> reviewService.updateReview(999L, request, userId)).isInstanceOf(NotFoundReviewException.class);
         }
 
         @Test
-        void 해당하는_리뷰가_사용자가_작성하지_않았을경우_NOT_FOUND_EXCEPTION() {
+        void 해당하는_리뷰가_사용자가_작성하지_않았을경우_NOT_FOUND_REVIEW_EXCEPTION() {
             // given
             Review review = ReviewCreator.create(store.getId(), userId, "너무 맛있어요", 3);
             reviewRepository.save(review);
@@ -182,7 +183,7 @@ class ReviewServiceTest extends UserSetUpTest {
             UpdateReviewRequest request = UpdateReviewRequest.testInstance("content", 5);
 
             // when & then
-            assertThatThrownBy(() -> reviewService.updateReview(review.getId(), request, 999L)).isInstanceOf(NotFoundException.class);
+            assertThatThrownBy(() -> reviewService.updateReview(review.getId(), request, 999L)).isInstanceOf(NotFoundReviewException.class);
         }
 
     }
@@ -239,7 +240,7 @@ class ReviewServiceTest extends UserSetUpTest {
         @Test
         void 해당하는_리뷰가_없을경우_NOT_FOUND_EXCEPTION() {
             // when & then
-            assertThatThrownBy(() -> reviewService.deleteReview(999L, userId)).isInstanceOf(NotFoundException.class);
+            assertThatThrownBy(() -> reviewService.deleteReview(999L, userId)).isInstanceOf(NotFoundReviewException.class);
         }
 
         @Test
@@ -249,7 +250,7 @@ class ReviewServiceTest extends UserSetUpTest {
             reviewRepository.save(review);
 
             // when & then
-            assertThatThrownBy(() -> reviewService.deleteReview(review.getId(), 999L)).isInstanceOf(NotFoundException.class);
+            assertThatThrownBy(() -> reviewService.deleteReview(review.getId(), 999L)).isInstanceOf(NotFoundReviewException.class);
         }
 
     }
