@@ -55,7 +55,6 @@ class ReviewServiceTest extends UserSetUpTest {
     @Nested
     class 가게_리뷰_등록 {
 
-
         @Test
         void 새로운_리뷰_데이터가_추가된다() {
             // given

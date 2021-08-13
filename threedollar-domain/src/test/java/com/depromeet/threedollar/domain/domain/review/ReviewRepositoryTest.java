@@ -8,6 +8,7 @@ import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserCreator;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -28,23 +29,28 @@ class ReviewRepositoryTest {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    @Test
-    void 가게_리뷰와_함께_리뷰_작성자_정보를_함께_조회한다() {
-        User user = UserCreator.create("social-id", UserSocialType.KAKAO, "닉네임");
-        userRepository.save(user);
+    @Nested
+    class findAllWithCreatorByStoreId {
 
-        Store store = StoreCreator.create(user.getId(), "가게");
-        storeRepository.save(store);
+        @Test
+        void 가게_리뷰와_함께_리뷰_작성자_정보를_함께_조회한다() {
+            User user = UserCreator.create("social-id", UserSocialType.KAKAO, "닉네임");
+            userRepository.save(user);
 
-        Review review = ReviewCreator.create(store.getId(), user.getId(), "리뷰 1", 5);
-        reviewRepository.save(review);
+            Store store = StoreCreator.create(user.getId(), "가게");
+            storeRepository.save(store);
 
-        // when
-        List<ReviewWithWriterProjection> reviews = reviewRepository.findAllWithCreatorByStoreId(store.getId());
+            Review review = ReviewCreator.create(store.getId(), user.getId(), "리뷰 1", 5);
+            reviewRepository.save(review);
 
-        // then
-        assertThat(reviews).hasSize(1);
-        assertReviewWithCreatorDto(reviews.get(0), review.getId(), review.getRating(), review.getContents(), user.getId(), user.getName(), user.getSocialType());
+            // when
+            List<ReviewWithWriterProjection> reviews = reviewRepository.findAllWithCreatorByStoreId(store.getId());
+
+            // then
+            assertThat(reviews).hasSize(1);
+            assertReviewWithCreatorDto(reviews.get(0), review.getId(), review.getRating(), review.getContents(), user.getId(), user.getName(), user.getSocialType());
+        }
+
     }
 
     private void assertReviewWithCreatorDto(ReviewWithWriterProjection review, Long reviewId, int rating, String contents, Long userId, String name, UserSocialType socialType) {
