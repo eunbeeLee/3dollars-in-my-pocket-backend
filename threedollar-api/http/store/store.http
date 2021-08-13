@@ -63,7 +63,7 @@ client.test("200 OK", function() {
 
 
 ### [인증] 사용자가 작성한 가게의 정보를 조회합니다. (첫 스크롤)
-GET {{host_api}}/api/v2/stores/me?size=2&latitude=33.1&longitude=124.2
+GET {{host_api}}/api/v2/stores/me?size=2
 Authorization: {{AUTHORIZATION}}
 
 > {%
