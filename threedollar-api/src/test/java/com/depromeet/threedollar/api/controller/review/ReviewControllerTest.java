@@ -200,8 +200,9 @@ class ReviewControllerTest extends AbstractControllerTest {
             assertUserInfoResponse(response.getData().getContents().get(1).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
         }
 
+        @DisplayName("마지막 커서인 경우 -1을 반환한다")
         @Test
-        void 마지막_스크롤_조회() throws Exception {
+        void 다음_커서의_리뷰를_한개_추가_조회시_조회되지_않으면_마지막_커서로_판단한다() throws Exception {
             // given
             Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
             Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
@@ -216,7 +217,7 @@ class ReviewControllerTest extends AbstractControllerTest {
 
             // then
             assertThat(response.getData().getTotalElements()).isEqualTo(4);
-            assertThat(response.getData().getNextCursor()).isNull();
+            assertThat(response.getData().getNextCursor()).isEqualTo(-1);
             assertThat(response.getData().getContents()).hasSize(2);
 
             assertReviewInfoResponse(response.getData().getContents().get(0), review2.getId(), store.getId(), store.getName(), review2.getContents(), review2.getRating());
@@ -226,8 +227,9 @@ class ReviewControllerTest extends AbstractControllerTest {
             assertUserInfoResponse(response.getData().getContents().get(1).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
         }
 
+        @DisplayName("마지막 커서인 경우 -1을 반환한다")
         @Test
-        void 마지막_스크롤_조회2() throws Exception {
+        void 조회한_size_보다_적은_리뷰가_조회되면_마지막_커서로_판단한다() throws Exception {
             // given
             Review review1 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요1", 5);
             Review review2 = ReviewCreator.create(store.getId(), testUser.getId(), "너무 맛있어요2", 4);
@@ -242,13 +244,14 @@ class ReviewControllerTest extends AbstractControllerTest {
 
             // then
             assertThat(response.getData().getTotalElements()).isEqualTo(4);
-            assertThat(response.getData().getNextCursor()).isNull();
+            assertThat(response.getData().getNextCursor()).isEqualTo(-1);
             assertThat(response.getData().getContents()).hasSize(1);
 
             assertReviewInfoResponse(response.getData().getContents().get(0), review1.getId(), store.getId(), store.getName(), review1.getContents(), review1.getRating());
             assertUserInfoResponse(response.getData().getContents().get(0).getUser(), testUser.getId(), testUser.getName(), testUser.getSocialType());
         }
 
+        @DisplayName("마지막 커서인 경우 -1을 반환한다")
         @Test
         void 삭제된_리뷰는_조회되지_않는다() throws Exception {
             // given
@@ -263,7 +266,7 @@ class ReviewControllerTest extends AbstractControllerTest {
 
             // then
             assertThat(response.getData().getTotalElements()).isEqualTo(0);
-            assertThat(response.getData().getNextCursor()).isNull();
+            assertThat(response.getData().getNextCursor()).isEqualTo(-1);
             assertThat(response.getData().getContents()).isEmpty();
         }
 

@@ -16,16 +16,16 @@ public class ReviewScrollResponse {
 
     private List<ReviewDetailResponse> contents = new ArrayList<>();
     private long totalElements;
-    private Long nextCursor;
+    private long nextCursor;
 
-    private ReviewScrollResponse(List<ReviewDetailResponse> contents, long totalElements, Long nextCursor) {
+    private ReviewScrollResponse(List<ReviewDetailResponse> contents, long totalElements, long nextCursor) {
         this.contents = contents;
         this.totalElements = totalElements;
         this.nextCursor = nextCursor;
     }
 
     public static ReviewScrollResponse of(List<ReviewWithWriterProjection> reviews,
-                                          long totalElements, Map<Long, Store> cachedStores, Long nextCursor) {
+                                          long totalElements, Map<Long, Store> cachedStores, long nextCursor) {
         List<ReviewDetailResponse> contents = reviews.stream()
             .map(review -> ReviewDetailResponse.of(review, cachedStores.get(review.getStoreId())))
             .collect(Collectors.toList());
@@ -34,7 +34,7 @@ public class ReviewScrollResponse {
 
     public static ReviewScrollResponse newLastScroll(List<ReviewWithWriterProjection> reviews,
                                                      long totalElements, Map<Long, Store> cachedStores) {
-        return of(reviews, totalElements, cachedStores, null);
+        return of(reviews, totalElements, cachedStores, -1L);
     }
 
 }

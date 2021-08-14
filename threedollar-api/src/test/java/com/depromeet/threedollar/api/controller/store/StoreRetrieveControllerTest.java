@@ -298,8 +298,9 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
             assertStoreInfoResponse(response.getData().getContents().get(1), store2);
         }
 
+        @DisplayName("마지막 페이지인경우 nextCursor = -1")
         @Test
-        void contents가_size_와_동일하면_다음_스크롤에_해당하는_가게들을_조회하고_없으면_마지막_페이지로_판단하고_커서가_null을_반환한다() throws Exception {
+        void 다음_커서의_가게를_한개_추가_조회시_조회되지_않으면_마지막_커서로_판단한다() throws Exception {
             // given
             Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
             store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
@@ -322,14 +323,15 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
             // then
             assertThat(response.getData().getTotalElements()).isEqualTo(4);
-            assertThat(response.getData().getNextCursor()).isNull();
+            assertThat(response.getData().getNextCursor()).isEqualTo(-1);
             assertThat(response.getData().getContents()).hasSize(2);
             assertStoreInfoResponse(response.getData().getContents().get(0), store2);
             assertStoreInfoResponse(response.getData().getContents().get(1), store1);
         }
 
+        @DisplayName("마지막 페이지인경우 nextCursor = -1")
         @Test
-        void 사용자가_작성한_contents가_size보다_적으면_마지막_페이지로_판단하고_Cursor가_null로_반환된다() throws Exception {
+        void 조회한_size_보다_적은_가게가_조회되면_마지막_커서로_판단한다() throws Exception {
             // given
             Store store1 = StoreCreator.create(testUser.getId(), "가게1", 34, 124);
             store1.addMenus(Collections.singletonList(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
@@ -349,7 +351,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
             // then
             assertThat(response.getData().getTotalElements()).isEqualTo(3);
-            assertThat(response.getData().getNextCursor()).isNull();
+            assertThat(response.getData().getNextCursor()).isEqualTo(-1);
             assertThat(response.getData().getContents()).hasSize(1);
             assertStoreInfoResponse(response.getData().getContents().get(0), store1);
         }
