@@ -23,6 +23,14 @@ jobs:
         run: |
           echo -e "spring.config.activate.on-profile=$PROFILES\nspring.datasource.hikari.jdbc-url=$DB_URI\nspring.datasource.hikari.username=$DB_USERNAME\nspring.datasource.hikari.password=$DB_PASSWORD\nspring.datasource.hikari.driver-class-name=$DB_DRIVER" > $RESOURCE_PWD/application-rds.properties
 
+      - name: Create application-sentry.properties
+        env:
+          SENTRY_DSN: ${{secrets.SENTRY_DSN}}
+
+          RESOURCE_PWD: threedollar-api/src/main/resources
+        run: |
+          echo -e "sentry.dsn=$SENTRY_DSN" > $RESOURCE_PWD/application-sentry.properties
+
       - name: Create application-security.properties
         env:
           USER_NAME: ${{secrets.SECURITY_USER_NAME}}
