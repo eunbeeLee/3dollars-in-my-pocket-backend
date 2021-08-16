@@ -35,5 +35,5 @@ public class LocalTestController {
         httpSession.setAttribute(USER_ID, user.getId());
         return ApiResponse.success(LoginResponse.of(httpSession.getId()));
     }
-
+    
 }
