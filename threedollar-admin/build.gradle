@@ -4,9 +4,6 @@ dependencies {
     // Spring MVC
     implementation("org.springframework.boot:spring-boot-starter-web")
 
-    // kotlin logger
-    implementation("io.github.microutils:kotlin-logging:1.12.5")
-
     // Spring Security
     implementation("org.springframework.boot:spring-boot-starter-security")
 

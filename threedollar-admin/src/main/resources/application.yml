@@ -8,6 +8,7 @@ server:
 spring:
   profiles:
     active: local
+    default: local
     include:
       - domain
       - jwt

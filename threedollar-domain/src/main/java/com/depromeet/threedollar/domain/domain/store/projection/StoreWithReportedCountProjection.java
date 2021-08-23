@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.domain.domain.storedelete.projection;
+package com.depromeet.threedollar.domain.domain.store.projection;
 
 import com.depromeet.threedollar.domain.domain.store.StoreType;
 import com.querydsl.core.annotations.QueryProjection;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @ToString
 @Getter
-public class StoreDeleteRequestWithCountProjection {
+public class StoreWithReportedCountProjection {
 
     private final Long storeId;
     private final String storeName;
@@ -21,8 +21,8 @@ public class StoreDeleteRequestWithCountProjection {
     private final long reportsCount;
 
     @QueryProjection
-    public StoreDeleteRequestWithCountProjection(Long storeId, String storeName, double latitude, double longitude, StoreType type,
-                                                 double rating, LocalDateTime storeCreatedAt, LocalDateTime storeUpdatedAt, long reportsCount) {
+    public StoreWithReportedCountProjection(Long storeId, String storeName, double latitude, double longitude, StoreType type,
+                                            double rating, LocalDateTime storeCreatedAt, LocalDateTime storeUpdatedAt, long reportsCount) {
         this.storeId = storeId;
         this.storeName = storeName;
         this.latitude = latitude;
