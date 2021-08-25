@@ -20,7 +20,7 @@ public class StoreRatingService {
     }
 
     private double calculateAverageRating(Long storeId) {
-        return reviewRepository.findAllByStoreId(storeId).stream()
+        return reviewRepository.findAllByStoreIdWithLock(storeId).stream()
             .mapToInt(Review::getRating)
             .average()
             .orElse(0);

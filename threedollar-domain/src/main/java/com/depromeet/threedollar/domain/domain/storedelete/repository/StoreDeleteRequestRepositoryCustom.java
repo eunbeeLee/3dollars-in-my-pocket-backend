@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface StoreDeleteRequestRepositoryCustom {
 
-    List<Long> findAllUserIdByStoreId(Long storeId);
+    List<Long> findAllUserIdByStoreIdWithLock(Long storeId);
 
 }

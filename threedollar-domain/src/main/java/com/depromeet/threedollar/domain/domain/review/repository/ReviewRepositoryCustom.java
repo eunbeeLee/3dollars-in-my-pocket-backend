@@ -9,7 +9,7 @@ public interface ReviewRepositoryCustom {
 
     Review findReviewByIdAndUserId(Long reviewId, Long userId);
 
-    List<Review> findAllByStoreId(Long storeId);
+    List<Review> findAllByStoreIdWithLock(Long storeId);
 
     long findCountsByUserId(Long userId);
 
