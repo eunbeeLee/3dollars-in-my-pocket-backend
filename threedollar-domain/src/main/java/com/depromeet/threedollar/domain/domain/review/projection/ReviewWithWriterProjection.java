@@ -1,6 +1,5 @@
 package com.depromeet.threedollar.domain.domain.review.projection;
 
-import com.depromeet.threedollar.domain.domain.review.ReviewStatus;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;

@@ -39,12 +39,10 @@ class ControllerExceptionAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(
-        *[
-            MethodArgumentNotValidException::class,
-            InvalidFormatException::class,
-            MissingRequestValueException::class,
-            ServletRequestBindingException::class
-        ]
+        MethodArgumentNotValidException::class,
+        InvalidFormatException::class,
+        MissingRequestValueException::class,
+        ServletRequestBindingException::class
     )
     private fun handleMethodArgumentNotValidException(e: Exception): ApiResponse<Nothing> {
         log.error(e.message, e)

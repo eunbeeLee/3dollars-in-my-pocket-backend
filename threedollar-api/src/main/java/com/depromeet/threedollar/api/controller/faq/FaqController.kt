@@ -14,7 +14,7 @@ class FaqController(
     private val faqService: FaqService
 ) {
 
-    @ApiOperation("모든&특정 카테고리의 FAQ를 조회합니다.")
+    @ApiOperation("모든 특정 카테고리의 FAQ를 조회합니다.")
     @GetMapping("/api/v2/faqs")
     fun retrieveAllFaqs(
         request: RetrieveFaqsRequest
