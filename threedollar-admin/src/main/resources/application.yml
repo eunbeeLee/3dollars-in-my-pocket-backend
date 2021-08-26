@@ -13,3 +13,4 @@ spring:
       - domain
       - jwt
       - security
+      - redis

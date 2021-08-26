@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.api.config.session;
+package com.depromeet.threedollar.domain.config.redis;
 
 import lombok.AccessLevel;
 import lombok.Getter;
