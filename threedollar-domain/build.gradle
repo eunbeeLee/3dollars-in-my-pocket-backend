@@ -18,10 +18,6 @@ dependencies {
     // mariadb
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client:2.6.2")
 
-    // Redis
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
-    implementation("it.ozimov:embedded-redis:0.7.2")
-
     // Querydsl
     implementation("com.querydsl:querydsl-jpa")
     implementation("com.querydsl:querydsl-core")
