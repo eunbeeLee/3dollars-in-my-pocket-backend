@@ -11,6 +11,5 @@ spring:
     default: local
     include:
       - domain
-      - jwt
-      - security
       - redis
+      - security

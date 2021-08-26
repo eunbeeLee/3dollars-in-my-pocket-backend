@@ -1,3 +1,0 @@
-jwt:
-  issuer: local
-  secret_key: local

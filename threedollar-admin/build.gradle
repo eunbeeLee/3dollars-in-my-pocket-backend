@@ -7,8 +7,8 @@ dependencies {
     // Spring Security
     implementation("org.springframework.boot:spring-boot-starter-security")
 
-    // jwt
-    implementation("com.auth0:java-jwt:3.18.1")
+    // Spring Session Redis
+    implementation("org.springframework.session:spring-session-data-redis")
 
     // spring boot admin server
     implementation("de.codecentric:spring-boot-admin-starter-server:2.4.3")

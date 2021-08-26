@@ -3,6 +3,7 @@ package com.depromeet.threedollar.admin.config.security
 import de.codecentric.boot.admin.server.config.AdminServerProperties
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
@@ -11,6 +12,13 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 class SecuritySecureConfig(
     private val adminServer: AdminServerProperties
 ) : WebSecurityConfigurerAdapter() {
+
+    override fun configure(web: WebSecurity) {
+        web.ignoring()
+            .antMatchers(
+                "/h2-console/**"
+            )
+    }
 
     override fun configure(http: HttpSecurity) {
         val contextPath = adminServer.contextPath

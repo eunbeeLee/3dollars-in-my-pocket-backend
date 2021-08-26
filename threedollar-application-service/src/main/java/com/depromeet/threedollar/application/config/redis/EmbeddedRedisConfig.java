@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.domain.config.redis;
+package com.depromeet.threedollar.application.config.redis;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
