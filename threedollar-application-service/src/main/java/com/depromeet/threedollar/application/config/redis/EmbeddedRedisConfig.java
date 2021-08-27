@@ -2,8 +2,12 @@ package com.depromeet.threedollar.application.config.redis;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import redis.embedded.RedisServer;
 
 import javax.annotation.PostConstruct;
@@ -26,9 +30,11 @@ public class EmbeddedRedisConfig {
 
     private RedisServer redisServer;
 
+    private int port;
+
     @PostConstruct
     public void redisServer() throws IOException {
-        int port = isRunningPort(properties.getPort()) ? findAvailableRandomPort() : properties.getPort();
+        port = isRunningPort(properties.getPort()) ? findAvailableRandomPort() : properties.getPort();
         redisServer = new RedisServer(port);
         redisServer.start();
         log.info("임베디드 레디스 서버가 기동되었습니다. port: {}", port);
@@ -40,6 +46,12 @@ public class EmbeddedRedisConfig {
             redisServer.stop();
             log.info("임베디드 레디스 서버가 종료됩니다");
         }
+    }
+
+    @Bean
+    @Primary
+    public RedisConnectionFactory embeddedRedisConnectionFactory() {
+        return new LettuceConnectionFactory(properties.getHost(), port);
     }
 
 }
