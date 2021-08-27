@@ -4,6 +4,9 @@ jar { enabled = true }
 dependencies {
     api project(':threedollar-domain')
 
+    // spring boot starter json
+    implementation("org.springframework.boot:spring-boot-starter-json")
+
     // Redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("it.ozimov:embedded-redis:0.7.2")

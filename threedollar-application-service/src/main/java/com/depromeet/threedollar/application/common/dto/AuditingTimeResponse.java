@@ -1,7 +1,6 @@
 package com.depromeet.threedollar.application.common.dto;
 
 import com.depromeet.threedollar.domain.domain.common.AuditingTimeEntity;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,10 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AuditingTimeResponse {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     protected LocalDateTime createdAt;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     protected LocalDateTime updatedAt;
 
     protected void setBaseTime(AuditingTimeEntity auditingTimeEntity) {
