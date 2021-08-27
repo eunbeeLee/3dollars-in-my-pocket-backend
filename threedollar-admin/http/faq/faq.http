@@ -4,7 +4,7 @@ Authorization: Bearer {{ADMIN_AUTHORIZATION}}
 Content-Type: application/json
 
 {
-    "category": "CATEGORY",
+    "category": "STORE",
     "question": "앱 이름이 뭔가요??",
     "answer": "\"가슴속 삼천원\"입니다.\n많이 이용해주세요."
 }
@@ -23,7 +23,7 @@ Authorization: Bearer {{ADMIN_AUTHORIZATION}}
 Content-Type: application/json
 
 {
-    "category": "CATEGORY",
+    "category": "STORE",
     "question": "변경후 질문??",
     "answer": "ABCABCABC\nABCABCABC"
 }

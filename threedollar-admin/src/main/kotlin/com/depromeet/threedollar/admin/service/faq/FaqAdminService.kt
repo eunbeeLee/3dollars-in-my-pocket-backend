@@ -41,8 +41,7 @@ class FaqAdminService(
 
     @Caching(
         evict = [
-            // TODO 파라미터로 카테고리가 넘어오지 않는 경우 대응
-            CacheEvict(key = "'ALL'", value = [CacheType.CacheKey.FAQS])
+            CacheEvict(allEntries = true, value = [CacheType.CacheKey.FAQS])
         ]
     )
     @Transactional
