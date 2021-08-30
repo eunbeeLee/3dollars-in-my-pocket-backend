@@ -37,19 +37,10 @@ jobs:
           USER_PASSWORD: ${{secrets.SECURITY_USER_PASSWORD}}
 
           RESOURCE_PWD: threedollar-api/src/main/resources
-          ADMIN_RESOURCE_PWD: threedollar-admin/src/main/resources
+#          ADMIN_RESOURCE_PWD: threedollar-admin/src/main/resources
         run: |
           echo -e "spring.security.user.name=$USER_NAME\nspring.security.user.password=$USER_PASSWORD" > $RESOURCE_PWD/application-security.properties
-          echo -e "spring.security.user.name=$USER_NAME\nspring.security.user.password=$USER_PASSWORD" > $ADMIN_RESOURCE_PWD/application-security.properties
-
-      - name: Create application-jwt.properties
-        env:
-          JWT_ISSUER: ${{secrets.JWT_ISSUER}}
-          JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
-
-          RESOURCE_PWD: threedollar-admin/src/main/resources
-        run: |
-          echo -e "jwt.secret_key=$JWT_SECRET_KEY\njwt.issuer=$JWT_ISSUER" > $RESOURCE_PWD/application-jwt.properties
+#          echo -e "spring.security.user.name=$USER_NAME\nspring.security.user.password=$USER_PASSWORD" > $ADMIN_RESOURCE_PWD/application-security.properties
 
       - name: Create application-slack.properties
         env:
@@ -89,17 +80,17 @@ jobs:
           echo "::set-output name=image::$DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG"
           echo -e "API_IMAGE=$DOCKER_REGISTRY/$DOCKER_REPOSITORY\nTAG=$IMAGE_TAG" > deploy/.env
 
-      - name: Build ADMIN
-        id: build-admin
-        env:
-          DOCKER_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          DOCKER_REPOSITORY: 3dollar-admin
-          IMAGE_TAG: ${{ steps.dev-version.outputs.version }}
-        run: |
-          docker build -t $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG -f Dockerfile_admin .
-          docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG"
-          echo -e "ADMIN_IMAGE=$DOCKER_REGISTRY/$DOCKER_REPOSITORY" >> deploy/.env
+#      - name: Build ADMIN
+#        id: build-admin
+#        env:
+#          DOCKER_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+#          DOCKER_REPOSITORY: 3dollar-admin
+#          IMAGE_TAG: ${{ steps.dev-version.outputs.version }}
+#        run: |
+#          docker build -t $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG -f Dockerfile_admin .
+#          docker push $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG
+#          echo "::set-output name=image::$DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG"
+#          echo -e "ADMIN_IMAGE=$DOCKER_REGISTRY/$DOCKER_REPOSITORY" >> deploy/.env
 
       - name: Zip deploy.zip
         run: zip -r deploy.zip deploy
