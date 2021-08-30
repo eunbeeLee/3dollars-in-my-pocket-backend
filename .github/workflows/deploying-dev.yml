@@ -37,10 +37,10 @@ jobs:
           USER_PASSWORD: ${{secrets.SECURITY_USER_PASSWORD}}
 
           RESOURCE_PWD: threedollar-api/src/main/resources
-#          ADMIN_RESOURCE_PWD: threedollar-admin/src/main/resources
+          ADMIN_RESOURCE_PWD: threedollar-admin/src/main/resources
         run: |
           echo -e "spring.security.user.name=$USER_NAME\nspring.security.user.password=$USER_PASSWORD" > $RESOURCE_PWD/application-security.properties
-#          echo -e "spring.security.user.name=$USER_NAME\nspring.security.user.password=$USER_PASSWORD" > $ADMIN_RESOURCE_PWD/application-security.properties
+          echo -e "spring.security.user.name=$USER_NAME\nspring.security.user.password=$USER_PASSWORD" > $ADMIN_RESOURCE_PWD/application-security.properties
 
       - name: Create application-slack.properties
         env:
