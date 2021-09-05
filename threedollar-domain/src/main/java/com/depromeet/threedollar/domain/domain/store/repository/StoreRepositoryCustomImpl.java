@@ -64,6 +64,21 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
             .fetchCount();
     }
 
+    @Override
+    public List<Store> findAllWithScroll(Long lastStoreId, int size) {
+        List<Long> storeIds = queryFactory.select(store.id).distinct()
+            .from(store)
+            .innerJoin(menu).on(menu.store.id.eq(store.id))
+            .where(
+                lessThanId(lastStoreId)
+            )
+            .orderBy(store.id.desc())
+            .limit(size)
+            .fetch();
+
+        return findAllByIds(storeIds);
+    }
+
     /**
      * NoOffset 방식의 스크롤 기반 페이지네이션
      * -

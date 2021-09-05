@@ -13,6 +13,8 @@ public interface StoreRepositoryCustom {
 
     long findCountsByUserId(Long userId);
 
+    List<Store> findAllWithScroll(Long lastStoreId, int size);
+
     List<Store> findAllByUserIdWithScroll(Long userId, Long lastStoreId, int size);
 
     List<Store> findAllByIds(List<Long> storeIds);
