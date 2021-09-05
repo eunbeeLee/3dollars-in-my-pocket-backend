@@ -37,7 +37,7 @@ public class SwaggerConfig {
             .ignoredParameterTypes(UserId.class)
             .select()
             .apis(withClassAnnotation(RestController.class))
-            .paths(PathSelectors.ant("/**"))
+            .paths(PathSelectors.ant("/api/**"))
             .build()
             .useDefaultResponseMessages(false)
             .globalResponseMessage(RequestMethod.GET, this.createGlobalResponseMessages())
