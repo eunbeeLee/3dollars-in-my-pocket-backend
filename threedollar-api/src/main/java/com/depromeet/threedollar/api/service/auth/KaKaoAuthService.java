@@ -24,13 +24,13 @@ public class KaKaoAuthService implements AuthService {
 
     @Override
     public Long signUp(SignUpRequest request) {
-        KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo(request.getToken());
+        KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo("Bearer ".concat(request.getToken()));
         return userService.createUser(request.toCreateUserRequest(response.getId()));
     }
 
     @Override
     public Long login(LoginRequest request) {
-        KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo(request.getToken());
+        KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo("Bearer ".concat(request.getToken()));
         return UserServiceUtils.findUserBySocialIdAndSocialType(userRepository, response.getId(), socialType).getId();
     }
 

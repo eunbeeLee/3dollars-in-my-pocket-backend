@@ -2,6 +2,7 @@ buildscript {
     ext {
         springBootVersion = '2.5.3'
         kotlinVersion = '1.5.21'
+        springCloudVersion = '2020.0.3'
     }
     repositories {
         mavenCentral()
@@ -34,6 +35,12 @@ subprojects {
 
     repositories {
         mavenCentral()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
     }
 
     compileKotlin {
