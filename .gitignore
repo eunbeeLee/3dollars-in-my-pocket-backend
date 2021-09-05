@@ -44,3 +44,4 @@ application-rds.yml
 application-security.yml
 application-sentry.yml
 application-slack.yml
+application-thirdparty.yml

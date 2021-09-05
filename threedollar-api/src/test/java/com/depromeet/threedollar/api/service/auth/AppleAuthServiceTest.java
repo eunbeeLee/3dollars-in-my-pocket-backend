@@ -6,7 +6,6 @@ import com.depromeet.threedollar.api.service.user.UserService;
 import com.depromeet.threedollar.domain.domain.user.*;
 import com.depromeet.threedollar.common.exception.notfound.NotFoundUserException;
 import com.depromeet.threedollar.external.external.apple.AppleTokenDecoder;
-import com.depromeet.threedollar.external.external.apple.dto.response.IdTokenPayload;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -124,8 +123,8 @@ class AppleAuthServiceTest {
 
     private static class StubAppleTokenDecoder implements AppleTokenDecoder {
         @Override
-        public IdTokenPayload getUserInfoFromToken(String idToken) {
-            return IdTokenPayload.testInstance(socialId);
+        public String getUserIdFromToken(String idToken) {
+            return socialId;
         }
     }
 

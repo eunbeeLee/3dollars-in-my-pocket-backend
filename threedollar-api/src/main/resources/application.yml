@@ -19,6 +19,7 @@ spring:
       - monitoring
       - sentry
       - slack
+      - thirdparty
   servlet:
     multipart:
       max-file-size: 10MB
@@ -29,4 +30,4 @@ feign:
       default:
         connectTimeout: 3000
         readTimeout: 3000
-        loggerLevel: FULL
+        loggerLevel: BASIC

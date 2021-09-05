@@ -23,6 +23,15 @@ jobs:
         run: |
           echo -e "spring.config.activate.on-profile=$PROFILES\nspring.datasource.hikari.jdbc-url=$DB_URI\nspring.datasource.hikari.username=$DB_USERNAME\nspring.datasource.hikari.password=$DB_PASSWORD\nspring.datasource.hikari.driver-class-name=$DB_DRIVER" > $RESOURCE_PWD/application-rds.properties
 
+      - name: Create application-thirdparty.yml
+        env:
+          APPLE_CLIENT_ID: ${{secrets.APPLE_CLIENT_ID}
+          APPLE_ISSUER: ${{secrets.APPLE_ISSUER}
+
+          RESOURCE_PWD: threedollar-external/src/main/resources
+        run: |
+          echo -e "apple.client_id=$APPLE_CLIENT_ID\napple.issuer=$APPLE_ISSUER" > $RESOURCE_PWD/application-thirdparty.properties
+
       - name: Create application-sentry.properties
         env:
           SENTRY_DSN: ${{secrets.SENTRY_DSN}}

@@ -12,4 +12,9 @@ dependencies {
 
     // embedded s3
     implementation("io.findify:s3mock_2.13:0.2.6")
+
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.1'
 }
