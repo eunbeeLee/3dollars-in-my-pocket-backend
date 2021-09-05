@@ -4,6 +4,7 @@ import com.depromeet.threedollar.api.service.auth.dto.request.LoginRequest;
 import com.depromeet.threedollar.api.service.auth.dto.request.SignUpRequest;
 import com.depromeet.threedollar.api.service.user.UserService;
 import com.depromeet.threedollar.api.service.user.UserServiceUtils;
+import com.depromeet.threedollar.common.utils.HttpHeaderUtils;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
 import com.depromeet.threedollar.external.external.kakao.KaKaoApiCaller;
@@ -24,13 +25,13 @@ public class KaKaoAuthService implements AuthService {
 
     @Override
     public Long signUp(SignUpRequest request) {
-        KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo("Bearer ".concat(request.getToken()));
+        KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo(HttpHeaderUtils.withBearerToken(request.getToken()));
         return userService.createUser(request.toCreateUserRequest(response.getId()));
     }
 
     @Override
     public Long login(LoginRequest request) {
-        KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo("Bearer ".concat(request.getToken()));
+        KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo(HttpHeaderUtils.withBearerToken(request.getToken()));
         return UserServiceUtils.findUserBySocialIdAndSocialType(userRepository, response.getId(), socialType).getId();
     }
 
