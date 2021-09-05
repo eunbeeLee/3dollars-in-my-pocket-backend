@@ -25,8 +25,8 @@ jobs:
 
       - name: Create application-thirdparty.yml
         env:
-          APPLE_CLIENT_ID: ${{secrets.APPLE_CLIENT_ID}
-          APPLE_ISSUER: ${{secrets.APPLE_ISSUER}
+          APPLE_CLIENT_ID: ${{secrets.APPLE_CLIENT_ID}}
+          APPLE_ISSUER: ${{secrets.APPLE_ISSUER}}
 
           RESOURCE_PWD: threedollar-external/src/main/resources
         run: |
