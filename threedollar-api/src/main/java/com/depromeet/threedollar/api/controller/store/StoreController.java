@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -56,14 +57,14 @@ public class StoreController {
         return ApiResponse.success(storeService.deleteStore(storeId, request, userId));
     }
 
-    @ApiOperation("[인증] 가게의 이미지를 등록합니다.")
+    @ApiOperation("[인증] 가게의 이미지들을 등록합니다.")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
-    @PostMapping("/api/v2/store/image")
-    public ApiResponse<StoreImageResponse> addStoreImage(@Valid AddStoreImageRequest request,
-                                                         @RequestPart(value = "image") MultipartFile multipartFile,
-                                                         @UserId Long userId) {
-        return ApiResponse.success(storeImageService.addStoreImage(request, multipartFile, userId));
+    @PostMapping("/api/v2/store/images")
+    public ApiResponse<List<StoreImageResponse>> addStoreImage(@Valid AddStoreImageRequest request,
+                                                               @RequestPart(value = "image") List<MultipartFile> images,
+                                                               @UserId Long userId) {
+        return ApiResponse.success(storeImageService.addStoreImages(request, images, userId));
     }
 
     @ApiOperation("[인증] 가게의 이미지를 삭제합니다.")

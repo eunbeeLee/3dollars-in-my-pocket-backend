@@ -25,7 +25,13 @@ public class StoreImageService {
     private final StoreImageRepository storeImageRepository;
     private final FileUploadService fileUploadService;
 
-    public StoreImageResponse addStoreImage(AddStoreImageRequest request, MultipartFile image, Long userId) {
+    public List<StoreImageResponse> addStoreImages(AddStoreImageRequest request, List<MultipartFile> images, Long userId) {
+        return images.stream()
+            .map(image -> addStoreImage(request, image, userId))
+            .collect(Collectors.toList());
+    }
+
+    private StoreImageResponse addStoreImage(AddStoreImageRequest request, MultipartFile image, Long userId) {
         StoreServiceUtils.validateExistsStore(storeRepository, request.getStoreId());
         String imageUrl = fileUploadService.uploadImage(FileUploadRequest.of(ImageType.STORE), image);
         return StoreImageResponse.of(storeImageRepository.save(StoreImage.newInstance(request.getStoreId(), userId, imageUrl)));

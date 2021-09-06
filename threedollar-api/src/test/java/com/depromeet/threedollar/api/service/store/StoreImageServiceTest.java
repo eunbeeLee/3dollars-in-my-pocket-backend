@@ -61,7 +61,7 @@ class StoreImageServiceTest extends UserSetUpTest {
             AddStoreImageRequest request = AddStoreImageRequest.testInstance(store.getId());
 
             // when
-            storeImageService.addStoreImage(request, new MockMultipartFile("name", new byte[]{}), userId);
+            storeImageService.addStoreImages(request, List.of(new MockMultipartFile("name", new byte[]{})), userId);
 
             // then
             List<StoreImage> storeImageList = storeImageRepository.findAll();
@@ -75,7 +75,7 @@ class StoreImageServiceTest extends UserSetUpTest {
             AddStoreImageRequest request = AddStoreImageRequest.testInstance(999L);
 
             // when & then
-            assertThatThrownBy(() -> storeImageService.addStoreImage(request, new MockMultipartFile("name", new byte[]{}), userId)).isInstanceOf(NotFoundStoreException.class);
+            assertThatThrownBy(() -> storeImageService.addStoreImages(request, List.of(new MockMultipartFile("name", new byte[]{})), userId)).isInstanceOf(NotFoundStoreException.class);
         }
 
     }
