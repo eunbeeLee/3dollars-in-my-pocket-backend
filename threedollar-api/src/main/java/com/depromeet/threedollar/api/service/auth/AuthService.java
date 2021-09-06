@@ -9,6 +9,4 @@ public interface AuthService {
 
     Long login(LoginRequest request);
 
-    void signOut(Long userId);
-
 }

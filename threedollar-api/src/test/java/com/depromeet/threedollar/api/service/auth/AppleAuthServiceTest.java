@@ -92,35 +92,6 @@ class AppleAuthServiceTest {
 
     }
 
-    @Nested
-    class 애플_회원탈퇴 {
-
-        @Test
-        void 성공시_해당하는_유저정보가_삭제된다() {
-            // given
-            User user = UserCreator.create(socialId, UserSocialType.APPLE, "닉네임");
-            userRepository.save(user);
-
-            // when
-            authService.signOut(user.getId());
-
-            // then
-            List<User> users = userRepository.findAll();
-            assertThat(users).isEmpty();
-        }
-
-        @Test
-        void 카카오로_가입한_유저가_애플_회원탈퇴_요청시_NOT_FOUND_USER_EXCEPTION() {
-            // given
-            User user = UserCreator.create(socialId, UserSocialType.KAKAO, "닉네임");
-            userRepository.save(user);
-
-            // when & then
-            assertThatThrownBy(() -> authService.signOut(user.getId())).isInstanceOf(NotFoundUserException.class);
-        }
-
-    }
-
     private static class StubAppleTokenDecoder implements AppleTokenDecoder {
         @Override
         public String getUserIdFromToken(String idToken) {

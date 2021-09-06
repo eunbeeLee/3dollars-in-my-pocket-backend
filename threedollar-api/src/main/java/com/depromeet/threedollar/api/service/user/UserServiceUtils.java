@@ -23,18 +23,10 @@ public class UserServiceUtils {
         }
     }
 
-    static User findUserById(UserRepository userRepository, Long userId) {
+    public static User findUserById(UserRepository userRepository, Long userId) {
         User user = userRepository.findUserById(userId);
         if (user == null) {
             throw new NotFoundUserException(String.format("존재하지 않는 유저 (%s) 입니다", userId));
-        }
-        return user;
-    }
-
-    static User findUserByIdAndSocialType(UserRepository userRepository, Long userId, UserSocialType socialType) {
-        User user = userRepository.findUserByIdAndSocialType(userId, socialType);
-        if (user == null) {
-            throw new NotFoundUserException(String.format("존재하지 않는 유저 (%s-%s) 입니다", userId, socialType));
         }
         return user;
     }

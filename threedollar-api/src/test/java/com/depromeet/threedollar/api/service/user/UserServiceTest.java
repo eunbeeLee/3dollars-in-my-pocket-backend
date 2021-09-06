@@ -188,12 +188,11 @@ class UserServiceTest {
         @Test
         void 성공시_백업을_위한_데이터가_생성된다() {
             // given
-            UserSocialType type = UserSocialType.APPLE;
-            User user = UserCreator.create("social-id", type, "기존의 닉네임");
+            User user = UserCreator.create("social-id", UserSocialType.APPLE, "기존의 닉네임");
             userRepository.save(user);
 
             // then
-            userService.signOut(user.getId(), type);
+            userService.signOut(user.getId());
 
             // then
             List<User> users = userRepository.findAll();
@@ -215,7 +214,7 @@ class UserServiceTest {
             userRepository.saveAll(Arrays.asList(user1, user2));
 
             // then
-            userService.signOut(user1.getId(), type);
+            userService.signOut(user1.getId());
 
             // then
             List<User> users = userRepository.findAll();
@@ -226,7 +225,7 @@ class UserServiceTest {
         @Test
         void 해당하는_유저가_없으면_NOT_FOUND_USER_EXCEPTION() {
             // when & then
-            assertThatThrownBy(() -> userService.signOut(999L, UserSocialType.APPLE)).isInstanceOf(NotFoundUserException.class);
+            assertThatThrownBy(() -> userService.signOut(999L)).isInstanceOf(NotFoundUserException.class);
         }
 
     }

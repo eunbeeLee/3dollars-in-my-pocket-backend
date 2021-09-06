@@ -3,7 +3,6 @@ package com.depromeet.threedollar.api.controller.auth;
 import com.depromeet.threedollar.application.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.controller.MockMvcUtils;
 import com.depromeet.threedollar.api.service.auth.dto.request.LoginRequest;
-import com.depromeet.threedollar.api.service.auth.dto.request.SignOutRequest;
 import com.depromeet.threedollar.api.service.auth.dto.request.SignUpRequest;
 import com.depromeet.threedollar.api.service.auth.dto.response.LoginResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -53,10 +52,9 @@ class AuthMockApiCaller extends MockMvcUtils {
         );
     }
 
-    public ApiResponse<String> signOut(SignOutRequest request, String token, int expectedStatus) throws Exception {
+    public ApiResponse<String> signOut(String token, int expectedStatus) throws Exception {
         return objectMapper.readValue(
             mockMvc.perform(delete("/api/v2/signout")
-                .param("socialType", request.getSocialType() == null ? null : request.getSocialType().toString())
                 .header(HttpHeaders.AUTHORIZATION, token))
                 .andDo(print())
                 .andExpect(status().is(expectedStatus))

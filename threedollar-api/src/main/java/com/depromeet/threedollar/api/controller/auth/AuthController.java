@@ -2,10 +2,10 @@ package com.depromeet.threedollar.api.controller.auth;
 
 import com.depromeet.threedollar.api.config.interceptor.Auth;
 import com.depromeet.threedollar.api.config.resolver.UserId;
+import com.depromeet.threedollar.api.service.user.UserService;
 import com.depromeet.threedollar.application.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.service.auth.AuthService;
 import com.depromeet.threedollar.api.service.auth.dto.request.LoginRequest;
-import com.depromeet.threedollar.api.service.auth.dto.request.SignOutRequest;
 import com.depromeet.threedollar.api.service.auth.dto.request.SignUpRequest;
 import com.depromeet.threedollar.api.service.auth.dto.response.LoginResponse;
 import com.depromeet.threedollar.common.exception.ValidationException;
@@ -30,6 +30,7 @@ public class AuthController {
     private final AuthService appleAuthService;
     private final AuthService kaKaoAuthService;
     private final HttpSession httpSession;
+    private final UserService userService;
 
     @ApiOperation("회원가입을 요청합니다")
     @PostMapping("/api/v2/signup")
@@ -71,22 +72,10 @@ public class AuthController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @DeleteMapping("/api/v2/signout")
-    public ApiResponse<String> signOut(@Valid SignOutRequest request, @UserId Long userId) {
-        signOutBySocialType(request, userId);
+    public ApiResponse<String> signOut(@UserId Long userId) {
+        userService.signOut(userId);
         httpSession.invalidate();
         return ApiResponse.SUCCESS;
-    }
-
-    private void signOutBySocialType(SignOutRequest request, Long userId) {
-        if (request.getSocialType().equals(UserSocialType.KAKAO)) {
-            kaKaoAuthService.signOut(userId);
-            return;
-        }
-        if (request.getSocialType().equals(UserSocialType.APPLE)) {
-            appleAuthService.signOut(userId);
-            return;
-        }
-        throw new ValidationException(String.format("허용하지 않는 소셜 타입 (%s) 입니다.", request.getSocialType()));
     }
 
     @ApiOperation("[인증] 로그아웃을 요청합니다.")

@@ -4,7 +4,6 @@ import com.depromeet.threedollar.application.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.controller.AbstractControllerTest;
 import com.depromeet.threedollar.api.service.auth.AuthService;
 import com.depromeet.threedollar.api.service.auth.dto.request.LoginRequest;
-import com.depromeet.threedollar.api.service.auth.dto.request.SignOutRequest;
 import com.depromeet.threedollar.api.service.auth.dto.request.SignUpRequest;
 import com.depromeet.threedollar.api.service.auth.dto.response.LoginResponse;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
@@ -18,8 +17,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static com.depromeet.threedollar.common.exception.ErrorCode.VALIDATION_EXCEPTION;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -173,48 +170,14 @@ class AuthControllerTest extends AbstractControllerTest {
     class 회원탈퇴 {
 
         @Test
-        void 카카오_회원탈퇴_요청이_성공하면_200_OK() throws Exception {
-            // given
-            SignOutRequest request = SignOutRequest.testInstance(UserSocialType.KAKAO);
-
-            doNothing().when(kaKaoAuthService).signOut(any());
-
+        void 회원탈퇴_요청이_성공하면_200_OK() throws Exception {
             // when
-            ApiResponse<String> response = authMockApiCaller.signOut(request, token, 200);
+            ApiResponse<String> response = authMockApiCaller.signOut(token, 200);
 
             // then
             assertThat(response.getResultCode()).isEmpty();
             assertThat(response.getMessage()).isEmpty();
             assertThat(response.getData()).isEqualTo(ApiResponse.SUCCESS.getData());
-        }
-
-        @Test
-        void 애플_회원탈퇴_요청이_성공하면_200_OK() throws Exception {
-            // given
-            SignOutRequest request = SignOutRequest.testInstance(UserSocialType.APPLE);
-
-            doNothing().when(appleAuthService).signOut(any());
-
-            // when
-            ApiResponse<String> response = authMockApiCaller.signOut(request, token, 200);
-
-            // then
-            assertThat(response.getResultCode()).isEmpty();
-            assertThat(response.getMessage()).isEmpty();
-            assertThat(response.getData()).isEqualTo(ApiResponse.SUCCESS.getData());
-        }
-
-        @Test
-        void 소셜_프로바이더를_넘기지_않으면_400에러가_발생한다() throws Exception {
-            // given
-            SignOutRequest request = SignOutRequest.testInstance(null);
-
-            // when
-            ApiResponse<String> response = authMockApiCaller.signOut(request, token, 400);
-
-            // then
-            assertThat(response.getResultCode()).isEqualTo(VALIDATION_EXCEPTION.getCode());
-            assertThat(response.getData()).isNull();
         }
 
     }

@@ -43,8 +43,8 @@ public class UserService {
     }
 
     @Transactional
-    public void signOut(Long userId, UserSocialType socialType) {
-        User user = UserServiceUtils.findUserByIdAndSocialType(userRepository, userId, socialType);
+    public void signOut(Long userId) {
+        User user = UserServiceUtils.findUserById(userRepository, userId);
         withdrawalUserRepository.save(WithdrawalUser.newInstance(user));
         userRepository.delete(user);
     }

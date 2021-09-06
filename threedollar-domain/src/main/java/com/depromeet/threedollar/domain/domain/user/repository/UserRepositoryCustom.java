@@ -13,6 +13,4 @@ public interface UserRepositoryCustom {
 
     User findUserById(Long userId);
 
-    User findUserByIdAndSocialType(Long userId, UserSocialType socialType);
-
 }

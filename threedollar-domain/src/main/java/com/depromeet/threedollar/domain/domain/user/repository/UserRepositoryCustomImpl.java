@@ -51,13 +51,4 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
             .fetchOne();
     }
 
-    @Override
-    public User findUserByIdAndSocialType(Long userId, UserSocialType socialType) {
-        return queryFactory.selectFrom(user)
-            .where(
-                user.id.eq(userId),
-                user.socialInfo.socialType.eq(socialType)
-            ).fetchOne();
-    }
-
 }

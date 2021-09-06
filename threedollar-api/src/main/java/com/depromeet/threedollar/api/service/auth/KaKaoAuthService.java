@@ -11,7 +11,6 @@ import com.depromeet.threedollar.external.external.kakao.KaKaoApiCaller;
 import com.depromeet.threedollar.external.external.kakao.dto.response.KaKaoProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -33,12 +32,6 @@ public class KaKaoAuthService implements AuthService {
     public Long login(LoginRequest request) {
         KaKaoProfileResponse response = kaKaoApiCaller.getProfileInfo(HttpHeaderUtils.withBearerToken(request.getToken()));
         return UserServiceUtils.findUserBySocialIdAndSocialType(userRepository, response.getId(), socialType).getId();
-    }
-
-    @Transactional
-    @Override
-    public void signOut(Long userId) {
-        userService.signOut(userId, socialType);
     }
 
 }
