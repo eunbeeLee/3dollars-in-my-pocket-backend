@@ -50,6 +50,12 @@ public class StoreRetrieveService {
             request.getLongitude(), creator, reviewRepository.findAllWithCreatorByStoreId(request.getStoreId()));
     }
 
+    @Transactional(readOnly = true)
+    public List<StoreImageResponse> retrieveStoreImages(Long storeId) {
+        StoreServiceUtils.validateExistsStore(storeRepository, storeId);
+        return storeImageService.getStoreImages(storeId);
+    }
+
     /**
      * 스크롤 방식으로 사용자가 작성한 가게 정보를 조회한다. (서버에서 다음 스크롤를 반환해줘야한다. 이떄 더이상 가게가 없는 경우 null을 반환)
      * 쿼리를 두 번 날려서 체크하지 않고, 한 번에 처리하기 위해 요청한 가게 갯수 + 1로 조회해서 마지막 1개의 여부에 따라 다음 스크롤 존재 여부를 확인한다.
