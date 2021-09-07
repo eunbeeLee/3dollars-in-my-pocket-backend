@@ -62,7 +62,7 @@ public class StoreController {
     @Auth
     @PostMapping("/api/v2/store/images")
     public ApiResponse<List<StoreImageResponse>> addStoreImage(@Valid AddStoreImageRequest request,
-                                                               @RequestPart(value = "image") List<MultipartFile> images,
+                                                               @RequestPart(value = "images") List<MultipartFile> images,
                                                                @UserId Long userId) {
         return ApiResponse.success(storeImageService.addStoreImages(request, images, userId));
     }
