@@ -10,8 +10,10 @@ public class LoginResponse {
 
     private String token;
 
-    public static LoginResponse of(String sessionId) {
-        return new LoginResponse(sessionId);
+    private Long userId;
+
+    public static LoginResponse of(String sessionId, Long userId) {
+        return new LoginResponse(sessionId, userId);
     }
 
 }

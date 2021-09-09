@@ -33,7 +33,7 @@ public class LocalTestController {
             user = userRepository.save(testUser);
         }
         httpSession.setAttribute(USER_ID, user.getId());
-        return ApiResponse.success(LoginResponse.of(httpSession.getId()));
+        return ApiResponse.success(LoginResponse.of(httpSession.getId(), user.getId()));
     }
-    
+
 }

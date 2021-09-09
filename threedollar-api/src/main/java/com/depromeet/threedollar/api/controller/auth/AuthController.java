@@ -37,7 +37,7 @@ public class AuthController {
     public ApiResponse<LoginResponse> signUp(@Valid @RequestBody SignUpRequest request) {
         Long userId = signUpBySocialType(request);
         httpSession.setAttribute(USER_ID, userId);
-        return ApiResponse.success(LoginResponse.of(httpSession.getId()));
+        return ApiResponse.success(LoginResponse.of(httpSession.getId(), userId));
     }
 
     private Long signUpBySocialType(SignUpRequest request) {
@@ -55,7 +55,7 @@ public class AuthController {
     public ApiResponse<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         Long userId = loginBySocialType(request);
         httpSession.setAttribute(USER_ID, userId);
-        return ApiResponse.success(LoginResponse.of(httpSession.getId()));
+        return ApiResponse.success(LoginResponse.of(httpSession.getId(), userId));
     }
 
     private Long loginBySocialType(LoginRequest request) {
