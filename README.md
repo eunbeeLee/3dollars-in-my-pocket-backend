@@ -43,7 +43,12 @@ docker-compose up --build
 
 ## Infra
 ### Production Environment
-TODO
+- AWS ECS Fargate (Spot Instance)
+- AWS Application LoadBalancer
+- AWS RDS (MariaDB 10.4)
+- flyway
+- AWS ElasticCache (Redis 6.x)
+- Github Actions CI/CD
 
 ### Development Environment
 AWS 프리티어 내에서 비용 없이 구성하였습니다.
@@ -51,6 +56,6 @@ AWS 프리티어 내에서 비용 없이 구성하였습니다.
 - AWS RDS (MariaDB 10.4)
 - flyway
 - Nginx
-- Docker, Docker compose, AWS ECR
+- Docker compose
 - Redis
 - Github Actions CI/CD
