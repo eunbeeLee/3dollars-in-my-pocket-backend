@@ -118,6 +118,28 @@ class ReviewServiceTest extends UserSetUpTest {
             assertThat(stores.get(0).getRating()).isEqualTo(2.5); // (4 + 1) / 2 = 2.5
         }
 
+        @Test
+        void 가게의_평균_리뷰_점수가_소수점_둘째자리에서_반올림되서_갱신된다() {
+            // given
+            String contents = "우와 맛있어요";
+            int rating = 3;
+
+            Review review1 = ReviewCreator.create(store.getId(), userId, "맛 없어요", 1);
+            Review review2 = ReviewCreator.create(store.getId(), userId, "맛 없어요", 4);
+            reviewRepository.saveAll(Arrays.asList(review1, review2));
+
+            // when
+            AddReviewRequest request = AddReviewRequest.testInstance(store.getId(), contents, rating);
+
+            // when
+            reviewService.addReview(request, userId);
+
+            // then
+            List<Store> stores = storeRepository.findAll();
+            assertThat(stores).hasSize(1);
+            assertThat(stores.get(0).getRating()).isEqualTo(2.); // (1 + 3 + 4) / 3 = 2.66666 = 2.7
+        }
+
     }
 
     @Nested

@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.domain.domain.store;
 
+import com.depromeet.threedollar.common.utils.MathUtils;
 import com.depromeet.threedollar.domain.domain.common.AuditingTimeEntity;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
 import com.depromeet.threedollar.domain.domain.common.Location;
@@ -201,6 +202,10 @@ public class Store extends AuditingTimeEntity {
 
     public boolean hasCategory(MenuCategoryType category) {
         return this.getMenuCategories().contains(category);
+    }
+
+    public double getRating() {
+        return MathUtils.round(rating);
     }
 
 }

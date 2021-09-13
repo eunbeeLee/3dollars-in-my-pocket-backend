@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.api.service.store;
 
+import com.depromeet.threedollar.common.utils.MathUtils;
 import com.depromeet.threedollar.domain.domain.review.Review;
 import com.depromeet.threedollar.domain.domain.review.ReviewRepository;
 import com.depromeet.threedollar.domain.domain.store.Store;
@@ -16,7 +17,7 @@ public class StoreRatingService {
     @Transactional
     public void renewStoreRating(Store store) {
         double average = calculateAverageRating(store.getId());
-        store.updateAverageRating(average);
+        store.updateAverageRating(MathUtils.round(average));
     }
 
     private double calculateAverageRating(Long storeId) {
