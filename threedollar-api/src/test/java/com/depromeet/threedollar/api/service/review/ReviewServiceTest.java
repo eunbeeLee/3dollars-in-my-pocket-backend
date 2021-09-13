@@ -137,7 +137,7 @@ class ReviewServiceTest extends UserSetUpTest {
             // then
             List<Store> stores = storeRepository.findAll();
             assertThat(stores).hasSize(1);
-            assertThat(stores.get(0).getRating()).isEqualTo(2.); // (1 + 3 + 4) / 3 = 2.66666 = 2.7
+            assertThat(stores.get(0).getRating()).isEqualTo(2.7); // (1 + 3 + 4) / 3 = 2.66666 = 2.7
         }
 
     }

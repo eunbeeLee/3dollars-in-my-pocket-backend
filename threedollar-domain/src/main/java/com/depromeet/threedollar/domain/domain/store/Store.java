@@ -205,7 +205,7 @@ public class Store extends AuditingTimeEntity {
     }
 
     public double getRating() {
-        return MathUtils.round(rating);
+        return MathUtils.round(rating, 1);
     }
 
 }

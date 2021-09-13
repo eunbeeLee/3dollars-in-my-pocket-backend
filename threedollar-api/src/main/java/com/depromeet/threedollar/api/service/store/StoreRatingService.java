@@ -17,7 +17,7 @@ public class StoreRatingService {
     @Transactional
     public void renewStoreRating(Store store) {
         double average = calculateAverageRating(store.getId());
-        store.updateAverageRating(MathUtils.round(average));
+        store.updateAverageRating(MathUtils.round(average, 1));
     }
 
     private double calculateAverageRating(Long storeId) {
