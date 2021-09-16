@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.external.external.apple;
+package com.depromeet.threedollar.external.client.apple;
 
 public interface AppleTokenDecoder {
 

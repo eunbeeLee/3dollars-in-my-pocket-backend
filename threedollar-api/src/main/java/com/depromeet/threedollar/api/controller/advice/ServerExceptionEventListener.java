@@ -1,8 +1,8 @@
 package com.depromeet.threedollar.api.controller.advice;
 
 import com.depromeet.threedollar.api.event.ServerExceptionOccurredEvent;
-import com.depromeet.threedollar.external.external.slack.SlackApiCaller;
-import com.depromeet.threedollar.external.external.slack.dto.request.PostSlackMessageRequest;
+import com.depromeet.threedollar.external.client.slack.SlackApiClient;
+import com.depromeet.threedollar.external.client.slack.dto.request.PostSlackMessageRequest;
 import io.sentry.Sentry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -14,7 +14,7 @@ public class ServerExceptionEventListener {
 
     private static final String ERROR_MESSAGE_FORMAT = "[%s : %s]\nTimestamps: %s\nMessage: %s\nException: %s";
 
-    private final SlackApiCaller slackApiCaller;
+    private final SlackApiClient slackApiCaller;
 
     @EventListener
     public void sendErrorNotification(ServerExceptionOccurredEvent event) {

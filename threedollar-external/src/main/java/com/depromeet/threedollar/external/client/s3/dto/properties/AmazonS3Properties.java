@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.external.external.s3.dto.component;
+package com.depromeet.threedollar.external.client.s3.dto.properties;
 
 import lombok.*;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @ConstructorBinding
 @ConfigurationProperties("cloud.aws.s3")
-public class AmazonS3Component {
+public class AmazonS3Properties {
 
     private final String bucket;
 

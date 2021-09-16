@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.external.external.s3;
+package com.depromeet.threedollar.external.client.s3;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 

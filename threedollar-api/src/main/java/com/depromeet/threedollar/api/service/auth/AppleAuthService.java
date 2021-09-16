@@ -6,7 +6,7 @@ import com.depromeet.threedollar.api.service.user.UserService;
 import com.depromeet.threedollar.api.service.user.UserServiceUtils;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
-import com.depromeet.threedollar.external.external.apple.AppleTokenDecoder;
+import com.depromeet.threedollar.external.client.apple.AppleTokenDecoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -7,8 +7,8 @@ import com.depromeet.threedollar.api.service.user.UserServiceUtils;
 import com.depromeet.threedollar.common.utils.HttpHeaderUtils;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
-import com.depromeet.threedollar.external.external.kakao.KaKaoApiCaller;
-import com.depromeet.threedollar.external.external.kakao.dto.response.KaKaoProfileResponse;
+import com.depromeet.threedollar.external.client.kakao.KaKaoApiClient;
+import com.depromeet.threedollar.external.client.kakao.dto.response.KaKaoProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class KaKaoAuthService implements AuthService {
 
     private static final UserSocialType socialType = UserSocialType.KAKAO;
 
-    private final KaKaoApiCaller kaKaoApiCaller;
+    private final KaKaoApiClient kaKaoApiCaller;
     private final UserService userService;
     private final UserRepository userRepository;
 

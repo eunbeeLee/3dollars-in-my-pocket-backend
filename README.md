@@ -48,7 +48,7 @@ docker-compose up --build
 - AWS RDS (MariaDB 10.4)
 - flyway
 - AWS ElasticCache (Redis 6.x)
-- Github Actions CI/CD
+- GitHub Actions CI/CD
 
 ### Development Environment
 AWS 프리티어 내에서 비용 없이 구성하였습니다.
@@ -58,4 +58,4 @@ AWS 프리티어 내에서 비용 없이 구성하였습니다.
 - Nginx
 - Docker compose
 - Redis
-- Github Actions CI/CD
+- GitHub Actions CI/CD

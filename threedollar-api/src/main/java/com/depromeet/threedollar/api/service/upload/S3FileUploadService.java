@@ -3,7 +3,7 @@ package com.depromeet.threedollar.api.service.upload;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.depromeet.threedollar.api.service.upload.dto.request.FileUploadRequest;
 import com.depromeet.threedollar.common.utils.FileUtils;
-import com.depromeet.threedollar.external.external.s3.S3Service;
+import com.depromeet.threedollar.external.client.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

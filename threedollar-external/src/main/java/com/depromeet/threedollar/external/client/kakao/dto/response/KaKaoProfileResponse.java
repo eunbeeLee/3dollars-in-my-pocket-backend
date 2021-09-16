@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.external.external.kakao.dto.response;
+package com.depromeet.threedollar.external.client.kakao.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;

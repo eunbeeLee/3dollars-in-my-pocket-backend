@@ -37,7 +37,7 @@ class AuthInterceptor(
 
     private fun findSessionBySessionId(sessionId: String): Session {
         return sessionRepository.findById(sessionId)
-            ?: throw UnAuthorizedException("잘못된 세션 ${sessionId} 입니다.")
+            ?: throw UnAuthorizedException("잘못된 세션 $sessionId 입니다.")
     }
 
     companion object {

@@ -5,7 +5,7 @@ import com.depromeet.threedollar.api.service.auth.dto.request.SignUpRequest;
 import com.depromeet.threedollar.api.service.user.UserService;
 import com.depromeet.threedollar.domain.domain.user.*;
 import com.depromeet.threedollar.common.exception.notfound.NotFoundUserException;
-import com.depromeet.threedollar.external.external.apple.AppleTokenDecoder;
+import com.depromeet.threedollar.external.client.apple.AppleTokenDecoder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;

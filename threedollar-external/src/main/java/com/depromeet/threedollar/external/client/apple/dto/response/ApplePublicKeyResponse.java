@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.external.external.apple.dto.response;
+package com.depromeet.threedollar.external.client.apple.dto.response;
 
 import com.depromeet.threedollar.common.exception.ValidationException;
 import lombok.*;

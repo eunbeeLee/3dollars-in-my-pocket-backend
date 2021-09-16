@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.external.external.apple.dto.property;
+package com.depromeet.threedollar.external.client.apple.dto.properties;
 
 import lombok.*;
 import org.springframework.boot.context.properties.ConfigurationProperties;

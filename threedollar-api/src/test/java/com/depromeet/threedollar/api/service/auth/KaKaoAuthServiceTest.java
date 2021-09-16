@@ -5,8 +5,8 @@ import com.depromeet.threedollar.api.service.auth.dto.request.SignUpRequest;
 import com.depromeet.threedollar.api.service.user.UserService;
 import com.depromeet.threedollar.domain.domain.user.*;
 import com.depromeet.threedollar.common.exception.notfound.NotFoundUserException;
-import com.depromeet.threedollar.external.external.kakao.KaKaoApiCaller;
-import com.depromeet.threedollar.external.external.kakao.dto.response.KaKaoProfileResponse;
+import com.depromeet.threedollar.external.client.kakao.KaKaoApiClient;
+import com.depromeet.threedollar.external.client.kakao.dto.response.KaKaoProfileResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -94,7 +94,7 @@ class KaKaoAuthServiceTest {
 
     }
 
-    private static class StubKaKaoApiCaller implements KaKaoApiCaller {
+    private static class StubKaKaoApiCaller implements KaKaoApiClient {
 
         @Override
         public KaKaoProfileResponse getProfileInfo(String accessToken) {

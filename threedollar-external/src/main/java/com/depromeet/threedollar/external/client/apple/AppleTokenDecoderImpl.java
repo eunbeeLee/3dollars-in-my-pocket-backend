@@ -1,8 +1,8 @@
-package com.depromeet.threedollar.external.external.apple;
+package com.depromeet.threedollar.external.client.apple;
 
 import com.depromeet.threedollar.common.exception.ValidationException;
-import com.depromeet.threedollar.external.external.apple.dto.property.AppleAuthProperties;
-import com.depromeet.threedollar.external.external.apple.dto.response.ApplePublicKeyResponse;
+import com.depromeet.threedollar.external.client.apple.dto.properties.AppleAuthProperties;
+import com.depromeet.threedollar.external.client.apple.dto.response.ApplePublicKeyResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +27,7 @@ import java.util.Map;
 @Component
 public class AppleTokenDecoderImpl implements AppleTokenDecoder {
 
-    private final AppleApiCaller appleApiCaller;
+    private final AppleApiClient appleApiCaller;
     private final AppleAuthProperties appleAuthProperties;
     private final ObjectMapper objectMapper;
 

@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.external.external.slack.dto.request;
+package com.depromeet.threedollar.external.client.slack.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
