@@ -1,7 +1,7 @@
 buildscript {
     ext {
         springBootVersion = '2.5.4'
-        kotlinVersion = '1.5.21'
+        kotlinVersion = '1.5.31'
         springCloudVersion = '2020.0.3'
     }
     repositories {
@@ -16,7 +16,7 @@ buildscript {
 }
 
 allprojects {
-    group = 'com.potato'
+    group = 'com.depromeet.threedollar'
 }
 
 subprojects {
