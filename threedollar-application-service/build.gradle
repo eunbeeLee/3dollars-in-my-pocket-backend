@@ -4,7 +4,7 @@ jar { enabled = true }
 dependencies {
     api project(':threedollar-domain')
 
-    // spring boot starter json
+    // Jackson
     implementation("org.springframework.boot:spring-boot-starter-json")
 
     // Redis

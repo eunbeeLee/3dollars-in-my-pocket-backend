@@ -1,7 +1,5 @@
-buildscript {
-    ext {
-        swaggerVersion = '2.9.2'
-    }
+ext {
+    swaggerVersion = '2.9.2'
 }
 
 dependencies {
