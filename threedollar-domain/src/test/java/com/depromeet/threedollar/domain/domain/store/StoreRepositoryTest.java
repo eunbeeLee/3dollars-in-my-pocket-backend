@@ -263,7 +263,7 @@ class StoreRepositoryTest {
 
     }
 
-    private void assertStoreDeleteRequestReportDto(StoreWithReportedCountProjection response, Long storeId, String name, Double latitude, Double longitude, StoreType type, double rating, int cnt) {
+    private void assertStoreDeleteRequestReportDto(StoreWithReportedCountProjection response, Long storeId, String name, double latitude, double longitude, StoreType type, double rating, int cnt) {
         assertThat(response.getStoreId()).isEqualTo(storeId);
         assertThat(response.getStoreName()).isEqualTo(name);
         assertThat(response.getLatitude()).isEqualTo(latitude);

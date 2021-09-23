@@ -19,7 +19,7 @@ public class RetrieveStoreDetailInfoRequest {
     @NotNull(message = "{store.longitude.notNull}")
     private Double longitude;
 
-    public static RetrieveStoreDetailInfoRequest testInstance(Long storeId, double latitude, double longitude) {
+    public static RetrieveStoreDetailInfoRequest testInstance(Long storeId, Double latitude, Double longitude) {
         return new RetrieveStoreDetailInfoRequest(storeId, latitude, longitude);
     }
 

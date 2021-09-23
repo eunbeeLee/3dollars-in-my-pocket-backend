@@ -29,7 +29,7 @@ public class RetrieveNearStoresRequest {
         return new RetrieveNearStoresRequest(latitude, longitude, mapLatitude, mapLongitude, distance);
     }
 
-    public Double getDistance() {
+    public double getDistance() {
         return this.distance / 1000;
     }
 

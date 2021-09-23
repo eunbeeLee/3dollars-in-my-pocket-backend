@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 public class StoreDetailResponse extends AuditingTimeResponse {
 
     private Long storeId;
-    private Double latitude;
-    private Double longitude;
+    private double latitude;
+    private double longitude;
     private String storeName;
     private StoreType storeType;
-    private Double rating;
+    private double rating;
     private Integer distance;
     private UserInfoResponse user;
     private final List<MenuCategoryType> categories = new ArrayList<>();
@@ -37,8 +37,8 @@ public class StoreDetailResponse extends AuditingTimeResponse {
     private final List<ReviewWithWriterResponse> reviews = new ArrayList<>();
 
     @Builder(access = AccessLevel.PRIVATE)
-    private StoreDetailResponse(Long storeId, Double latitude, Double longitude, String storeName, StoreType storeType,
-                                Double rating, Integer distance, UserInfoResponse user) {
+    private StoreDetailResponse(Long storeId, double latitude, double longitude, String storeName, StoreType storeType,
+                                double rating, Integer distance, UserInfoResponse user) {
         this.storeId = storeId;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -49,8 +49,8 @@ public class StoreDetailResponse extends AuditingTimeResponse {
         this.user = user;
     }
 
-    public static StoreDetailResponse of(Store store, List<StoreImageResponse> imageResponses, Double latitude,
-                                         Double longitude, User user, List<ReviewWithWriterProjection> reviews) {
+    public static StoreDetailResponse of(Store store, List<StoreImageResponse> imageResponses, double latitude,
+                                         double longitude, User user, List<ReviewWithWriterProjection> reviews) {
         StoreDetailResponse response = StoreDetailResponse.builder()
             .storeId(store.getId())
             .latitude(store.getLatitude())

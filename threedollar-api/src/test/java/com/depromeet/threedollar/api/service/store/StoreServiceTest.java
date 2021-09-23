@@ -73,8 +73,8 @@ class StoreServiceTest extends UserSetUpTest {
         @Test
         void 성공시_새로운_가게_데이터가_DB에_추가된다() {
             // given
-            Double latitude = 34.0;
-            Double longitude = 130.0;
+            double latitude = 34.0;
+            double longitude = 130.0;
 
             String storeName = "붕어빵";
             StoreType storeType = StoreType.STORE;
@@ -193,8 +193,8 @@ class StoreServiceTest extends UserSetUpTest {
             store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
             storeRepository.save(store);
 
-            Double latitude = 34.0;
-            Double longitude = 130.0;
+            double latitude = 34.0;
+            double longitude = 130.0;
             String storeName = "붕어빵";
             StoreType storeType = StoreType.STORE;
             Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);
@@ -243,8 +243,8 @@ class StoreServiceTest extends UserSetUpTest {
             store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
             storeRepository.save(store);
 
-            Double latitude = 34.0;
-            Double longitude = 130.0;
+            double latitude = 34.0;
+            double longitude = 130.0;
             String storeName = "붕어빵";
             StoreType storeType = StoreType.STORE;
             Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);

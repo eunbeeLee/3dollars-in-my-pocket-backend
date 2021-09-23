@@ -148,7 +148,7 @@ public class Store extends AuditingTimeEntity {
         addMenus(menus);
     }
 
-    public void updateLocation(Double latitude, Double longitude) {
+    public void updateLocation(double latitude, double longitude) {
         this.location = Location.of(latitude, longitude);
     }
 
@@ -166,11 +166,11 @@ public class Store extends AuditingTimeEntity {
         this.status = StoreStatus.DELETED;
     }
 
-    public Double getLatitude() {
+    public double getLatitude() {
         return this.location.getLatitude();
     }
 
-    public Double getLongitude() {
+    public double getLongitude() {
         return this.location.getLongitude();
     }
 

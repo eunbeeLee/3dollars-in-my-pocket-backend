@@ -125,7 +125,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
             storeRepository.save(store);
 
-            RetrieveStoreDetailInfoRequest request = RetrieveStoreDetailInfoRequest.testInstance(store.getId(), 34, 124);
+            RetrieveStoreDetailInfoRequest request = RetrieveStoreDetailInfoRequest.testInstance(store.getId(), 34.0, 124.0);
 
             // when
             ApiResponse<StoreDetailResponse> response = storeRetrieveMockApiCaller.getStoreDetailInfo(request, 200);
@@ -156,7 +156,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
             store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
             storeRepository.save(store);
 
-            RetrieveStoreDetailInfoRequest request = RetrieveStoreDetailInfoRequest.testInstance(store.getId(), 34, 124);
+            RetrieveStoreDetailInfoRequest request = RetrieveStoreDetailInfoRequest.testInstance(store.getId(), 34.0, 124.0);
 
             // when
             ApiResponse<StoreDetailResponse> response = storeRetrieveMockApiCaller.getStoreDetailInfo(request, 200);
@@ -178,7 +178,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
             reviewRepository.saveAll(Arrays.asList(review1, review2));
 
-            RetrieveStoreDetailInfoRequest request = RetrieveStoreDetailInfoRequest.testInstance(store.getId(), 34, 124);
+            RetrieveStoreDetailInfoRequest request = RetrieveStoreDetailInfoRequest.testInstance(store.getId(), 34.0, 124.0);
 
             // when
             ApiResponse<StoreDetailResponse> response = storeRetrieveMockApiCaller.getStoreDetailInfo(request, 200);
@@ -196,7 +196,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         @Test
         void 존재하지_않는_가게인경우_NOTFOUND_404_NOT_FOUND() throws Exception {
             // when
-            RetrieveStoreDetailInfoRequest request = RetrieveStoreDetailInfoRequest.testInstance(999L, 34, 124);
+            RetrieveStoreDetailInfoRequest request = RetrieveStoreDetailInfoRequest.testInstance(999L, 34.0, 124.0);
 
             // when
             ApiResponse<StoreDetailResponse> response = storeRetrieveMockApiCaller.getStoreDetailInfo(request, 404);

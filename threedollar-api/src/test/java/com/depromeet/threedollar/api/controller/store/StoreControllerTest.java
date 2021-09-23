@@ -74,8 +74,8 @@ class StoreControllerTest extends AbstractControllerTest {
         @Test
         void 성공시_가게_정보를_반환한다() throws Exception {
             // given
-            Double latitude = 34.0;
-            Double longitude = 130.0;
+            double latitude = 34.0;
+            double longitude = 130.0;
 
             String storeName = "붕어빵";
             StoreType storeType = StoreType.STORE;
@@ -117,8 +117,8 @@ class StoreControllerTest extends AbstractControllerTest {
             store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
             storeRepository.save(store);
 
-            Double latitude = 34.0;
-            Double longitude = 130.0;
+            double latitude = 34.0;
+            double longitude = 130.0;
             String storeName = "붕어빵";
             StoreType storeType = StoreType.STORE;
             Set<DayOfTheWeek> appearanceDays = Set.of(DayOfTheWeek.TUESDAY);
@@ -235,7 +235,7 @@ class StoreControllerTest extends AbstractControllerTest {
 
     }
 
-    private void assertStoreInfoResponse(StoreInfoResponse response, Double latitude, Double longitude, String storeName, List<MenuCategoryType> categories) {
+    private void assertStoreInfoResponse(StoreInfoResponse response, double latitude, double longitude, String storeName, List<MenuCategoryType> categories) {
         assertThat(response.getLatitude()).isEqualTo(latitude);
         assertThat(response.getLongitude()).isEqualTo(longitude);
         assertThat(response.getStoreName()).isEqualTo(storeName);

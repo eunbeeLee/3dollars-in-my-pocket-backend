@@ -15,15 +15,15 @@ import java.util.List;
 public class StoreInfoResponse extends AuditingTimeResponse {
 
     private Long storeId;
-    private Double latitude;
-    private Double longitude;
+    private double latitude;
+    private double longitude;
     private String storeName;
-    private Double rating;
+    private double rating;
     private Integer distance;
     private final List<MenuCategoryType> categories = new ArrayList<>();
 
     @Builder(access = AccessLevel.PRIVATE)
-    private StoreInfoResponse(Long storeId, Double latitude, Double longitude, String storeName, Double rating, Integer distance) {
+    private StoreInfoResponse(Long storeId, double latitude, double longitude, String storeName, double rating, Integer distance) {
         this.storeId = storeId;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -32,7 +32,7 @@ public class StoreInfoResponse extends AuditingTimeResponse {
         this.distance = distance;
     }
 
-    public static StoreInfoResponse of(Store store, Double latitude, Double longitude) {
+    public static StoreInfoResponse of(Store store, double latitude, double longitude) {
         StoreInfoResponse response = StoreInfoResponse.builder()
             .storeId(store.getId())
             .latitude(store.getLatitude())
