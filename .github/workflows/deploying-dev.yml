@@ -82,7 +82,7 @@ jobs:
         id: build-api
         env:
           DOCKER_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          DOCKER_REPOSITORY: 3dollar-api
+          DOCKER_REPOSITORY: 3dollar-api-dev
           IMAGE_TAG: ${{ steps.dev-version.outputs.version }}
         run: |
           docker build -t $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG .
