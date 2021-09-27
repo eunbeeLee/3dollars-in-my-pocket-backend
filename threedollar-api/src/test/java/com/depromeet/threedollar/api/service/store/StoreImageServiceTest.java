@@ -3,8 +3,8 @@ package com.depromeet.threedollar.api.service.store;
 import com.depromeet.threedollar.api.service.UserSetUpTest;
 import com.depromeet.threedollar.api.service.store.dto.request.AddStoreImageRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreImageResponse;
-import com.depromeet.threedollar.api.service.upload.FileUploadService;
-import com.depromeet.threedollar.api.service.upload.dto.request.FileUploadRequest;
+import com.depromeet.threedollar.api.service.upload.UploadService;
+import com.depromeet.threedollar.api.service.upload.dto.request.UploadRequest;
 import com.depromeet.threedollar.domain.domain.store.*;
 import com.depromeet.threedollar.common.exception.notfound.NotFoundStoreException;
 import com.depromeet.threedollar.common.exception.notfound.NotFoundStoreImageException;
@@ -46,7 +46,7 @@ class StoreImageServiceTest extends UserSetUpTest {
 
     @BeforeEach
     void setUpStoreImageService() {
-        storeImageService = new StoreImageService(storeRepository, storeImageRepository, new StubFileUploadService());
+        storeImageService = new StoreImageService(storeRepository, storeImageRepository, new StubUploadService());
 
         store = StoreCreator.create(userId, "가게이름");
         storeRepository.save(store);
@@ -162,13 +162,11 @@ class StoreImageServiceTest extends UserSetUpTest {
         assertThat(storeImage.getStatus()).isEqualTo(status);
     }
 
-    private static class StubFileUploadService implements FileUploadService {
-
+    private static class StubUploadService implements UploadService {
         @Override
-        public String uploadImage(FileUploadRequest request, MultipartFile file) {
+        public String uploadFile(UploadRequest request, MultipartFile file) {
             return IMAGE_URL;
         }
-
     }
 
 }

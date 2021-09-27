@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.common.utils;
+package com.depromeet.threedollar.api.service.upload.dto.request;
 
 import com.depromeet.threedollar.common.exception.validation.ValidationFileTypeException;
 import com.depromeet.threedollar.common.type.ImageType;
@@ -9,16 +9,17 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class FileUtilsTest {
+class ImageUploadRequestTest {
 
     @Test
     void 이미지_타입에_해당하는_디렉터리에_UUID_파일명이_생성된다() {
         // given
         String originalFileName = "image.png";
         ImageType type = ImageType.STORE;
+        ImageUploadRequest request = ImageUploadRequest.of(type);
 
         // when
-        String result = FileUtils.createFileUuidNameWithExtension(type, originalFileName);
+        String result = request.createFileName(originalFileName);
 
         // then
         assertThat(result.startsWith(type.getDirectory())).isTrue();
@@ -28,21 +29,30 @@ class FileUtilsTest {
     @ParameterizedTest
     @ValueSource(strings = {"image", "video/mp4"})
     void 허용되지_ContentType_경우_VALIDATION_FILE_TYPE_EXCEPTION(String contentType) {
+        // given
+        ImageUploadRequest request = ImageUploadRequest.of(ImageType.STORE);
+
         // when & then
-        assertThatThrownBy(() -> FileUtils.createFileUuidNameWithExtension(ImageType.STORE, contentType)).isInstanceOf(ValidationFileTypeException.class);
+        assertThatThrownBy(() -> request.validate(contentType)).isInstanceOf(ValidationFileTypeException.class);
     }
 
     @Test
     void ContentType이_널인경우_VALIDATION_FILE_TYPE_EXCEPTION() {
+        // given
+        ImageUploadRequest request = ImageUploadRequest.of(ImageType.STORE);
+
         // when & then
-        assertThatThrownBy(() -> FileUtils.validateAvailableImageFile(null)).isInstanceOf(ValidationFileTypeException.class);
+        assertThatThrownBy(() -> request.validate(null)).isInstanceOf(ValidationFileTypeException.class);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"image/jpeg", "image/png"})
     void 허용된_ContentType_경우_정상적으로_반환된다(String contentType) {
+        // given
+        ImageUploadRequest request = ImageUploadRequest.of(ImageType.STORE);
+
         // when & then
-        FileUtils.validateAvailableImageFile(contentType);
+        request.validate(contentType);
     }
 
 }
