@@ -11,7 +11,7 @@ import java.util.UUID;
 @ToString
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ImageUploadRequest implements UploadRequest {
 
     private static final String SEPARATOR = "/";
