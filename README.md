@@ -4,7 +4,7 @@
 
 ![Generic badge](https://img.shields.io/badge/version-2.0.0-green.svg)
 [![codecov](https://codecov.io/gh/depromeet/3dollars-in-my-pocket-backend/branch/develop/graph/badge.svg?token=QZPVF6VGHA)](https://codecov.io/gh/depromeet/3dollars-in-my-pocket-backend)
-![Health](https://img.shields.io/website?down_message=DOWN&style=flat-square&up_message=UP&url=http://13.209.172.143/ping)
+![Health](https://img.shields.io/website?down_message=DOWN&style=flat-square&up_message=UP&url=https://dev.threedollars.co.kr/ping)
 
 ![img.png](images/logo.png)
 
