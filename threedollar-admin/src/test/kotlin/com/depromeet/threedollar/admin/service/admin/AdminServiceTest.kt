@@ -1,7 +1,7 @@
 package com.depromeet.threedollar.admin.service.admin
 
 import com.depromeet.threedollar.admin.service.admin.dto.response.AdminInfoResponse
-import com.depromeet.threedollar.common.exception.NotFoundException
+import com.depromeet.threedollar.common.exception.model.NotFoundException
 import com.depromeet.threedollar.domain.domain.admin.AdminCreator
 import com.depromeet.threedollar.domain.domain.admin.AdminRepository
 import org.assertj.core.api.Assertions.assertThat

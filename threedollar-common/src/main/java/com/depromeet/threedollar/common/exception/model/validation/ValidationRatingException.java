@@ -1,7 +1,7 @@
-package com.depromeet.threedollar.common.exception.validation;
+package com.depromeet.threedollar.common.exception.model.validation;
 
 import com.depromeet.threedollar.common.exception.ErrorCode;
-import com.depromeet.threedollar.common.exception.ValidationException;
+import com.depromeet.threedollar.common.exception.model.ValidationException;
 
 public class ValidationRatingException extends ValidationException {
 

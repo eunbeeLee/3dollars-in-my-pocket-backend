@@ -2,7 +2,7 @@ package com.depromeet.threedollar.admin.service.faq
 
 import com.depromeet.threedollar.admin.service.faq.dto.request.AddFaqRequest
 import com.depromeet.threedollar.admin.service.faq.dto.request.UpdateFaqRequest
-import com.depromeet.threedollar.common.exception.NotFoundException
+import com.depromeet.threedollar.common.exception.model.NotFoundException
 import com.depromeet.threedollar.domain.domain.faq.Faq
 import com.depromeet.threedollar.domain.domain.faq.FaqCategory
 import com.depromeet.threedollar.domain.domain.faq.FaqCreator

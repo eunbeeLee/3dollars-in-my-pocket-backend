@@ -1,7 +1,7 @@
 package com.depromeet.threedollar.domain.domain.common;
 
-import com.depromeet.threedollar.common.exception.validation.ValidationLatitudeException;
-import com.depromeet.threedollar.common.exception.validation.ValidationLongitudeException;
+import com.depromeet.threedollar.common.exception.model.validation.ValidationLatitudeException;
+import com.depromeet.threedollar.common.exception.model.validation.ValidationLongitudeException;
 import lombok.*;
 
 import javax.persistence.Column;

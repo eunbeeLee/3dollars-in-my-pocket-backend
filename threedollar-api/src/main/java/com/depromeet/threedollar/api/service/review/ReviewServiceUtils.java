@@ -2,7 +2,7 @@ package com.depromeet.threedollar.api.service.review;
 
 import com.depromeet.threedollar.domain.domain.review.Review;
 import com.depromeet.threedollar.domain.domain.review.ReviewRepository;
-import com.depromeet.threedollar.common.exception.notfound.NotFoundReviewException;
+import com.depromeet.threedollar.common.exception.model.notfound.NotFoundReviewException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

@@ -1,7 +1,7 @@
 package com.depromeet.threedollar.domain.domain.common;
 
-import com.depromeet.threedollar.common.exception.validation.ValidationLatitudeException;
-import com.depromeet.threedollar.common.exception.validation.ValidationLongitudeException;
+import com.depromeet.threedollar.common.exception.model.validation.ValidationLatitudeException;
+import com.depromeet.threedollar.common.exception.model.validation.ValidationLongitudeException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

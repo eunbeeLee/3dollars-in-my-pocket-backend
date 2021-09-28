@@ -6,7 +6,7 @@ import com.depromeet.threedollar.api.service.store.dto.request.DeleteStoreReques
 import com.depromeet.threedollar.api.service.store.dto.request.MenuRequest;
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreDeleteResponse;
-import com.depromeet.threedollar.common.exception.ConflictException;
+import com.depromeet.threedollar.common.exception.model.ConflictException;
 import com.depromeet.threedollar.domain.domain.common.DayOfTheWeek;
 import com.depromeet.threedollar.domain.domain.common.Location;
 import com.depromeet.threedollar.domain.domain.menu.Menu;
@@ -14,7 +14,7 @@ import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
 import com.depromeet.threedollar.domain.domain.menu.MenuCreator;
 import com.depromeet.threedollar.domain.domain.menu.MenuRepository;
 import com.depromeet.threedollar.domain.domain.store.*;
-import com.depromeet.threedollar.common.exception.notfound.NotFoundStoreException;
+import com.depromeet.threedollar.common.exception.model.notfound.NotFoundStoreException;
 import com.depromeet.threedollar.domain.domain.storedelete.DeleteReasonType;
 import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequest;
 import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequestCreator;

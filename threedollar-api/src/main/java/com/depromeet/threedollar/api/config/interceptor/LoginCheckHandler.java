@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.config.interceptor;
 
-import com.depromeet.threedollar.common.exception.UnAuthorizedException;
+import com.depromeet.threedollar.common.exception.model.UnAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.session.Session;

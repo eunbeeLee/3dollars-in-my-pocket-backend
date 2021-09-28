@@ -8,7 +8,7 @@ import com.depromeet.threedollar.api.service.auth.AuthService;
 import com.depromeet.threedollar.api.service.auth.dto.request.LoginRequest;
 import com.depromeet.threedollar.api.service.auth.dto.request.SignUpRequest;
 import com.depromeet.threedollar.api.service.auth.dto.response.LoginResponse;
-import com.depromeet.threedollar.common.exception.ValidationException;
+import com.depromeet.threedollar.common.exception.model.ValidationException;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;

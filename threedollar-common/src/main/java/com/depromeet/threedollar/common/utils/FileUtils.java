@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.common.utils;
 
-import com.depromeet.threedollar.common.exception.validation.ValidationFileTypeException;
+import com.depromeet.threedollar.common.exception.model.validation.ValidationFileTypeException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

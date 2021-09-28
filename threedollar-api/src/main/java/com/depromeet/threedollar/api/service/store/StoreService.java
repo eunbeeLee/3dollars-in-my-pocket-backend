@@ -5,7 +5,7 @@ import com.depromeet.threedollar.api.service.store.dto.request.DeleteStoreReques
 import com.depromeet.threedollar.api.service.store.dto.request.UpdateStoreRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreDeleteResponse;
 import com.depromeet.threedollar.api.service.store.dto.response.StoreInfoResponse;
-import com.depromeet.threedollar.common.exception.ConflictException;
+import com.depromeet.threedollar.common.exception.model.ConflictException;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
 import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequestRepository;

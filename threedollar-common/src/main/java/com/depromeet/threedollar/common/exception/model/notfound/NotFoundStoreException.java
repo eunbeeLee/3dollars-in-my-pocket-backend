@@ -1,7 +1,7 @@
-package com.depromeet.threedollar.common.exception.notfound;
+package com.depromeet.threedollar.common.exception.model.notfound;
 
 import com.depromeet.threedollar.common.exception.ErrorCode;
-import com.depromeet.threedollar.common.exception.NotFoundException;
+import com.depromeet.threedollar.common.exception.model.NotFoundException;
 
 public class NotFoundStoreException extends NotFoundException {
 

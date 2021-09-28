@@ -4,8 +4,8 @@ import com.depromeet.threedollar.api.service.user.dto.request.CheckAvailableName
 import com.depromeet.threedollar.api.service.user.dto.request.CreateUserRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
 import com.depromeet.threedollar.domain.domain.user.*;
-import com.depromeet.threedollar.common.exception.ConflictException;
-import com.depromeet.threedollar.common.exception.notfound.NotFoundUserException;
+import com.depromeet.threedollar.common.exception.model.ConflictException;
+import com.depromeet.threedollar.common.exception.model.notfound.NotFoundUserException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

@@ -1,6 +1,8 @@
-package com.depromeet.threedollar.common.exception;
+package com.depromeet.threedollar.common.exception.model;
 
-public class NotFoundException extends BaseException {
+import com.depromeet.threedollar.common.exception.ErrorCode;
+
+public class NotFoundException extends ThreeDollarsBaseException {
 
     public NotFoundException(String message, ErrorCode errorCode) {
         super(message, errorCode);

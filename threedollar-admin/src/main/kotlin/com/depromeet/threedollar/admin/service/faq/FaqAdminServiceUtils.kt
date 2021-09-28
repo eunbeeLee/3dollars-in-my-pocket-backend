@@ -2,7 +2,7 @@ package com.depromeet.threedollar.admin.service.faq
 
 import com.depromeet.threedollar.domain.domain.faq.Faq
 import com.depromeet.threedollar.domain.domain.faq.FaqRepository
-import com.depromeet.threedollar.common.exception.notfound.NotFoundFaqException
+import com.depromeet.threedollar.common.exception.model.notfound.NotFoundFaqException
 
 object FaqAdminServiceUtils {
 

@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.upload.dto.request;
 
-import com.depromeet.threedollar.common.exception.validation.ValidationFileTypeException;
+import com.depromeet.threedollar.common.exception.model.validation.ValidationFileTypeException;
 import com.depromeet.threedollar.common.type.ImageType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

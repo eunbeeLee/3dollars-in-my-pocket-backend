@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.domain.domain.review;
 
-import com.depromeet.threedollar.common.exception.validation.ValidationRatingException;
+import com.depromeet.threedollar.common.exception.model.validation.ValidationRatingException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

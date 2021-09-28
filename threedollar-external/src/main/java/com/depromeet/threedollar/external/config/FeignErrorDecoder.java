@@ -1,7 +1,7 @@
 package com.depromeet.threedollar.external.config;
 
-import com.depromeet.threedollar.common.exception.BadGatewayException;
-import com.depromeet.threedollar.common.exception.ValidationException;
+import com.depromeet.threedollar.common.exception.model.BadGatewayException;
+import com.depromeet.threedollar.common.exception.model.ValidationException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import org.springframework.stereotype.Component;

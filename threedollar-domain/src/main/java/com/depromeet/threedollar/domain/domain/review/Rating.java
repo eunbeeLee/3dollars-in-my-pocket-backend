@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.domain.domain.review;
 
-import com.depromeet.threedollar.common.exception.validation.ValidationRatingException;
+import com.depromeet.threedollar.common.exception.model.validation.ValidationRatingException;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package com.depromeet.threedollar.api.service.upload;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.depromeet.threedollar.api.service.upload.dto.request.UploadRequest;
-import com.depromeet.threedollar.common.exception.ValidationException;
+import com.depromeet.threedollar.common.exception.model.ValidationException;
 import com.depromeet.threedollar.external.client.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

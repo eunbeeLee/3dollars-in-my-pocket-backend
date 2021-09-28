@@ -1,6 +1,8 @@
-package com.depromeet.threedollar.common.exception;
+package com.depromeet.threedollar.common.exception.model;
 
-public class ServiceUnAvailableException extends BaseException {
+import com.depromeet.threedollar.common.exception.ErrorCode;
+
+public class ServiceUnAvailableException extends ThreeDollarsBaseException {
 
     public ServiceUnAvailableException(String message, ErrorCode errorCode) {
         super(message, errorCode);

@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.admin.service.admin
 
-import com.depromeet.threedollar.common.exception.NotFoundException
+import com.depromeet.threedollar.common.exception.model.NotFoundException
 import com.depromeet.threedollar.domain.domain.admin.Admin
 import com.depromeet.threedollar.domain.domain.admin.AdminRepository
 

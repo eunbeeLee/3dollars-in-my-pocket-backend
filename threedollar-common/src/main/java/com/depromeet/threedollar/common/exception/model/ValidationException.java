@@ -1,6 +1,8 @@
-package com.depromeet.threedollar.common.exception;
+package com.depromeet.threedollar.common.exception.model;
 
-public class ValidationException extends BaseException {
+import com.depromeet.threedollar.common.exception.ErrorCode;
+
+public class ValidationException extends ThreeDollarsBaseException {
 
     public ValidationException(String message, ErrorCode errorCode) {
         super(message, errorCode);

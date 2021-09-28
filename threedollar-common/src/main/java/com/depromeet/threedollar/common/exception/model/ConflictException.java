@@ -1,6 +1,8 @@
-package com.depromeet.threedollar.common.exception;
+package com.depromeet.threedollar.common.exception.model;
 
-public class ConflictException extends BaseException {
+import com.depromeet.threedollar.common.exception.ErrorCode;
+
+public class ConflictException extends ThreeDollarsBaseException {
 
     public ConflictException(String message, ErrorCode errorCode) {
         super(message, errorCode);

@@ -2,16 +2,11 @@ package com.depromeet.threedollar.admin.controller.advice
 
 import com.depromeet.threedollar.application.common.dto.ApiResponse
 import com.depromeet.threedollar.common.exception.ErrorCode.*
-import com.depromeet.threedollar.common.exception.ConflictException
-import com.depromeet.threedollar.common.exception.ForbiddenException
-import com.depromeet.threedollar.common.exception.NotFoundException
-import com.depromeet.threedollar.common.exception.BadGatewayException
-import com.depromeet.threedollar.common.exception.ServiceUnAvailableException
-import com.depromeet.threedollar.common.exception.UnAuthorizedException
-import com.depromeet.threedollar.common.exception.ValidationException
+import com.depromeet.threedollar.common.exception.model.*
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindException
 import org.springframework.web.HttpMediaTypeException
 import org.springframework.web.HttpRequestMethodNotSupportedException
@@ -29,6 +24,7 @@ class ControllerExceptionAdvice {
 
     /**
      * 400 BAD Request
+     * 잘못된 입력이 들어왔을 경우 발생하는 Exception
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException::class)
@@ -49,45 +45,9 @@ class ControllerExceptionAdvice {
         return ApiResponse.error(VALIDATION_EXCEPTION)
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ValidationException::class)
-    private fun handleValidationException(e: ValidationException): ApiResponse<Nothing> {
-        log.error(e.message, e)
-        return ApiResponse.error(e.errorCode)
-    }
-
-    /**
-     * 401 UnAuthorized
-     */
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(UnAuthorizedException::class)
-    private fun handleUnAuthorizedException(e: UnAuthorizedException): ApiResponse<Nothing> {
-        log.error(e.message, e)
-        return ApiResponse.error(e.errorCode)
-    }
-
-    /**
-     * 403 Forbidden
-     */
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler(ForbiddenException::class)
-    private fun handleConflictException(e: ForbiddenException): ApiResponse<Nothing> {
-        log.error(e.message, e)
-        return ApiResponse.error(e.errorCode)
-    }
-
-    /**
-     * 404 NotFound
-     */
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NotFoundException::class)
-    private fun handleNotFoundException(e: NotFoundException): ApiResponse<Nothing> {
-        log.error(e.message, e)
-        return ApiResponse.error(e.errorCode)
-    }
-
     /**
      * 405 Method Not Allowed
+     * 지원하지 않은 HTTP method 호출 할 경우 발생하는 Exception
      */
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
@@ -97,17 +57,8 @@ class ControllerExceptionAdvice {
     }
 
     /**
-     * 409 Conflict
-     */
-    @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler(ConflictException::class)
-    private fun handleConflictException(e: ConflictException): ApiResponse<Nothing> {
-        log.error(e.message, e)
-        return ApiResponse.error(e.errorCode)
-    }
-
-    /**
      * 415 UnSupported Media Type
+     * 지원하지 않는 미디어 타입인 경우 발생하는 Exception
      */
     @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     @ExceptionHandler(HttpMediaTypeException::class)
@@ -117,23 +68,13 @@ class ControllerExceptionAdvice {
     }
 
     /**
-     * 502 Bad Gateway
+     * ThreeDollars Custom Exception
      */
-    @ResponseStatus(HttpStatus.BAD_GATEWAY)
-    @ExceptionHandler(BadGatewayException::class)
-    private fun handleBadGatewayException(e: BadGatewayException): ApiResponse<Nothing> {
-        log.error(e.message, e)
-        return ApiResponse.error(e.errorCode)
-    }
-
-    /**
-     * 503 Service Unavailable
-     */
-    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
-    @ExceptionHandler(ServiceUnAvailableException::class)
-    private fun handleServiceUnAvailableException(e: ServiceUnAvailableException): ApiResponse<Nothing> {
-        log.error(e.message, e)
-        return ApiResponse.error(e.errorCode)
+    @ExceptionHandler(ThreeDollarsBaseException::class)
+    protected fun handleBaseException(exception: ThreeDollarsBaseException): ResponseEntity<ApiResponse<Any>> {
+        log.error(exception.message, exception)
+        return ResponseEntity.status(exception.status)
+            .body(ApiResponse.error(exception.errorCode))
     }
 
     /**

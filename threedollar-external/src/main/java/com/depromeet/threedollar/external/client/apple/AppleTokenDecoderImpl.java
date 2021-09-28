@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.external.client.apple;
 
-import com.depromeet.threedollar.common.exception.ValidationException;
+import com.depromeet.threedollar.common.exception.model.ValidationException;
 import com.depromeet.threedollar.external.client.apple.dto.properties.AppleAuthProperties;
 import com.depromeet.threedollar.external.client.apple.dto.response.ApplePublicKeyResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
