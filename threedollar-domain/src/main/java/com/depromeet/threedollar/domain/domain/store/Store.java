@@ -20,8 +20,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(
     indexes = {
-        @Index(name = "idx_store_1", columnList = "userId"),
-        @Index(name = "idx_store_2", columnList = "status"),
+        @Index(name = "idx_store_1", columnList = "userId,status"),
         @Index(name = "idx_store_3", columnList = "id,latitude,longitude")
     }
 )

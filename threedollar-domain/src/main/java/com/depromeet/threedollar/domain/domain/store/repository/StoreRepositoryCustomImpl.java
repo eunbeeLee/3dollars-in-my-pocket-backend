@@ -59,7 +59,8 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
             .from(store)
             .innerJoin(menu).on(menu.store.id.eq(store.id))
             .where(
-                store.userId.eq(userId)
+                store.userId.eq(userId),
+                store.status.eq(StoreStatus.ACTIVE)
             )
             .fetchCount();
     }
@@ -92,6 +93,7 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
             .innerJoin(menu).on(menu.store.id.eq(store.id))
             .where(
                 store.userId.eq(userId),
+                store.status.eq(StoreStatus.ACTIVE),
                 lessThanId(lastStoreId)
             )
             .orderBy(store.id.desc())
@@ -135,7 +137,8 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
         return queryFactory.selectFrom(store).distinct()
             .innerJoin(store.menus, menu).fetchJoin()
             .where(
-                store.id.in(storeIds)
+                store.id.in(storeIds),
+                store.status.eq(StoreStatus.ACTIVE)
             )
             .fetch();
     }

@@ -103,6 +103,24 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
             assertThat(response.getData().get(1).getCategories().get(0)).isEqualTo(MenuCategoryType.BUNGEOPPANG);
         }
 
+        @Test
+        void 사용자_주위의_가게를_조회시_삭제된_가게는_조회되지_않는다() throws Exception {
+            // given
+            Store store = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
+            Menu menu = MenuCreator.create(store, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG);
+            store.addMenus(List.of(menu));
+            store.delete();
+            storeRepository.save(store);
+
+            RetrieveNearStoresRequest request = RetrieveNearStoresRequest.testInstance(34, 124, 34, 124, 1000);
+
+            // when
+            ApiResponse<List<StoreInfoResponse>> response = storeRetrieveMockApiCaller.getNearStores(request, 200);
+
+            // then
+            assertThat(response.getData()).isEmpty();
+        }
+
     }
 
     @DisplayName("GET /api/v2/store")
@@ -394,6 +412,26 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
             assertStoreInfoResponse(response.getData().getContents().get(0), store1);
         }
 
+        @Test
+        void 삭제된_가게는_조회되지_않는다() throws Exception {
+            // given
+            Store store = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
+            Menu menu = MenuCreator.create(store, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG);
+            store.addMenus(List.of(menu));
+            store.delete();
+            storeRepository.save(store);
+
+            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, null, null);
+
+            // when
+            ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
+
+            // then
+            assertThat(response.getData().getTotalElements()).isEqualTo(0);
+            assertThat(response.getData().getNextCursor()).isEqualTo(-1);
+            assertThat(response.getData().getContents()).isEmpty();
+        }
+
     }
 
     @DisplayName("GET /api/v2/stores/distance")
@@ -470,6 +508,34 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
                 MenuCreator.create(store, "메뉴2", "가격2", MenuCategoryType.GUKWAPPANG),
                 MenuCreator.create(store, "메뉴3", "가격3", MenuCategoryType.GYERANPPANG)
             ));
+            storeRepository.save(store);
+
+            RetrieveStoreGroupByCategoryRequest request = RetrieveStoreGroupByCategoryRequest.testBuilder()
+                .category(MenuCategoryType.BUNGEOPPANG)
+                .latitude(34.0)
+                .longitude(124.0)
+                .mapLatitude(34.0)
+                .mapLongitude(124.0)
+                .build();
+
+            // when
+            ApiResponse<StoresGroupByDistanceResponse> response = storeRetrieveMockApiCaller.getStoresByDistance(request, 200);
+
+            // then
+            assertThat(response.getData().getStoreList50()).isEmpty();
+            assertThat(response.getData().getStoreList100()).isEmpty();
+            assertThat(response.getData().getStoreList500()).isEmpty();
+            assertThat(response.getData().getStoreList1000()).isEmpty();
+            assertThat(response.getData().getStoreListOver1000()).isEmpty();
+        }
+
+        @Test
+        void 삭제된_가게는_조회되지_않는다() throws Exception {
+            // given
+            Store store = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
+            Menu menu = MenuCreator.create(store, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG);
+            store.addMenus(List.of(menu));
+            store.delete();
             storeRepository.save(store);
 
             RetrieveStoreGroupByCategoryRequest request = RetrieveStoreGroupByCategoryRequest.testBuilder()
@@ -584,6 +650,33 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
                 MenuCreator.create(store, "메뉴2", "가격2", MenuCategoryType.GUKWAPPANG),
                 MenuCreator.create(store, "메뉴3", "가격3", MenuCategoryType.GYERANPPANG)
             ));
+            storeRepository.save(store);
+
+            RetrieveStoreGroupByCategoryRequest request = RetrieveStoreGroupByCategoryRequest.testBuilder()
+                .category(MenuCategoryType.BUNGEOPPANG)
+                .latitude(34.0)
+                .longitude(124.0)
+                .mapLatitude(34.0)
+                .mapLongitude(124.0)
+                .build();
+
+            // when
+            ApiResponse<StoresGroupByReviewResponse> response = storeRetrieveMockApiCaller.getStoresByReview(request, 200);
+
+            // then
+            assertThat(response.getData().getStoreList1()).isEmpty();
+            assertThat(response.getData().getStoreList2()).isEmpty();
+            assertThat(response.getData().getStoreList3()).isEmpty();
+            assertThat(response.getData().getStoreList4()).isEmpty();
+        }
+
+        @Test
+        void 삭제된_가게는_조회되지_않는다() throws Exception {
+            // given
+            Store store = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
+            Menu menu = MenuCreator.create(store, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG);
+            store.addMenus(List.of(menu));
+            store.delete();
             storeRepository.save(store);
 
             RetrieveStoreGroupByCategoryRequest request = RetrieveStoreGroupByCategoryRequest.testBuilder()
