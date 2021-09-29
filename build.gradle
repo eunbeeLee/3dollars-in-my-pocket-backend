@@ -27,7 +27,7 @@ subprojects {
         plugin('io.spring.dependency-management')
         plugin('kotlin')
         plugin('kotlin-spring')
-        plugin('jacoco')
+        plugin('kotlin-jpa')
     }
 
     sourceCompatibility = '11'
@@ -45,11 +45,13 @@ subprojects {
     compileKotlin {
         kotlinOptions {
             jvmTarget = "11"
+            freeCompilerArgs = ["-Xjsr305=strict"]
         }
     }
     compileTestKotlin {
         kotlinOptions {
             jvmTarget = "11"
+            freeCompilerArgs = ["-Xjsr305=strict"]
         }
     }
 
@@ -89,7 +91,9 @@ def testProjects = [
 ]
 
 configure(testProjects) {
-    apply plugin: 'jacoco'
+    apply {
+        plugin('jacoco')
+    }
 
     jacoco {
         toolVersion = '0.8.7'
