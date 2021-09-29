@@ -38,6 +38,7 @@ docker-compose up --build
 - Java 11, Kotlin 1.5
 - Spring Boot 2.5 (Spring Framework, Spring MVC)
 - Spring Data JPA (Hibernate) + QueryDSL
+- Feign Client
 - Gradle 7.0
 - Junit 5
 

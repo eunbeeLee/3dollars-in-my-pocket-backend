@@ -1,9 +1,5 @@
-ext {
-    mariaDbJavaClientVersion = "2.6.2"
-}
-
 dependencies {
-    api project(':threedollar-common')
+    api project(":threedollar-common")
 
     // Spring Data JPA
     api("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -25,10 +21,6 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
 }
 
-tasks.jar {
-    enabled = true
-}
+bootJar { enabled = false }
+jar { enabled = true }
 
-tasks.bootJar {
-    enabled = false
-}

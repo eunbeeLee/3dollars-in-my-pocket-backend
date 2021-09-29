@@ -1,8 +1,8 @@
 buildscript {
     ext {
-        springBootVersion = '2.5.4'
-        kotlinVersion = '1.5.31'
-        springCloudVersion = '2020.0.3'
+        springBootVersion = "2.5.5"
+        kotlinVersion = "1.5.31"
+        springCloudVersion = "2020.0.3"
         springBootAdminVersion = "2.4.3"
     }
     repositories {
@@ -17,31 +17,31 @@ buildscript {
 }
 
 allprojects {
-    group = 'com.depromeet.threedollar'
+    group = "com.depromeet.threedollar"
 }
 
 subprojects {
     apply {
-        plugin('java-library')
-        plugin('eclipse')
-        plugin('org.springframework.boot')
-        plugin('io.spring.dependency-management')
-        plugin('kotlin')
-        plugin('kotlin-spring')
-        plugin('kotlin-jpa')
+        plugin("java-library")
+        plugin("eclipse")
+        plugin("org.springframework.boot")
+        plugin("io.spring.dependency-management")
+        plugin("kotlin")
+        plugin("kotlin-spring")
+        plugin("kotlin-jpa")
     }
-
-    sourceCompatibility = '11'
 
     repositories {
         mavenCentral()
     }
 
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
         }
     }
+
+    sourceCompatibility = "11"
 
     compileKotlin {
         kotlinOptions {
@@ -72,9 +72,9 @@ subprojects {
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     }
 
-    configurations {
-        compileOnly {
-            extendsFrom annotationProcessor
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
         }
     }
 
@@ -84,20 +84,20 @@ subprojects {
 }
 
 def testProjects = [
-    project(':threedollar-api'),
-    project(':threedollar-admin'),
-    project(':threedollar-application-service'),
-    project(':threedollar-domain'),
-    project(':threedollar-common')
+    project(":threedollar-api"),
+    project(":threedollar-admin"),
+    project(":threedollar-application-service"),
+    project(":threedollar-domain"),
+    project(":threedollar-common")
 ]
 
 configure(testProjects) {
     apply {
-        plugin('jacoco')
+        plugin("jacoco")
     }
 
     jacoco {
-        toolVersion = '0.8.7'
+        toolVersion = "0.8.7"
     }
 
     jacocoTestReport {

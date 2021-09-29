@@ -3,7 +3,7 @@ ext {
 }
 
 dependencies {
-    api project(':threedollar-domain')
+    api project(":threedollar-domain")
 
     // Jackson
     implementation("org.springframework.boot:spring-boot-starter-json")
