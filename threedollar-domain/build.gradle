@@ -1,22 +1,18 @@
-tasks.jar {
-    enabled = true
-}
-
-tasks.bootJar {
-    enabled = false
+ext {
+    mariaDbJavaClientVersion = "2.6.2"
 }
 
 dependencies {
     api project(':threedollar-common')
 
     // Spring Data JPA
-    api("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+    api("org.springframework.boot:spring-boot-starter-data-jpa")
 
     // H2
     implementation("com.h2database:h2")
 
     // MariaDB
-    runtimeOnly("org.mariadb.jdbc:mariadb-java-client:2.6.2")
+    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
     // Querydsl
     implementation("com.querydsl:querydsl-jpa")
@@ -27,4 +23,12 @@ dependencies {
 
     // flyway
     implementation("org.flywaydb:flyway-core")
+}
+
+tasks.jar {
+    enabled = true
+}
+
+tasks.bootJar {
+    enabled = false
 }

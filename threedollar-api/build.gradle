@@ -1,5 +1,6 @@
 ext {
-    swaggerVersion = '2.9.2'
+    swaggerVersion = "2.9.2"
+    sentryVersion = "5.0.1"
 }
 
 dependencies {
@@ -24,10 +25,10 @@ dependencies {
     implementation("io.springfox:springfox-bean-validators:${swaggerVersion}")
 
     // spring boot admin client
-    implementation("de.codecentric:spring-boot-admin-starter-client:2.4.3")
+    implementation("de.codecentric:spring-boot-admin-starter-client:${springBootAdminVersion}")
 
     // sentry
-    implementation("io.sentry:sentry-spring-boot-starter:5.0.1")
-    implementation("io.sentry:sentry-logback:5.0.1")
+    implementation("io.sentry:sentry-spring-boot-starter:${sentryVersion}")
+    implementation("io.sentry:sentry-logback:${sentryVersion}")
 }
 

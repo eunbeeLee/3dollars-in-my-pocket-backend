@@ -11,5 +11,5 @@ dependencies {
     implementation("org.springframework.session:spring-session-data-redis")
 
     // spring boot admin server
-    implementation("de.codecentric:spring-boot-admin-starter-server:2.4.3")
+    implementation("de.codecentric:spring-boot-admin-starter-server:${springBootAdminVersion}")
 }

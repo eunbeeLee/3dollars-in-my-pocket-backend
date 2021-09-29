@@ -1,5 +1,8 @@
-bootJar { enabled = false }
-jar { enabled = true }
+ext {
+    jjwtVersion = "0.11.2"
+    springCloudAwsVersion = "2.2.6.RELEASE"
+    s3MockVersion ="0.2.6"
+}
 
 dependencies {
     implementation project(':threedollar-common')
@@ -8,13 +11,16 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
     // spring cloud aws
-    api group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
+    api("org.springframework.cloud:spring-cloud-starter-aws:${springCloudAwsVersion }")
 
     // embedded s3
-    implementation("io.findify:s3mock_2.13:0.2.6")
+    implementation("io.findify:s3mock_2.13:${s3MockVersion}")
 
     // jwt
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.1'
+    implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
 }
+
+bootJar { enabled = false }
+jar { enabled = true }
