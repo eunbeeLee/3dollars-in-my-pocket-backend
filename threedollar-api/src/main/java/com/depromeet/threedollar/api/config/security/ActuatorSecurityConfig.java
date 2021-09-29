@@ -14,7 +14,10 @@ public class ActuatorSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring()
             .antMatchers(
                 "/h2-console/**",
-                "/swagger-ui.html/**"
+                "/swagger-resources/**",
+                "swagger-ui/**",
+                "/v2/api-docs",
+                "/webjars/**"
             );
     }
 
