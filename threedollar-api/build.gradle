@@ -1,6 +1,6 @@
 ext {
     swaggerVersion = "2.9.2"
-    sentryVersion = "5.0.1"
+    sentryVersion = "5.2.0"
 }
 
 dependencies {
