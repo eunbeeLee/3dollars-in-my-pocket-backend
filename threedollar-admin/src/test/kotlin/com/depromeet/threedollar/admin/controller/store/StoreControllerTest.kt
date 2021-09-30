@@ -16,17 +16,13 @@ import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequestRep
 import com.fasterxml.jackson.core.type.TypeReference
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 internal class StoreControllerTest(
-    @Autowired
     private val storeRepository: StoreRepository,
-
-    @Autowired
     private val storeDeleteRequestRepository: StoreDeleteRequestRepository
 ) : ControllerTestUtils() {
 

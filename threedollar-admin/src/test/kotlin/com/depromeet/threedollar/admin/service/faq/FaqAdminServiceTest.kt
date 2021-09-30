@@ -11,15 +11,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
+import org.junit.jupiter.api.assertAll
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.TestConstructor
 
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @SpringBootTest
 internal class FaqAdminServiceTest(
-    @Autowired
     private val faqAdminService: FaqAdminService,
-
-    @Autowired
     private val faqRepository: FaqRepository
 ) {
 
@@ -42,8 +41,10 @@ internal class FaqAdminServiceTest(
 
         // then
         val faqs = faqRepository.findAll()
-        assertThat(faqs).hasSize(1)
-        assertFaq(faqs[0], question, answer, category)
+        assertAll({
+            assertThat(faqs).hasSize(1)
+            assertFaq(faqs[0], question, answer, category)
+        })
     }
 
     @Test
@@ -63,8 +64,10 @@ internal class FaqAdminServiceTest(
 
         // then
         val faqs = faqRepository.findAll()
-        assertThat(faqs).hasSize(1)
-        assertFaq(faqs[0], question, answer, category)
+        assertAll({
+            assertThat(faqs).hasSize(1)
+            assertFaq(faqs[0], question, answer, category)
+        })
     }
 
     @Test

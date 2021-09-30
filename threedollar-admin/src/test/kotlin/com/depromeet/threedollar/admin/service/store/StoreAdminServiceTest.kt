@@ -10,18 +10,15 @@ import com.depromeet.threedollar.domain.domain.storedelete.StoreDeleteRequestRep
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
+import org.junit.jupiter.api.assertAll
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.TestConstructor
 
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @SpringBootTest
 internal class StoreAdminServiceTest(
-    @Autowired
     private val storeAdminService: StoreAdminService,
-
-    @Autowired
     private val storeRepository: StoreRepository,
-
-    @Autowired
     private val storeDeleteRequestRepository: StoreDeleteRequestRepository
 ) : AdminSetUpTest() {
 
@@ -53,14 +50,16 @@ internal class StoreAdminServiceTest(
         val result = storeAdminService.retrieveReportedStores(request)
 
         // then
-        assertThat(result).hasSize(1)
-        assertThat(result[0].storeId).isEqualTo(store1.id)
-        assertThat(result[0].storeName).isEqualTo(store1.name)
-        assertThat(result[0].latitude).isEqualTo(store1.latitude)
-        assertThat(result[0].longitude).isEqualTo(store1.longitude)
-        assertThat(result[0].type).isEqualTo(store1.type)
-        assertThat(result[0].rating).isEqualTo(store1.rating)
-        assertThat(result[0].reportsCount).isEqualTo(2)
+        assertAll({
+            assertThat(result).hasSize(1)
+            assertThat(result[0].storeId).isEqualTo(store1.id)
+            assertThat(result[0].storeName).isEqualTo(store1.name)
+            assertThat(result[0].latitude).isEqualTo(store1.latitude)
+            assertThat(result[0].longitude).isEqualTo(store1.longitude)
+            assertThat(result[0].type).isEqualTo(store1.type)
+            assertThat(result[0].rating).isEqualTo(store1.rating)
+            assertThat(result[0].reportsCount).isEqualTo(2)
+        })
     }
 
 }

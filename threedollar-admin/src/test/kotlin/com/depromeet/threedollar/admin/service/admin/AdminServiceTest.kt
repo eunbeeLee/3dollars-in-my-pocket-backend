@@ -8,15 +8,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
+import org.junit.jupiter.api.assertAll
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.TestConstructor
 
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @SpringBootTest
 internal class AdminServiceTest(
-    @Autowired
     private val adminService: AdminService,
-
-    @Autowired
     private val adminRepository: AdminRepository
 ) {
 
@@ -36,7 +35,9 @@ internal class AdminServiceTest(
         val response = adminService.getMyAdminInfo(admin.id)
 
         // then
-        assertAdminInfoResponse(response, email, name)
+        assertAll({
+            assertAdminInfoResponse(response, email, name)
+        })
     }
 
     @Test
