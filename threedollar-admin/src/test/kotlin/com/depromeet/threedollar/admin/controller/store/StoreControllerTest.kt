@@ -17,9 +17,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
 import org.springframework.http.HttpHeaders
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.get
 
 internal class StoreControllerTest(
     private val storeRepository: StoreRepository,
@@ -79,24 +77,23 @@ internal class StoreControllerTest(
         val page = 1
 
         // when
-        val response = objectMapper.readValue(mockMvc.perform(
-            get("/admin/v1/stores/reported")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer $token")
-                .param("minCount", minCount.toString())
-                .param("size", size.toString())
-                .param("page", page.toString())
-        )
-            .andExpect(status().isOk)
-            .andDo(print())
-            .andReturn()
-            .response
-            .contentAsString, object : TypeReference<ApiResponse<List<ReportedStoresResponse>>>() {}
-        )
+        val response = objectMapper.readValue(mockMvc.get("/admin/v1/stores/reported") {
+            header(HttpHeaders.AUTHORIZATION, "Bearer $token")
+            param("minCount", minCount.toString())
+            param("size", size.toString())
+            param("page", page.toString())
+        }.andExpect {
+            status { isOk() }
+        }.andDo {
+            print()
+        }.andReturn().response.contentAsString, object : TypeReference<ApiResponse<List<ReportedStoresResponse>>>() {})
 
         // then
-        assertThat(response.data).hasSize(2)
-        assertReportedStoresResponse(response.data[0], store1, 4)
-        assertReportedStoresResponse(response.data[1], store2, 3)
+        assertAll({
+            assertThat(response.data)
+            assertReportedStoresResponse(response.data[0], store1, 4)
+            assertReportedStoresResponse(response.data[1], store2, 3)
+        })
     }
 
     @DisplayName("GET /admin/v1/stores/reported")
@@ -140,23 +137,22 @@ internal class StoreControllerTest(
         val page = 2
 
         // when
-        val response = objectMapper.readValue(mockMvc.perform(
-            get("/admin/v1/stores/reported")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer $token")
-                .param("minCount", minCount.toString())
-                .param("size", size.toString())
-                .param("page", page.toString())
-        )
-            .andExpect(status().isOk)
-            .andDo(print())
-            .andReturn()
-            .response
-            .contentAsString, object : TypeReference<ApiResponse<List<ReportedStoresResponse>>>() {}
-        )
+        val response = objectMapper.readValue(mockMvc.get("/admin/v1/stores/reported") {
+            header(HttpHeaders.AUTHORIZATION, "Bearer $token")
+            param("minCount", minCount.toString())
+            param("size", size.toString())
+            param("page", page.toString())
+        }.andExpect {
+            status { isOk() }
+        }.andDo {
+            print()
+        }.andReturn().response.contentAsString, object : TypeReference<ApiResponse<List<ReportedStoresResponse>>>() {})
 
         // then
-        assertThat(response.data).hasSize(1)
-        assertReportedStoresResponse(response.data[0], store4, 2)
+        assertAll({
+            assertThat(response.data).hasSize(1)
+            assertReportedStoresResponse(response.data[0], store4, 2)
+        })
     }
 
     @DisplayName("GET /admin/v1/stores/reported")
@@ -173,19 +169,16 @@ internal class StoreControllerTest(
         val page = 1
 
         // when
-        val response = objectMapper.readValue(mockMvc.perform(
-            get("/admin/v1/stores/reported")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer $token")
-                .param("minCount", minCount.toString())
-                .param("size", size.toString())
-                .param("page", page.toString())
-        )
-            .andExpect(status().isOk)
-            .andDo(print())
-            .andReturn()
-            .response
-            .contentAsString, object : TypeReference<ApiResponse<List<ReportedStoresResponse>>>() {}
-        )
+        val response = objectMapper.readValue(mockMvc.get("/admin/v1/stores/reported") {
+            header(HttpHeaders.AUTHORIZATION, "Bearer $token")
+            param("minCount", minCount.toString())
+            param("size", size.toString())
+            param("page", page.toString())
+        }.andExpect {
+            status { isOk() }
+        }.andDo {
+            print()
+        }.andReturn().response.contentAsString, object : TypeReference<ApiResponse<List<ReportedStoresResponse>>>() {})
 
         // then
         assertThat(response.data).isEmpty()
@@ -220,27 +213,24 @@ internal class StoreControllerTest(
         storeRepository.saveAll(listOf(store1, store2, store3, store4))
 
         val size = 2
-        val cursor = null
 
         // when
-        val response = objectMapper.readValue(mockMvc.perform(
-            get("/admin/v1/stores/latest")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer $token")
-                .param("size", size.toString())
-                .param("cursor", cursor)
-        )
-            .andExpect(status().isOk)
-            .andDo(print())
-            .andReturn()
-            .response
-            .contentAsString, object : TypeReference<ApiResponse<StoreScrollResponse>>() {}
-        )
+        val response = objectMapper.readValue(mockMvc.get("/admin/v1/stores/latest") {
+            header(HttpHeaders.AUTHORIZATION, "Bearer $token")
+            param("size", size.toString())
+        }.andExpect {
+            status { isOk() }
+        }.andDo {
+            print()
+        }.andReturn().response.contentAsString, object : TypeReference<ApiResponse<StoreScrollResponse>>() {})
 
         // then
-        assertThat(response.data.contents).hasSize(2)
-        assertStoreInfoResponse(response.data.contents[0], store4)
-        assertStoreInfoResponse(response.data.contents[1], store3)
-        assertThat(response.data.nextCursor).isEqualTo(store3.id)
+        assertAll({
+            assertThat(response.data.contents).hasSize(2)
+            assertStoreInfoResponse(response.data.contents[0], store4)
+            assertStoreInfoResponse(response.data.contents[1], store3)
+            assertThat(response.data.nextCursor).isEqualTo(store3.id)
+        })
     }
 
     @DisplayName("GET /admin/v1/store/latest")
@@ -265,24 +255,23 @@ internal class StoreControllerTest(
         val cursor = store3.id
 
         // when
-        val response = objectMapper.readValue(mockMvc.perform(
-            get("/admin/v1/stores/latest")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer $token")
-                .param("size", size.toString())
-                .param("cursor", cursor.toString())
-        )
-            .andExpect(status().isOk)
-            .andDo(print())
-            .andReturn()
-            .response
-            .contentAsString, object : TypeReference<ApiResponse<StoreScrollResponse>>() {}
-        )
+        val response = objectMapper.readValue(mockMvc.get("/admin/v1/stores/latest") {
+            header(HttpHeaders.AUTHORIZATION, "Bearer $token")
+            param("size", size.toString())
+            param("cursor", cursor.toString())
+        }.andExpect {
+            status { isOk() }
+        }.andDo {
+            print()
+        }.andReturn().response.contentAsString, object : TypeReference<ApiResponse<StoreScrollResponse>>() {})
 
         // then
-        assertThat(response.data.contents).hasSize(2)
-        assertStoreInfoResponse(response.data.contents[0], store2)
-        assertStoreInfoResponse(response.data.contents[1], store1)
-        assertThat(response.data.nextCursor).isEqualTo(-1)
+        assertAll({
+            assertThat(response.data.contents).hasSize(2)
+            assertStoreInfoResponse(response.data.contents[0], store2)
+            assertStoreInfoResponse(response.data.contents[1], store1)
+            assertThat(response.data.nextCursor).isEqualTo(-1)
+        })
     }
 
     private fun assertStoreInfoResponse(storeInfoResponse: StoreInfoResponse, store: Store) {
