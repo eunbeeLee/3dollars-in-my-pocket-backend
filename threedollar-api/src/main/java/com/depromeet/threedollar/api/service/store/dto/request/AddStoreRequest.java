@@ -10,7 +10,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,11 +37,11 @@ public class AddStoreRequest {
 
     @Valid
     @NotEmpty(message = "{store.menu.notEmpty}")
-    private List<MenuRequest> menus;
+    private Set<MenuRequest> menus;
 
     @Builder(builderClassName = "TestBuilder", builderMethodName = "testBuilder")
     public AddStoreRequest(Double latitude, Double longitude, String storeName, StoreType storeType,
-                           Set<DayOfTheWeek> appearanceDays, Set<PaymentMethodType> paymentMethods, List<MenuRequest> menus) {
+                           Set<DayOfTheWeek> appearanceDays, Set<PaymentMethodType> paymentMethods, Set<MenuRequest> menus) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.storeName = storeName;

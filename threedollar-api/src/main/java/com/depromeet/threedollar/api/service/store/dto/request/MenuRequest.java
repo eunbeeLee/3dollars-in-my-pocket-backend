@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
+@EqualsAndHashCode
 @ToString
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

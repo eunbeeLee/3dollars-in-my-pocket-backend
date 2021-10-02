@@ -84,7 +84,7 @@ class StoreServiceTest extends UserSetUpTest {
             String menuName = "메뉴 이름";
             String price = "10000";
             MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
-            List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
+            Set<MenuRequest> menu = Set.of(MenuRequest.of(menuName, price, type));
 
             AddStoreRequest request = AddStoreRequest.testBuilder()
                 .latitude(latitude)
@@ -117,7 +117,7 @@ class StoreServiceTest extends UserSetUpTest {
                 .storeType(StoreType.STORE)
                 .appearanceDays(appearanceDays)
                 .paymentMethods(Collections.emptySet())
-                .menus(Collections.emptyList())
+                .menus(Collections.emptySet())
                 .build();
 
             // when
@@ -141,7 +141,7 @@ class StoreServiceTest extends UserSetUpTest {
                 .storeType(StoreType.STORE)
                 .appearanceDays(Collections.emptySet())
                 .paymentMethods(paymentMethods)
-                .menus(Collections.emptyList())
+                .menus(Collections.emptySet())
                 .build();
 
             // when
@@ -159,7 +159,37 @@ class StoreServiceTest extends UserSetUpTest {
             String menuName = "메뉴 이름";
             String price = "10000";
             MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
-            List<MenuRequest> menus = Collections.singletonList(MenuRequest.of(menuName, price, type));
+            Set<MenuRequest> menus = Set.of(MenuRequest.of(menuName, price, type));
+
+            AddStoreRequest request = AddStoreRequest.testBuilder()
+                .latitude(34.0)
+                .longitude(130.0)
+                .storeName("붕어빵")
+                .storeType(StoreType.STORE)
+                .appearanceDays(Collections.emptySet())
+                .paymentMethods(Collections.emptySet())
+                .menus(menus)
+                .build();
+
+            // when
+            storeService.addStore(request, userId);
+
+            // then
+            List<Menu> menuList = menuRepository.findAll();
+            assertThat(menuList).hasSize(1);
+            assertMenu(menuList.get(0), menuName, price, type);
+        }
+
+        @Test
+        void 가게_추가시_중복된_메뉴는_저장되지_않는다() {
+            // given
+            String menuName = "메뉴 이름";
+            String price = "10000";
+            MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
+            Set<MenuRequest> menus = new HashSet<>(Arrays.asList(
+                MenuRequest.of(menuName, price, type),
+                MenuRequest.of(menuName, price, type))
+            );
 
             AddStoreRequest request = AddStoreRequest.testBuilder()
                 .latitude(34.0)
@@ -203,7 +233,7 @@ class StoreServiceTest extends UserSetUpTest {
             String menuName = "메뉴 이름";
             String price = "10000";
             MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
-            List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
+            Set<MenuRequest> menu = Set.of(MenuRequest.of(menuName, price, type));
 
             UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
                 .latitude(latitude)
@@ -253,7 +283,7 @@ class StoreServiceTest extends UserSetUpTest {
             String menuName = "메뉴 이름";
             String price = "10000";
             MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
-            List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
+            Set<MenuRequest> menu = Set.of(MenuRequest.of(menuName, price, type));
 
             UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
                 .latitude(latitude)
@@ -302,7 +332,7 @@ class StoreServiceTest extends UserSetUpTest {
                 .storeType(StoreType.STORE)
                 .appearanceDays(Collections.emptySet())
                 .paymentMethods(paymentMethodTypes)
-                .menus(Collections.emptyList())
+                .menus(Collections.emptySet())
                 .build();
 
             // when
@@ -338,7 +368,7 @@ class StoreServiceTest extends UserSetUpTest {
                 .storeType(StoreType.STORE)
                 .appearanceDays(appearanceDays)
                 .paymentMethods(Collections.emptySet())
-                .menus(Collections.emptyList())
+                .menus(Collections.emptySet())
                 .build();
 
             // when
@@ -368,7 +398,41 @@ class StoreServiceTest extends UserSetUpTest {
             String menuName = "메뉴 이름";
             String price = "10000";
             MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
-            List<MenuRequest> menus = Collections.singletonList(MenuRequest.of(menuName, price, type));
+            Set<MenuRequest> menus = Set.of(MenuRequest.of(menuName, price, type));
+
+            UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
+                .latitude(34.0)
+                .longitude(130.0)
+                .storeName("붕어빵")
+                .storeType(StoreType.STORE)
+                .appearanceDays(Collections.emptySet())
+                .paymentMethods(Collections.emptySet())
+                .menus(menus)
+                .build();
+
+            // when
+            storeService.updateStore(store.getId(), request, userId);
+
+            // then
+            List<Menu> findMenus = menuRepository.findAll();
+            assertThat(findMenus).hasSize(1);
+            assertMenu(findMenus.get(0), store.getId(), menuName, price, type);
+        }
+
+        @Test
+        void 가게의_메뉴를_수정할때_중복된_메뉴는_저장되지_않는다() {
+            // given
+            Store store = StoreCreator.create(userId, "storeName");
+            store.addMenus(Collections.singletonList(Menu.of(store, "이름", "가격", MenuCategoryType.BUNGEOPPANG)));
+            storeRepository.save(store);
+
+            String menuName = "메뉴 이름";
+            String price = "10000";
+            MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
+            Set<MenuRequest> menus = new HashSet<>(Arrays.asList(
+                MenuRequest.of(menuName, price, type),
+                MenuRequest.of(menuName, price, type))
+            );
 
             UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
                 .latitude(34.0)
@@ -399,7 +463,7 @@ class StoreServiceTest extends UserSetUpTest {
                 .storeType(StoreType.STORE)
                 .appearanceDays(Set.of(DayOfTheWeek.TUESDAY))
                 .paymentMethods(Set.of(PaymentMethodType.CARD))
-                .menus(Collections.singletonList(MenuRequest.of("메뉴 이름", "메뉴 가격", MenuCategoryType.BUNGEOPPANG)))
+                .menus(Set.of(MenuRequest.of("메뉴 이름", "메뉴 가격", MenuCategoryType.BUNGEOPPANG)))
                 .build();
 
             // when & then

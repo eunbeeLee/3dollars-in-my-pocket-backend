@@ -85,7 +85,7 @@ class StoreControllerTest extends AbstractControllerTest {
             String menuName = "메뉴 이름";
             String price = "10000";
             MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
-            List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
+            Set<MenuRequest> menu = Set.of(MenuRequest.of(menuName, price, type));
 
             AddStoreRequest request = AddStoreRequest.testBuilder()
                 .latitude(latitude)
@@ -127,7 +127,7 @@ class StoreControllerTest extends AbstractControllerTest {
             String menuName = "메뉴 이름";
             String price = "10000";
             MenuCategoryType type = MenuCategoryType.BUNGEOPPANG;
-            List<MenuRequest> menu = Collections.singletonList(MenuRequest.of(menuName, price, type));
+            Set<MenuRequest> menu = Set.of(MenuRequest.of(menuName, price, type));
 
             UpdateStoreRequest request = UpdateStoreRequest.testBuilder()
                 .latitude(latitude)

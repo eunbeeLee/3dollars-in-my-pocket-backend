@@ -39,11 +39,11 @@ public class UpdateStoreRequest {
 
     @Valid
     @NotEmpty(message = "{store.menu.notEmpty}")
-    private List<MenuRequest> menus;
+    private Set<MenuRequest> menus;
 
     @Builder(builderClassName = "TestBuilder", builderMethodName = "testBuilder")
     public UpdateStoreRequest(Double latitude, Double longitude, String storeName, StoreType storeType,
-                              Set<DayOfTheWeek> appearanceDays, Set<PaymentMethodType> paymentMethods, List<MenuRequest> menus) {
+                              Set<DayOfTheWeek> appearanceDays, Set<PaymentMethodType> paymentMethods, Set<MenuRequest> menus) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.storeName = storeName;
