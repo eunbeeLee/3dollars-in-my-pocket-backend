@@ -1,6 +1,18 @@
 spring:
   config:
     activate:
+      on-profile: local,local-will
+  boot:
+    admin:
+      client:
+        enabled: false
+sentry:
+  logging:
+    enabled: false
+---
+spring:
+  config:
+    activate:
       on-profile: dev
   boot:
     admin:
@@ -32,17 +44,4 @@ sentry:
   environment: prod
   traces-sample-rate: 0.3
   dsn: ${secret.sentry.dsn}
-
----
-spring:
-  config:
-    activate:
-      on-profile: local,local-will
-  boot:
-    admin:
-      client:
-        enabled: false
-sentry:
-  logging:
-    enabled: false
 ---

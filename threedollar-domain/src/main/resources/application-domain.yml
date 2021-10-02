@@ -36,9 +36,10 @@ spring:
       driver-class-name: org.h2.Driver
       jdbc-url: jdbc:h2:mem:threedollar;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;
       username: sa
+      password:
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
   flyway:
     enabled: false
 ---
@@ -53,15 +54,9 @@ spring:
 spring:
   config:
     activate:
-      on-profile: dev
-  jpa:
-    hibernate:
-      ddl-auto: none
----
-spring:
-  config:
-    activate:
-      on-profile: prod
+      on-profile:
+        - dev
+        - prod
   jpa:
     hibernate:
       ddl-auto: none
