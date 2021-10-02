@@ -1,7 +1,7 @@
 package com.depromeet.threedollar.api.event;
 
 import com.depromeet.threedollar.common.exception.ErrorCode;
-import com.depromeet.threedollar.common.type.ServerEventType;
+import com.depromeet.threedollar.domain.type.ServerEventType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
