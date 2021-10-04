@@ -77,9 +77,6 @@ class ControllerExceptionAdvice {
             .body(ApiResponse.error(exception.errorCode))
     }
 
-    /**
-     * 500 Internal Server
-     */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception::class)
     private fun handleInternalServerException(e: Exception): ApiResponse<Nothing> {

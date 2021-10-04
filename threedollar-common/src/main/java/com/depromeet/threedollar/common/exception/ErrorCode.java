@@ -24,7 +24,7 @@ public enum ErrorCode {
     SERVICE_UNAVAILABLE_EXCEPTION(SERVICE_UNAVAILABLE, OFF, "C009", "서비스를 이용하실 수 없습니다"),
     UNSUPPORTED_MEDIA_TYPE(ErrorStatusCode.UNSUPPORTED_MEDIA_TYPE, OFF, "C010", "해당하는 미디어 타입을 지원하지 않습니다"),
 
-    // Validation Exception
+    // 400 Bad Request
     VALIDATION_RATING_EXCEPTION(BAD_REQUEST, OFF, "V001", "허용되지 않은 평가 점수입니다. (0 ~ 5)"),
     VALIDATION_LATITUDE_EXCEPTION(BAD_REQUEST, OFF, "V002", "허용되지 않은 위도 범위를 입력하였습니다. (33 ~ 43)"),
     VALIDATION_LONGITUDE_EXCEPTION(BAD_REQUEST, OFF, "V003", "허용되지 않은 경도 범위를 입력하였습니다. (124 ~ 132)"),
@@ -33,7 +33,7 @@ public enum ErrorCode {
     VALIDATION_APPLE_TOKEN_EXPIRED_EXCEPTION(BAD_REQUEST, OFF, "V006", "만료된 애플 토큰입니다"),
     VALIDATION_SOCIAL_TYPE_EXCEPTION(BAD_REQUEST, OFF, "V007", "잘못된 소셜 타입 입니다."),
 
-    // Not Found Exception
+    // 404 Not Found
     NOT_FOUND_USER_EXCEPTION(NOT_FOUND, OFF, "N001", "존재하지 않는 유저입니다"),
     NOT_FOUND_STORE_EXCEPTION(NOT_FOUND, OFF, "N002", "존재하지 않는 가게입니다"),
     NOT_FOUND_REVIEW_EXCEPTION(NOT_FOUND, OFF, "N003", "존재하지 않는 리뷰입니다"),

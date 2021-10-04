@@ -13,9 +13,9 @@ public class RetrieveMyReviewsRequest {
     @Min(value = 1, message = "{common.size.min}")
     private int size;
 
-    private Long cursor; // 총 리뷰 수를 매번 서버에서 조회하지 않고, 캐싱하기 위한 필드. (Optional)
+    private Long cursor;
 
-    private Long cachingTotalElements;
+    private Long cachingTotalElements; // 총 리뷰 수를 매번 서버에서 조회하지 않고, 캐싱하기 위한 필드. (Optional)
 
     public static RetrieveMyReviewsRequest testInstance(int size, Long cursor, Long cachingTotalElements) {
         return new RetrieveMyReviewsRequest(size, cursor, cachingTotalElements);
