@@ -2,30 +2,46 @@ package com.depromeet.threedollar.domain.domain.user;
 
 import com.depromeet.threedollar.domain.domain.common.AuditingTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * TODO
- * 마이그레이션 이후에, 삭제된 유저 관리를 다른 방식으로 해야할 것 같음.
- * User.state, status를 다른 방식으로 관리하는 것이 좋아보입니다.
- */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class WithdrawalUser extends AuditingTimeEntity {
 
-	@Id
-	private Long userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String name;
+    private Long userId;
 
-	@Embedded
-	private SocialInfo socialInfo;
+    private String name;
 
-	private LocalDateTime userCreatedAt;
+    @Embedded
+    private SocialInfo socialInfo;
+
+    private LocalDateTime userCreatedAt;
+
+    @Builder(access = AccessLevel.PRIVATE)
+    private WithdrawalUser(Long userId, String name, SocialInfo socialInfo, LocalDateTime userCreatedAt) {
+        this.userId = userId;
+        this.name = name;
+        this.socialInfo = socialInfo;
+        this.userCreatedAt = userCreatedAt;
+    }
+
+    public static WithdrawalUser newInstance(User signOutUser) {
+        return WithdrawalUser.builder()
+            .userId(signOutUser.getId())
+            .name(signOutUser.getName())
+            .socialInfo(SocialInfo.of(signOutUser.getSocialId(), signOutUser.getSocialType()))
+            .userCreatedAt(signOutUser.getCreatedAt())
+            .build();
+    }
 
 }

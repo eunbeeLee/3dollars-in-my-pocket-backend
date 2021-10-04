@@ -1,0 +1,17 @@
+ext {
+    embeddedRedisVersion = "0.7.2"
+}
+
+dependencies {
+    api project(":threedollar-domain")
+
+    // Jackson
+    implementation("org.springframework.boot:spring-boot-starter-json")
+
+    // Redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("it.ozimov:embedded-redis:${embeddedRedisVersion}")
+}
+
+bootJar { enabled = false }
+jar { enabled = true }

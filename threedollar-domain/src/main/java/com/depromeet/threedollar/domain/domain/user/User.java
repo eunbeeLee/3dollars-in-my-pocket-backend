@@ -10,30 +10,43 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uni_user_1", columnNames = {"socialId", "socialType"})
+    },
+    indexes = @Index(name = "idx_user_1", columnList = "name")
+)
 public class User extends AuditingTimeEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Embedded
-	private SocialInfo socialInfo;
+    @Embedded
+    private SocialInfo socialInfo;
 
-	private String name;
+    @Column(length = 50, nullable = false)
+    private String name;
 
-	/**
-	 * TODO
-	 * status, state별로 관리하지 않고
-	 * AS-IS
-	 * 회원가입 (state = false, name = null, status=ACTIVE) -> 닉네임 설정 (state = true, name = "닉네임", status=ACTIEC) -> 회원탈퇴(status=INACTIVE + WithDrawerUser 추가)
-	 * TO-BE
-	 * 회원가입 (닉네임 설정까지 완료) -> (name = 닉네임) -> 회원 탈퇴 (WithdrawalUser 컬럼 추가 (백업용)) -> 배치 작업으로 90일 이후 삭제.
-	 *
-	 * 이 경우 이미 작성한 Store, Review에 대해서 어떻게 보여줄지..
-	 */
-	@Enumerated(EnumType.STRING)
-	private UserStatusType status;
+    private User(String socialId, UserSocialType socialType, String name) {
+        this.socialInfo = SocialInfo.of(socialId, socialType);
+        this.name = name;
+    }
 
-	private boolean state;
+    public static User newInstance(String socialId, UserSocialType socialType, String name) {
+        return new User(socialId, socialType, name);
+    }
+
+	public void update(String name) {
+        this.name = name;
+    }
+
+    public String getSocialId() {
+        return this.socialInfo.getSocialId();
+    }
+
+    public UserSocialType getSocialType() {
+        return this.socialInfo.getSocialType();
+    }
 
 }

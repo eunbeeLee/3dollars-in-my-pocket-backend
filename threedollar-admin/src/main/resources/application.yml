@@ -1,0 +1,19 @@
+server:
+  port: 4000
+  shutdown: graceful
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+spring:
+  profiles:
+    active: local
+    default: local
+    include:
+      - domain
+      - redis
+      - secret
+  security:
+    user:
+      name: ${secret.security.user.name}
+      password: ${secret.security.user.password}

@@ -1,0 +1,44 @@
+cloud:
+  aws:
+    s3:
+      bucket: 3dollar-local-embedded-bucket
+      mock:
+        port: 5050
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+spring:
+  config:
+    activate:
+      on-profile: local,local-will
+---
+cloud:
+  aws:
+    s3:
+      bucket: 3dollar-api-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      instance-profile: true
+spring:
+  config:
+    activate:
+      on-profile: dev
+---
+cloud:
+  aws:
+    s3:
+      bucket: 3dollar-api-bucket-prod
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      instance-profile: true
+spring:
+  config:
+    activate:
+      on-profile: prod

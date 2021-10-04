@@ -1,43 +1,36 @@
 buildscript {
     ext {
-        springBootVersion = '2.3.8.RELEASE'
+        springBootVersion = "2.5.5"
+        kotlinVersion = "1.5.31"
+        springCloudVersion = "2020.0.3"
+        springBootAdminVersion = "2.4.3"
     }
     repositories {
         mavenCentral()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
     }
 }
 
 allprojects {
-    group = 'com.potato'
+    group = "com.depromeet.threedollar"
 }
 
 subprojects {
     apply {
-        plugin('java-library')
-        plugin('eclipse')
-        plugin('org.springframework.boot')
-        plugin('io.spring.dependency-management')
+        plugin("java-library")
+        plugin("eclipse")
+        plugin("org.springframework.boot")
+        plugin("io.spring.dependency-management")
+        plugin("kotlin")
+        plugin("kotlin-spring")
     }
-
-    sourceCompatibility = '11'
 
     repositories {
         mavenCentral()
-    }
-
-    dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-validation'
-        implementation 'org.springframework.boot:spring-boot-configuration-processor'
-
-        testImplementation('org.springframework.boot:spring-boot-starter-test')
-
-        // Lombok
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-
     }
 
     configurations {
@@ -46,7 +39,77 @@ subprojects {
         }
     }
 
+    sourceCompatibility = "11"
+
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
+            freeCompilerArgs = ["-Xjsr305=strict"]
+        }
+    }
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
+            freeCompilerArgs = ["-Xjsr305=strict"]
+        }
+    }
+
+    dependencies {
+        implementation("org.springframework.boot:spring-boot-starter-validation")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+        testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+        // Lombok
+        compileOnly("org.projectlombok:lombok")
+        annotationProcessor("org.projectlombok:lombok")
+
+        // kotlin
+        implementation("org.jetbrains.kotlin:kotlin-stdlib")
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+
     test {
         useJUnitPlatform()
     }
+}
+
+def testProjects = [
+    project(":threedollar-api"),
+    project(":threedollar-admin"),
+    project(":threedollar-application-service"),
+    project(":threedollar-domain"),
+    project(":threedollar-common")
+]
+
+configure(testProjects) {
+    apply {
+        plugin("jacoco")
+    }
+
+    jacoco {
+        toolVersion = "0.8.7"
+    }
+
+    jacocoTestReport {
+        executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
+
+        reports {
+            html.enabled true
+            xml.enabled true
+            csv.enabled false
+        }
+
+        for (testProject in testProjects) {
+            sourceSets(testProject.sourceSets["main"] as SourceSet)
+        }
+    }
+
 }

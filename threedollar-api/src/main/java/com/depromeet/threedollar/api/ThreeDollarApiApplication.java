@@ -1,17 +1,15 @@
 package com.depromeet.threedollar.api;
 
-import com.depromeet.threedollar.domain.ThreeDollarDomainRoot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
-@SpringBootApplication(scanBasePackageClasses = {
-		ThreeDollarApiApplication.class,
-		ThreeDollarDomainRoot.class
-})
+@ConfigurationPropertiesScan(basePackages = "com.depromeet.threedollar")
+@SpringBootApplication(scanBasePackages = "com.depromeet.threedollar")
 public class ThreeDollarApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ThreeDollarApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ThreeDollarApiApplication.class, args);
+    }
 
 }

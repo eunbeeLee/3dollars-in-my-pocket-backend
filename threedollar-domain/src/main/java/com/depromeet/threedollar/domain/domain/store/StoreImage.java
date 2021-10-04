@@ -10,16 +10,41 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-// TODO 테이블 이름 image -> store_image 마이그레이션 필요
+@Table(
+    indexes = @Index(name = "idx_store_image_1", columnList = "storeId")
+)
 public class StoreImage extends AuditingTimeEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "store_id", nullable = false) // TODO 실제 테이블에는 image_id여서 마이그레이션이 필요합니다.
-	private Store store;
+    @Column(nullable = false)
+    private Long storeId;
 
-	private String url;
+    @Column(nullable = false)
+    private Long userId;
+
+    @Column(nullable = false)
+    private String url;
+
+    @Column(nullable = false, length = 30)
+    @Enumerated(EnumType.STRING)
+    private StoreImageStatus status;
+
+    private StoreImage(Long storeId, Long userId, String url) {
+        this.storeId = storeId;
+        this.userId = userId;
+        this.url = url;
+        this.status = StoreImageStatus.ACTIVE;
+    }
+
+    public static StoreImage newInstance(Long storeId, Long userId, String imageUrl) {
+        return new StoreImage(storeId, userId, imageUrl);
+    }
+
+    public void delete() {
+        this.status = StoreImageStatus.INACTIVE;
+    }
+
 }

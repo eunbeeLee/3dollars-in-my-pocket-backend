@@ -1,7 +1,34 @@
+ext {
+    swaggerVersion = "2.9.2"
+    sentryVersion = "5.2.0"
+}
+
 dependencies {
-    implementation project(':threedollar-domain')
+    implementation project(":threedollar-application-service")
+    implementation project(":threedollar-external")
 
     // Spring MVC
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation("org.springframework.boot:spring-boot-starter-web")
+
+    // Spring actuator
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
+    // Spring Security
+    implementation("org.springframework.boot:spring-boot-starter-security")
+
+    // Spring Session Redis
+    implementation("org.springframework.session:spring-session-data-redis")
+
+    // swagger
+    implementation("io.springfox:springfox-swagger2:${swaggerVersion}")
+    implementation("io.springfox:springfox-swagger-ui:${swaggerVersion}")
+    implementation("io.springfox:springfox-bean-validators:${swaggerVersion}")
+
+    // spring boot admin client
+    implementation("de.codecentric:spring-boot-admin-starter-client:${springBootAdminVersion}")
+
+    // sentry
+    implementation("io.sentry:sentry-spring-boot-starter:${sentryVersion}")
+    implementation("io.sentry:sentry-logback:${sentryVersion}")
 }
 

@@ -1,8 +1,6 @@
 package com.depromeet.threedollar.domain.domain.review;
 
 import com.depromeet.threedollar.domain.domain.common.AuditingTimeEntity;
-import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType;
-import com.depromeet.threedollar.domain.domain.store.Rating;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,30 +10,56 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(
+    indexes = {
+        @Index(name = "idx_review_1", columnList = "storeId,status"),
+        @Index(name = "idx_review_2", columnList = "userId,status")
+    }
+)
 public class Review extends AuditingTimeEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private Long storeId;
+    @Column(nullable = false)
+    private Long storeId;
 
-	/**
-	 * TODO
-	 * storeName하고 category가 있는 이유를.. 모르겠음
-	 * (마이그레이션 하기 매우 까다로울거 같으니 그냥 일단 가는걸로)
-	 */
-	private String storeName;
+    @Column(nullable = false)
+    private Long userId;
 
-	@Enumerated(value = EnumType.STRING)
-	private MenuCategoryType category;
+    @Column(length = 200)
+    private String contents;
 
-	private String contents;
+    @Embedded
+    private Rating rating;
 
-	@Embedded
-	private Rating rating;
+    @Enumerated(EnumType.STRING)
+    private ReviewStatus status;
 
-	@Enumerated(EnumType.STRING)
-	private ReviewStatus status;
+    private Review(Long storeId, Long userId, String contents, int rating) {
+        this.storeId = storeId;
+        this.userId = userId;
+        this.contents = contents;
+        this.rating = Rating.of(rating);
+        this.status = ReviewStatus.POSTED;
+    }
+
+    public static Review of(Long storeId, Long userId, String contents, int rating) {
+        return new Review(storeId, userId, contents, rating);
+    }
+
+    public void update(String contents, int rating) {
+        this.contents = contents;
+        this.rating = Rating.of(rating);
+    }
+
+    public void delete() {
+        this.status = ReviewStatus.DELETED;
+    }
+
+    public int getRating() {
+        return this.rating.getRating();
+    }
 
 }

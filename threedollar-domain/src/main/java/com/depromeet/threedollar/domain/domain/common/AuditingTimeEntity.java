@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class AuditingTimeEntity {
 
-	@CreatedDate
-	private LocalDateTime createdAt;
+    @CreatedDate
+    private LocalDateTime createdAt;
 
-	@LastModifiedDate
-	private LocalDateTime updatedAt;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
 }
