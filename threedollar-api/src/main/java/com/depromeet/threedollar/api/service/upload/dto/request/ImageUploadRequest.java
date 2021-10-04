@@ -1,12 +1,14 @@
 package com.depromeet.threedollar.api.service.upload.dto.request;
 
-import com.depromeet.threedollar.common.exception.model.validation.ValidationFileTypeException;
+import com.depromeet.threedollar.common.exception.model.ValidationException;
 import com.depromeet.threedollar.domain.type.ImageType;
 import com.depromeet.threedollar.common.utils.FileUtils;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
+
+import static com.depromeet.threedollar.common.exception.ErrorCode.VALIDATION_FILE_TYPE_EXCEPTION;
 
 @ToString
 @Getter
@@ -29,7 +31,7 @@ public class ImageUploadRequest implements UploadRequest {
         if (contentType != null && contentType.contains(SEPARATOR) && contentType.split(SEPARATOR)[0].equals(IMAGE_CONTENT_TYPE_TYPE)) {
             return;
         }
-        throw new ValidationFileTypeException(String.format("허용되지 않은 파일 형식 (%s) 입니다", contentType));
+        throw new ValidationException(String.format("허용되지 않은 파일 형식 (%s) 입니다", contentType), VALIDATION_FILE_TYPE_EXCEPTION);
     }
 
     @Override

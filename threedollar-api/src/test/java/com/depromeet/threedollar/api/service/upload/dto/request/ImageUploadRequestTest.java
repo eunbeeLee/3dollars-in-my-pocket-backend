@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.service.upload.dto.request;
 
-import com.depromeet.threedollar.common.exception.model.validation.ValidationFileTypeException;
+import com.depromeet.threedollar.common.exception.model.ValidationException;
 import com.depromeet.threedollar.domain.type.ImageType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,7 +33,7 @@ class ImageUploadRequestTest {
         ImageUploadRequest request = ImageUploadRequest.of(ImageType.STORE);
 
         // when & then
-        assertThatThrownBy(() -> request.validate(contentType)).isInstanceOf(ValidationFileTypeException.class);
+        assertThatThrownBy(() -> request.validate(contentType)).isInstanceOf(ValidationException.class);
     }
 
     @Test
@@ -42,7 +42,7 @@ class ImageUploadRequestTest {
         ImageUploadRequest request = ImageUploadRequest.of(ImageType.STORE);
 
         // when & then
-        assertThatThrownBy(() -> request.validate(null)).isInstanceOf(ValidationFileTypeException.class);
+        assertThatThrownBy(() -> request.validate(null)).isInstanceOf(ValidationException.class);
     }
 
     @ParameterizedTest

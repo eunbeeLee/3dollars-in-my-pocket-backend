@@ -3,8 +3,8 @@ package com.depromeet.threedollar.api.service.auth;
 import com.depromeet.threedollar.api.service.auth.dto.request.LoginRequest;
 import com.depromeet.threedollar.api.service.auth.dto.request.SignUpRequest;
 import com.depromeet.threedollar.api.service.user.UserService;
+import com.depromeet.threedollar.common.exception.model.NotFoundException;
 import com.depromeet.threedollar.domain.domain.user.*;
-import com.depromeet.threedollar.common.exception.model.notfound.NotFoundUserException;
 import com.depromeet.threedollar.external.client.apple.AppleTokenDecoder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,7 +69,7 @@ class AppleAuthServiceTest {
             LoginRequest request = LoginRequest.testInstance("token", UserSocialType.APPLE);
 
             // when & then
-            assertThatThrownBy(() -> authService.login(request)).isInstanceOf(NotFoundUserException.class);
+            assertThatThrownBy(() -> authService.login(request)).isInstanceOf(NotFoundException.class);
         }
 
     }

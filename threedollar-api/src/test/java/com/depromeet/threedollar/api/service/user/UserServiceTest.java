@@ -3,9 +3,9 @@ package com.depromeet.threedollar.api.service.user;
 import com.depromeet.threedollar.api.service.user.dto.request.CheckAvailableNameRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.CreateUserRequest;
 import com.depromeet.threedollar.api.service.user.dto.request.UpdateUserInfoRequest;
+import com.depromeet.threedollar.common.exception.model.NotFoundException;
 import com.depromeet.threedollar.domain.domain.user.*;
 import com.depromeet.threedollar.common.exception.model.ConflictException;
-import com.depromeet.threedollar.common.exception.model.notfound.NotFoundUserException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -113,7 +113,7 @@ class UserServiceTest {
             Long userId = 999L;
 
             // when & then
-            assertThatThrownBy(() -> userService.getUserInfo(userId)).isInstanceOf(NotFoundUserException.class);
+            assertThatThrownBy(() -> userService.getUserInfo(userId)).isInstanceOf(NotFoundException.class);
         }
 
     }
@@ -177,7 +177,7 @@ class UserServiceTest {
             UpdateUserInfoRequest request = UpdateUserInfoRequest.testInstance("name");
 
             // when & then
-            assertThatThrownBy(() -> userService.updateUserInfo(request, userId)).isInstanceOf(NotFoundUserException.class);
+            assertThatThrownBy(() -> userService.updateUserInfo(request, userId)).isInstanceOf(NotFoundException.class);
         }
 
     }
@@ -225,7 +225,7 @@ class UserServiceTest {
         @Test
         void 해당하는_유저가_없으면_NOT_FOUND_USER_EXCEPTION() {
             // when & then
-            assertThatThrownBy(() -> userService.signOut(999L)).isInstanceOf(NotFoundUserException.class);
+            assertThatThrownBy(() -> userService.signOut(999L)).isInstanceOf(NotFoundException.class);
         }
 
     }

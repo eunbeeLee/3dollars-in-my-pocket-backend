@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.domain.domain.review;
 
-import com.depromeet.threedollar.common.exception.model.validation.ValidationRatingException;
+import com.depromeet.threedollar.common.exception.model.ValidationException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,7 +28,7 @@ class RatingTest {
         @ValueSource(ints = {0, 6})
         void 점수가_1보다_작거나_5이상이면_VALIDATION_EXEPTION(int value) {
             // when & then
-            assertThatThrownBy(() -> Rating.of(value)).isInstanceOf(ValidationRatingException.class);
+            assertThatThrownBy(() -> Rating.of(value)).isInstanceOf(ValidationException.class);
         }
 
     }

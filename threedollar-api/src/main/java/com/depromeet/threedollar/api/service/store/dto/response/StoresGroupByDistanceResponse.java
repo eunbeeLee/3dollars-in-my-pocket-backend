@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.api.service.store.dto.response;
 
+import com.depromeet.threedollar.common.exception.model.InternalServerException;
 import com.depromeet.threedollar.domain.type.DistanceGroupType;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -40,7 +41,7 @@ public class StoresGroupByDistanceResponse {
 					storeListOver1000.add(store);
 					break;
 				default:
-					throw new IllegalArgumentException(String.format("예상치 못한 거리가 입력되었습니다 (%s)", store.getDistance()));
+					throw new InternalServerException(String.format("예상치 못한 거리가 입력되었습니다 (%s)", store.getDistance()));
 			}
 		}
 	}

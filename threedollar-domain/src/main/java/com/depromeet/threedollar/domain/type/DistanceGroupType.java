@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.domain.type;
 
+import com.depromeet.threedollar.common.exception.model.InternalServerException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +22,7 @@ public enum DistanceGroupType {
         return Arrays.stream(values())
             .filter(x -> x.expression.test(distance))
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException(String.format("예상치 못한 거리 범위가 입력되었습니다 (%s)", distance)));
+            .orElseThrow(() -> new InternalServerException(String.format("예상치 못한 거리 범위가 입력되었습니다 (%s)", distance)));
     }
 
 }

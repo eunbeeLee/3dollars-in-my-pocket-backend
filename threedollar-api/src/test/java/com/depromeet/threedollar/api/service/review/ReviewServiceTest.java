@@ -3,6 +3,7 @@ package com.depromeet.threedollar.api.service.review;
 import com.depromeet.threedollar.api.service.UserSetUpTest;
 import com.depromeet.threedollar.api.service.review.dto.request.AddReviewRequest;
 import com.depromeet.threedollar.api.service.review.dto.request.UpdateReviewRequest;
+import com.depromeet.threedollar.common.exception.model.NotFoundException;
 import com.depromeet.threedollar.domain.domain.review.Review;
 import com.depromeet.threedollar.domain.domain.review.ReviewCreator;
 import com.depromeet.threedollar.domain.domain.review.ReviewRepository;
@@ -10,8 +11,6 @@ import com.depromeet.threedollar.domain.domain.review.ReviewStatus;
 import com.depromeet.threedollar.domain.domain.store.Store;
 import com.depromeet.threedollar.domain.domain.store.StoreCreator;
 import com.depromeet.threedollar.domain.domain.store.StoreRepository;
-import com.depromeet.threedollar.common.exception.model.notfound.NotFoundReviewException;
-import com.depromeet.threedollar.common.exception.model.notfound.NotFoundStoreException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -78,7 +77,7 @@ class ReviewServiceTest extends UserSetUpTest {
             AddReviewRequest request = AddReviewRequest.testInstance(storeId, "리뷰", 3);
 
             // when & then
-            assertThatThrownBy(() -> reviewService.addReview(request, userId)).isInstanceOf(NotFoundStoreException.class);
+            assertThatThrownBy(() -> reviewService.addReview(request, userId)).isInstanceOf(NotFoundException.class);
         }
 
         @Test
@@ -192,7 +191,7 @@ class ReviewServiceTest extends UserSetUpTest {
             UpdateReviewRequest request = UpdateReviewRequest.testInstance("content", 5);
 
             // when & then
-            assertThatThrownBy(() -> reviewService.updateReview(999L, request, userId)).isInstanceOf(NotFoundReviewException.class);
+            assertThatThrownBy(() -> reviewService.updateReview(999L, request, userId)).isInstanceOf(NotFoundException.class);
         }
 
         @Test
@@ -204,7 +203,7 @@ class ReviewServiceTest extends UserSetUpTest {
             UpdateReviewRequest request = UpdateReviewRequest.testInstance("content", 5);
 
             // when & then
-            assertThatThrownBy(() -> reviewService.updateReview(review.getId(), request, 999L)).isInstanceOf(NotFoundReviewException.class);
+            assertThatThrownBy(() -> reviewService.updateReview(review.getId(), request, 999L)).isInstanceOf(NotFoundException.class);
         }
 
     }
@@ -261,7 +260,7 @@ class ReviewServiceTest extends UserSetUpTest {
         @Test
         void 해당하는_리뷰가_없을경우_NOT_FOUND_EXCEPTION() {
             // when & then
-            assertThatThrownBy(() -> reviewService.deleteReview(999L, userId)).isInstanceOf(NotFoundReviewException.class);
+            assertThatThrownBy(() -> reviewService.deleteReview(999L, userId)).isInstanceOf(NotFoundException.class);
         }
 
         @Test
@@ -271,7 +270,7 @@ class ReviewServiceTest extends UserSetUpTest {
             reviewRepository.save(review);
 
             // when & then
-            assertThatThrownBy(() -> reviewService.deleteReview(review.getId(), 999L)).isInstanceOf(NotFoundReviewException.class);
+            assertThatThrownBy(() -> reviewService.deleteReview(review.getId(), 999L)).isInstanceOf(NotFoundException.class);
         }
 
     }

@@ -2,7 +2,7 @@ package com.depromeet.threedollar.api.service.upload;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.depromeet.threedollar.api.service.upload.dto.request.ImageUploadRequest;
-import com.depromeet.threedollar.common.exception.model.validation.ValidationFileTypeException;
+import com.depromeet.threedollar.common.exception.model.ValidationException;
 import com.depromeet.threedollar.domain.type.ImageType;
 import com.depromeet.threedollar.external.client.s3.S3Service;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,7 +53,7 @@ class S3FileUploadServiceTest {
             ImageUploadRequest request = ImageUploadRequest.of(ImageType.STORE);
 
             // when & then
-            assertThatThrownBy(() -> s3FileUploadService.uploadFile(request, multipartFile)).isInstanceOf(ValidationFileTypeException.class);
+            assertThatThrownBy(() -> s3FileUploadService.uploadFile(request, multipartFile)).isInstanceOf(ValidationException.class);
         }
 
         @Test
@@ -64,7 +64,7 @@ class S3FileUploadServiceTest {
             ImageUploadRequest request = ImageUploadRequest.of(ImageType.STORE);
 
             // when & then
-            assertThatThrownBy(() -> s3FileUploadService.uploadFile(request, multipartFile)).isInstanceOf(ValidationFileTypeException.class);
+            assertThatThrownBy(() -> s3FileUploadService.uploadFile(request, multipartFile)).isInstanceOf(ValidationException.class);
         }
 
     }

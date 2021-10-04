@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.external.config;
 
+import com.depromeet.threedollar.common.exception.model.InternalServerException;
 import com.depromeet.threedollar.common.exception.model.BadGatewayException;
 import com.depromeet.threedollar.common.exception.model.ValidationException;
 import feign.Response;
@@ -22,7 +23,7 @@ public class FeignErrorDecoder implements ErrorDecoder {
             case 503:
                 return new BadGatewayException(String.format("외부 API 연동 중 에러가 발생하였습니다. (%s) (%s)", response.status(), response.body()));
             default:
-                return new IllegalArgumentException(String.format("외부 API 연동 중 에러가 발생하였습니다. (%s) (%s)", response.status(), response.body()));
+                return new InternalServerException(String.format("외부 API 연동 중 에러가 발생하였습니다. (%s) (%s)", response.status(), response.body()));
         }
     }
 

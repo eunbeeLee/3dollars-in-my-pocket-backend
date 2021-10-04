@@ -29,6 +29,9 @@ public enum ErrorCode {
     VALIDATION_LATITUDE_EXCEPTION(BAD_REQUEST, OFF, "V002", "허용되지 않은 위도 범위를 입력하였습니다. (33 ~ 43)"),
     VALIDATION_LONGITUDE_EXCEPTION(BAD_REQUEST, OFF, "V003", "허용되지 않은 경도 범위를 입력하였습니다. (124 ~ 132)"),
     VALIDATION_FILE_TYPE_EXCEPTION(BAD_REQUEST, OFF, "V004", "허용되지 않은 파일 형식입니다"),
+    VALIDATION_APPLE_TOKEN_EXCEPTION(BAD_REQUEST, OFF, "V005", "잘못된 애플 토큰입니다"),
+    VALIDATION_APPLE_TOKEN_EXPIRED_EXCEPTION(BAD_REQUEST, OFF, "V006", "만료된 애플 토큰입니다"),
+    VALIDATION_SOCIAL_TYPE_EXCEPTION(BAD_REQUEST, OFF, "V007", "잘못된 소셜 타입 입니다."),
 
     // Not Found Exception
     NOT_FOUND_USER_EXCEPTION(NOT_FOUND, OFF, "N001", "존재하지 않는 유저입니다"),

@@ -1,7 +1,6 @@
 package com.depromeet.threedollar.domain.domain.common;
 
-import com.depromeet.threedollar.common.exception.model.validation.ValidationLatitudeException;
-import com.depromeet.threedollar.common.exception.model.validation.ValidationLongitudeException;
+import com.depromeet.threedollar.common.exception.model.ValidationException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -42,7 +41,7 @@ class LocationTest {
         @ParameterizedTest
         void 허용된_위도_범위_밖인경우_VALIDATION_LATITUDE_EXEPTION(double latitude, double longitude) {
             // when & then
-            assertThatThrownBy(() -> Location.of(latitude, longitude)).isInstanceOf(ValidationLatitudeException.class);
+            assertThatThrownBy(() -> Location.of(latitude, longitude)).isInstanceOf(ValidationException.class);
         }
 
         private Stream<Arguments> wrong_latitude() {
@@ -56,7 +55,7 @@ class LocationTest {
         @ParameterizedTest
         void 허용된_경도_범위_밖인경우_VALIDATION_LATITUDE_EXEPTION(double latitude, double longitude) {
             // when & then
-            assertThatThrownBy(() -> Location.of(latitude, longitude)).isInstanceOf(ValidationLongitudeException.class);
+            assertThatThrownBy(() -> Location.of(latitude, longitude)).isInstanceOf(ValidationException.class);
         }
 
         private Stream<Arguments> wrong_longitude() {

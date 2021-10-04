@@ -1,12 +1,14 @@
 package com.depromeet.threedollar.api.service.user;
 
-import com.depromeet.threedollar.common.exception.model.notfound.NotFoundUserException;
+import com.depromeet.threedollar.common.exception.model.NotFoundException;
 import com.depromeet.threedollar.domain.domain.user.User;
 import com.depromeet.threedollar.domain.domain.user.UserRepository;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
 import com.depromeet.threedollar.common.exception.model.ConflictException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import static com.depromeet.threedollar.common.exception.ErrorCode.NOT_FOUND_USER_EXCEPTION;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserServiceUtils {
@@ -26,7 +28,7 @@ public class UserServiceUtils {
     public static User findUserById(UserRepository userRepository, Long userId) {
         User user = userRepository.findUserById(userId);
         if (user == null) {
-            throw new NotFoundUserException(String.format("존재하지 않는 유저 (%s) 입니다", userId));
+            throw new NotFoundException(String.format("존재하지 않는 유저 (%s) 입니다", userId), NOT_FOUND_USER_EXCEPTION);
         }
         return user;
     }
@@ -34,7 +36,7 @@ public class UserServiceUtils {
     public static User findUserBySocialIdAndSocialType(UserRepository userRepository, String socialId, UserSocialType socialType) {
         User user = userRepository.findUserBySocialIdAndSocialType(socialId, socialType);
         if (user == null) {
-            throw new NotFoundUserException(String.format("존재하지 않는 유저 (%s - %s) 입니다", socialId, socialType));
+            throw new NotFoundException(String.format("존재하지 않는 유저 (%s - %s) 입니다", socialId, socialType), NOT_FOUND_USER_EXCEPTION);
         }
         return user;
     }

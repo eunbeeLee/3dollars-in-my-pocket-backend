@@ -52,7 +52,6 @@ docker-compose up --build
 - GitHub Actions CI/CD
 
 ### Development Environment
-AWS 프리티어 내에서 비용 없이 구성하였습니다.
 - AWS EC2
 - AWS RDS (MariaDB 10.4)
 - flyway

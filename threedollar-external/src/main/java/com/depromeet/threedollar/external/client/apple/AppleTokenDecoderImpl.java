@@ -20,6 +20,9 @@ import java.security.spec.RSAPublicKeySpec;
 import java.util.Base64;
 import java.util.Map;
 
+import static com.depromeet.threedollar.common.exception.ErrorCode.*;
+import static com.depromeet.threedollar.common.exception.ErrorCode.VALIDATION_APPLE_TOKEN_EXCEPTION;
+
 /**
  * https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_rest_api/verifying_a_user
  */
@@ -47,9 +50,9 @@ public class AppleTokenDecoderImpl implements AppleTokenDecoder {
                 .getBody();
             return claims.getSubject();
         } catch (JsonProcessingException | InvalidKeySpecException | InvalidClaimException | NoSuchAlgorithmException e) {
-            throw new ValidationException(String.format("잘못된 애플 idToken (%s) 입니다 (reason: %s)", idToken, e.getMessage()));
+            throw new ValidationException(String.format("잘못된 애플 idToken (%s) 입니다 (reason: %s)", idToken, e.getMessage()), VALIDATION_APPLE_TOKEN_EXCEPTION);
         } catch (ExpiredJwtException e) {
-            throw new ValidationException(String.format("만료된 애플 idToken (%s) 입니다 (reason: %s)", idToken, e.getMessage()));
+            throw new ValidationException(String.format("만료된 애플 idToken (%s) 입니다 (reason: %s)", idToken, e.getMessage()), VALIDATION_APPLE_TOKEN_EXPIRED_EXCEPTION);
         }
     }
 

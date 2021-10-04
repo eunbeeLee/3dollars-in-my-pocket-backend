@@ -5,9 +5,8 @@ import com.depromeet.threedollar.api.service.store.dto.request.AddStoreImageRequ
 import com.depromeet.threedollar.api.service.store.dto.response.StoreImageResponse;
 import com.depromeet.threedollar.api.service.upload.UploadService;
 import com.depromeet.threedollar.api.service.upload.dto.request.UploadRequest;
+import com.depromeet.threedollar.common.exception.model.NotFoundException;
 import com.depromeet.threedollar.domain.domain.store.*;
-import com.depromeet.threedollar.common.exception.model.notfound.NotFoundStoreException;
-import com.depromeet.threedollar.common.exception.model.notfound.NotFoundStoreImageException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -75,7 +74,7 @@ class StoreImageServiceTest extends UserSetUpTest {
             AddStoreImageRequest request = AddStoreImageRequest.testInstance(999L);
 
             // when & then
-            assertThatThrownBy(() -> storeImageService.addStoreImages(request, List.of(new MockMultipartFile("name", new byte[]{})), userId)).isInstanceOf(NotFoundStoreException.class);
+            assertThatThrownBy(() -> storeImageService.addStoreImages(request, List.of(new MockMultipartFile("name", new byte[]{})), userId)).isInstanceOf(NotFoundException.class);
         }
 
     }
@@ -101,7 +100,7 @@ class StoreImageServiceTest extends UserSetUpTest {
         @Test
         void 해당하는_가게_이미지가_존재하지_않을경우_NOT_FOUND_STORE_EXCEPTION() {
             // when & then
-            assertThatThrownBy(() -> storeImageService.deleteStoreImage(999L)).isInstanceOf(NotFoundStoreImageException.class);
+            assertThatThrownBy(() -> storeImageService.deleteStoreImage(999L)).isInstanceOf(NotFoundException.class);
         }
 
         @Test
@@ -112,7 +111,7 @@ class StoreImageServiceTest extends UserSetUpTest {
             storeImageRepository.save(storeImage);
 
             // when & then
-            assertThatThrownBy(() -> storeImageService.deleteStoreImage(storeImage.getId())).isInstanceOf(NotFoundStoreImageException.class);
+            assertThatThrownBy(() -> storeImageService.deleteStoreImage(storeImage.getId())).isInstanceOf(NotFoundException.class);
         }
 
     }

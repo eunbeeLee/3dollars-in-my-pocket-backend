@@ -1,5 +1,6 @@
 package com.depromeet.threedollar.common.utils;
 
+import com.depromeet.threedollar.common.exception.model.InternalServerException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
@@ -24,7 +25,7 @@ public final class ProcessUtils {
                 return port;
             }
         }
-        throw new IllegalArgumentException("사용가능한 포트를 찾을 수 없습니다. (10000 ~ 65535)");
+        throw new InternalServerException("사용가능한 포트를 찾을 수 없습니다. (10000 ~ 65535)");
     }
 
     private static Process executeGrepProcessCommand(int port) throws IOException {
@@ -51,7 +52,7 @@ public final class ProcessUtils {
                 pidInfo.append(line);
             }
         } catch (Exception e) {
-            throw new IllegalArgumentException("사용가능한 포트를 찾는 중 에러가 발생하였습니다.");
+            throw new InternalServerException("사용가능한 포트를 찾는 중 에러가 발생하였습니다.");
         }
         return StringUtils.hasLength(pidInfo.toString());
     }

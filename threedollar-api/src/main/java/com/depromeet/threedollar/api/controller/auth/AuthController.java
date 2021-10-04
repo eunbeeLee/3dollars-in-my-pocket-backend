@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import static com.depromeet.threedollar.api.config.session.SessionConstants.USER_ID;
+import static com.depromeet.threedollar.common.exception.ErrorCode.VALIDATION_SOCIAL_TYPE_EXCEPTION;
 
 @RequiredArgsConstructor
 @RestController
@@ -47,7 +48,7 @@ public class AuthController {
         if (request.getSocialType().equals(UserSocialType.APPLE)) {
             return appleAuthService.signUp(request);
         }
-        throw new ValidationException(String.format("허용하지 않는 소셜 타입 (%s) 입니다.", request.getSocialType()));
+        throw new ValidationException(String.format("허용하지 않는 소셜 타입 (%s) 입니다.", request.getSocialType()), VALIDATION_SOCIAL_TYPE_EXCEPTION);
     }
 
     @ApiOperation("로그인을 요청합니다")
@@ -65,7 +66,7 @@ public class AuthController {
         if (request.getSocialType().equals(UserSocialType.APPLE)) {
             return appleAuthService.login(request);
         }
-        throw new ValidationException(String.format("허용하지 않는 소셜 타입 (%s) 입니다.", request.getSocialType()));
+        throw new ValidationException(String.format("허용하지 않는 소셜 타입 (%s) 입니다.", request.getSocialType()), VALIDATION_SOCIAL_TYPE_EXCEPTION);
     }
 
     @ApiOperation("[인증] 회원탈퇴를 요청합니다")
