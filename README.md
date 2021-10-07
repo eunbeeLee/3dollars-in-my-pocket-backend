@@ -16,6 +16,36 @@
 - [AppStore](https://apps.apple.com/kr/app/%EA%B0%80%EC%8A%B4%EC%86%8D3%EC%B2%9C%EC%9B%90-%EB%82%98%EC%99%80-%EA%B0%80%EA%B9%8C%EC%9A%B4-%EB%B6%95%EC%96%B4%EB%B9%B5/id1496099467)
 - [PlayStore](https://play.google.com/store/apps/details?id=com.zion830.threedollars)
 
+## Tech Stacks
+### Language & Framework
+- Java 11, Kotlin 1.5
+- Spring Boot (Spring Framework, Spring MVC)
+- Spring Data JPA (Hibernate) + QueryDSL
+- Feign Client
+- Gradle
+- Junit 5
+
+## Infra
+### 아키텍처 (Production)
+![img.png](images/3dollars-architecture.png)
+
+### Production
+- AWS ECS Fargate
+- AWS Application LoadBalancer
+- AWS RDS - MariaDB
+- flyway
+- AWS ElasticCache - Redis
+- GitHub Actions CI/CD
+
+### Development
+- AWS EC2
+- AWS RDS - MariaDB
+- flyway
+- Nginx
+- Docker compose
+- Redis
+- GitHub Actions CI/CD
+
 
 ## Installation
 ### with gradlew
@@ -33,30 +63,3 @@ java -jar threedollar-admin/build/libs/threedollar-admin.jar
 ```bash
 docker-compose up --build
 ```
-
-## Tech Stacks
-### Language & Framework
-- Java 11, Kotlin 1.5
-- Spring Boot 2.5 (Spring Framework, Spring MVC)
-- Spring Data JPA (Hibernate) + QueryDSL
-- Feign Client
-- Gradle 7.0
-- Junit 5
-
-## Infra
-### Production Environment
-- AWS ECS Fargate (Spot Instance)
-- AWS Application LoadBalancer
-- AWS RDS (MariaDB 10.4)
-- flyway
-- AWS ElasticCache (Redis 6.x)
-- GitHub Actions CI/CD
-
-### Development Environment
-- AWS EC2
-- AWS RDS (MariaDB 10.4)
-- flyway
-- Nginx
-- Docker compose
-- Redis
-- GitHub Actions CI/CD
