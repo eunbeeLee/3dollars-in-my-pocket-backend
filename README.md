@@ -4,7 +4,6 @@
 
 ![Version](https://img.shields.io/github/v/release/depromeet/3dollars-in-my-pocket-backend?include_prereleases)
 [![codecov](https://codecov.io/gh/depromeet/3dollars-in-my-pocket-backend/branch/develop/graph/badge.svg?token=QZPVF6VGHA)](https://codecov.io/gh/depromeet/3dollars-in-my-pocket-backend)
-![Build](https://img.shields.io/github/workflow/status/depromeet/3dollars-in-my-pocket-backend/CI%20%ED%85%8C%EC%8A%A4%ED%8C%85%20%EB%B0%8F%20%ED%85%8C%EC%8A%A4%ED%8A%B8%20%EC%BB%A4%EB%B2%84%EB%A6%AC%EC%A7%80%20%EC%B8%A1%EC%A0%95)
 ![Health](https://img.shields.io/website?down_message=DOWN&style=flat-square&up_message=UP&url=https://dev.threedollars.co.kr/ping)
 
 ![img.png](images/logo.png)
