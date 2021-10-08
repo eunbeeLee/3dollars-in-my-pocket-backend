@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.external.config;
+package com.depromeet.threedollar.external.config.s3;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.AnonymousAWSCredentials;

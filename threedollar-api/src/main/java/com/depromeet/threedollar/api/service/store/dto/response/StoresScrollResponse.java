@@ -22,13 +22,13 @@ public class StoresScrollResponse {
         this.nextCursor = nextCursor;
     }
 
-    public static StoresScrollResponse newLastScroll(List<Store> stores, long totalElements) {
-        return of(stores, totalElements, -1L);
+    public static StoresScrollResponse newLastScroll(List<Store> stores, long totalElements, double latitude, double longitude) {
+        return of(stores, totalElements, -1L, latitude, longitude);
     }
 
-    public static StoresScrollResponse of(List<Store> stores, long totalElements, long nextCursor) {
+    public static StoresScrollResponse of(List<Store> stores, long totalElements, long nextCursor, double latitude, double longitude) {
         List<StoreInfoResponse> contents = stores.stream()
-            .map(StoreInfoResponse::of)
+            .map(store -> StoreInfoResponse.of(store, latitude, longitude))
             .collect(Collectors.toList());
         return new StoresScrollResponse(contents, totalElements, nextCursor);
     }

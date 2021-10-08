@@ -281,7 +281,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
             storeRepository.saveAll(Arrays.asList(store1, store2, store3, store4));
 
-            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, null, null);
+            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, null, null, 34, 124);
 
             // when
             ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
@@ -311,7 +311,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
             storeRepository.saveAll(Arrays.asList(store1, store2, store3, store4));
 
-            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store4.getId(), 4L);
+            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store4.getId(), 4L, 34, 124);
 
             // when
             ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
@@ -341,7 +341,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
             storeRepository.saveAll(Arrays.asList(store1, store2, store3, store4));
 
-            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store4.getId(), null);
+            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store4.getId(), null, 33, 123);
 
             // when
             ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
@@ -372,7 +372,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
             storeRepository.saveAll(Arrays.asList(store1, store2, store3, store4));
 
-            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store3.getId(), null);
+            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store3.getId(), null, 34, 124);
 
             // when
             ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
@@ -400,7 +400,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
             storeRepository.saveAll(Arrays.asList(store1, store2, store3));
 
-            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store2.getId(), 3L);
+            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, store2.getId(), 3L, 34, 124);
 
             // when
             ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
@@ -421,7 +421,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
             store.delete();
             storeRepository.save(store);
 
-            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, null, null);
+            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, null, null, 34, 124);
 
             // when
             ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
