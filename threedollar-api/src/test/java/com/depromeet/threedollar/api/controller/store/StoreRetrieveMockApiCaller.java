@@ -82,7 +82,9 @@ class StoreRetrieveMockApiCaller extends MockMvcUtils {
             .header(HttpHeaders.AUTHORIZATION, token)
             .param("size", String.valueOf(request.getSize()))
             .param("cursor", request.getCursor() == null ? null : String.valueOf(request.getCursor()))
-            .param("cachingTotalElements", request.getCachingTotalElements() == null ? null : String.valueOf(request.getCachingTotalElements()));
+            .param("cachingTotalElements", request.getCachingTotalElements() == null ? null : String.valueOf(request.getCachingTotalElements()))
+            .param("latitude", String.valueOf(request.getLatitude()))
+            .param("longitude", String.valueOf(request.getLongitude()));
 
         return objectMapper.readValue(
             mockMvc.perform(builder)

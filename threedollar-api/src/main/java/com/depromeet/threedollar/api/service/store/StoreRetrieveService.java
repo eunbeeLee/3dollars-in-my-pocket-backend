@@ -67,7 +67,9 @@ public class StoreRetrieveService {
         if (currentAndNextScrollStores.size() <= request.getSize()) {
             return StoresScrollResponse.newLastScroll(
                 currentAndNextScrollStores,
-                Objects.requireNonNullElseGet(request.getCachingTotalElements(), () -> storeRepository.findCountsByUserId(userId))
+                Objects.requireNonNullElseGet(request.getCachingTotalElements(), () -> storeRepository.findCountsByUserId(userId)),
+                request.getLatitude(),
+                request.getLongitude()
             );
         }
 
@@ -75,7 +77,9 @@ public class StoreRetrieveService {
         return StoresScrollResponse.of(
             currentScrollStores,
             Objects.requireNonNullElseGet(request.getCachingTotalElements(), () -> storeRepository.findCountsByUserId(userId)),
-            currentScrollStores.get(request.getSize() - 1).getId()
+            currentScrollStores.get(request.getSize() - 1).getId(),
+            request.getLatitude(),
+            request.getLongitude()
         );
     }
 
