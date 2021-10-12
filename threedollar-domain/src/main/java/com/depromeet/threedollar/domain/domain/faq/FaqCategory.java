@@ -12,7 +12,9 @@ public enum FaqCategory {
     REVIEW_MENU("리뷰 및 메뉴", 2),
     WITHDRAWAL("회원탈퇴", 3),
     BOARD("게시글 수정 및 삭제", 4),
-    CATEGORY("카테고리", 5);
+    CATEGORY("카테고리", 5),
+    ETC("기타", 6),
+    ;
 
     private final String description;
     private final int displayOrder;
