@@ -16,12 +16,16 @@ class StoreAdminController(
 ) {
 
     @GetMapping("/admin/v1/stores/reported")
-    fun retrieveReportedStores(@Valid request: RetrieveReportedStoresRequest): ApiResponse<List<ReportedStoresResponse>> {
+    fun retrieveReportedStores(
+        @Valid request: RetrieveReportedStoresRequest
+    ): ApiResponse<List<ReportedStoresResponse>> {
         return ApiResponse.success(storeAdminService.retrieveReportedStores(request))
     }
 
     @GetMapping("/admin/v1/stores/latest")
-    fun retrieveLatestStores(@Valid request: RetrieveLatestStoresRequest): ApiResponse<StoreScrollResponse> {
+    fun retrieveLatestStores(
+        @Valid request: RetrieveLatestStoresRequest
+    ): ApiResponse<StoreScrollResponse> {
         return ApiResponse.success(storeAdminService.retrieveLatestStores(request))
     }
 

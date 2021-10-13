@@ -32,8 +32,7 @@ public class StoreController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PostMapping("/api/v2/store")
-    public ApiResponse<StoreInfoResponse> addStore(@Valid @RequestBody AddStoreRequest request,
-                                                   @UserId Long userId) {
+    public ApiResponse<StoreInfoResponse> addStore(@Valid @RequestBody AddStoreRequest request, @UserId Long userId) {
         return ApiResponse.success(storeService.addStore(request, userId));
     }
 
@@ -41,9 +40,7 @@ public class StoreController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PutMapping("/api/v2/store/{storeId}")
-    public ApiResponse<StoreInfoResponse> updateStore(@PathVariable Long storeId,
-                                                      @Valid @RequestBody UpdateStoreRequest request,
-                                                      @UserId Long userId) {
+    public ApiResponse<StoreInfoResponse> updateStore(@PathVariable Long storeId, @Valid @RequestBody UpdateStoreRequest request, @UserId Long userId) {
         return ApiResponse.success(storeService.updateStore(storeId, request, userId));
     }
 
@@ -51,9 +48,7 @@ public class StoreController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @DeleteMapping("/api/v2/store/{storeId}")
-    public ApiResponse<StoreDeleteResponse> deleteStore(@Valid DeleteStoreRequest request,
-                                                        @PathVariable Long storeId,
-                                                        @UserId Long userId) {
+    public ApiResponse<StoreDeleteResponse> deleteStore(@Valid DeleteStoreRequest request, @PathVariable Long storeId, @UserId Long userId) {
         return ApiResponse.success(storeService.deleteStore(storeId, request, userId));
     }
 
@@ -61,8 +56,7 @@ public class StoreController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header")
     @Auth
     @PostMapping("/api/v2/store/images")
-    public ApiResponse<List<StoreImageResponse>> addStoreImage(@Valid AddStoreImageRequest request,
-                                                               @RequestPart(value = "images") List<MultipartFile> images,
+    public ApiResponse<List<StoreImageResponse>> addStoreImage(@Valid AddStoreImageRequest request, @RequestPart(value = "images") List<MultipartFile> images,
                                                                @UserId Long userId) {
         return ApiResponse.success(storeImageService.addStoreImages(request, images, userId));
     }
