@@ -8,14 +8,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public enum ImageType {
 
-    STORE("store");
+    STORE("/store/v2/");
 
     private final String directory;
 
     public String getFileNameWithDirectory(String fileName) {
-        return String.format("/%s/%s/%s", this.directory, VERSION, fileName);
+        return this.directory.concat(fileName);
     }
-
-    private static final String VERSION = "v2";
 
 }
