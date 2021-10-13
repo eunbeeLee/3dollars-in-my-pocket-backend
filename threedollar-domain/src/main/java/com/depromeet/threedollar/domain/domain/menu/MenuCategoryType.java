@@ -19,6 +19,7 @@ public enum MenuCategoryType {
     WAFFLE("와플"),
     GUKWAPPANG("국화빵"),
     SUNDAE("순대"),
+    DALGONA("달고나")
     ;
 
     private final String description;
