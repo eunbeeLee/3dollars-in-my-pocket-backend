@@ -2,7 +2,7 @@ FROM adoptopenjdk/openjdk11:alpine-slim AS BUILD
 ENV HOME=/usr/app
 WORKDIR $HOME
 COPY . $HOME
-RUN ./gradlew clean :threedollar-api:build
+RUN ./gradlew clean :threedollar-api:bootJar test
 
 FROM adoptopenjdk/openjdk11:alpine-jre
 ENV HOME=/usr/app

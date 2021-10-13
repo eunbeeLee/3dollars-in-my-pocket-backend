@@ -16,7 +16,7 @@ class ImageTypeTest {
         String fullDirectory = type.getFileNameWithDirectory(fileName);
 
         // then
-        assertThat(fullDirectory).isEqualTo("/store/v2/image.png");
+        assertThat(fullDirectory).isEqualTo("store/v2/image.png");
     }
 
 }
