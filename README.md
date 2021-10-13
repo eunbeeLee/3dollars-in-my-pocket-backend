@@ -1,10 +1,8 @@
 # 가슴속 삼천원 백엔드
 
-> 백엔드 2.0부터 새롭게 리뉴얼하는 방향으로 진행하고 있습니다.
-
 ![Version](https://img.shields.io/github/v/release/depromeet/3dollars-in-my-pocket-backend?include_prereleases)
 [![codecov](https://codecov.io/gh/depromeet/3dollars-in-my-pocket-backend/branch/develop/graph/badge.svg?token=QZPVF6VGHA)](https://codecov.io/gh/depromeet/3dollars-in-my-pocket-backend)
-![Health](https://img.shields.io/website?down_message=DOWN&style=flat-square&up_message=UP&url=https://dev.threedollars.co.kr/ping)
+![Health](https://img.shields.io/website?down_message=DOWN&style=flat-square&up_message=UP&url=https://threedollars.co.kr/ping)
 
 ![img.png](images/logo.png)
 
