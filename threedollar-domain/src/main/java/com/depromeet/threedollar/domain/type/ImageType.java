@@ -13,7 +13,9 @@ public enum ImageType {
     private final String directory;
 
     public String getFileNameWithDirectory(String fileName) {
-        return this.directory.concat("/").concat(fileName);
+        return String.format("/%s/%s/%s", this.directory, VERSION, fileName);
     }
+
+    private static final String VERSION = "v2";
 
 }
