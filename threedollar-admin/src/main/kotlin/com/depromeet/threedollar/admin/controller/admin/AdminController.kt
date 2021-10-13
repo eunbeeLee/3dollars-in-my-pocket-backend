@@ -13,7 +13,9 @@ class AdminController(
 ) {
 
     @GetMapping("/admin/v1/admin/me")
-    fun getMyAdminInfo(@AdminId adminId: Long): ApiResponse<AdminInfoResponse> {
+    fun getMyAdminInfo(
+        @AdminId adminId: Long
+    ): ApiResponse<AdminInfoResponse> {
         return ApiResponse.success(adminService.getMyAdminInfo(adminId))
     }
 

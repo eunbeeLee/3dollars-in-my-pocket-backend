@@ -17,14 +17,14 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
     public boolean supportsParameter(MethodParameter parameter) {
         boolean hasAnnotation = parameter.getParameterAnnotation(UserId.class) != null;
         boolean isMatchType = parameter.getParameterType().equals(Long.class);
-        if (hasAnnotation && parameter.getMethodAnnotation(Auth.class) == null) {
-            throw new InternalServerException("인증이 필요한 컨트롤러 입니다. Auth 어노테이션을 붙여주세요.");
-        }
         return hasAnnotation && isMatchType;
     }
 
     @Override
-    public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+    public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer mavContainer, @NotNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+        if (parameter.getMethodAnnotation(Auth.class) == null) {
+            throw new InternalServerException("인증이 필요한 컨트롤러 입니다. @Auth 어노테이션을 붙여주세요.");
+        }
         return webRequest.getAttribute("userId", 0);
     }
 
