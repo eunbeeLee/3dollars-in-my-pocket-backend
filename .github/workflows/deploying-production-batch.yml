@@ -3,8 +3,7 @@ name: 운영 환경 배치 잡 배포
 on:
   push:
     branches:
-      - master
-      - feature/batch-cicd
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
