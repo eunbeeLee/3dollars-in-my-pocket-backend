@@ -78,6 +78,7 @@ subprojects {
 
     test {
         useJUnitPlatform()
+        finalizedBy
     }
 }
 

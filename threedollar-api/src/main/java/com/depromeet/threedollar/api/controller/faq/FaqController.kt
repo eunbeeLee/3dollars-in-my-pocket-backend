@@ -1,8 +1,8 @@
 package com.depromeet.threedollar.api.controller.faq
 
 import com.depromeet.threedollar.application.common.dto.ApiResponse
-import com.depromeet.threedollar.application.mapper.FaqCategoryMapper
-import com.depromeet.threedollar.application.mapper.dto.FaqCategoryResponse
+import com.depromeet.threedollar.application.mapper.faq.FaqCategoryMapper
+import com.depromeet.threedollar.application.mapper.faq.dto.response.FaqCategoryResponse
 import com.depromeet.threedollar.application.service.faq.FaqService
 import com.depromeet.threedollar.application.service.faq.dto.request.RetrieveFaqsRequest
 import com.depromeet.threedollar.application.service.faq.dto.response.FaqResponse

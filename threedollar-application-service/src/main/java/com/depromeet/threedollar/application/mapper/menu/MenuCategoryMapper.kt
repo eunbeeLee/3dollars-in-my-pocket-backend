@@ -1,6 +1,6 @@
-package com.depromeet.threedollar.application.mapper
+package com.depromeet.threedollar.application.mapper.menu
 
-import com.depromeet.threedollar.application.mapper.dto.MenuCategoryResponse
+import com.depromeet.threedollar.application.mapper.menu.dto.response.MenuCategoryResponse
 import com.depromeet.threedollar.domain.domain.menu.MenuCategoryType
 
 object MenuCategoryMapper {

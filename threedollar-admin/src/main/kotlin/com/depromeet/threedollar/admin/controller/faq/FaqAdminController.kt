@@ -4,8 +4,8 @@ import com.depromeet.threedollar.admin.service.faq.FaqAdminService
 import com.depromeet.threedollar.admin.service.faq.dto.request.AddFaqRequest
 import com.depromeet.threedollar.admin.service.faq.dto.request.UpdateFaqRequest
 import com.depromeet.threedollar.application.common.dto.ApiResponse
-import com.depromeet.threedollar.application.mapper.FaqCategoryMapper
-import com.depromeet.threedollar.application.mapper.dto.FaqCategoryResponse
+import com.depromeet.threedollar.application.mapper.faq.FaqCategoryMapper
+import com.depromeet.threedollar.application.mapper.faq.dto.response.FaqCategoryResponse
 import com.depromeet.threedollar.application.service.faq.FaqService
 import com.depromeet.threedollar.application.service.faq.dto.request.RetrieveFaqsRequest
 import com.depromeet.threedollar.application.service.faq.dto.response.FaqResponse
