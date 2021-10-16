@@ -14,7 +14,9 @@
 - [AppStore](https://apps.apple.com/kr/app/%EA%B0%80%EC%8A%B4%EC%86%8D3%EC%B2%9C%EC%9B%90-%EB%82%98%EC%99%80-%EA%B0%80%EA%B9%8C%EC%9A%B4-%EB%B6%95%EC%96%B4%EB%B9%B5/id1496099467)
 - [PlayStore](https://play.google.com/store/apps/details?id=com.zion830.threedollars)
 
-<img src="https://user-images.githubusercontent.com/7058293/110067262-b179c700-7db6-11eb-8451-223956dca69d.jpg" width ="30%" alt="IOS 인증샷"/>
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/7058293/110067262-b179c700-7db6-11eb-8451-223956dca69d.jpg" width ="40%" alt="IOS 인증샷"/>
+</p>
 
 ## Tech Stacks
 ### Language & Framework
@@ -28,7 +30,7 @@
 
 ## Infra
 ### 아키텍처 (Production)
-![img.png](images/3dollars-architecture.png)
+![img.png](images/3dollars-architecture-20211016.png)
 
 ### Production
 - ECS Fargate
