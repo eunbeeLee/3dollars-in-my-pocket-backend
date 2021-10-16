@@ -29,7 +29,7 @@ spring:
               environment: dev
 sentry:
   environment: dev
-  traces-sample-rate: 0.3
+  traces-sample-rate: 0.05
   dsn: ${secret.sentry.dsn}
 ---
 spring:
@@ -42,6 +42,6 @@ spring:
         enabled: false
 sentry:
   environment: prod
-  traces-sample-rate: 0.3
+  traces-sample-rate: 0.05
   dsn: ${secret.sentry.dsn}
 ---
