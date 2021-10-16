@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.domain.type;
+package com.depromeet.threedollar.domain.domain.review;
 
 import com.depromeet.threedollar.common.exception.model.InternalServerException;
 import lombok.AccessLevel;

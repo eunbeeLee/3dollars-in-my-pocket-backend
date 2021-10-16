@@ -1,7 +1,7 @@
 package com.depromeet.threedollar.api.service.store.dto.response;
 
 import com.depromeet.threedollar.common.exception.model.InternalServerException;
-import com.depromeet.threedollar.domain.type.DistanceGroupType;
+import com.depromeet.threedollar.domain.domain.common.DistanceGroupType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

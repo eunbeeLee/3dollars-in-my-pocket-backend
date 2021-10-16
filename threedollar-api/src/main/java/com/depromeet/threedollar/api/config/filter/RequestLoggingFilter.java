@@ -1,6 +1,7 @@
 package com.depromeet.threedollar.api.config.filter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 import org.springframework.web.util.WebUtils;
@@ -27,14 +28,23 @@ public class RequestLoggingFilter implements Filter {
         long end = System.currentTimeMillis();
 
         log.info("\n" +
-                "[REQUEST] {} - {} {} - {}s\n" +
+                "[REQUEST] {} - {}{} {} - {}s\n" +
                 "Headers : {}\n" +
                 "Request : {}\n" +
                 "Response : {}\n",
-            ((HttpServletRequest) request).getMethod(), ((HttpServletRequest) request).getRequestURI(), responseWrapper.getStatus(), (end - start) / 1000.0,
+            ((HttpServletRequest) request).getMethod(), ((HttpServletRequest) request).getRequestURI(),
+            getQueryString((HttpServletRequest) request), responseWrapper.getStatus(), (end - start) / 1000.0,
             getHeaders((HttpServletRequest) request),
             getRequestBody(requestWrapper),
             getResponseBody(responseWrapper));
+    }
+
+    private String getQueryString(HttpServletRequest request) {
+        String query = request.getQueryString();
+        if (StringUtils.hasText(query)) {
+            return "?".concat(query);
+        }
+        return "";
     }
 
     private Map<String, String> getHeaders(HttpServletRequest request) {

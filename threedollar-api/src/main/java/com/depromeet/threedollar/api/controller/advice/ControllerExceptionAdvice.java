@@ -1,6 +1,6 @@
 package com.depromeet.threedollar.api.controller.advice;
 
-import com.depromeet.threedollar.api.event.ServerExceptionOccurredEvent;
+import com.depromeet.threedollar.api.event.ServerErrorOccuredEvent;
 import com.depromeet.threedollar.application.common.dto.ApiResponse;
 import com.depromeet.threedollar.common.exception.*;
 import com.depromeet.threedollar.common.exception.model.ThreeDollarsBaseException;
@@ -39,7 +39,7 @@ public class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
     protected ApiResponse<Object> handleBadRequest(final BindException e) {
-        log.error(e.getMessage(), e);
+        log.error(e.getMessage());
         return ApiResponse.error(VALIDATION_EXCEPTION, Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
     }
 
@@ -51,7 +51,7 @@ public class ControllerExceptionAdvice {
         ServletRequestBindingException.class
     })
     protected ApiResponse<Object> handleInvalidFormatException(final Exception e) {
-        log.error(e.getMessage(), e);
+        log.error(e.getMessage());
         return ApiResponse.error(VALIDATION_EXCEPTION);
     }
 
@@ -101,8 +101,8 @@ public class ControllerExceptionAdvice {
         return ApiResponse.error(INTERNAL_SERVER_EXCEPTION);
     }
 
-    private ServerExceptionOccurredEvent createEvent(ErrorCode errorCode, Exception exception) {
-        return ServerExceptionOccurredEvent.error(errorCode, exception, LocalDateTime.now(ZoneId.of("Asia/Seoul")));
+    private ServerErrorOccuredEvent createEvent(ErrorCode errorCode, Exception exception) {
+        return ServerErrorOccuredEvent.error(errorCode, exception, LocalDateTime.now(ZoneId.of("Asia/Seoul")));
     }
 
 }

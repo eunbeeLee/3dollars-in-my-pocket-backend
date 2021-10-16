@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.domain.type;
+package com.depromeet.threedollar.domain.domain.common;
 
 import org.junit.jupiter.api.Test;
 

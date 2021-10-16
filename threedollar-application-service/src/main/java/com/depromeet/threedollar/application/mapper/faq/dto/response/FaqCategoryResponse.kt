@@ -1,4 +1,4 @@
-package com.depromeet.threedollar.application.service.faq.dto.response
+package com.depromeet.threedollar.application.mapper.faq.dto.response
 
 import com.depromeet.threedollar.domain.domain.faq.FaqCategory
 

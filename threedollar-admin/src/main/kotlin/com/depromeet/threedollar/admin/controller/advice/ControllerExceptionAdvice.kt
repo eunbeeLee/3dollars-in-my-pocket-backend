@@ -29,7 +29,7 @@ class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException::class)
     private fun handleBadRequest(e: BindException): ApiResponse<Nothing> {
-        log.error(e.message, e)
+        log.error(e.message)
         return ApiResponse.error(VALIDATION_EXCEPTION, e.bindingResult.allErrors[0].defaultMessage)
     }
 
@@ -41,7 +41,7 @@ class ControllerExceptionAdvice {
         ServletRequestBindingException::class
     )
     private fun handleMethodArgumentNotValidException(e: Exception): ApiResponse<Nothing> {
-        log.error(e.message, e)
+        log.error(e.message)
         return ApiResponse.error(VALIDATION_EXCEPTION)
     }
 

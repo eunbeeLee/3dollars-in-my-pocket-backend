@@ -1,7 +1,7 @@
 package com.depromeet.threedollar.api.service.upload.dto.request;
 
 import com.depromeet.threedollar.common.exception.model.ValidationException;
-import com.depromeet.threedollar.domain.type.ImageType;
+import com.depromeet.threedollar.domain.domain.common.ImageType;
 import com.depromeet.threedollar.common.utils.FileUtils;
 import lombok.*;
 
