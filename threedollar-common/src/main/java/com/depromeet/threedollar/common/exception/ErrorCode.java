@@ -37,8 +37,9 @@ public enum ErrorCode {
     NOT_FOUND_USER_EXCEPTION(NOT_FOUND, OFF, "N001", "존재하지 않는 유저입니다"),
     NOT_FOUND_STORE_EXCEPTION(NOT_FOUND, OFF, "N002", "존재하지 않는 가게입니다"),
     NOT_FOUND_REVIEW_EXCEPTION(NOT_FOUND, OFF, "N003", "존재하지 않는 리뷰입니다"),
-    NOT_FOUND_STORE_IMAGE_EXCEPTION(NOT_FOUND, OFF, "N003", "존재하지 않는 가게 이미지입니다"),
-    NOT_FOUND_FAQ_EXCEPTION(NOT_FOUND, OFF, "N004", "존재하지 않는 FAQ입니다"),
+    NOT_FOUND_STORE_IMAGE_EXCEPTION(NOT_FOUND, OFF, "N004", "존재하지 않는 가게 이미지입니다"),
+    NOT_FOUND_FAQ_EXCEPTION(NOT_FOUND, OFF, "N005", "존재하지 않는 FAQ입니다"),
+    NOT_FOUND_MEDAL_EXCEPTION(NOT_FOUND, OFF, "N006", "보유하지 않는 메달입니다"),
     ;
 
     private final ErrorStatusCode statusCode;
