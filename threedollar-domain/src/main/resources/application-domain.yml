@@ -20,7 +20,6 @@ spring:
       jdbc-url: ${secret.jdbc.uri}
       username: ${secret.jdbc.username}
       password: ${secret.jdbc.password}
-      maximum-pool-size: 20
 ---
 spring:
   config:
@@ -55,9 +54,7 @@ spring:
 spring:
   config:
     activate:
-      on-profile:
-        - dev
-        - prod
+      on-profile: dev
   jpa:
     properties:
       hibernate:
@@ -66,4 +63,20 @@ spring:
         use_sql_comments: false
     hibernate:
       ddl-auto: none
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+        use_sql_comments: false
+    hibernate:
+      ddl-auto: none
+  datasource:
+    hikari:
+      maximum-pool-size: 20
 ---
