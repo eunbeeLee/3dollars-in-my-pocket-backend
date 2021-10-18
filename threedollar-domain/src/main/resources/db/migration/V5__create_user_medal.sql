@@ -8,3 +8,7 @@ CREATE TABLE `user_medal`
     PRIMARY KEY (`id`),
     UNIQUE KEY `uni_user_medal_1` (`user_id`, `medal_type`)
 ) ENGINE = InnoDB;
+
+
+ALTER TABLE `user`
+    ADD COLUMN `medal_type` VARCHAR(30) DEFAULT NULL;
