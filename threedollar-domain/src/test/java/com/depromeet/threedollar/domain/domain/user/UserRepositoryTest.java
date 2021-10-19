@@ -42,7 +42,7 @@ class UserRepositoryTest {
         userRepository.saveAll(List.of(user1, user2));
 
         // when
-        long counts = userRepository.findUsersCountByDate(startDate, endDate);
+        long counts = userRepository.findUsersCountBetweenDate(startDate, endDate);
 
         // then
         assertThat(counts).isEqualTo(expectedCount);

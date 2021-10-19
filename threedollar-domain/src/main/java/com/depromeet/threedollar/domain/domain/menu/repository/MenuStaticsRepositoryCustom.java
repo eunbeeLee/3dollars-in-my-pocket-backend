@@ -4,7 +4,7 @@ import com.depromeet.threedollar.domain.domain.menu.repository.projection.MenuSt
 
 import java.util.List;
 
-public interface MenuRepositoryCustom {
+public interface MenuStaticsRepositoryCustom {
 
     List<MenuStaticsProjection> countsGroupByMenu();
 
