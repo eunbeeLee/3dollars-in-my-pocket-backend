@@ -53,22 +53,4 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
             .fetchOne();
     }
 
-    @Override
-    public long findUsersCount() {
-        return queryFactory.select(user.id)
-            .from(user)
-            .fetchCount();
-    }
-
-    @Override
-    public long findUsersCountByDate(LocalDate startDate, LocalDate endDate) {
-        return queryFactory.select(user.id)
-            .from(user)
-            .where(
-                user.createdAt.goe(startDate.atStartOfDay()),
-                user.createdAt.lt(endDate.atStartOfDay().plusDays(1))
-            )
-            .fetchCount();
-    }
-
 }
