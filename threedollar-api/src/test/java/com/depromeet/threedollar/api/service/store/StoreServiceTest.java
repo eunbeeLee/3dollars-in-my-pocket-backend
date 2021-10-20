@@ -267,7 +267,7 @@ class StoreServiceTest extends UserSetUpTest {
         }
 
         @Test
-        void 사용자가_작성하지_않은_가게_정보도_수정할수있다() {
+        void 사용자가_작성하지_않은_가게_정보도_수정할수있다_단_최초제보자가_가게_제보자로_유지된다() {
             // given
             Store store = StoreCreator.create(100L, "storeName");
             store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
@@ -301,7 +301,7 @@ class StoreServiceTest extends UserSetUpTest {
             // then
             List<Store> stores = storeRepository.findAll();
             assertThat(stores).hasSize(1);
-            assertStore(stores.get(0), latitude, longitude, storeName, storeType, userId);
+            assertStore(stores.get(0), latitude, longitude, storeName, storeType, 100L);
 
             List<AppearanceDay> appearanceDayList = appearanceDayRepository.findAll();
             assertThat(appearanceDayList).hasSize(1);
