@@ -151,10 +151,9 @@ public class Store extends AuditingTimeEntity {
         this.location = Location.of(latitude, longitude);
     }
 
-    public void updateInfo(String name, StoreType type, Long userId) {
+    public void updateInfo(String name, StoreType type) {
         this.name = name;
         this.type = type;
-        this.userId = userId;
     }
 
     public void updateAverageRating(double average) {
