@@ -43,8 +43,8 @@ public class StoreStaticsRepositoryCustomImpl implements StoreStaticsRepositoryC
             .innerJoin(menu).on(menu.store.id.eq(store.id))
             .where(
                 store.status.eq(StoreStatus.DELETED),
-                store.createdAt.goe(startDate.atStartOfDay()),
-                store.createdAt.lt(endDate.atStartOfDay().plusDays(1))
+                store.updatedAt.goe(startDate.atStartOfDay()),
+                store.updatedAt.lt(endDate.atStartOfDay().plusDays(1))
             ).fetchCount();
     }
 
