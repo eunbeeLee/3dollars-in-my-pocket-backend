@@ -3,6 +3,7 @@ package com.depromeet.threedollar.api.controller.store;
 import com.depromeet.threedollar.api.service.review.dto.response.ReviewWithWriterResponse;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveStoreGroupByCategoryRequest;
 import com.depromeet.threedollar.api.service.store.dto.response.*;
+import com.depromeet.threedollar.api.service.visit.dto.response.VisitHistoryInfoResponse;
 import com.depromeet.threedollar.application.common.dto.ApiResponse;
 import com.depromeet.threedollar.api.controller.AbstractControllerTest;
 import com.depromeet.threedollar.api.service.store.dto.request.RetrieveNearStoresRequest;
@@ -19,16 +20,19 @@ import com.depromeet.threedollar.domain.domain.review.ReviewCreator;
 import com.depromeet.threedollar.domain.domain.review.ReviewRepository;
 import com.depromeet.threedollar.domain.domain.store.*;
 import com.depromeet.threedollar.domain.domain.user.UserSocialType;
+import com.depromeet.threedollar.domain.domain.visit.VisitHistoryCreator;
+import com.depromeet.threedollar.domain.domain.visit.VisitHistoryRepository;
+import com.depromeet.threedollar.domain.domain.visit.VisitType;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static com.depromeet.threedollar.common.exception.ErrorCode.NOT_FOUND_STORE_EXCEPTION;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 class StoreRetrieveControllerTest extends AbstractControllerTest {
 
@@ -56,7 +60,7 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
     private ReviewRepository reviewRepository;
 
     @Autowired
-    private StoreImageRepository storeImageRepository;
+    private VisitHistoryRepository visitHistoryRepository;
 
     @AfterEach
     void cleanUp() {
@@ -65,8 +69,8 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         appearanceDayRepository.deleteAllInBatch();
         paymentMethodRepository.deleteAllInBatch();
         menuRepository.deleteAllInBatch();
+        visitHistoryRepository.deleteAllInBatch();
         storeRepository.deleteAllInBatch();
-        storeImageRepository.deleteAll();
     }
 
     @DisplayName("GET /api/v2/stores/near")
@@ -119,6 +123,32 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
 
             // then
             assertThat(response.getData()).isEmpty();
+        }
+
+        @Test
+        void 사용자_주위의_가게를_조회할때_방문_인증_횟수가_함께_조회된다() throws Exception {
+            // given
+            Store store1 = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
+            store1.addMenus(List.of(MenuCreator.create(store1, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG)));
+
+            Store store2 = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
+            store2.addMenus(List.of(MenuCreator.create(store2, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
+            storeRepository.saveAll(Arrays.asList(store1, store2));
+
+            visitHistoryRepository.saveAll(List.of(
+                VisitHistoryCreator.create(store1, testUser.getId(), VisitType.EXISTS, LocalDate.of(2021, 10, 18)),
+                VisitHistoryCreator.create(store2, 100L, VisitType.NOT_EXISTS, LocalDate.of(2021, 10, 18))
+            ));
+
+            RetrieveNearStoresRequest request = RetrieveNearStoresRequest.testInstance(34, 124, 34, 124, 1000);
+
+            // when
+            ApiResponse<List<StoreInfoResponse>> response = storeRetrieveMockApiCaller.getNearStores(request, 200);
+
+            // then
+            assertThat(response.getData()).hasSize(2);
+            assertVisitHistoryInfoResponse(response.getData().get(0).getVisitHistory(), 1, 0, true);
+            assertVisitHistoryInfoResponse(response.getData().get(1).getVisitHistory(), 0, 1, false);
         }
 
     }
@@ -225,39 +255,6 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
             assertThat(response.getData()).isNull();
         }
 
-    }
-
-    @DisplayName("GET /api/v2/store/storeId/images")
-    @Nested
-    class 특정_가게에_등록된_이미지들을_조회한다 {
-
-        @Test
-        void 가게에_등록된_사진들을_조회한다() throws Exception {
-            // given
-            Store store = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
-            store.addMenus(Collections.singletonList(MenuCreator.create(store, "붕어빵", "만원", MenuCategoryType.BUNGEOPPANG)));
-            storeRepository.save(store);
-
-            StoreImage storeImage1 = StoreImage.newInstance(store.getId(), testUser.getId(), "image1");
-            StoreImage storeImage2 = StoreImage.newInstance(store.getId(), testUser.getId(), "image1");
-
-            storeImageRepository.saveAll(List.of(storeImage1, storeImage2));
-
-            // when
-            ApiResponse<List<StoreImageResponse>> response = storeRetrieveMockApiCaller.retrieveStoreImages(store.getId(), 200);
-
-            // then
-            assertAll(
-                () -> assertThat(response.getData()).hasSize(2),
-                () -> assertStoreImageResponse(response.getData().get(0), storeImage1.getId(), storeImage1.getUrl()),
-                () -> assertStoreImageResponse(response.getData().get(1), storeImage2.getId(), storeImage2.getUrl()));
-        }
-
-    }
-
-    private void assertStoreImageResponse(StoreImageResponse response, Long storeImageId, String url) {
-        assertThat(response.getImageId()).isEqualTo(storeImageId);
-        assertThat(response.getUrl()).isEqualTo(url);
     }
 
     @DisplayName("GET /api/v2/stores/me")
@@ -432,6 +429,28 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
             assertThat(response.getData().getContents()).isEmpty();
         }
 
+        @Test
+        void 사용자가_제보한_가게들_조회시_방문_횟수도_함께_조회된다() throws Exception {
+            // given
+            Store store = StoreCreator.create(testUser.getId(), "storeName", 34, 124);
+            Menu menu = MenuCreator.create(store, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG);
+            store.addMenus(List.of(menu));
+            storeRepository.save(store);
+
+            visitHistoryRepository.save(VisitHistoryCreator.create(store, testUser.getId(), VisitType.NOT_EXISTS, LocalDate.of(2021, 10, 18)));
+
+            RetrieveMyStoresRequest request = RetrieveMyStoresRequest.testInstance(2, null, null, 34, 124);
+
+            // when
+            ApiResponse<StoresScrollResponse> response = storeRetrieveMockApiCaller.getMyStores(request, token, 200);
+
+            // then
+            assertThat(response.getData().getTotalElements()).isEqualTo(1);
+            assertThat(response.getData().getNextCursor()).isEqualTo(-1);
+            assertThat(response.getData().getContents()).hasSize(1);
+            assertVisitHistoryInfoResponse(response.getData().getContents().get(0).getVisitHistory(), 0, 1, false);
+        }
+
     }
 
     @DisplayName("GET /api/v2/stores/distance")
@@ -555,6 +574,30 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
             assertThat(response.getData().getStoreList500()).isEmpty();
             assertThat(response.getData().getStoreList1000()).isEmpty();
             assertThat(response.getData().getStoreListOver1000()).isEmpty();
+        }
+
+        @Test
+        void 거리순으로_내_주변의_특정_카테고리_가게_조회시_방문_정보도_함께_조회된다() throws Exception {
+            // given
+            Store store = StoreCreator.create(testUser.getId(), "가게 1.1", 34, 124, 1.1);
+            Menu menu = MenuCreator.create(store, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG);
+            store.addMenus(List.of(menu));
+            storeRepository.save(store);
+            visitHistoryRepository.save(VisitHistoryCreator.create(store, testUser.getId(), VisitType.EXISTS, LocalDate.of(2021, 10, 18)));
+
+            RetrieveStoreGroupByCategoryRequest request = RetrieveStoreGroupByCategoryRequest.testBuilder()
+                .category(MenuCategoryType.BUNGEOPPANG)
+                .latitude(34.0)
+                .longitude(124.0)
+                .mapLatitude(34.0)
+                .mapLongitude(124.0)
+                .build();
+
+            // when
+            ApiResponse<StoresGroupByDistanceResponse> response = storeRetrieveMockApiCaller.getStoresByDistance(request, 200);
+
+            assertThat(response.getData().getStoreList50()).hasSize(1);
+            assertVisitHistoryInfoResponse(response.getData().getStoreList50().get(0).getVisitHistory(), 1, 0, true);
         }
 
     }
@@ -697,6 +740,30 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
             assertThat(response.getData().getStoreList4()).isEmpty();
         }
 
+        @Test
+        void 리뷰순으로_내_주변의_특정_카테고리_가게_조회시_방문_정보도_함께_조회된다() throws Exception {
+            // given
+            Store store = StoreCreator.create(testUser.getId(), "가게 1.1", 34, 124, 1.1);
+            Menu menu = MenuCreator.create(store, "메뉴1", "가격1", MenuCategoryType.BUNGEOPPANG);
+            store.addMenus(List.of(menu));
+            storeRepository.save(store);
+            visitHistoryRepository.save(VisitHistoryCreator.create(store, testUser.getId(), VisitType.NOT_EXISTS, LocalDate.of(2021, 10, 18)));
+
+            RetrieveStoreGroupByCategoryRequest request = RetrieveStoreGroupByCategoryRequest.testBuilder()
+                .category(MenuCategoryType.BUNGEOPPANG)
+                .latitude(34.0)
+                .longitude(124.0)
+                .mapLatitude(34.0)
+                .mapLongitude(124.0)
+                .build();
+
+            // when
+            ApiResponse<StoresGroupByReviewResponse> response = storeRetrieveMockApiCaller.getStoresByReview(request, 200);
+
+            // then
+            assertThat(response.getData().getStoreList1()).hasSize(1);
+            assertVisitHistoryInfoResponse(response.getData().getStoreList1().get(0).getVisitHistory(), 0, 1, false);
+        }
     }
 
     private void assertReviewWithWriterResponse(ReviewWithWriterResponse response, Review review) {
@@ -741,6 +808,12 @@ class StoreRetrieveControllerTest extends AbstractControllerTest {
         assertThat(response.getLongitude()).isEqualTo(longitude);
         assertThat(response.getStoreName()).isEqualTo(name);
         assertThat(response.getRating()).isEqualTo(rating);
+    }
+
+    private void assertVisitHistoryInfoResponse(VisitHistoryInfoResponse visitHistory, int existsCount, int notExistsCount, boolean isCertified) {
+        assertThat(visitHistory.getExistsCounts()).isEqualTo(existsCount);
+        assertThat(visitHistory.getNotExistsCounts()).isEqualTo(notExistsCount);
+        assertThat(visitHistory.getIsCertified()).isEqualTo(isCertified);
     }
 
 }
